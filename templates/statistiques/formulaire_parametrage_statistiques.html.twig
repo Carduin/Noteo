@@ -1,11 +1,22 @@
 {% extends 'base.html.twig' %}
 
-{% block titrePage %}{% endblock %}
+{% block titrePage %}{{ titrePage }}{% endblock %}
 
 {% block statistiques %}active{% endblock %}
 
-{% block contenu %}{% endblock %}
+{% block contenu %}
 
-{% block javascripts %}{% endblock %}
+    {% if nbForm == 1 %}
+        <h1 class="h4 mb-0 text-gray-800">{{ sousTitrePage | default("") }}</h1>
+        <br>
+        {{ include('statistiques/_form_evaluations.html.twig')}}
+    {% endif %}
+{% endblock %}
 
-{% block datatables %}{% endblock %}
+{% block javascripts %}
+
+{% endblock %}
+
+{% block datatables %}
+
+{% endblock %}

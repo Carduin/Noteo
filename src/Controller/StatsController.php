@@ -79,4 +79,47 @@ class StatsController extends AbstractController
         ]);
     }
 
+    //<editor-fold desc="Statistiques évaluation simple">
+    ///////////////////////
+    ///STATS EVAL SIMPLE///
+    ///////////////////////
+
+    /**
+     * @Route("/eval-simple/{typeGraphique}/choix-evaluation", name="eval_simple_choix_evaluation", methods={"GET", "POST"})
+     */
+    public function evalSimpleChoixEvaluation($typeGraphique, EvaluationRepository $repoEval, Request $request) : Response
+    {
+        $form = $this->createFormBuilder()
+            ->add('evaluations', EntityType::class, [
+                'constraints' => [new NotNull],
+                'class' => Evaluation::Class,
+                'choice_label' => false,
+                'label' => false,
+                'mapped' => false,
+                'expanded' => true,
+                'multiple' => false,
+                'choices' => $repoEval->findAllWithOnePart()
+            ])
+            ->getForm();
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+             return $this->redirectToRoute('statistiques_classiques_choisir_groupes_parties_statuts', [
+                'slug' => $form->get('evaluations')->getData()->getSlug(),
+                'typeStat' => null
+             ]);
+        }
+        return $this->render('statistiques/formulaire_parametrage_statistiques.html.twig', [
+            'titrePage' => 'Analyse d’une évaluation simple',
+            'form' => $form->createView(),
+            'nbForm' => 1,
+            'sousTitreForm1' => 'Choisir l\'évaluation pour laquelle vous désirez consulter les statistiques',
+            'activerToutSelectionner' => false,
+    ]);
+    }
+
+    ///////////////////////
+    ////FIN EVAL SIMPLE////
+    ///////////////////////
+    //</editor-fold>
+
 }

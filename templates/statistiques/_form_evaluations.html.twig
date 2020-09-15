@@ -5,7 +5,7 @@
     <table class="table" id="evaluations">
         <thead>
         <th>
-            {% if route == "statistiques_statuts_choisir_plusieurs_evaluations" or  route == "statistiques_statut_choisir_plusieurs_evaluations" or route == "statistiques_groupes_choisir_plusieurs_evaluations" or route == "statistiques_comparaison_choisir_autres_evals" %}
+            {% if activerToutSelectionner %}
                 <input type="checkbox" onclick="cocherToutesLesCases('form[evaluations][]', this.checked)"
                        name="checkbox" title="Tout cocher"/>
             {% endif %}
