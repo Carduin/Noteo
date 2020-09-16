@@ -1,6 +1,4 @@
-{{ form_start(form) }}
-    {{ form_errors(form.evaluations) }}
-    {% set route = app.request.attributes.get('_route') %}
+{{ form_errors(form.evaluations) }}
 <div class="table-responsive table-hover">
     <table class="table" id="evaluations">
         <thead>
@@ -17,7 +15,7 @@
         </thead>
         <tbody>
         {% for evaluation in form.evaluations %}
-            {#store index of the category in a variable#}
+            {# store index of the category in a variable #}
             {% set index = evaluation.vars.value %}
             {#get entity object from its index in the Categories Field#}
             {% set entity = form.evaluations.vars.choices[index].data %}
@@ -32,7 +30,3 @@
         </tbody>
     </table>
 </div>
-<div class='bouton' align=center>
-    <button class="d-sm-inline-block btn btn-sm btn-primary shadow-sm" id="valider">Suivant</button>
-</div>
-{{ form_end(form) }}

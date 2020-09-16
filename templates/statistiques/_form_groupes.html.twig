@@ -1,0 +1,68 @@
+{{ form_errors(form.groupes) }}
+<div class="table-responsive table-hover">
+    <table class="table" id="groupes">
+        <thead>
+        <th>
+            {% if activerToutSelectionner %} {# Dans ces cas le widget est un bouton radio donc pas de case tout cocher #}
+                <input type="checkbox" onclick="cocherToutesLesCases('form[groupes][]', this.checked)" name="checkbox"
+                       title="Tout cocher"/>
+            {% endif %}
+        </th>
+        <th>Nom</th>
+        <th>Effectif</th>
+        {% if colorationEffectif %}
+            <th>Effectif statut</th>
+        {% endif %}
+        <th>Description</th>
+        <th>Créateur</th>
+        </thead>
+        <tbody>
+        {% for groupe in form.groupes %}
+            {# store index of the category in a variable #}
+            {% set index = groupe.vars.value %}
+            {# get entity object from its index in the Categories Field #}
+            {% set entity = form.groupes.vars.choices[index].data %}
+            <tr>
+                <td>
+                    {{ form_widget(form.groupes[index]) }}
+                </td>
+                <td>
+                    {% if indentationGroupes %}
+                        {% if entity.lvl > 0 %}
+                            {% for i in 1.. entity.lvl %}
+                                &emsp;
+                            {% endfor %}
+                        {% endif %}
+                    {% endif %}
+                    {{ entity.nom }}
+                </td>
+                <td>
+                    <span {% if colorationEffectif %}
+                       class="
+                    {% if entity.etudiants.count <= 16 %}
+                        green
+                    {% elseif entity.etudiants.count > 16 and entity.etudiants.count <= 30 %}
+                        orange
+                     {% elseif entity.etudiants.count > 30 %}
+                        red
+                     {% endif %}" {% endif %}
+                >{{ entity.etudiants.count }}</span></td>
+                {% if colorationEffectif %}
+                    <td><span class="
+                  {% if effectifsParStatut[loop.index -1] <= 16 %}
+                    green
+                  {% elseif effectifsParStatut[loop.index -1] > 16 and effectifsParStatut[loop.index -1] <= 30 %}
+                    orange
+                  {% elseif effectifsParStatut[loop.index -1] > 30 %}
+                    red
+                  {% endif %}"
+                        >{{ effectifsParStatut[loop.index -1] }}</span></td>
+                {% endif %}
+                <td>{{ entity.description }}</td>
+                <td>{{ entity.enseignant.prenom }} {{ entity.enseignant.nom }}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+

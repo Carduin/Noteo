@@ -1,0 +1,30 @@
+{{ form_errors(form.statuts) }}
+<div class="table-responsive table-hover">
+    <table class="table" id="statuts">
+        <thead>
+        <th>
+            {% if activerToutSelectionner %}
+            <input type="checkbox" onclick="cocherToutesLesCases('form[statuts][]', this.checked);"
+                   name="checkbox" title="Tout cocher"/>
+            {% endif %}
+        </th>
+        <th>Nom</th>
+        <th>Description</th>
+        <th>Créateur</th>
+        </thead>
+        <tbody>
+        {% for statut in form.statuts %}
+            {# store index of the category in a variable #}
+            {% set index = statut.vars.value %}
+            {# get entity object from its index in the Categories Field #}
+            {% set entity = form.statuts.vars.choices[index].data %}
+            <tr>
+                <td>{{ form_widget(form.statuts[index]) }}</td>
+                <td>{{ entity.nom }}</td>
+                <td>{{ entity.description }}</td>
+                <td>{{ entity.enseignant.prenom }} {{ entity.enseignant.nom }}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>

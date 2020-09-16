@@ -89,6 +89,8 @@ class StatsController extends AbstractController
      */
     public function evalSimpleChoixEvaluation($typeGraphique, EvaluationRepository $repoEval, Request $request) : Response
     {
+        //On met en sesssion le type de graphique choisi par l'utilisateur pour afficher l'onglet correspondant lors de l'affichage des stats
+        $request->getSession()->set('typeGraphique', $typeGraphique);
         $form = $this->createFormBuilder()
             ->add('evaluations', EntityType::class, [
                 'constraints' => [new NotNull],
@@ -103,18 +105,143 @@ class StatsController extends AbstractController
             ->getForm();
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-             return $this->redirectToRoute('statistiques_classiques_choisir_groupes_parties_statuts', [
-                'slug' => $form->get('evaluations')->getData()->getSlug(),
-                'typeStat' => null
+             return $this->redirectToRoute('eval_simple_choix_parametres_et_afficher_stats', [
+                'slug' => $form->get('evaluations')->getData()->getSlug()
              ]);
         }
         return $this->render('statistiques/formulaire_parametrage_statistiques.html.twig', [
-            'titrePage' => 'Analyse d’une évaluation simple',
             'form' => $form->createView(),
             'nbForm' => 1,
-            'sousTitreForm1' => 'Choisir l\'évaluation pour laquelle vous désirez consulter les statistiques',
+            'titrePage' => 'Analyse d’une évaluation simple',
             'activerToutSelectionner' => false,
-    ]);
+            'colorationEffectif' => false,
+            'typeForm1' => 'evaluations',
+            'conditionAffichageForm1' => true,
+            'sousTitreForm1' => 'Choisir l\'évaluation pour laquelle vous désirez consulter les statistiques',
+        ]);
+    }
+
+    /**
+     * @Route("/eval-simple/{slug}/choisir-groupes-et-statuts", name="eval_simple_choix_parametres_et_afficher_stats", methods={"GET","POST"})
+     */
+    public function evalSimplechoisirParametresEtAfficherStats(Request $request, StatisticsManager $statsManager, Evaluation $evaluation, StatutRepository $repoStatut, GroupeEtudiantRepository $repoGroupe, PointsRepository $repoPoints): Response
+    {
+        $formBuilder = $this->createFormBuilder();
+        $statuts = $repoStatut->findByEvaluation($evaluation->getId()); // On choisira parmis les statuts qui possèdent au moins 1 étudiant ayant participé à l'évaluation
+        if (count($evaluation->getParties()) > 1) {
+            $formBuilder
+                ->add('parties', EntityType::class, [
+                    'class' => Partie::Class,
+                    'choice_label' => false,
+                    'label' => false,
+                    'mapped' => false,
+                    'expanded' => true,
+                    'multiple' => true,
+                    'choices' => $evaluation->getParties()
+                ]);
+        }
+        $formBuilder
+            ->add('groupes', EntityType::class, [
+                'class' => GroupeEtudiant::Class,
+                'choice_label' => false,
+                'label' => false,
+                'mapped' => false,
+                'expanded' => true,
+                'multiple' => true,
+                'choices' => $repoGroupe->findAllOrderedFromNode($evaluation->getGroupe()) // On choisira parmis le groupe concerné et ses enfants
+            ])
+            ->add('statuts', EntityType::class, [
+                'class' => Statut::Class,
+                'choice_label' => false,
+                'label' => false,
+                'mapped' => false,
+                'expanded' => true,
+                'multiple' => true,
+                'choices' =>  $statuts
+            ]);
+        $form = $formBuilder->getForm()->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $groupesChoisis = $form->get("groupes")->getData();
+            $statutsChoisis = $form->get("statuts")->getData();
+            if (count($groupesChoisis) > 0 || count($statutsChoisis) > 0) {
+                if (count($evaluation->getParties()) > 1) {
+                    $partiesChoisies = $form->get("parties")->getData();
+                } else {
+                    $partiesChoisies = $evaluation->getParties();
+                }
+                $toutesLesStats = [];
+                //Calcul des stats pour toutes les parties
+                foreach ($partiesChoisies as $partie) {
+                    $statsDuGroupePourLaPartie = [];
+                    foreach ($groupesChoisis as $groupe) {
+                        $notesGroupe = $repoPoints->findByGroupeAndPartie($evaluation->getId(), $groupe->getId(), $partie->getId());
+                        //On fait une copie du résultat de la requête pour simplifier le format de renvoi utilisé par doctrine
+                        $copieTabPoints = array();
+                        foreach ($notesGroupe as $element) {
+                            $copieTabPoints[] = $element["valeur"];
+                        }
+                        $statsDuGroupePourLaPartie[] = [
+                            "nom" => $groupe->getNom(),
+                            "repartition" => $statsManager->repartition($copieTabPoints),
+                            "listeNotes" => $copieTabPoints,
+                            "moyenne" => $statsManager->moyenne($copieTabPoints),
+                            "ecartType" => $statsManager->ecartType($copieTabPoints),
+                            "minimum" => $statsManager->minimum($copieTabPoints),
+                            "maximum" => $statsManager->maximum($copieTabPoints),
+                            "mediane" => $statsManager->mediane($copieTabPoints),
+                        ];
+                    }
+                    $statsDuStatutPourLaPartie = [];
+                    foreach ($statutsChoisis as $statut) {
+                        $notesStatut = $repoPoints->findByStatutAndPartie($evaluation->getId(), $statut->getId(), $partie->getId());
+                        //On fait une copie du résultat de la requête pour simplifier le format de renvoi utilisé par doctrine
+                        $copieTabPoints = array();
+                        foreach ($notesStatut as $element) {
+                            $copieTabPoints[] = $element["valeur"];
+                        }
+                        $statsDuStatutPourLaPartie[] = [
+                            "nom" => $statut->getNom(),
+                            "repartition" => $statsManager->repartition($copieTabPoints),
+                            "listeNotes" => $copieTabPoints,
+                            "moyenne" => $statsManager->moyenne($copieTabPoints),
+                            "ecartType" => $statsManager->ecartType($copieTabPoints),
+                            "minimum" => $statsManager->minimum($copieTabPoints),
+                            "maximum" => $statsManager->maximum($copieTabPoints),
+                            "mediane" => $statsManager->mediane($copieTabPoints),
+                        ];
+                    }
+                    //Ajout des stats de la partie (groupe + statut) dans le tableau général
+                    $toutesLesStats[] = [
+                        "nom" => $partie->getIntitule(),
+                        "bareme" => $partie->getBareme(),
+                        "stats" => array_merge($statsDuGroupePourLaPartie, $statsDuStatutPourLaPartie)
+                    ];
+                }
+                //Mise en session des stats pour le mail et la page de visualisation
+                //$session->set('stats', $toutesLesStats);
+                return $this->render('statistiques/stats.html.twig', [
+                    'titrePage' => 'Statistiques pour ' . $evaluation->getNom(),
+                    'plusieursEvals' => false,
+                    'evaluation' => $evaluation,
+                    'parties' => $toutesLesStats
+                ]);
+            }
+        }
+        return $this->render('statistiques/formulaire_parametrage_statistiques.html.twig', [
+            'form' => $form->createView(),
+            'nbForm' => 2,
+            'activerToutSelectionner' => true,
+            'titrePage' => "Analyse d’une évaluation simple (" . $evaluation->getNom() . ")",
+            'colorationEffectif' => false,
+            'typeForm1' => 'groupes',
+            'sousTitreForm1' => 'Sélectionner les groupes pour lesquels vous souhaitez consulter les statistiques',
+            'conditionAffichageForm1' => true,
+            'indentationGroupes' => true,
+            'typeForm2' => 'statuts',
+            'sousTitreForm2' => 'Sélectionner les groupes d\'étudiants ayant un statut particulier pour lesquels vous souhaitez consulter les statistiques',
+            'conditionAffichageForm2' => !empty($statuts),
+            'messageAlternatifForm2' => 'Il est possible d\'obtenir des statistiques sur des groupes d\'étudiantsayant un statut particulier (boursiers, redoublants, ...). Vous pouvez créer de tels groupes <a href="' . $this->generateUrl('statut_new') . '">ici</a>.'
+        ]);
     }
 
     ///////////////////////
