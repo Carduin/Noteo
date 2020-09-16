@@ -2,11 +2,69 @@
 
 namespace App\Manager;
 
+use App\Repository\PointsRepository;
 
 class StatisticsManager {
 
-    public function __construct() {
+    private $repoPoints;
 
+    public function __construct(PointsRepository $repoPoints) {
+        $this->repoPoints = $repoPoints;
+    }
+
+    public function calculerStats($mode = '', $evaluations = [], $groupes = [], $statuts = [], $parties = []) {
+        $toutesLesStats = [];
+        switch ($mode) {
+            case 'classique' :
+                foreach ($parties as $partie) {
+                    $statsDuGroupePourLaPartie = [];
+                    foreach ($groupes as $groupe) {
+                        $notesGroupe = $this->repoPoints->findByGroupeAndPartie($evaluations[0]->getId(), $groupe->getId(), $partie->getId());
+                        //On fait une copie du résultat de la requête pour simplifier le format de renvoi utilisé par doctrine
+                        $copieTabPoints = array();
+                        foreach ($notesGroupe as $element) {
+                            $copieTabPoints[] = $element["valeur"];
+                        }
+                        $statsDuGroupePourLaPartie[] = [
+                            "nom" => $groupe->getNom(),
+                            "repartition" => $this->repartition($copieTabPoints),
+                            "listeNotes" => $copieTabPoints,
+                            "moyenne" => $this->moyenne($copieTabPoints),
+                            "ecartType" => $this->ecartType($copieTabPoints),
+                            "minimum" => $this->minimum($copieTabPoints),
+                            "maximum" => $this->maximum($copieTabPoints),
+                            "mediane" => $this->mediane($copieTabPoints),
+                        ];
+                    }
+                    $statsDuStatutPourLaPartie = [];
+                    foreach ($statuts as $statut) {
+                        $notesStatut = $this->repoPoints->findByStatutAndPartie($evaluations[0]->getId(), $statut->getId(), $partie->getId());
+                        //On fait une copie du résultat de la requête pour simplifier le format de renvoi utilisé par doctrine
+                        $copieTabPoints = array();
+                        foreach ($notesStatut as $element) {
+                            $copieTabPoints[] = $element["valeur"];
+                        }
+                        $statsDuStatutPourLaPartie[] = [
+                            "nom" => $statut->getNom(),
+                            "repartition" => $this->repartition($copieTabPoints),
+                            "listeNotes" => $copieTabPoints,
+                            "moyenne" => $this->moyenne($copieTabPoints),
+                            "ecartType" => $this->ecartType($copieTabPoints),
+                            "minimum" => $this->minimum($copieTabPoints),
+                            "maximum" => $this->maximum($copieTabPoints),
+                            "mediane" => $this->mediane($copieTabPoints),
+                        ];
+                    }
+                    //Ajout des stats de la partie (groupe + statut) dans le tableau général
+                    $toutesLesStats[] = [
+                        "nom" => $partie->getIntitule(),
+                        "bareme" => $partie->getBareme(),
+                        "stats" => array_merge($statsDuGroupePourLaPartie, $statsDuStatutPourLaPartie)
+                    ];
+                }
+                break;
+        }
+        return $toutesLesStats;
     }
 
     public function repartition($tabPoints)

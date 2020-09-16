@@ -115,6 +115,7 @@ class StatsController extends AbstractController
             'titrePage' => 'Analyse d’une évaluation simple',
             'activerToutSelectionner' => false,
             'colorationEffectif' => false,
+            'casBoutonValider' => 0,
             'typeForm1' => 'evaluations',
             'conditionAffichageForm1' => true,
             'sousTitreForm1' => 'Choisir l\'évaluation pour laquelle vous désirez consulter les statistiques',
@@ -124,7 +125,7 @@ class StatsController extends AbstractController
     /**
      * @Route("/eval-simple/{slug}/choisir-groupes-et-statuts", name="eval_simple_choix_parametres_et_afficher_stats", methods={"GET","POST"})
      */
-    public function evalSimplechoisirParametresEtAfficherStats(Request $request, StatisticsManager $statsManager, Evaluation $evaluation, StatutRepository $repoStatut, GroupeEtudiantRepository $repoGroupe, PointsRepository $repoPoints): Response
+    public function evalSimplechoisirParametresEtAfficherStats(Request $request, StatisticsManager $statsManager, Evaluation $evaluation, StatutRepository $repoStatut, GroupeEtudiantRepository $repoGroupe): Response
     {
         $formBuilder = $this->createFormBuilder();
         $statuts = $repoStatut->findByEvaluation($evaluation->getId()); // On choisira parmis les statuts qui possèdent au moins 1 étudiant ayant participé à l'évaluation
@@ -163,67 +164,13 @@ class StatsController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $groupesChoisis = $form->get("groupes")->getData();
             $statutsChoisis = $form->get("statuts")->getData();
+            //Pour ne pas continuer si les conditions ne sont pas remplies (au moins un groupe ou statut)
             if (count($groupesChoisis) > 0 || count($statutsChoisis) > 0) {
-                if (count($evaluation->getParties()) > 1) {
-                    $partiesChoisies = $form->get("parties")->getData();
-                } else {
-                    $partiesChoisies = $evaluation->getParties();
-                }
-                $toutesLesStats = [];
-                //Calcul des stats pour toutes les parties
-                foreach ($partiesChoisies as $partie) {
-                    $statsDuGroupePourLaPartie = [];
-                    foreach ($groupesChoisis as $groupe) {
-                        $notesGroupe = $repoPoints->findByGroupeAndPartie($evaluation->getId(), $groupe->getId(), $partie->getId());
-                        //On fait une copie du résultat de la requête pour simplifier le format de renvoi utilisé par doctrine
-                        $copieTabPoints = array();
-                        foreach ($notesGroupe as $element) {
-                            $copieTabPoints[] = $element["valeur"];
-                        }
-                        $statsDuGroupePourLaPartie[] = [
-                            "nom" => $groupe->getNom(),
-                            "repartition" => $statsManager->repartition($copieTabPoints),
-                            "listeNotes" => $copieTabPoints,
-                            "moyenne" => $statsManager->moyenne($copieTabPoints),
-                            "ecartType" => $statsManager->ecartType($copieTabPoints),
-                            "minimum" => $statsManager->minimum($copieTabPoints),
-                            "maximum" => $statsManager->maximum($copieTabPoints),
-                            "mediane" => $statsManager->mediane($copieTabPoints),
-                        ];
-                    }
-                    $statsDuStatutPourLaPartie = [];
-                    foreach ($statutsChoisis as $statut) {
-                        $notesStatut = $repoPoints->findByStatutAndPartie($evaluation->getId(), $statut->getId(), $partie->getId());
-                        //On fait une copie du résultat de la requête pour simplifier le format de renvoi utilisé par doctrine
-                        $copieTabPoints = array();
-                        foreach ($notesStatut as $element) {
-                            $copieTabPoints[] = $element["valeur"];
-                        }
-                        $statsDuStatutPourLaPartie[] = [
-                            "nom" => $statut->getNom(),
-                            "repartition" => $statsManager->repartition($copieTabPoints),
-                            "listeNotes" => $copieTabPoints,
-                            "moyenne" => $statsManager->moyenne($copieTabPoints),
-                            "ecartType" => $statsManager->ecartType($copieTabPoints),
-                            "minimum" => $statsManager->minimum($copieTabPoints),
-                            "maximum" => $statsManager->maximum($copieTabPoints),
-                            "mediane" => $statsManager->mediane($copieTabPoints),
-                        ];
-                    }
-                    //Ajout des stats de la partie (groupe + statut) dans le tableau général
-                    $toutesLesStats[] = [
-                        "nom" => $partie->getIntitule(),
-                        "bareme" => $partie->getBareme(),
-                        "stats" => array_merge($statsDuGroupePourLaPartie, $statsDuStatutPourLaPartie)
-                    ];
-                }
-                //Mise en session des stats pour le mail et la page de visualisation
-                //$session->set('stats', $toutesLesStats);
-                return $this->render('statistiques/stats.html.twig', [
+                return $this->render('statistiques/affichage_stats_classiques.html.twig', [
                     'titrePage' => 'Statistiques pour ' . $evaluation->getNom(),
                     'plusieursEvals' => false,
                     'evaluation' => $evaluation,
-                    'parties' => $toutesLesStats
+                    'parties' => $statsManager->calculerStats('classique', [$evaluation], $groupesChoisis, $statutsChoisis, $evaluation->getParties())
                 ]);
             }
         }
@@ -233,6 +180,7 @@ class StatsController extends AbstractController
             'activerToutSelectionner' => true,
             'titrePage' => "Analyse d’une évaluation simple (" . $evaluation->getNom() . ")",
             'colorationEffectif' => false,
+            'casBoutonValider' => 1,
             'typeForm1' => 'groupes',
             'sousTitreForm1' => 'Sélectionner les groupes pour lesquels vous souhaitez consulter les statistiques',
             'conditionAffichageForm1' => true,
@@ -248,5 +196,134 @@ class StatsController extends AbstractController
     ////FIN EVAL SIMPLE////
     ///////////////////////
     //</editor-fold>
+
+    //<editor-fold desc="Envoi du mail aux étudiants">
+    ///////////////////////
+    ///////ENVOI MAIL//////
+    ///////////////////////
+
+    /**
+     * @Route("/previsualisation-mail/{slug}", name="previsualisation_mail", methods={"GET", "POST"})
+     */
+    public function envoiMail(Evaluation $evaluation, Request $request, PointsRepository $pointsRepository, Swift_Mailer $mailer, Filesystem $filesystem): Response
+    {
+        $nbEtudiants = count($evaluation->getGroupe()->getEtudiants());
+        $nomGroupe = $evaluation->getGroupe()->getNom();
+        $this->denyAccessUnlessGranted('EVALUATION_PREVISUALISATION_MAIL', $evaluation);
+        $form = $this->createFormBuilder()
+            ->add('fichierPDF', FileType::class, [
+                'required' => false,
+                'constraints' => [new File([
+                    'maxSize' => '8Mi',
+                    'mimeTypes' => 'application/pdf',
+                    'mimeTypesMessage' => 'Le fichier ajouté n\'est pas un fichier pdf',
+                    'uploadFormSizeErrorMessage' => 'Le fichier ajouté est trop volumineux'
+                ])],
+                'attr' => [
+                    'placeholder' => 'Aucun fichier choisi',
+                    'accept' => '.pdf'
+                ]
+            ])
+            ->getForm();
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $fichier = $form->get('fichierPDF')->getData();
+            $filesystem->remove(['symlink', "pdf_temp", 'activity.log']); //Pour vider le stockage temporaire du précédent pdf envoyé
+            //Pour ne traiter le fichier optionnel que si il est déposé
+            if ($fichier) {
+                $originalFilename = pathinfo($fichier->getClientOriginalName(), PATHINFO_FILENAME);
+                //Rajout de l'extension au nom de fichier
+                $newFilename = $originalFilename . '.' . $fichier->guessExtension();
+                //Déplacement du fichier
+                $fichier->move(
+                    "pdf_temp", //Déplacé dans le dossier pdf_temp dans public
+                    $newFilename
+                );
+            }
+            $session = $request->getSession();
+            // Récupération des stats mises en session
+            $stats = $session->get('stats');
+            $notesEtudiants = $pointsRepository->findNotesAndEtudiantByEvaluation($evaluation);
+            $tabRang = $pointsRepository->findAllNotesByGroupe($evaluation->getId(), $evaluation->getGroupe()->getId());
+            $copieTabRang = array();
+            foreach ($tabRang as $element) {
+                $copieTabRang[] = $element["valeur"];
+            }
+            $effectif = sizeof($copieTabRang);
+            $mailAdmin = $_ENV['MAIL_ADMINISTRATEUR'];
+            for ($i = 0; $i < count($notesEtudiants); $i++) {
+                $noteEtudiant = $notesEtudiants[$i]->getValeur();
+                $position = array_search($noteEtudiant, $copieTabRang) + 1;
+                $message = (new Swift_Message('Noteo - ' . $evaluation->getNom()))
+                    ->setFrom($_ENV['UTILISATEUR_SMTP'])
+                    ->setTo($notesEtudiants[$i]->getEtudiant()->getMail())
+                    ->setBody(
+                        $this->renderView('evaluation/mailEnvoye.html.twig', [
+                            'etudiantsEtNotes' => $notesEtudiants[$i],
+                            'stats' => $stats,
+                            'position' => $position,
+                            'effectif' => $effectif,
+                            'mailAdmin' => $mailAdmin
+                        ]), 'text/html');
+                if ($fichier) { //Si le pdf est ajouté on le joint au mail
+                    $message->attach(Swift_Attachment::fromPath('pdf_temp/' . $newFilename));
+                }
+                $mailer->send($message);
+            }
+            $this->addFlash(
+                'info',
+                'L\'envoi des mails a été effectué avec succès.'
+            );
+            return $this->render('statistiques/stats.html.twig', [
+                'titrePage' => 'Consulter les statistiques pour ' . $evaluation->getNom(),
+                'plusieursEvals' => false,
+                'parties' => $stats,
+                'evaluation' => $evaluation
+            ]);
+
+        }
+        return $this->render('evaluation/previsualisationMail.html.twig', [
+            'evaluation' => $evaluation,
+            'nbEtudiants' => $nbEtudiants,
+            'nomGroupe' => $nomGroupe,
+            'form' => $form->createView()
+        ]);
+    }
+
+    /**
+     * @Route("/exemple-mail/{id}", name="exemple_mail", methods={"GET"})
+     */
+    public function exempleMail(Request $request, Evaluation $evaluation, PointsRepository $pointsRepository): Response
+    {
+        $this->denyAccessUnlessGranted('EVALUATION_EXEMPLE_MAIL', $evaluation);
+        // Récupération de la session
+        $session = $request->getSession();
+        // Récupération des stats mises en session
+        $stats = $session->get('stats');
+        $notesEtudiants = $pointsRepository->findNotesAndEtudiantByEvaluation($evaluation);
+        $tabRang = $pointsRepository->findAllNotesByGroupe($evaluation->getId(), $evaluation->getGroupe()->getId());
+        $copieTabRang = array();
+        foreach ($tabRang as $element) {
+            $copieTabRang[] = $element["valeur"];
+        }
+        $effectif = sizeof($copieTabRang);
+        $noteEtudiant = $notesEtudiants[0]->getValeur();
+        $position = array_search($noteEtudiant, $copieTabRang) + 1;
+        $mailAdmin = $_ENV['MAIL_ADMINISTRATEUR'];
+        return $this->render('evaluation/mailEnvoye.html.twig', [
+            'etudiantsEtNotes' => $notesEtudiants[0],
+            'stats' => $stats,
+            'position' => $position,
+            'effectif' => $effectif,
+            'mailAdmin' => $mailAdmin
+        ]);
+    }
+
+    ///////////////////////
+    /////FIN ENVOI MAIL////
+    ///////////////////////
+    //</editor-fold>
+
+
 
 }
