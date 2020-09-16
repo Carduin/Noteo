@@ -163,16 +163,40 @@
 
 {% block javascripts %}
     <script>
-        /*
+        window.onload = function () {
+            checkCasesCocheesPage()
+        }
+        //Event listerner pour déclencher le check à chaque case cochée
+        $("[name='form[groupes][]']").on('click', function () {
+            checkCasesCocheesPage()
+        })
+        $("[name='form[statuts][]']").on('click', function () {
+            checkCasesCocheesPage()
+        })
+        $("[name='form[parties][]']").on('click', function () {
+            checkCasesCocheesPage()
+        })
+        $("[name='form[evaluations][]']").on('click', function () {
+            checkCasesCocheesPage()
+        })
+
         function checkCasesCocheesPage() {
             groupesCheck = false; //Au moins un groupe coché
             statutsCheck = false; //Au moins un statut coché
             partiesCheck = false; //Au moins une partie cochée
+            evaluationsCheck = false; //Au moins une évaluation cochée
+            cas = parseInt('{{ casBoutonValider }}');
             $("#valider").attr('disabled', true)
             $("[name='form[groupes][]']").each(function () {
                 if (this.checked) {
                     groupesCheck = true;
                     return false; //Equivalent d'un break, car un seul coché suffit
+                }
+            })
+            $("[name='form[evaluations][]']").each(function () {
+                if (this.checked) {
+                    groupesCheck = true;
+                    return false;
                 }
             })
             $("[name='form[statuts][]']").each(function () {
@@ -187,17 +211,32 @@
                     return false;
                 }
             })
-            {# if pasDeChoixParties or evaluation.parties | length == 1 #}
-            if (groupesCheck || statutsCheck) { //Si un groupe ou statut coché
-                $("#valider").attr('disabled', false)
+            switch(cas) {
+                case 0:
+                    $("#valider").attr('disabled', false); //Pas de validation
+                    break;
+                case 1:
+                    if(groupesCheck || statutsCheck) {
+                        $("#valider").attr('disabled', false);
+                    }
+                    break;
+                case 2:
+                    if ((groupesCheck || statutsCheck) && partiesCheck) {
+                        $("#valider").attr('disabled', false);
+                    }
+                    break;
+                case 3:
+                    if (groupesCheck) {
+                        $("#valider").attr('disabled', false);
+                    }
+                    break;
+                case 4:
+                    if (evaluationsCheck) {
+                        $("#valider").attr('disabled', false);
+                    }
+                    break;
             }
-            {# else #}
-            if ((groupesCheck || statutsCheck) && partiesCheck) { //Si un groupe ou statut coché ET une partie cochée
-                $("#valider").attr('disabled', false)
-            }
-            {# endif #}
         }
-        */
     </script>
 {% endblock %}
 
