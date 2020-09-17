@@ -281,10 +281,11 @@ class StatsController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $groupesChoisis = $form->get("groupes")->getData();
             $statutsChoisis = $form->get("statuts")->getData();
-            $statistiquesCalculees = $statsManager->calculerStats('classique-parties', [$evaluation], $groupesChoisis, $statutsChoisis, $evaluation->getParties());
+            $partiesChoisies = $form->get("parties")->getData();
+            $statistiquesCalculees = $statsManager->calculerStats('classique-parties', [$evaluation], $groupesChoisis, $statutsChoisis, $partiesChoisies);
             $request->getSession()->set('stats', $statistiquesCalculees);
             //Pour ne pas continuer si les conditions ne sont pas remplies (au moins un groupe ou statut)
-            if (count($groupesChoisis) > 0 || count($statutsChoisis) > 0) {
+            if ((count($groupesChoisis) > 0 || count($statutsChoisis) > 0) && count($partiesChoisies) > 0) {
                 return $this->render('statistiques/affichage_stats_classiques.html.twig', [
                     'titrePage' => 'Statistiques pour ' . $evaluation->getNom(),
                     'plusieursEvals' => false,
