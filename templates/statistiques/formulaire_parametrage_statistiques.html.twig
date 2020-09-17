@@ -5,14 +5,16 @@
 {% block statistiques %}active{% endblock %}
 
 {% block contenu %}
+    {% set afficherBtnSuivant = false %}
     {{ form_start(form) }}
     {# Section 1 (premier formulaire affichable) #}
-    <h1 class="h4 mb-0 text-gray-800">{{ sousTitreForm1 | default("") }}</h1>
-    <br>
-    {% if messageWarningForm1 is defined %}
-        <span style="font-size:15px"><i class="icon-attention-circled"></i></span>{{ messageWarningForm1 }}<br/><br/>
-    {% endif %}
     {% if conditionAffichageForm1 %}
+        {% set afficherBtnSuivant = true %}
+        <h1 class="h4 mb-0 text-gray-800">{{ sousTitreForm1 | default("") }}</h1>
+        <br>
+        {% if messageWarningForm1 is defined %}
+            <span style="font-size:15px"><i class="icon-attention-circled"></i></span>{{ messageWarningForm1 }}<br/><br/>
+        {% endif %}
         {% if typeForm1 == 'evaluations' %}
             {{ include('statistiques/_form_evaluations.html.twig')}}
         {% elseif typeForm1 == 'groupes' %}
@@ -26,18 +28,19 @@
         {% endif %}
     {% else %}
         <div class="info">
-            <h5 class="h5 mb-0 text-gray-800">{{ messageAlternatifForm1 | default("") }}</h5>
+            <h5 class="h5 mb-0 text-gray-800">{{ messageAlternatifForm1 | default("") | raw }}</h5>
         </div>
     {% endif %}
 
     {% if nbForm >= 2 %}
         {# Section 2 (deuxième formulaire affichable) #}
-        <h1 class="h4 mb-0 text-gray-800">{{ sousTitreForm2 | default("") }}</h1>
-        <br>
-        {% if messageWarningForm2 is defined %}
-            <span style="font-size:15px"><i class="icon-attention-circled"></i></span>{{ messageWarningForm2 }}<br/><br/>
-        {% endif %}
         {% if conditionAffichageForm2 %}
+            {% set afficherBtnSuivant = true %}
+            <h1 class="h4 mb-0 text-gray-800">{{ sousTitreForm2 | default("") }}</h1>
+            <br>
+            {% if messageWarningForm2 is defined %}
+                <span style="font-size:15px"><i class="icon-attention-circled"></i></span>{{ messageWarningForm2 }}<br/><br/>
+            {% endif %}
             {% if typeForm2 == 'evaluations' %}
                 {{ include('statistiques/_form_evaluations.html.twig')}}
             {% elseif typeForm2 == 'groupes' %}
@@ -58,12 +61,13 @@
 
     {% if nbForm >= 3 %}
         {# Section 3 (troisème formulaire affichable) #}
-        <h1 class="h4 mb-0 text-gray-800">{{ sousTitreForm3 | default("") }}</h1>
-        <br>
-        {% if messageWarningForm2 is defined %}
-            <span style="font-size:15px"><i class="icon-attention-circled"></i></span>{{ messageWarningForm3 }}<br/><br/>
-        {% endif %}
         {% if conditionAffichageForm3 %}
+            {% set afficherBtnSuivant = true %}
+            <h1 class="h4 mb-0 text-gray-800">{{ sousTitreForm3 | default("") }}</h1>
+            <br>
+            {% if messageWarningForm2 is defined %}
+                <span style="font-size:15px"><i class="icon-attention-circled"></i></span>{{ messageWarningForm3 }}<br/><br/>
+            {% endif %}
             {% if typeForm3 == 'evaluations' %}
                 {{ include('statistiques/_form_evaluations.html.twig')}}
             {% elseif typeForm3 == 'groupes' %}
@@ -77,15 +81,16 @@
             {% endif %}
         {% else %}
             <div class="info">
-                <h5 class="h5 mb-0 text-gray-800">{{ messageAlternatifForm3 | default("") }}</h5>
+                <h5 class="h5 mb-0 text-gray-800">{{ messageAlternatifForm3 | default("") | raw }}</h5>
             </div>
         {% endif %}
     {% endif %}
 
-    <div class='bouton' align=center>
-        <button class="d-sm-inline-block btn btn-sm btn-primary shadow-sm" id="valider">Suivant</button>
-    </div>
-
+    {% if afficherBtnSuivant %}
+        <div class='bouton' align=center>
+            <button class="d-sm-inline-block btn btn-sm btn-primary shadow-sm" id="valider">Suivant</button>
+        </div>
+    {% endif %}
     {{ form_end(form) }}
 {% endblock %}
 
@@ -198,7 +203,7 @@
             })
             $("[name='form[evaluations][]']").each(function () {
                 if (this.checked) {
-                    groupesCheck = true;
+                    evaluationsCheck = true;
                     return false;
                 }
             })

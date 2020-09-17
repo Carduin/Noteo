@@ -85,9 +85,9 @@ class StatsController extends AbstractController
     ///////////////////////
 
     /**
-     * @Route("/eval-simple/{typeGraphique}/choix-evaluation", name="eval_simple_choix_evaluation", methods={"GET", "POST"})
+     * @Route("/eval-simple/{typeGraphique}/choisir-evaluation", name="eval_simple_choisir_evaluation", methods={"GET", "POST"})
      */
-    public function evalSimpleChoixEvaluation($typeGraphique, EvaluationRepository $repoEval, Request $request) : Response
+    public function evalSimpleChoisirEvaluation($typeGraphique, EvaluationRepository $repoEval, Request $request) : Response
     {
         //On met en sesssion le type de graphique choisi par l'utilisateur pour afficher l'onglet correspondant lors de l'affichage des stats
         $request->getSession()->set('typeGraphique', $typeGraphique);
@@ -105,7 +105,7 @@ class StatsController extends AbstractController
             ->getForm();
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-             return $this->redirectToRoute('eval_simple_choix_parametres_et_afficher_stats', [
+             return $this->redirectToRoute('eval_simple_choisir_parametres_et_afficher_stats', [
                 'slug' => $form->get('evaluations')->getData()->getSlug()
              ]);
         }
@@ -123,9 +123,9 @@ class StatsController extends AbstractController
     }
 
     /**
-     * @Route("/eval-simple/{slug}/choisir-groupes-et-statuts", name="eval_simple_choix_parametres_et_afficher_stats", methods={"GET","POST"})
+     * @Route("/eval-simple/{slug}/choisir-groupes-et-statuts", name="eval_simple_choisir_parametres_et_afficher_stats", methods={"GET","POST"})
      */
-    public function evalSimplechoisirParametresEtAfficherStats(Request $request, StatisticsManager $statsManager, Evaluation $evaluation, StatutRepository $repoStatut, GroupeEtudiantRepository $repoGroupe): Response
+    public function evalSimpleChoisirParametresEtAfficherStats(Request $request, StatisticsManager $statsManager, Evaluation $evaluation, StatutRepository $repoStatut, GroupeEtudiantRepository $repoGroupe): Response
     {
         $formBuilder = $this->createFormBuilder();
         $statuts = $repoStatut->findByEvaluation($evaluation->getId()); // On choisira parmis les statuts qui possèdent au moins 1 étudiant ayant participé à l'évaluation
@@ -164,7 +164,7 @@ class StatsController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $groupesChoisis = $form->get("groupes")->getData();
             $statutsChoisis = $form->get("statuts")->getData();
-            $statistiquesCalculees = $statsManager->calculerStats('classique', [$evaluation], $groupesChoisis, $statutsChoisis, $evaluation->getParties());
+            $statistiquesCalculees = $statsManager->calculerStats('classique', $evaluation, $groupesChoisis, $statutsChoisis, $evaluation->getParties());
             $request->getSession()->set('stats', $statistiquesCalculees);
             //Pour ne pas continuer si les conditions ne sont pas remplies (au moins un groupe ou statut)
             if (count($groupesChoisis) > 0 || count($statutsChoisis) > 0) {
@@ -205,9 +205,9 @@ class StatsController extends AbstractController
     ///////////////////////
 
     /**
-     * @Route("/eval-parties/{typeGraphique}/choix-evaluation", name="eval_parties_choix_evaluation", methods={"GET", "POST"})
+     * @Route("/eval-parties/{typeGraphique}/choisir-evaluation", name="eval_parties_choisir_evaluation", methods={"GET", "POST"})
      */
-    public function evalPartiesChoixEvaluation($typeGraphique, EvaluationRepository $repoEval, Request $request) : Response
+    public function evalPartiesChoisirEvaluation($typeGraphique, EvaluationRepository $repoEval, Request $request) : Response
     {
         //On met en sesssion le type de graphique choisi par l'utilisateur pour afficher l'onglet correspondant lors de l'affichage des stats
         $request->getSession()->set('typeGraphique', $typeGraphique);
@@ -282,7 +282,7 @@ class StatsController extends AbstractController
             $groupesChoisis = $form->get("groupes")->getData();
             $statutsChoisis = $form->get("statuts")->getData();
             $partiesChoisies = $form->get("parties")->getData();
-            $statistiquesCalculees = $statsManager->calculerStats('classique-parties', [$evaluation], $groupesChoisis, $statutsChoisis, $partiesChoisies);
+            $statistiquesCalculees = $statsManager->calculerStats('classique-parties', $evaluation, $groupesChoisis, $statutsChoisis, $partiesChoisies);
             $request->getSession()->set('stats', $statistiquesCalculees);
             //Pour ne pas continuer si les conditions ne sont pas remplies (au moins un groupe ou statut)
             if ((count($groupesChoisis) > 0 || count($statutsChoisis) > 0) && count($partiesChoisies) > 0) {
@@ -318,6 +318,210 @@ class StatsController extends AbstractController
     ///////////////////////
     ////FIN EVAL PARTIE////
     ///////////////////////
+    //</editor-fold>
+
+    //<editor-fold desc="Statistiques plusieurs évals groupes">
+    ///////////////////////////////
+    //STATS PLUSIEURS EVAL GROUPE//
+    ///////////////////////////////
+
+
+    ///////////////////////////////////
+    //FIN STATS PLUSIEURS EVAL GROUPE//
+    ///////////////////////////////////
+    //</editor-fold>
+
+    //<editor-fold desc="Statistiques plusieurs évals statuts">
+    ////////////////////////////////
+    //STATS PLUSIEURS EVAL STATUTS//
+    ////////////////////////////////
+
+    ////////////////////////////////////
+    //FIN STATS PLUSIEURS EVAL STATUTS//
+    ////////////////////////////////////
+    //</editor-fold>
+
+    //<editor-fold desc="Statistiques fiche étudiant">
+    ////////////////////////
+    //STATS FICHE ETUDIANT//
+    ////////////////////////
+
+    /////////////////////////////
+    //FIN STATS FICHE ETUDIANT //
+    /////////////////////////////
+    //</editor-fold>
+
+    //<editor-fold desc="Statistiques évolution groupe">
+    ///////////////////////////////
+    //STATS EVOLUTION GROUPE//
+    ///////////////////////////////
+
+    //////////////////////////////
+    //FIN STATS EVOLUTION GROUPE//
+    //////////////////////////////
+    //</editor-fold>
+
+    //<editor-fold desc="Statistiques évolution statuts">
+    ///////////////////////////////
+    ////STATS EVOLUTION STATUTS////
+    ///////////////////////////////
+
+    ///////////////////////////////
+    //FIN STATS EVOLUTION STATUTS//
+    ///////////////////////////////
+    //</editor-fold>
+
+    //<editor-fold desc="Statistiques comparaison évaluations">
+    /////////////////////////
+    ////STATS COMPARAISON////
+    /////////////////////////
+
+    /**
+     * @Route("/comparaison/{typeGraphique}/choisir-evaluation-reference", name="comparaison_choisir_evaluation_reference", methods={"GET", "POST"})
+     */
+    public function comparaisonChoisirEvaluationReference($typeGraphique, EvaluationRepository $repoEval, Request $request) : Response
+    {
+        //On met en sesssion le type de graphique choisi par l'utilisateur pour afficher l'onglet correspondant lors de l'affichage des stats
+        $request->getSession()->set('typeGraphique', $typeGraphique);
+        $form = $this->createFormBuilder()
+            ->add('evaluations', EntityType::class, [
+                'constraints' => [new NotNull],
+                'class' => Evaluation::Class,
+                'choice_label' => false,
+                'label' => false,
+                'mapped' => false,
+                'expanded' => true,
+                'multiple' => false,
+                'choices' => $repoEval->findAll()
+            ])
+            ->getForm();
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            return $this->redirectToRoute('statistiques_comparaison_choisir_autres_evals', [
+                'slug' => $form->get('evaluations')->getData()->getSlug(),
+            ]);
+        }
+        return $this->render('statistiques/formulaire_parametrage_statistiques.html.twig', [
+            'form' => $form->createView(),
+            'nbForm' => 1,
+            'titrePage' => 'Comparaison des résultats d’une évaluation spécifique à un ensemble d’évaluations',
+            'activerToutSelectionner' => false,
+            'colorationEffectif' => false,
+            'casBoutonValider' => 0,
+            'typeForm1' => 'evaluations',
+            'conditionAffichageForm1' => true,
+            'sousTitreForm1' => 'Choisir l\'évaluation de référence qui sera comparée à un ensemble d’évaluations',
+        ]);
+    }
+
+    /**
+     * @Route("/comparaison/{slug}/choisir-autres-evaluations", name="statistiques_comparaison_choisir_autres_evals", methods={"GET","POST"})
+     */
+    public function comparaisonChoisirAutresEvaluations(Request $request, Evaluation $evaluation, EvaluationRepository $repoEval): Response
+    {
+        $evaluationsDispos = $repoEval->findAllOverAGroupExceptCurrentOne($evaluation->getGroupe()->getId(), $evaluation->getId());
+        $form = $this->createFormBuilder()
+            ->add('evaluations', EntityType::class, [
+                'constraints' => [new NotNull],
+                'class' => Evaluation::Class,
+                'choice_label' => false,
+                'label' => false,
+                'mapped' => false,
+                'expanded' => true,
+                'multiple' => true,
+                'choices' => $evaluationsDispos
+            ])
+            ->getForm();
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            if (count($form->get('evaluations')->getData()) > 0) {
+                $evaluationsChoisies = $form->get('evaluations')->getData();
+                $session = $request->getSession();
+                $session->set('evaluationsChoisies', $evaluationsChoisies);
+                return $this->redirectToRoute('comparaison_choisir_groupes_et_statuts', [
+                    'slug' => $evaluation->getSlug(),
+                ]);
+            }
+        }
+        return $this->render('statistiques/formulaire_parametrage_statistiques.html.twig', [
+            'form' => $form->createView(),
+            'nbForm' => 1,
+            'titrePage' => 'Comparaison des résultats d’une évaluation spécifique à un ensemble d’évaluations',
+            'activerToutSelectionner' => true,
+            'colorationEffectif' => false,
+            'casBoutonValider' => 4,
+            'typeForm1' => 'evaluations',
+            'sousTitreForm1' => 'Sélectionner l\'ensemble des évaluations dont la moyenne globale sera comparée à la moyenne de l\'évaluation de référence ' . $evaluation->getNom(),
+            'conditionAffichageForm1' => !count($evaluationsDispos) == 0,
+            'messageAlternatifForm1' => '<p> Aucune évaluation n\'est comparable avec l\'évaluation ' . $evaluation->getNom() . '. Vous pouvez créer des évaluations <a href="'. $this->generateUrl('evaluation_choose_group', ['typeEval' => 'simple']) . '">ici</a> où bien sélectionner une autre évaluation de référence à <a href="#" onclick="window.history.back()">l\'étape précédente</a>.</p>'
+        ]);
+    }
+
+    /**
+     * @Route("/comparaison/{slug}/choisir-groupes-et-statuts", name="comparaison_choisir_groupes_et_statuts", methods={"GET","POST"})
+     */
+    public function comparaisonChoisirParametreEtAfficherStats(Request $request, StatisticsManager $statsManager, Evaluation $evaluation, StatutRepository $repoStatut, GroupeEtudiantRepository $repoGroupe, PointsRepository $repoPoints): Response
+    {
+        $session = $request->getSession();
+        $evaluationsChoisies = $session->get('evaluationsChoisies');
+        $groupeConcerne = $evaluation->getGroupe();
+        //On récupère la liste de tous les enfants (directs et indirects) du groupe concerné pour choisir ceux sur lesquels on veut des statistiques
+        $choixGroupe = $repoGroupe->findAllOrderedFromNode($groupeConcerne);
+        $choixStatuts = $repoStatut->findByEvaluation($evaluation->getId()); // On choisira parmis les statuts qui possède au moins 1 étudiant ayant participé à l'évaluation
+        $form = $this->createFormBuilder()
+            ->add('groupes', EntityType::class, [
+                'class' => GroupeEtudiant::Class,
+                'choice_label' => false,
+                'label' => false,
+                'mapped' => false,
+                'expanded' => true,
+                'multiple' => true,
+                'choices' => $choixGroupe // On choisira parmis le groupe concerné et ses enfants
+            ])
+            ->add('statuts', EntityType::class, [
+                'class' => Statut::Class,
+                'choice_label' => false,
+                'label' => false,
+                'mapped' => false,
+                'expanded' => true,
+                'multiple' => true,
+                'choices' => $choixStatuts
+            ])
+            ->getForm();
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $groupes = $form->get('groupes')->getData();
+            $statuts = $form->get('statuts')->getData();
+            return $this->render('statistiques/affichage_stats_comparaison.html.twig', [
+                'evaluations' => $evaluationsChoisies,
+                'evaluationConcernee' => $evaluation,
+                'groupes' => $groupes,
+                "parties" => $statsManager->calculerStats('comparaison', $evaluation, $groupes, $statuts, null, $evaluationsChoisies),
+                'titre' => "Comparer " . $evaluation->getNom() . " à " . (count($evaluationsChoisies)) . ' évaluation(s)',
+                'plusieursEvals' => true,
+            ]);
+        }
+        return $this->render('statistiques/formulaire_parametrage_statistiques.html.twig', [
+            'form' => $form->createView(),
+            'nbForm' => 2,
+            'activerToutSelectionner' => true,
+            'titrePage' => "Comparaison des résultats d’une évaluation spécifique à un ensemble d’évaluations",
+            'colorationEffectif' => false,
+            'casBoutonValider' => 1,
+            'typeForm1' => 'groupes',
+            'sousTitreForm1' => 'Sélectionner les groupes pour lesquels vous souhaitez consulter les statistiques',
+            'conditionAffichageForm1' => true,
+            'indentationGroupes' => true,
+            'typeForm2' => 'statuts',
+            'sousTitreForm2' => 'Sélectionner les groupes d\'étudiants ayant un statut particulier pour lesquels vous souhaitez consulter les statistiques',
+            'conditionAffichageForm2' => !empty($choixStatuts),
+            'messageAlternatifForm2' => 'Il est possible d\'obtenir des statistiques sur des groupes d\'étudiantsayant un statut particulier (boursiers, redoublants, ...). Vous pouvez créer de tels groupes <a href="' . $this->generateUrl('statut_new') . '">ici</a>.'
+        ]);
+    }
+
+    /////////////////////////
+    //FIN STATS COMPARAISON//
+    /////////////////////////
     //</editor-fold>
 
     //<editor-fold desc="Envoi du mail aux étudiants">

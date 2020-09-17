@@ -117,7 +117,7 @@
                             <br><br>
                         {% endif %}
                         <button {% if not statistiques.evalSimple.disponible %}disabled{% endif %}
-                                onclick="location.href='{{ path('eval_simple_choix_evaluation', {'typeGraphique' : 'histogramme'}) }}'"
+                                onclick="location.href='{{ path('eval_simple_choisir_evaluation', {'typeGraphique' : 'histogramme'}) }}'"
                                 class="btn {% if statistiques.evalSimple.disponible %}btn-primary{% else %}btn-secondary{% endif %}">
                             Consulter ce type de statistiques
                         </button>
@@ -142,7 +142,7 @@
                             <br><br>
                         {% endif %}
                         <button {% if not statistiques.evalSimple.disponible %}disabled{% endif %}
-                                onclick="location.href='{{ path('eval_simple_choix_evaluation', {'typeGraphique' : 'boite-moustache'}) }}'"
+                                onclick="location.href='{{ path('eval_simple_choisir_evaluation', {'typeGraphique' : 'boite-moustache'}) }}'"
                                 class="btn {% if statistiques.evalSimple.disponible %}btn-primary{% else %}btn-secondary{% endif %}">
                             Consulter ce type de statistiques
                         </button>
@@ -167,7 +167,7 @@
                             <br><br>
                         {% endif %}
                         <button {% if not statistiques.evalSimple.disponible %}disabled{% endif %}
-                                onclick="location.href='{{ path('eval_simple_choix_evaluation', {'typeGraphique' : 'moyenne'}) }}'"
+                                onclick="location.href='{{ path('eval_simple_choisir_evaluation', {'typeGraphique' : 'moyenne'}) }}'"
                                 class="btn {% if statistiques.evalSimple.disponible %}btn-primary{% else %}btn-secondary{% endif %}">
                             Consulter ce type de statistiques
                         </button>
@@ -209,7 +209,7 @@
                             <br><br>
                         {% endif %}
                         <button {% if not statistiques.evalParties.disponible %}disabled{% endif %}
-                                onclick="location.href='{{ path('eval_parties_choix_evaluation', {'typeGraphique' : 'histogramme'}) }}'"
+                                onclick="location.href='{{ path('eval_parties_choisir_evaluation', {'typeGraphique' : 'histogramme'}) }}'"
                                 class="btn {% if statistiques.evalParties.disponible %}btn-primary{% else %}btn-secondary{% endif %}">
                             Consulter ce type de statistiques
                         </button>
@@ -235,7 +235,7 @@
                             <br><br>
                         {% endif %}
                         <button {% if not statistiques.evalParties.disponible %}disabled{% endif %}
-                                onclick="location.href='{{ path('eval_parties_choix_evaluation', {'typeGraphique' : 'boite-moustache'}) }}'"
+                                onclick="location.href='{{ path('eval_parties_choisir_evaluation', {'typeGraphique' : 'boite-moustache'}) }}'"
                                 class="btn {% if statistiques.evalParties.disponible %}btn-primary{% else %}btn-secondary{% endif %}">
                             Consulter ce type de statistiques
                         </button>
@@ -261,7 +261,7 @@
                             <br><br>
                         {% endif %}
                         <button {% if not statistiques.evalParties.disponible %}disabled{% endif %}
-                                onclick="location.href='{{ path('eval_parties_choix_evaluation', {'typeGraphique' : 'moyenne'}) }}'"
+                                onclick="location.href='{{ path('eval_parties_choisir_evaluation', {'typeGraphique' : 'moyenne'}) }}'"
                                 class="btn {% if statistiques.evalParties.disponible %}btn-primary{% else %}btn-secondary{% endif %}">
                             Consulter ce type de statistiques
                         </button>
@@ -657,6 +657,7 @@
         </div>
     </div>
     <br>
+    #}
     <!-- STATS COMPARAISON -->
     <div class="card">
         <li class="list-group-item text-white" style="background-color:#bdc3c7;">
@@ -683,7 +684,7 @@
                             <br><br>
                         {% endif %}
                         <button {% if not statistiques.comparaison.disponible %}disabled{% endif %}
-                                onclick="location.href='{{ path('statistiques_choix_evaluation', {'typeStat' : 'comparaison', 'typeGraph' : 'moyenne'}) }}'"
+                                onclick="location.href='{{ path('comparaison_choisir_evaluation_reference', {'typeGraphique' : 'moyenne'}) }}'"
                                 class="btn {% if statistiques.comparaison.disponible %}btn-primary{% else %}btn-secondary{% endif %}">
                             Consulter ce type de statistiques
                         </button>
@@ -692,7 +693,6 @@
             </div>
         </div>
     </div>
-    #}
     <!-- Modale dans laquelle les photos agrandies sont affichées -->
     <div id="modale-images" class="modaleImage">
         <span class="close-modaleImage">&times;</span>
