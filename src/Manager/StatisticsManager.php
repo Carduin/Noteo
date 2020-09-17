@@ -16,6 +16,7 @@ class StatisticsManager {
         $toutesLesStats = [];
         switch ($mode) {
             case 'classique' :
+            case 'classique-parties' :
                 foreach ($parties as $partie) {
                     $statsDuGroupePourLaPartie = [];
                     foreach ($groupes as $groupe) {

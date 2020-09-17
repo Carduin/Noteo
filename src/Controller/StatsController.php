@@ -164,13 +164,15 @@ class StatsController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $groupesChoisis = $form->get("groupes")->getData();
             $statutsChoisis = $form->get("statuts")->getData();
+            $statistiquesCalculees = $statsManager->calculerStats('classique', [$evaluation], $groupesChoisis, $statutsChoisis, $evaluation->getParties());
+            $request->getSession()->set('stats', $statistiquesCalculees);
             //Pour ne pas continuer si les conditions ne sont pas remplies (au moins un groupe ou statut)
             if (count($groupesChoisis) > 0 || count($statutsChoisis) > 0) {
                 return $this->render('statistiques/affichage_stats_classiques.html.twig', [
                     'titrePage' => 'Statistiques pour ' . $evaluation->getNom(),
                     'plusieursEvals' => false,
                     'evaluation' => $evaluation,
-                    'parties' => $statsManager->calculerStats('classique', [$evaluation], $groupesChoisis, $statutsChoisis, $evaluation->getParties())
+                    'parties' => $statistiquesCalculees
                 ]);
             }
         }
@@ -194,6 +196,126 @@ class StatsController extends AbstractController
 
     ///////////////////////
     ////FIN EVAL SIMPLE////
+    ///////////////////////
+    //</editor-fold>
+
+    //<editor-fold desc="Statistiques évaluation parties">
+    ///////////////////////
+    ///STATS EVAL PARTIE///
+    ///////////////////////
+
+    /**
+     * @Route("/eval-parties/{typeGraphique}/choix-evaluation", name="eval_parties_choix_evaluation", methods={"GET", "POST"})
+     */
+    public function evalPartiesChoixEvaluation($typeGraphique, EvaluationRepository $repoEval, Request $request) : Response
+    {
+        //On met en sesssion le type de graphique choisi par l'utilisateur pour afficher l'onglet correspondant lors de l'affichage des stats
+        $request->getSession()->set('typeGraphique', $typeGraphique);
+        $form = $this->createFormBuilder()
+            ->add('evaluations', EntityType::class, [
+                'constraints' => [new NotNull],
+                'class' => Evaluation::Class,
+                'choice_label' => false,
+                'label' => false,
+                'mapped' => false,
+                'expanded' => true,
+                'multiple' => false,
+                'choices' => $repoEval->findAllWithSeveralParts()
+            ])
+            ->getForm();
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            return $this->redirectToRoute('eval_parties_choix_parametres_et_afficher_stats', [
+                'slug' => $form->get('evaluations')->getData()->getSlug()
+            ]);
+        }
+        return $this->render('statistiques/formulaire_parametrage_statistiques.html.twig', [
+            'form' => $form->createView(),
+            'nbForm' => 1,
+            'titrePage' => 'Analyse d’une évaluation avec parties',
+            'activerToutSelectionner' => false,
+            'colorationEffectif' => false,
+            'casBoutonValider' => 0,
+            'typeForm1' => 'evaluations',
+            'conditionAffichageForm1' => true,
+            'sousTitreForm1' => 'Choisir l\'évaluation pour laquelle vous désirez consulter les statistiques',
+        ]);
+    }
+
+    /**
+     * @Route("/eval-parties/{slug}/choisir-groupes-et-statuts", name="eval_parties_choix_parametres_et_afficher_stats", methods={"GET","POST"})
+     */
+    public function evalPartieschoisirParametresEtAfficherStats(Request $request, StatisticsManager $statsManager, Evaluation $evaluation, StatutRepository $repoStatut, GroupeEtudiantRepository $repoGroupe): Response
+    {
+        $formBuilder = $this->createFormBuilder();
+        $statuts = $repoStatut->findByEvaluation($evaluation->getId()); // On choisira parmis les statuts qui possèdent au moins 1 étudiant ayant participé à l'évaluation
+            $formBuilder
+            ->add('parties', EntityType::class, [
+                'class' => Partie::Class,
+                'choice_label' => false,
+                'label' => false,
+                'mapped' => false,
+                'expanded' => true,
+                'multiple' => true,
+                'choices' => $evaluation->getParties()
+            ])
+            ->add('groupes', EntityType::class, [
+                'class' => GroupeEtudiant::Class,
+                'choice_label' => false,
+                'label' => false,
+                'mapped' => false,
+                'expanded' => true,
+                'multiple' => true,
+                'choices' => $repoGroupe->findAllOrderedFromNode($evaluation->getGroupe()) // On choisira parmis le groupe concerné et ses enfants
+            ])
+            ->add('statuts', EntityType::class, [
+                'class' => Statut::Class,
+                'choice_label' => false,
+                'label' => false,
+                'mapped' => false,
+                'expanded' => true,
+                'multiple' => true,
+                'choices' =>  $statuts
+            ]);
+        $form = $formBuilder->getForm()->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $groupesChoisis = $form->get("groupes")->getData();
+            $statutsChoisis = $form->get("statuts")->getData();
+            $statistiquesCalculees = $statsManager->calculerStats('classique-parties', [$evaluation], $groupesChoisis, $statutsChoisis, $evaluation->getParties());
+            $request->getSession()->set('stats', $statistiquesCalculees);
+            //Pour ne pas continuer si les conditions ne sont pas remplies (au moins un groupe ou statut)
+            if (count($groupesChoisis) > 0 || count($statutsChoisis) > 0) {
+                return $this->render('statistiques/affichage_stats_classiques.html.twig', [
+                    'titrePage' => 'Statistiques pour ' . $evaluation->getNom(),
+                    'plusieursEvals' => false,
+                    'evaluation' => $evaluation,
+                    'parties' => $statistiquesCalculees
+                ]);
+            }
+        }
+        return $this->render('statistiques/formulaire_parametrage_statistiques.html.twig', [
+            'form' => $form->createView(),
+            'nbForm' => 3,
+            'activerToutSelectionner' => true,
+            'titrePage' => "Analyse d’une évaluation avec parties (" . $evaluation->getNom() . ")",
+            'colorationEffectif' => false,
+            'casBoutonValider' => 2,
+            'typeForm1' => 'parties',
+            'sousTitreForm1' => 'Sélectionner au moins une partie de l\'évaluation pour laquelle vous souhaitez consulter les statistiques',
+            'conditionAffichageForm1' => true,
+            'typeForm2' => 'groupes',
+            'sousTitreForm2' => 'Sélectionner les groupes pour lesquels vous souhaitez consulter les statistiques',
+            'conditionAffichageForm2' => true,
+            'indentationGroupes' => true,
+            'typeForm3' => 'statuts',
+            'sousTitreForm3' => 'Sélectionner les groupes d\'étudiants ayant un statut particulier pour lesquels vous souhaitez consulter les statistiques',
+            'conditionAffichageForm3' => !empty($statuts),
+            'messageAlternatifForm3' => 'Il est possible d\'obtenir des statistiques sur des groupes d\'étudiantsayant un statut particulier (boursiers, redoublants, ...). Vous pouvez créer de tels groupes <a href="' . $this->generateUrl('statut_new') . '">ici</a>.'
+        ]);
+    }
+
+    ///////////////////////
+    ////FIN EVAL PARTIE////
     ///////////////////////
     //</editor-fold>
 
@@ -274,7 +396,7 @@ class StatsController extends AbstractController
                 'info',
                 'L\'envoi des mails a été effectué avec succès.'
             );
-            return $this->render('statistiques/stats.html.twig', [
+            return $this->render('statistiques/affichage_stats_classiques.html.twig', [
                 'titrePage' => 'Consulter les statistiques pour ' . $evaluation->getNom(),
                 'plusieursEvals' => false,
                 'parties' => $stats,

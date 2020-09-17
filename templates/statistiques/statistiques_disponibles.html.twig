@@ -177,7 +177,7 @@
         </div>
     </div>
     <br>
-    {#
+
     <!-- STATS CLASSIQUES AVEC PARTIES -->
     <div class="card">
         <li class="list-group-item text-white" style="background-color:#bdc3c7;">
@@ -209,7 +209,7 @@
                             <br><br>
                         {% endif %}
                         <button {% if not statistiques.evalParties.disponible %}disabled{% endif %}
-                                onclick="location.href='{{ path('statistiques_choix_evaluation', {'typeStat' : 'classique-avec-parties', 'typeGraph' : 'histogramme'}) }}'"
+                                onclick="location.href='{{ path('eval_parties_choix_evaluation', {'typeGraphique' : 'histogramme'}) }}'"
                                 class="btn {% if statistiques.evalParties.disponible %}btn-primary{% else %}btn-secondary{% endif %}">
                             Consulter ce type de statistiques
                         </button>
@@ -235,7 +235,7 @@
                             <br><br>
                         {% endif %}
                         <button {% if not statistiques.evalParties.disponible %}disabled{% endif %}
-                                onclick="location.href='{{ path('statistiques_choix_evaluation', {'typeStat' : 'classique-avec-parties', 'typeGraph' : 'boite-moustache'}) }}'"
+                                onclick="location.href='{{ path('eval_parties_choix_evaluation', {'typeGraphique' : 'boite-moustache'}) }}'"
                                 class="btn {% if statistiques.evalParties.disponible %}btn-primary{% else %}btn-secondary{% endif %}">
                             Consulter ce type de statistiques
                         </button>
@@ -261,7 +261,7 @@
                             <br><br>
                         {% endif %}
                         <button {% if not statistiques.evalParties.disponible %}disabled{% endif %}
-                                onclick="location.href='{{ path('statistiques_choix_evaluation', {'typeStat' : 'classique-avec-parties', 'typeGraph' : 'moyenne'}) }}'"
+                                onclick="location.href='{{ path('eval_parties_choix_evaluation', {'typeGraphique' : 'moyenne'}) }}'"
                                 class="btn {% if statistiques.evalParties.disponible %}btn-primary{% else %}btn-secondary{% endif %}">
                             Consulter ce type de statistiques
                         </button>
@@ -271,6 +271,7 @@
         </div>
     </div>
     <br>
+    {#
     <!--  STATS PLUSIEURS EVALS, GROUPE  -->
     <div class="card">
         <li class="list-group-item text-white" style="background-color:#bdc3c7;">

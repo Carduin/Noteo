@@ -30,7 +30,7 @@
         </div>
     {% endif %}
 
-    {% if nbForm == 2 %}
+    {% if nbForm >= 2 %}
         {# Section 2 (deuxième formulaire affichable) #}
         <h1 class="h4 mb-0 text-gray-800">{{ sousTitreForm2 | default("") }}</h1>
         <br>
@@ -56,7 +56,7 @@
         {% endif %}
     {% endif %}
 
-    {% if nbForm == 3 %}
+    {% if nbForm >= 3 %}
         {# Section 3 (troisème formulaire affichable) #}
         <h1 class="h4 mb-0 text-gray-800">{{ sousTitreForm3 | default("") }}</h1>
         <br>
@@ -69,7 +69,7 @@
             {% elseif typeForm3 == 'groupes' %}
                 {{ include('statistiques/_form_groupes.html.twig')}}
             {% elseif typeForm3 == 'statuts' %}
-                {# include('statistiques/_form_statuts.html.twig') #}
+                {{ include('statistiques/_form_statuts.html.twig') }}
             {% elseif typeForm3 == 'etudiants' %}
                 {# include('statistiques/_form_etudiants.html.twig') #}
             {% elseif typeForm3 == 'parties' %}
@@ -166,6 +166,9 @@
         window.onload = function () {
             checkCasesCocheesPage()
         }
+        $("[name='checkbox']").on('click', function () {
+            checkCasesCocheesPage()
+        })
         //Event listerner pour déclencher le check à chaque case cochée
         $("[name='form[groupes][]']").on('click', function () {
             checkCasesCocheesPage()
