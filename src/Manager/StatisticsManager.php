@@ -2,17 +2,20 @@
 
 namespace App\Manager;
 
+use App\Repository\EtudiantRepository;
 use App\Repository\PointsRepository;
 
 class StatisticsManager {
 
     private $repoPoints;
+    private $repoEtudiants;
 
-    public function __construct(PointsRepository $repoPoints) {
+    public function __construct(PointsRepository $repoPoints, EtudiantRepository $repoEtudiants) {
         $this->repoPoints = $repoPoints;
+        $this->repoEtudiants = $repoEtudiants;
     }
 
-    public function calculerStatsEvolution($type = '', $groupes = [], $evaluations = []) {
+    public function calculerStatsEvolution($type = '', $groupes = [], $evaluations = [], $statut = []) {
         $statistiques = array();
         $typeGroupe = array();
         $typeGroupe["type"] = $type;
@@ -22,7 +25,7 @@ class StatisticsManager {
         foreach ($groupes as $groupe) {
             $groupeEtudiant = array();
             $etudiants = array();
-            $recupEtudiantsGroupe = $groupe->getEtudiants();
+            strcmp ( $type , 'groupe' ) == 0 ? $recupEtudiantsGroupe = $groupe->getEtudiants() : $this->repoEtudiants->findAllByOneStatutAndOneGroupe($statut, $groupe);
             $groupeEtudiant["nom"] = $groupe->getNom();
 
             foreach ($recupEtudiantsGroupe as $etudiant) {

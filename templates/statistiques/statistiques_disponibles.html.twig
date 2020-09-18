@@ -620,7 +620,6 @@
                         </button>
                     </div>
                 </div>
-                {#
                 <div class="card">
                     <img class="card-img-top imageAAgrandir"
                          {% if statistiques.plusieursEvalsStatuts.disponible %}src="{{ asset('img/statistiques/evolution-statut/courbes.png') }}"
@@ -649,13 +648,12 @@
                             <br><br>
                         {% endif %}
                         <button {% if not statistiques.plusieursEvalsStatuts.disponible %}disabled{% endif %}
-                                onclick="location.href='{{ path('stats_choisir_statut', {'typeGraph': 'evolutionStatut'}) }}'"
+                                onclick="location.href='{{ path('evolution_statut_choisir_statut', {'typeGraphique': 'evolutionStatut'}) }}'"
                                 class="btn {% if statistiques.plusieursEvalsStatuts.disponible %}btn-primary{% else %}btn-secondary{% endif %}">
                             Consulter ce type de statistiques
                         </button>
                     </div>
                 </div>
-                #}
             </div>
         </div>
     </div>

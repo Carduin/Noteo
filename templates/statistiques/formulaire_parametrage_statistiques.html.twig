@@ -120,6 +120,11 @@
                 $("[name='form[evaluations]']").first().attr('checked', true)  //Pour cocher le premier choix par défaut
             }
         });
+        {% if affichageEffectifParStatut is defined and affichageEffectifParStatut %}
+        {% set tableauColonnesDatatablesGroupes = [{"orderable": false}, null, null, null, {"orderable": false}, {"orderable": false}] %}
+        {% else %}
+        {% set tableauColonnesDatatablesGroupes = [{"orderable": false}, null, null, {"orderable": false}, {"orderable": false}] %}
+        {% endif %}
         var tableGroupes = $('#groupes').DataTable({
             language: {
                 // Suppression du label Rechercher et ajout du placeholder
@@ -128,7 +133,7 @@
                 "url": "{{ asset('tradfr.json') }}"
             },
             aaSorting: [],
-            columns: [{"orderable": false}, null, null, null, {"orderable": false}],
+            columns: {{ tableauColonnesDatatablesGroupes|json_encode()|raw }},
             lengthMenu: [
                 [15, 30, 45, -1],
                 [15, 30, 45, "Tout"]

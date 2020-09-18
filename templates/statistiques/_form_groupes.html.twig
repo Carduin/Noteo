@@ -37,7 +37,7 @@
                     {{ entity.nom }}
                 </td>
                 <td>
-                    <span {% if colorationEffectif %}
+                    <span {% if colorationEffectif and not affichageEffectifParStatut %}
                        class="
                     {% if entity.etudiants.count <= 16 %}
                         green

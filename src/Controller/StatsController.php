@@ -575,6 +575,150 @@ class StatsController extends AbstractController
     ////STATS EVOLUTION STATUTS////
     ///////////////////////////////
 
+    /**
+     * @Route("/evolution/statuts/{typeGraphique}/choisir-statut", name="evolution_statut_choisir_statut")
+     */
+    public function evolutionStatutChoisirStatut(Request $request, StatutRepository $repoStatut, $typeGraphique): Response
+    {
+        $session = $request->getSession();
+        //On met en sesssion le type de graphique choisi par l'utilisateur pour afficher l'onglet correspondant lors de l'affichage des stats
+        $request->getSession()->set('typeGraphique', $typeGraphique);
+        $form = $this->createFormBuilder()
+            ->add('groupes', EntityType::class, [
+                'class' => Statut::Class, //On veut choisir des statut
+                'constraints' => [new NotBlank()],
+                'choice_label' => false, // On n'affichera pas d'attribut de l'entité à côté du bouton pour aider au choix car on liste les entités en utilisant les variables du champ
+                'label' => false, // On n'affiche pas le label du champ
+                'expanded' => true, // Pour avoir des boutons
+                'multiple' => false,
+                'choices' => $repoStatut->findAllWith1EvalOrMore() // On choisira parmis les statut de plus haut niveau évaluables qui ont au moins 1 évaluation que les concernent
+            ])
+            ->getForm();
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $session->set('statut', $form->get('groupes')->getData());
+            return $this->redirectToRoute('evolution_statuts_choisir_haut_niveau', [
+                'slug' => $form->get('groupes')->getData()->getSlug()
+            ]);
+        }
+        return $this->render('statistiques/formulaire_parametrage_statistiques.html.twig', [
+            'form' => $form->createView(),
+            'nbForm' => 1,
+            'indentationGroupes' => false,
+            'activerToutSelectionner' => false,
+            'casBoutonValider' => 0,
+            'titrePage' => 'Évolution chronologique des résultats d’un ensemble d’étudiants appartenant à un statut',
+            'typeForm1' => 'groupes',
+            'sousTitreForm1' => 'Sélectionner le groupe d\'étudiants ayant un statut particulier pour lequel vous souhaitez voir des statistiques',
+            'messageWarningForm1' => 'La couleur de l\'effectif d\'un groupe indique la facilité de lecture du graphique qui sera généré pour ce groupe.',
+            'conditionAffichageForm1' => true,
+            'colorationEffectif' => true,
+            'affichageEffectifParStatut' => false
+        ]);
+    }
+
+    /**
+     * @Route("/evolution/statut/{slug}/choisir-groupe", name="evolution_statuts_choisir_haut_niveau")
+     */
+    public function evolutionStatutsChoisirGroupeHautNiveau(Request $request, Statut $statut, EtudiantRepository $repoEtudiant, GroupeEtudiantRepository $repoGroupe): Response
+    {
+        $session = $request->getSession();
+        $choices = $repoGroupe->findHighestEvaluableWith1EvalOrMore();
+        $form = $this->createFormBuilder()
+            ->add('groupes', EntityType::class, [
+                'class' => GroupeEtudiant::Class,
+                'constraints' => [new NotBlank()],
+                'choice_label' => false,
+                'label' => false,
+                'expanded' => true,
+                'multiple' => false,
+                'choices' => $choices // On choisira parmis les groupes de plus haut niveau évaluables qui ont au moins 1 évaluation que les concernent
+            ])
+            ->getForm();
+
+        $effectifsParStatut = [];
+        foreach ($choices as $groupeAChoisir) {
+            array_push($effectifsParStatut, count($repoEtudiant->findAllByOneStatutAndOneGroupe($statut, $groupeAChoisir)));
+        }
+
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $session->set('groupeHautNiveau', $form->get('groupes')->getData());
+            return $this->redirectToRoute('evolution_statut_choisir_sous_groupes', [
+                'slug' => $statut->getSlug()
+            ]);
+        }
+        return $this->render('statistiques/formulaire_parametrage_statistiques.html.twig', [
+            'form' => $form->createView(),
+            'nbForm' => 1,
+            'colorationEffectif' => true,
+            'indentationGroupes' => false,
+            'casBoutonValider' => 0,
+            'activerToutSelectionner' => false,
+            'titrePage' => 'Évolution chronologique des résultats d’un ensemble d’étudiants appartenant à un statut',
+            'typeForm1' => 'groupes',
+            'sousTitreForm1' => 'Sélectionner le groupe pour lequel vous souhaitez voir des statistiques pour le statut concerné précédemment sélectionné',
+            'conditionAffichageForm1' => true,
+            'affichageEffectifParStatut' => true,
+            'effectifsParStatut' => $effectifsParStatut,
+            'messageWarningForm1' => 'La couleur de l\'effectif d\'un groupe indique la facilité de lecture du graphique qui sera généré pour ce groupe.'
+        ]);
+    }
+
+    /**
+     * @Route("/evolution/statut/{slug}/choisir-sous-groupes", name="evolution_statut_choisir_sous_groupes")
+     */
+    public function evolutionStatutChoisirSousGroupes(Request $request, Statut $statut, GroupeEtudiantRepository $repoGroupe, EtudiantRepository $repoEtudiant): Response
+    {
+        $session = $request->getSession();
+        $groupe = $session->get('groupeHautNiveau');
+        $sousGroupes = $repoGroupe->findAllOrderedFromNode($groupe);
+        $form = $this->createFormBuilder()
+            ->add('groupes', EntityType::class, [
+                'constraints' => [
+                    new NotBlank()
+                ],
+                'class' => GroupeEtudiant::Class,
+                'choice_label' => false,
+                'label' => false,
+                'expanded' => true,
+                'multiple' => true,
+                'choices' => $sousGroupes
+            ])
+            ->getForm();
+        $form->handleRequest($request);
+        $effectifsParStatut = array();
+        foreach ($sousGroupes as $groupeAChoisir) {
+            array_push($effectifsParStatut, count($repoEtudiant->findAllByOneStatutAndOneGroupe($statut, $groupeAChoisir)));
+        }
+
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            if (count($form->get('groupes')->getData()) > 0) {
+                $sousGroupes = $form->get('groupes')->getData();
+                $request->getSession()->set('sousGroupes', $sousGroupes);
+                return $this->redirectToRoute('evolution_groupes_choisir_evaluations', [
+                    'slug' => $groupe->getSlug()
+                ]);
+            }
+        }
+        return $this->render('statistiques/formulaire_parametrage_statistiques.html.twig', [
+            'form' => $form->createView(),
+            'nbForm' => 1,
+            'colorationEffectif' => true,
+            'indentationGroupes' => true,
+            'casBoutonValider' => 3,
+            'activerToutSelectionner' => true,
+            'titrePage' => 'Évolution chronologique des résultats d’un ensemble d’étudiants appartenant à un statut',
+            'typeForm1' => 'groupes',
+            'sousTitreForm1' => 'Sélectionner les sous-groupes de ' . $groupe->getNom() . ' comportant des étudiants du statut \'' . $statut->getNom() . '\' et pour lesquels vous souhaitez voir des statistiques',
+            'conditionAffichageForm1' => true,
+            'affichageEffectifParStatut' => true,
+            'effectifsParStatut' => $effectifsParStatut,
+            'messageWarningForm1' => 'La couleur de l\'effectif d\'un groupe indique la facilité de lecture du graphique qui sera généré pour ce groupe.'
+        ]);
+    }
+
     ///////////////////////////////
     //FIN STATS EVOLUTION STATUTS//
     ///////////////////////////////
@@ -859,7 +1003,4 @@ class StatsController extends AbstractController
     /////FIN ENVOI MAIL////
     ///////////////////////
     //</editor-fold>
-
-
-
 }
