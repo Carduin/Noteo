@@ -184,6 +184,7 @@ class StatsController extends AbstractController
             'colorationEffectif' => false,
             'casBoutonValider' => 1,
             'typeForm1' => 'groupes',
+            'affichageEffectifParStatut' => false,
             'sousTitreForm1' => 'Sélectionner les groupes pour lesquels vous souhaitez consulter les statistiques',
             'conditionAffichageForm1' => true,
             'indentationGroupes' => true,
@@ -305,6 +306,7 @@ class StatsController extends AbstractController
             'sousTitreForm1' => 'Sélectionner au moins une partie de l\'évaluation pour laquelle vous souhaitez consulter les statistiques',
             'conditionAffichageForm1' => true,
             'typeForm2' => 'groupes',
+            'affichageEffectifParStatut' => false,
             'sousTitreForm2' => 'Sélectionner les groupes pour lesquels vous souhaitez consulter les statistiques',
             'conditionAffichageForm2' => true,
             'indentationGroupes' => true,
@@ -406,9 +408,146 @@ class StatsController extends AbstractController
     //</editor-fold>
 
     //<editor-fold desc="Statistiques évolution groupe">
-    ///////////////////////////////
+    //////////////////////////
     //STATS EVOLUTION GROUPE//
-    ///////////////////////////////
+    //////////////////////////
+
+    /**
+     * @Route("/evolution/groupes/{typeGraphique}/choisir-groupe", name="evolution_groupes_choisir_haut_niveau")
+     */
+    public function evolutionGroupesChoisirGroupe(Request $request, GroupeEtudiantRepository $repoGroupe, $typeGraphique): Response
+    {
+        $session = $request->getSession();
+        $request->getSession()->set('typeGraphique', $typeGraphique);
+        $choices = $repoGroupe->findHighestEvaluableWith1EvalOrMore();
+        $form = $this->createFormBuilder()
+            ->add('groupes', EntityType::class, [
+                'class' => GroupeEtudiant::Class,
+                'constraints' => [new NotBlank()],
+                'choice_label' => false,
+                'label' => false,
+                'expanded' => true,
+                'multiple' => false,
+                'choices' => $choices // On choisira parmis les groupes de plus haut niveau évaluables qui ont au moins 1 évaluation que les concernent
+            ])
+            ->getForm();
+        /*$effectifsParStatut = array();
+        if ($typeGraphique == "evolutionStatut") {
+            $statutChoisi = $session->get('statut');
+            foreach ($choices as $groupeAChoisir) {
+                array_push($effectifsParStatut, count($repoEtudiant->findAllByOneStatutAndOneGroupe($statutChoisi, $groupeAChoisir)));
+            }
+
+        'effectifsParStatut' => $effectifsParStatut,
+        }*/
+
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            return $this->redirectToRoute('evolution_groupes_choisir_sous_groupes', [
+                'slug' => $form->get('groupes')->getData()->getSlug()
+            ]);
+        }
+        return $this->render('statistiques/formulaire_parametrage_statistiques.html.twig', [
+            'form' => $form->createView(),
+            'nbForm' => 1,
+            'colorationEffectif' => true,
+            'indentationGroupes' => false,
+            'casBoutonValider' => 0,
+            'activerToutSelectionner' => false,
+            'titrePage' => 'Évolution chronologique des résultats d’un ensemble d’étudiants',
+            'typeForm1' => 'groupes',
+            'sousTitreForm1' => 'Sélectionner le groupe pour lequel vous souhaitez voir des statistiques',
+            'conditionAffichageForm1' => true,
+            'affichageEffectifParStatut' => false,
+            'messageWarningForm1' => 'La couleur de l\'effectif d\'un groupe indique la facilité de lecture du graphique qui sera généré pour ce groupe.'
+        ]);
+    }
+
+    /**
+     * @Route("/evolution/groupes/{slug}/choisir-sous-groupes", name="evolution_groupes_choisir_sous_groupes")
+     */
+    public function evolutionGroupesChoisirSousGroupes(Request $request, GroupeEtudiant $groupe, GroupeEtudiantRepository $repoGroupe): Response
+    {
+        $session = $request->getSession();
+        $typeGraph = $request->getSession()->get('typeGraphique');
+        $sousGroupes = $repoGroupe->findAllOrderedFromNode($groupe);
+        $form = $this->createFormBuilder()
+            ->add('groupes', EntityType::class, [
+                'constraints' => [
+                    new NotBlank()
+                ],
+                'class' => GroupeEtudiant::Class,
+                'choice_label' => false,
+                'label' => false,
+                'expanded' => true,
+                'multiple' => true,
+                'choices' => $sousGroupes
+            ])
+            ->getForm();
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            if (count($form->get('groupes')->getData()) > 0) {
+                $sousGroupes = $form->get('groupes')->getData();
+                $request->getSession()->set('sousGroupes', $sousGroupes);
+                return $this->redirectToRoute('evolution_groupes_choisir_evaluations', [
+                    'slug' => $groupe->getSlug()
+                ]);
+            }
+        }
+        return $this->render('statistiques/formulaire_parametrage_statistiques.html.twig', [
+            'form' => $form->createView(),
+            'nbForm' => 1,
+            'colorationEffectif' => true,
+            'indentationGroupes' => true,
+            'casBoutonValider' => 3,
+            'activerToutSelectionner' => true,
+            'titrePage' => 'Évolution chronologique des résultats d’un ensemble d’étudiants',
+            'typeForm1' => 'groupes',
+            'sousTitreForm1' => 'Sélectionner les sous-groupes de ' . $groupe->getNom() . ' pour lesquels vous souhaitez voir des statistiques',
+            'conditionAffichageForm1' => true,
+            'affichageEffectifParStatut' => false,
+            'messageWarningForm1' => 'La couleur de l\'effectif d\'un groupe indique la facilité de lecture du graphique qui sera généré pour ce groupe.'
+        ]);
+    }
+
+    /**
+     * @Route("/evolution/groupes/{slug}/choisir-evaluations", name="evolution_groupes_choisir_evaluations")
+     */
+    public function evolutionGroupesChoisirEvals(Request $request, StatisticsManager $statsManager, GroupeEtudiant $groupe, PointsRepository $repoPoints): Response
+    {
+        $typeGraph = $request->getSession()->get('typeGraphique');
+        $form = $this->createFormBuilder()
+            ->add('evaluations', EntityType::class, [
+                'class' => Evaluation::Class,
+                'choice_label' => false,
+                'label' => false,
+                'expanded' => true,
+                'multiple' => true,
+                'choices' => $groupe->getEvaluations()
+            ])
+            ->getForm();
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $evaluations = $form->get('evaluations')->getData();
+            $lesGroupes = [$groupe]; // On regroupe le groupe principal et les sous groupes pour faciliter la requete
+            foreach ($request->getSession()->get('sousGroupes') as $sousGroupe) {
+                array_push($lesGroupes, $sousGroupe);
+            }
+
+            /* calcul stats */
+
+        }
+        return $this->render('statistiques/formulaire_parametrage_statistiques.html.twig', [
+            'form' => $form->createView(),
+            'nbForm' => 1,
+            'titrePage' => 'Évolution chronologique des résultats d’un ensemble d’étudiants',
+            'activerToutSelectionner' => true,
+            'typeForm1' => 'evaluations',
+            'sousTitreForm1' => 'Sélectionner les évaluations pour lesquelles vous souhaitez voir des statistiques pour les groupes précédemment sélectionnés',
+            'conditionAffichageForm1' => true,
+            'casBoutonValider' => 4
+        ]);
+    }
 
     //////////////////////////////
     //FIN STATS EVOLUTION GROUPE//

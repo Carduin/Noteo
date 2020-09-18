@@ -10,7 +10,7 @@
         </th>
         <th>Nom</th>
         <th>Effectif</th>
-        {% if colorationEffectif %}
+        {% if affichageEffectifParStatut  %}
             <th>Effectif statut</th>
         {% endif %}
         <th>Description</th>
@@ -47,7 +47,7 @@
                         red
                      {% endif %}" {% endif %}
                 >{{ entity.etudiants.count }}</span></td>
-                {% if colorationEffectif %}
+                {% if affichageEffectifParStatut %}
                     <td><span class="
                   {% if effectifsParStatut[loop.index -1] <= 16 %}
                     green

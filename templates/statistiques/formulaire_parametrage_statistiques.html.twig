@@ -135,6 +135,9 @@
             ],
             pageLength: {{ app.user.preferenceNbElementsTableaux }}, <!-- Pour que le nombre d'éléments affichés par défaut soit celui de la préference de l'utilisateur -->
             info: false,
+            "fnInitComplete": function (oSettings, json) {
+                $("[name='form[groupes]']").first().attr('checked', true)  //Pour cocher le premier choix par défaut
+            }
         });
         var tableStatuts = $('#statuts').DataTable({
             language: {
