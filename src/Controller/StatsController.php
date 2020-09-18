@@ -550,7 +550,7 @@ class StatsController extends AbstractController
                 'evaluations' => $tabEvaluations,
                 'groupes' => $lesGroupes,
                 'titre' => 'Évolution chronologique des résultats d’un ensemble d’étudiants',
-                'stats' => $statsManager->calculerStatsEvolution('groupes', $lesGroupes, $tabEvaluations)
+                'stats' => $statsManager->calculerStatsEvolution('groupe', $lesGroupes, $tabEvaluations)
             ]);
         }
         return $this->render('statistiques/formulaire_parametrage_statistiques.html.twig', [
