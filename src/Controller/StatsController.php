@@ -381,7 +381,7 @@ class StatsController extends AbstractController
                 array_push($statuts, $statut);
             }
 
-            return $this->render('statistiques/affichage_stats_ficheEtudiant.html.twig', [
+            return $this->render('statistiques/affichage_stats_fiche_etudiant.html.twig', [
                 'etudiant' => $etudiant,
                 'evaluations' => $evaluations,
                 'groupesEtStatuts' => $groupesEtStatuts,
@@ -513,9 +513,10 @@ class StatsController extends AbstractController
     /**
      * @Route("/evolution/groupes/{slug}/choisir-evaluations", name="evolution_groupes_choisir_evaluations")
      */
-    public function evolutionGroupesChoisirEvals(Request $request, StatisticsManager $statsManager, GroupeEtudiant $groupe, PointsRepository $repoPoints): Response
+    public function evolutionGroupesChoisirEvals(Request $request, EvaluationRepository $repoEval, GroupeEtudiantRepository $repoGroupe, StatisticsManager $statsManager, GroupeEtudiant $groupe): Response
     {
-        $typeGraph = $request->getSession()->get('typeGraphique');
+        $session = $request->getSession();
+        $typeGraph = $session->get('typeGraphique');
         $form = $this->createFormBuilder()
             ->add('evaluations', EntityType::class, [
                 'class' => Evaluation::Class,
@@ -529,13 +530,28 @@ class StatsController extends AbstractController
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $evaluations = $form->get('evaluations')->getData();
-            $lesGroupes = [$groupe]; // On regroupe le groupe principal et les sous groupes pour faciliter la requete
-            foreach ($request->getSession()->get('sousGroupes') as $sousGroupe) {
-                array_push($lesGroupes, $sousGroupe);
+            $evaluations = $session->get('evaluations'); // récupération des évaluations passées en session
+            $tabEvaluations = array();
+            foreach ($evaluations as $evaluation) {
+                array_push($tabEvaluations, $repoEval->find($evaluation->getId()));
             }
-
-            /* calcul stats */
-
+            $lesGroupes = []; // On regroupe le groupe principal et les sous groupes pour faciliter la requete
+            foreach ($request->getSession()->get('sousGroupes') as $sousGroupe) {
+                array_push($lesGroupes, $repoGroupe->find($sousGroupe->getId()));
+            }
+            //Pour avoir les évaluations ordonnées chronologiquement
+            usort($tabEvaluations, function ($a, $b) {
+                if ($a->getdate() == $b->getdate()) {
+                    return 0;
+                }
+                return ($a->getdate() < $b->getdate()) ? -1 : 1;
+            });
+            return $this->render('statistiques/affichage_stats_evolution.html.twig', [
+                'evaluations' => $tabEvaluations,
+                'groupes' => $lesGroupes,
+                'titre' => 'Évolution chronologique des résultats d’un ensemble d’étudiants',
+                'stats' => $statsManager->calculerStatsEvolution('groupes', $lesGroupes, $tabEvaluations)
+            ]);
         }
         return $this->render('statistiques/formulaire_parametrage_statistiques.html.twig', [
             'form' => $form->createView(),

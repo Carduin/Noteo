@@ -12,6 +12,49 @@ class StatisticsManager {
         $this->repoPoints = $repoPoints;
     }
 
+    public function calculerStatsEvolution($type = '', $groupes = [], $evaluations = []) {
+        $statistiques = array();
+        $typeGroupe = array();
+        $typeGroupe["type"] = $type;
+        $statistiques["typeGroupe"] = $typeGroupe;
+        $statistiques["evaluations"] = $evaluations;
+
+        foreach ($groupes as $groupe) {
+            $groupeEtudiant = array();
+            $etudiants = array();
+            $recupEtudiantsGroupe = $groupe->getEtudiants();
+            $groupeEtudiant["nom"] = $groupe->getNom();
+
+            foreach ($recupEtudiantsGroupe as $etudiant) {
+                $notesEtudiant = array();
+                $etudiantCourant = array();
+                $etudiantCourant["nomPrenom"] = strval($etudiant->getNom() . " " . $etudiant->getPrenom());
+
+                foreach ($evaluations as $evaluation) {
+                    $notesEtEtudiants = $this->repoPoints->findNotesAndEtudiantByEvaluation($evaluation);
+                    $etudiantsEvaluation = array();
+                    foreach ($notesEtEtudiants as $note) {
+                        array_push($etudiantsEvaluation, $note->getEtudiant());
+                    }
+
+                    foreach ($notesEtEtudiants as $points) {
+                        if ($points->getEtudiant() == $etudiant) {
+                            array_push($notesEtudiant, $points->getValeur());
+                        }
+                    }
+                    if (!in_array($etudiant, $etudiantsEvaluation)) {
+                        array_push($notesEtudiant, "NaN");
+                    }
+                    $etudiantCourant["notes"] = $notesEtudiant; // on pousse les notes de l'étudiant courant
+                }
+                array_push($etudiants, $etudiantCourant); //on pousse l'étudiant
+            }
+            $groupeEtudiant["etudiants"] = $etudiants;
+            array_push($statistiques, $groupeEtudiant);
+        }
+        return $statistiques;
+    }
+
     public function calculerStatsFicheEtudiant($etudiant = [], $evaluations = [], $groupes = [], $statuts = []) {
         $statistiques = array();
         foreach ($evaluations as $eval) {
