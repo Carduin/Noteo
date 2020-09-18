@@ -413,12 +413,11 @@ class StatsController extends AbstractController
     //////////////////////////
 
     /**
-     * @Route("/evolution/groupes/{typeGraphique}/choisir-groupe", name="evolution_groupes_choisir_haut_niveau")
+     * @Route("/evolution/groupes/choisir-groupe", name="evolution_groupes_choisir_haut_niveau")
      */
-    public function evolutionGroupesChoisirGroupe(Request $request, GroupeEtudiantRepository $repoGroupe, $typeGraphique): Response
+    public function evolutionGroupesChoisirGroupe(Request $request, GroupeEtudiantRepository $repoGroupe): Response
     {
         $session = $request->getSession();
-        $request->getSession()->set('typeGraphique', $typeGraphique);
         $choices = $repoGroupe->findHighestEvaluableWith1EvalOrMore();
         $form = $this->createFormBuilder()
             ->add('groupes', EntityType::class, [
@@ -431,15 +430,6 @@ class StatsController extends AbstractController
                 'choices' => $choices // On choisira parmis les groupes de plus haut niveau évaluables qui ont au moins 1 évaluation que les concernent
             ])
             ->getForm();
-        /*$effectifsParStatut = array();
-        if ($typeGraphique == "evolutionStatut") {
-            $statutChoisi = $session->get('statut');
-            foreach ($choices as $groupeAChoisir) {
-                array_push($effectifsParStatut, count($repoEtudiant->findAllByOneStatutAndOneGroupe($statutChoisi, $groupeAChoisir)));
-            }
-
-        'effectifsParStatut' => $effectifsParStatut,
-        }*/
 
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
@@ -576,13 +566,11 @@ class StatsController extends AbstractController
     ///////////////////////////////
 
     /**
-     * @Route("/evolution/statuts/{typeGraphique}/choisir-statut", name="evolution_statut_choisir_statut")
+     * @Route("/evolution/statuts/choisir-statut", name="evolution_statut_choisir_statut")
      */
-    public function evolutionStatutChoisirStatut(Request $request, StatutRepository $repoStatut, $typeGraphique): Response
+    public function evolutionStatutChoisirStatut(Request $request, StatutRepository $repoStatut): Response
     {
         $session = $request->getSession();
-        //On met en sesssion le type de graphique choisi par l'utilisateur pour afficher l'onglet correspondant lors de l'affichage des stats
-        $request->getSession()->set('typeGraphique', $typeGraphique);
         $form = $this->createFormBuilder()
             ->add('groupes', EntityType::class, [
                 'class' => Statut::Class, //On veut choisir des statut
@@ -691,14 +679,12 @@ class StatsController extends AbstractController
         foreach ($sousGroupes as $groupeAChoisir) {
             array_push($effectifsParStatut, count($repoEtudiant->findAllByOneStatutAndOneGroupe($statut, $groupeAChoisir)));
         }
-
-
         if ($form->isSubmitted() && $form->isValid()) {
             if (count($form->get('groupes')->getData()) > 0) {
                 $sousGroupes = $form->get('groupes')->getData();
                 $request->getSession()->set('sousGroupes', $sousGroupes);
-                return $this->redirectToRoute('evolution_groupes_choisir_evaluations', [
-                    'slug' => $groupe->getSlug()
+                return $this->redirectToRoute('evolution_statut_choisir_evaluations', [
+                    'slug' => $statut->getSlug()
                 ]);
             }
         }
@@ -716,6 +702,59 @@ class StatsController extends AbstractController
             'affichageEffectifParStatut' => true,
             'effectifsParStatut' => $effectifsParStatut,
             'messageWarningForm1' => 'La couleur de l\'effectif d\'un groupe indique la facilité de lecture du graphique qui sera généré pour ce groupe.'
+        ]);
+    }
+
+    /**
+     * @Route("/evolution/statut/{slug}/choisir-evaluations", name="evolution_statut_choisir_evaluations")
+     */
+    public function evolutionStatutChoisirEvals(Request $request, EvaluationRepository $repoEval, GroupeEtudiantRepository $repoGroupe, StatisticsManager $statsManager, Statut $statut): Response
+    {
+        $session = $request->getSession();
+        $form = $this->createFormBuilder()
+            ->add('evaluations', EntityType::class, [
+                'class' => Evaluation::Class,
+                'choice_label' => false,
+                'label' => false,
+                'expanded' => true,
+                'multiple' => true,
+                'choices' => $repoGroupe->find($session->get('groupeHautNiveau')->getId())->getEvaluations()
+            ])
+            ->getForm();
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $evaluations = $form->get('evaluations')->getData();
+            $tabEvaluations = array();
+            foreach ($evaluations as $evaluation) {
+                array_push($tabEvaluations, $repoEval->find($evaluation->getId()));
+            }
+            $lesGroupes = []; // On regroupe le groupe principal et les sous groupes pour faciliter la requete
+            foreach ($request->getSession()->get('sousGroupes') as $sousGroupe) {
+                array_push($lesGroupes, $repoGroupe->find($sousGroupe->getId()));
+            }
+            //Pour avoir les évaluations ordonnées chronologiquement
+            usort($tabEvaluations, function ($a, $b) {
+                if ($a->getdate() == $b->getdate()) {
+                    return 0;
+                }
+                return ($a->getdate() < $b->getdate()) ? -1 : 1;
+            });
+            return $this->render('statistiques/affichage_stats_evolution.html.twig', [
+                'evaluations' => $tabEvaluations,
+                'groupes' => $lesGroupes,
+                'titre' => 'Évolution chronologique des résultats d’un ensemble d’étudiants',
+                'stats' => $statsManager->calculerStatsEvolution('statut', $lesGroupes, $tabEvaluations, $statut)
+            ]);
+        }
+        return $this->render('statistiques/formulaire_parametrage_statistiques.html.twig', [
+            'form' => $form->createView(),
+            'nbForm' => 1,
+            'titrePage' => 'Évolution chronologique des résultats d’un ensemble d’étudiants',
+            'activerToutSelectionner' => true,
+            'typeForm1' => 'evaluations',
+            'sousTitreForm1' => 'Sélectionner les évaluations pour lesquelles vous souhaitez voir des statistiques pour les groupes précédemment sélectionnés',
+            'conditionAffichageForm1' => true,
+            'casBoutonValider' => 4
         ]);
     }
 

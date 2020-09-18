@@ -19,13 +19,16 @@ class StatisticsManager {
         $statistiques = array();
         $typeGroupe = array();
         $typeGroupe["type"] = $type;
+        if ($type == "statut") {
+            array_push($typeGroupe, $statut);
+        }
         $statistiques["typeGroupe"] = $typeGroupe;
         $statistiques["evaluations"] = $evaluations;
 
         foreach ($groupes as $groupe) {
             $groupeEtudiant = array();
             $etudiants = array();
-            strcmp ( $type , 'groupe' ) == 0 ? $recupEtudiantsGroupe = $groupe->getEtudiants() : $this->repoEtudiants->findAllByOneStatutAndOneGroupe($statut, $groupe);
+            strcmp ( $type , 'groupe' ) == 0 ? $recupEtudiantsGroupe = $groupe->getEtudiants() : $recupEtudiantsGroupe = $this->repoEtudiants->findAllByOneStatutAndOneGroupe($statut, $groupe);
             $groupeEtudiant["nom"] = $groupe->getNom();
 
             foreach ($recupEtudiantsGroupe as $etudiant) {

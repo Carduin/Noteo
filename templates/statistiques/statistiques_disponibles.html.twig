@@ -614,7 +614,7 @@
                             <br><br>
                         {% endif %}
                         <button {% if not statistiques.plusieursEvalsGroupes.disponible %}disabled{% endif %}
-                                onclick="location.href='{{ path('evolution_groupes_choisir_haut_niveau', {'typeGraphique': 'evolutionGroupe'}) }}'"
+                                onclick="location.href='{{ path('evolution_groupes_choisir_haut_niveau') }}'"
                                 class="btn {% if statistiques.plusieursEvalsGroupes.disponible %}btn-primary{% else %}btn-secondary{% endif %}">
                             Consulter ce type de statistiques
                         </button>
@@ -648,7 +648,7 @@
                             <br><br>
                         {% endif %}
                         <button {% if not statistiques.plusieursEvalsStatuts.disponible %}disabled{% endif %}
-                                onclick="location.href='{{ path('evolution_statut_choisir_statut', {'typeGraphique': 'evolutionStatut'}) }}'"
+                                onclick="location.href='{{ path('evolution_statut_choisir_statut') }}'"
                                 class="btn {% if statistiques.plusieursEvalsStatuts.disponible %}btn-primary{% else %}btn-secondary{% endif %}">
                             Consulter ce type de statistiques
                         </button>
