@@ -89,7 +89,6 @@ class StatsController extends AbstractController
      */
     public function evalSimpleChoisirEvaluation($typeGraphique, EvaluationRepository $repoEval, Request $request) : Response
     {
-        //On met en sesssion le type de graphique choisi par l'utilisateur pour afficher l'onglet correspondant lors de l'affichage des stats
         $request->getSession()->set('typeGraphique', $typeGraphique);
         $form = $this->createFormBuilder()
             ->add('evaluations', EntityType::class, [
@@ -210,7 +209,6 @@ class StatsController extends AbstractController
      */
     public function evalPartiesChoisirEvaluation($typeGraphique, EvaluationRepository $repoEval, Request $request) : Response
     {
-        //On met en sesssion le type de graphique choisi par l'utilisateur pour afficher l'onglet correspondant lors de l'affichage des stats
         $request->getSession()->set('typeGraphique', $typeGraphique);
         $form = $this->createFormBuilder()
             ->add('evaluations', EntityType::class, [
@@ -351,7 +349,7 @@ class StatsController extends AbstractController
     /**
      * @Route("/fiche-etudiant/choisir-etudiant", name="fiche_etudiant_choisir_etudiant")
      */
-    public function ficheEtudiantChoisirEtudiant(Request $request, StatisticsManager $statsManager, EvaluationRepository $repoEval, EtudiantRepository $repoEtudiant, PointsRepository $repoPoint): Response
+    public function ficheEtudiantChoisirEtudiant(Request $request, StatisticsManager $statsManager, EvaluationRepository $repoEval, EtudiantRepository $repoEtudiant): Response
     {
         $form = $this->createFormBuilder()
             ->add('etudiants', EntityType::class, [
@@ -852,7 +850,7 @@ class StatsController extends AbstractController
     /**
      * @Route("/comparaison/{slug}/choisir-groupes-et-statuts", name="comparaison_choisir_groupes_et_statuts", methods={"GET","POST"})
      */
-    public function comparaisonChoisirParametreEtAfficherStats(Request $request, StatisticsManager $statsManager, Evaluation $evaluation, StatutRepository $repoStatut, GroupeEtudiantRepository $repoGroupe, PointsRepository $repoPoints): Response
+    public function comparaisonChoisirParametreEtAfficherStats(Request $request, StatisticsManager $statsManager, Evaluation $evaluation, StatutRepository $repoStatut, GroupeEtudiantRepository $repoGroupe): Response
     {
         $session = $request->getSession();
         $evaluationsChoisies = $session->get('evaluationsChoisies');
