@@ -47,7 +47,7 @@ class StatsController extends AbstractController
         $nombreEvaluationsTotal = count($repoEval->findAll());
         $nombreGroupes = count($repoGroupe->findAllHavingStudents());
         $nombreStatuts = count($repoStatut->findAllHavingStudents());
-        $nombreEtudiantsConcerneParUneEvalOuPlus = count($repoEtudiant->findAllConcernedByAtLeastOneEvaluation());
+        $nombreEtudiantsConcerneParUneEvalOuPlus = count($repoEtudiant->findAllParticipatedAtLeastOneEvaluation());
         $statsDispo = [
             "evalSimple" => [
                 "disponible" => $nombreEvalsSimples >= 1
@@ -164,7 +164,7 @@ class StatsController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $groupesChoisis = $form->get("groupes")->getData();
             $statutsChoisis = $form->get("statuts")->getData();
-            $statistiquesCalculees = $statsManager->calculerStats('classique', $evaluation, $groupesChoisis, $statutsChoisis, $evaluation->getParties());
+            $statistiquesCalculees = $statsManager->calculerStatsClassiques($evaluation, $groupesChoisis, $statutsChoisis, $evaluation->getParties());
             $request->getSession()->set('stats', $statistiquesCalculees);
             //Pour ne pas continuer si les conditions ne sont pas remplies (au moins un groupe ou statut)
             if (count($groupesChoisis) > 0 || count($statutsChoisis) > 0) {
@@ -282,7 +282,7 @@ class StatsController extends AbstractController
             $groupesChoisis = $form->get("groupes")->getData();
             $statutsChoisis = $form->get("statuts")->getData();
             $partiesChoisies = $form->get("parties")->getData();
-            $statistiquesCalculees = $statsManager->calculerStats('classique-parties', $evaluation, $groupesChoisis, $statutsChoisis, $partiesChoisies);
+            $statistiquesCalculees = $statsManager->calculerStatsClassiques($evaluation, $groupesChoisis, $statutsChoisis, $partiesChoisies);
             $request->getSession()->set('stats', $statistiquesCalculees);
             //Pour ne pas continuer si les conditions ne sont pas remplies (au moins un groupe ou statut)
             if ((count($groupesChoisis) > 0 || count($statutsChoisis) > 0) && count($partiesChoisies) > 0) {
@@ -345,6 +345,60 @@ class StatsController extends AbstractController
     ////////////////////////
     //STATS FICHE ETUDIANT//
     ////////////////////////
+
+    /**
+     * @Route("/fiche-etudiant/choisir-etudiant", name="fiche_etudiant_choisir_etudiant")
+     */
+    public function ficheEtudiantChoisirEtudiant(Request $request, StatisticsManager $statsManager, EvaluationRepository $repoEval, EtudiantRepository $repoEtudiant, PointsRepository $repoPoint): Response
+    {
+        $form = $this->createFormBuilder()
+            ->add('etudiants', EntityType::class, [
+                'class' => Etudiant::Class, //On veut choisir un étudiant
+                'choice_label' => false, // On n'affichera pas d'attribut de l'entité à côté du bouton pour aider au choix car on liste les entités en utilisant les variables du champ
+                'label' => false, // On n'affiche pas le label du champ
+                'expanded' => true, // Pour avoir des boutons
+                'multiple' => false, // radios
+                'choices' => $repoEtudiant->findAllParticipatedAtLeastOneEvaluation(), // On choisira parmis tous les étudiants
+                'constraints' => [new NotBlank()]
+            ])
+            ->getForm();
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $etudiant = $form->get('etudiants')->getData();
+            $evaluations = $repoEval->findAllByEtudiant($etudiant->getId());
+            $groupesEtStatuts = array();
+            $groupes = array();
+            $statuts = array();
+            foreach ($etudiant->getGroupes() as $groupe) {
+                if ($groupe->getEstEvaluable() == true) {
+                    array_push($groupes, $groupe);
+                }
+            }
+            foreach ($etudiant->getStatuts() as $statut) {
+                array_push($groupesEtStatuts, $statut);
+                array_push($statuts, $statut);
+            }
+
+            return $this->render('statistiques/affichage_stats_ficheEtudiant.html.twig', [
+                'etudiant' => $etudiant,
+                'evaluations' => $evaluations,
+                'groupesEtStatuts' => $groupesEtStatuts,
+                'stats' => $statsManager->calculerStatsFicheEtudiant($etudiant, $evaluations, $groupes, $statuts),
+                'titre' => 'Fiche de l\'étudiant ' . $etudiant->getPrenom() . ' ' . $etudiant->getNom()
+            ]);
+        }
+        return $this->render('statistiques/formulaire_parametrage_statistiques.html.twig', [
+            'form' => $form->createView(),
+            'nbForm' => 1,
+            'titrePage' => 'Évolution chronologique des résultats d’un étudiant',
+            'activerToutSelectionner' => false,
+            'colorationEffectif' => false,
+            'casBoutonValider' => 0,
+            'typeForm1' => 'etudiants',
+            'sousTitreForm1' => 'Sélectionner l\'étudiant pour consulter sa fiche',
+            'conditionAffichageForm1' => true,
+        ]);
+    }
 
     /////////////////////////////
     //FIN STATS FICHE ETUDIANT //
@@ -496,7 +550,7 @@ class StatsController extends AbstractController
                 'evaluations' => $evaluationsChoisies,
                 'evaluationConcernee' => $evaluation,
                 'groupes' => $groupes,
-                "parties" => $statsManager->calculerStats('comparaison', $evaluation, $groupes, $statuts, null, $evaluationsChoisies),
+                "parties" => $statsManager->calculerStatsComparaison($evaluation, $groupes, $statuts, $evaluationsChoisies),
                 'titre' => "Comparer " . $evaluation->getNom() . " à " . (count($evaluationsChoisies)) . ' évaluation(s)',
                 'plusieursEvals' => true,
             ]);

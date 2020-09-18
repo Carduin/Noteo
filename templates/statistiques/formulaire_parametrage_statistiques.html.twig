@@ -22,7 +22,7 @@
         {% elseif typeForm1 == 'statuts' %}
             {% include('statistiques/_form_statuts.html.twig') %}
         {% elseif typeForm1 == 'etudiants' %}
-            {# include('statistiques/_form_etudiants.html.twig') #}
+            {% include('statistiques/_form_etudiants.html.twig') %}
         {% elseif typeForm1 == 'parties' %}
             {% include('statistiques/_form_parties.html.twig') %}
         {% endif %}
@@ -48,7 +48,7 @@
             {% elseif typeForm2 == 'statuts' %}
                 {% include('statistiques/_form_statuts.html.twig') %}
             {% elseif typeForm2 == 'etudiants' %}
-                {# include('statistiques/_form_etudiants.html.twig') #}
+                {% include('statistiques/_form_etudiants.html.twig') %}
             {% elseif typeForm2 == 'parties' %}
                 {% include('statistiques/_form_parties.html.twig') %}
             {% endif %}
@@ -75,7 +75,7 @@
             {% elseif typeForm3 == 'statuts' %}
                 {{ include('statistiques/_form_statuts.html.twig') }}
             {% elseif typeForm3 == 'etudiants' %}
-                {# include('statistiques/_form_etudiants.html.twig') #}
+                {% include('statistiques/_form_etudiants.html.twig') %}
             {% elseif typeForm3 == 'parties' %}
                 {% include('statistiques/_form_parties.html.twig') %}
             {% endif %}
@@ -154,6 +154,25 @@
             pageLength: {{ app.user.preferenceNbElementsTableaux }}, <!-- Pour que le nombre d'éléments affichés par défaut soit celui de la préference de l'utilisateur -->
             info: false,
         });
+        var tableEtudiants = $('#etudiants').DataTable({
+            language: {
+                // Suppression du label Rechercher et ajout du placeholder
+                search: "_INPUT_",
+                searchPlaceholder: "Rechercher...",
+                "url": "{{ asset('tradfr.json') }}"
+            },
+            order: [1, 'asc'],
+            columns: [{"orderable": false}, null, null, {"orderable": false}],
+            lengthMenu: [
+                [15, 30, 45, -1],
+                [15, 30, 45, "Tout"]
+            ],
+            pageLength: {{ app.user.preferenceNbElementsTableaux }}, <!-- Pour que le nombre d'éléments affichés par défaut soit celui de la préference de l'utilisateur -->
+            info: false,
+            "fnInitComplete": function (oSettings, json) {
+                $("[name='form[etudiants]']").first().attr('checked', true)  //Pour cocher le premier choix par défaut
+            }
+        });
 
         $("[name='form']").on('submit', function () {
             tableEvaluations.search("").draw(); //Pour annuler la recherche effectuée dans le champ en haut à droite du tableau
@@ -162,6 +181,8 @@
             tableGroupes.rows().nodes().page.len(-1).draw();
             tableStatuts.search("").draw();
             tableStatuts.rows().nodes().page.len(-1).draw();
+            tableEtudiants.search("").draw();
+            tableEtudiants.rows().nodes().page.len(-1).draw();
             });
     </script>
 {% endblock %}

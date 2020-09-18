@@ -1,0 +1,24 @@
+<div class="table-responsive table-hover">
+    <table class="table" id="etudiants">
+        <thead>
+        <th></th>
+        <th>Nom</th>
+        <th>Prenom</th>
+        <th>Mail</th>
+        </thead>
+        <tbody>
+        {% for etudiant in form.etudiants %}
+            {#store index of the category in a variable#}
+            {% set index = etudiant.vars.value %}
+            {#get entity object from its index in the Categories Field#}
+            {% set entity = form.etudiants.vars.choices[index].data %}
+            <tr>
+                <td>{{ form_widget(form.etudiants[index]) }}</td>
+                <td>{{ entity.nom }}</td>
+                <td>{{ entity.prenom }}</td>
+                <td>{{ entity.mail }}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>

@@ -524,6 +524,7 @@
         </div>
     </div>
     <br>
+    #}
     <!-- EVOLUTION ETUDIANTS -->
     <div class="card">
         <li class="list-group-item text-white" style="background-color:#bdc3c7;">
@@ -576,12 +577,13 @@
                             <br><br>
                         {% endif %}
                         <button {% if not statistiques.ficheEtudiant.disponible %}disabled{% endif %}
-                                onclick="location.href='{{ path('statistiques_fiche_etudiant_choisir_etudiant') }}'"
+                                onclick="location.href='{{ path('fiche_etudiant_choisir_etudiant') }}'"
                                 class="btn {% if statistiques.ficheEtudiant.disponible %}btn-primary{% else %}btn-secondary{% endif %}">
                             Consulter ce type de statistiques
                         </button>
                     </div>
                 </div>
+                {#
                 <div class="card">
                     <img class="card-img-top imageAAgrandir"
                          {% if statistiques.plusieursEvalsGroupes.disponible %}src="{{ asset('img/statistiques/evolution-groupe/courbes.png') }}"
@@ -653,11 +655,12 @@
                         </button>
                     </div>
                 </div>
+                #}
             </div>
         </div>
     </div>
     <br>
-    #}
+
     <!-- STATS COMPARAISON -->
     <div class="card">
         <li class="list-group-item text-white" style="background-color:#bdc3c7;">
