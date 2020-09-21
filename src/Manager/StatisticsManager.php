@@ -21,14 +21,14 @@ class StatisticsManager {
         {
             $tabPoints = array();
             switch ($type) {
-                case 'statut' :
+                case 'statuts' :
                     foreach ($evaluations as $eval) {
-                        array_push($tabPoints, $this->repoPoints->findAllNotesByGroupe($eval->getId(), $groupe->getId()));
+                        array_push($tabPoints, $this->repoPoints->findAllNotesByStatut($eval->getId(), $groupe->getId()));
                     }
                     break;
                 case 'groupes' :
                     foreach ($evaluations as $eval) {
-                        array_push($tabPoints, $this->repoPoints->findAllNotesByStatut($eval->getId(), $groupe->getId()));
+                        array_push($tabPoints, $this->repoPoints->findAllNotesByGroupe($eval->getId(), $groupe->getId()));
                     }
                     break;
             }

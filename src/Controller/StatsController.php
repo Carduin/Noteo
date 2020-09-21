@@ -466,6 +466,90 @@ class StatsController extends AbstractController
     //STATS PLUSIEURS EVAL STATUTS//
     ////////////////////////////////
 
+    /**
+     * @Route("/plusieurs-eval/statuts/{typeGraphique}/choisir-statut", name="plusieurs_evaluations_statut_choisir_statut")
+     */
+    public function plusieursEvaluationsStatutChoisirStatutsEvaluable(Request $request, StatutRepository $repoStatut, $typeGraphique): Response
+    {
+        $session = $request->getSession();
+        //On met en sesssion le type de graphique choisi par l'utilisateur pour afficher l'onglet correspondant lors de l'affichage des stats
+        $request->getSession()->set('typeGraphique', $typeGraphique);
+        $form = $this->createFormBuilder()
+            ->add('groupes', EntityType::class, [
+                'class' => Statut::Class, //On veut choisir des statut
+                'constraints' => [new NotBlank()],
+                'choice_label' => false, // On n'affichera pas d'attribut de l'entité à côté du bouton pour aider au choix car on liste les entités en utilisant les variables du champ
+                'label' => false, // On n'affiche pas le label du champ
+                'expanded' => true, // Pour avoir des boutons
+                'multiple' => false,
+                'choices' => $repoStatut->findAllWith1EvalOrMore() // On choisira parmis les statut de plus haut niveau évaluables qui ont au moins 1 évaluation que les concernent
+            ])
+            ->getForm();
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            return $this->redirectToRoute('plusieurs_evaluations_statut_choisir_evaluations', [
+                'slug' => $form->get('groupes')->getData()->getSlug()
+            ]);
+        }
+        return $this->render('statistiques/formulaire_parametrage_statistiques.html.twig', [
+            'form' => $form->createView(),
+            'nbForm' => 1,
+            'casBoutonValider' => 0,
+            'activerToutSelectionner' => false,
+            'titrePage' => 'Analyse des résultats d’un statut d’étudiants sur plusieurs évaluations',
+            'typeForm1' => 'groupes',
+            'colorationEffectif' => false,
+            'indentationGroupes' => false,
+            'affichageEffectifParStatut' => false,
+            'sousTitreForm1' => 'Sélectionner le groupe d\'étudiants ayant un statut particulier pour lequel vous souhaitez voir des statistiques',
+            'conditionAffichageForm1' => true,
+        ]);
+    }
+
+    /**
+     * @Route("/plusieurs-eval/statuts/{slug}/choisir-evaluations", name="plusieurs_evaluations_statut_choisir_evaluations")
+     */
+    public function plusieursEvaluationsStatutChoisirEvaluations(Request $request, StatisticsManager $statsManager, Statut $statut, EvaluationRepository $repoEval, PointsRepository $repoPoints): Response
+    {
+        $form = $this->createFormBuilder()
+            ->add('evaluations', EntityType::class, [
+                'class' => Evaluation::Class, //On veut choisir des evaluations
+                'constraints' => [
+                    new NotBlank()
+                ],
+                'choice_label' => false, // On n'affichera pas d'attribut de l'entité à côté du bouton pour aider au choix car on liste les entités en utilisant les variables du champ
+                'label' => false, // On n'affiche pas le label du champ
+                'expanded' => true, // Pour avoir des cases
+                'multiple' => true, // à cocher
+                'choices' => $repoEval->findAllByStatut($statut->getId()) // On choisira parmis les evaluations du groupe principal
+            ])
+            ->getForm();
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $evaluations = array();
+            if (count($form->get('evaluations')->getData()) > 0) {
+                $evaluations = $form->get('evaluations')->getData();
+            }
+            return $this->render('statistiques/affichage_stats_classiques.html.twig', [
+                'parties' => $statsManager->calculerStatsPlusieursEvals('statuts', [$statut], $evaluations),
+                'evaluations' => $evaluations,
+                'groupes' => $statut,
+                'titrePage' => 'Consulter les statistiques sur ' . count($evaluations) . ' évaluation(s)',
+                'plusieursEvals' => true,
+            ]);
+        }
+        return $this->render('statistiques/formulaire_parametrage_statistiques.html.twig', [
+            'form' => $form->createView(),
+            'nbForm' => 1,
+            'titrePage' => 'Analyse des résultats d’un statut d’étudiants sur plusieurs évaluations (' . $statut->getNom() . ')',
+            'activerToutSelectionner' => true,
+            'typeForm1' => 'evaluations',
+            'sousTitreForm1' => 'Sélectionner les évaluations pour lesquelles vous souhaitez voir des statistiques',
+            'conditionAffichageForm1' => true,
+            'casBoutonValider' => 4
+        ]);
+    }
+
     ////////////////////////////////////
     //FIN STATS PLUSIEURS EVAL STATUTS//
     ////////////////////////////////////
