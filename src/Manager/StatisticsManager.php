@@ -15,6 +15,47 @@ class StatisticsManager {
         $this->repoEtudiants = $repoEtudiants;
     }
 
+    public function calculerStatsPlusieursEvals($type= '', $groupes = [], $evaluations = []) {
+        $statistiques = [];
+        foreach ($groupes as $groupe) // On récupère les notes du groupe principal et des sous groupes sur toutes les évaluations choisis
+        {
+            $tabPoints = array();
+            switch ($type) {
+                case 'statut' :
+                    foreach ($evaluations as $eval) {
+                        array_push($tabPoints, $this->repoPoints->findAllNotesByGroupe($eval->getId(), $groupe->getId()));
+                    }
+                    break;
+                case 'groupes' :
+                    foreach ($evaluations as $eval) {
+                        array_push($tabPoints, $this->repoPoints->findAllNotesByStatut($eval->getId(), $groupe->getId()));
+                    }
+                    break;
+            }
+            //On crée une copie de tabPoints qui contiendra les valeurs des notes pour simplifier le tableau renvoyé par la requete
+            $copieTabPoints = array();
+            foreach ($tabPoints as $element) {
+                foreach ($element as $point) {
+                    foreach ($point as $note) {
+                        $copieTabPoints[] = $note;
+                    }
+                }
+            }
+            //On remplit le tableau qui contiendra toutes les statistiques du groupe
+            $listeStatsParGroupe[] = array("nom" => $groupe->getNom(),
+                "repartition" => $this->repartition($copieTabPoints),
+                "listeNotes" => $copieTabPoints,
+                "moyenne" => $this->moyenne($copieTabPoints),
+                "ecartType" => $this->ecartType($copieTabPoints),
+                "minimum" => $this->minimum($copieTabPoints),
+                "maximum" => $this->maximum($copieTabPoints),
+                "mediane" => $this->mediane($copieTabPoints)
+            );
+        }
+        $statistiques = [["nom" => "Évaluations", "bareme" => 20, "stats" => $listeStatsParGroupe]];
+        return $statistiques;
+    }
+
     public function calculerStatsEvolution($type = '', $groupes = [], $evaluations = [], $statut = []) {
         $statistiques = array();
         $typeGroupe = array();

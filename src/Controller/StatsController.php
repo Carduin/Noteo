@@ -325,6 +325,136 @@ class StatsController extends AbstractController
     //STATS PLUSIEURS EVAL GROUPE//
     ///////////////////////////////
 
+    /**
+     * @Route("/plusieurs-evaluations/groupes/{typeGraphique}/choisir-groupe", name="plusieurs_evaluations_groupes_choisir_haut_niveau")
+     */
+    public function plusieursEvaluationsGroupesChoisirGroupe(Request $request, $typeGraphique, GroupeEtudiantRepository $repoGroupe): Response
+    {
+        $request->getSession()->set('typeGraphique', $typeGraphique);
+        $choices = $repoGroupe->findHighestEvaluableWith1EvalOrMore();
+        $form = $this->createFormBuilder()
+            ->add('groupes', EntityType::class, [
+                'class' => GroupeEtudiant::Class,
+                'constraints' => [new NotBlank()],
+                'choice_label' => false,
+                'label' => false,
+                'expanded' => true,
+                'multiple' => false,
+                'choices' => $choices // On choisira parmis les groupes de plus haut niveau évaluables qui ont au moins 1 évaluation que les concernent
+            ])
+            ->getForm();
+
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            return $this->redirectToRoute('plusieurs_evaluations_groupes_choisir_sous_groupes', [
+                'slug' => $form->get('groupes')->getData()->getSlug()
+            ]);
+        }
+        return $this->render('statistiques/formulaire_parametrage_statistiques.html.twig', [
+            'form' => $form->createView(),
+            'nbForm' => 1,
+            'colorationEffectif' => false,
+            'indentationGroupes' => false,
+            'casBoutonValider' => 0,
+            'activerToutSelectionner' => false,
+            'titrePage' => 'Analyse des résultats de groupe(s) d’étudiant(s) sur plusieurs évaluations',
+            'typeForm1' => 'groupes',
+            'sousTitreForm1' => 'Sélectionner le groupe pour lequel vous souhaitez voir des statistiques',
+            'conditionAffichageForm1' => true,
+            'affichageEffectifParStatut' => false
+            ]);
+    }
+
+    /**
+     * @Route("/plusieurs-evaluations/groupes/{slug}/choisir-sous-groupes", name="plusieurs_evaluations_groupes_choisir_sous_groupes")
+     */
+    public function plusieursEvaluationsGroupesChoisirSousGroupes(Request $request, GroupeEtudiant $groupe, GroupeEtudiantRepository $repoGroupe): Response
+    {
+        $session = $request->getSession();
+        $typeGraph = $request->getSession()->get('typeGraphique');
+        $sousGroupes = $repoGroupe->findAllOrderedFromNode($groupe);
+        $form = $this->createFormBuilder()
+            ->add('groupes', EntityType::class, [
+                'constraints' => [
+                    new NotBlank()
+                ],
+                'class' => GroupeEtudiant::Class,
+                'choice_label' => false,
+                'label' => false,
+                'expanded' => true,
+                'multiple' => true,
+                'choices' => $sousGroupes
+            ])
+            ->getForm();
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            if (count($form->get('groupes')->getData()) > 0) {
+                $sousGroupes = $form->get('groupes')->getData();
+                $request->getSession()->set('sousGroupes', $sousGroupes);
+                return $this->redirectToRoute('plusieurs_evaluations_groupes_choisir_evaluations', [
+                    'slug' => $groupe->getSlug()
+                ]);
+            }
+        }
+        return $this->render('statistiques/formulaire_parametrage_statistiques.html.twig', [
+            'form' => $form->createView(),
+            'nbForm' => 1,
+            'colorationEffectif' => false,
+            'indentationGroupes' => true,
+            'casBoutonValider' => 3,
+            'activerToutSelectionner' => true,
+            'titrePage' => 'Analyse des résultats de groupe(s) d’étudiant(s) sur plusieurs évaluations',
+            'typeForm1' => 'groupes',
+            'sousTitreForm1' => 'Sélectionner les sous-groupes de ' . $groupe->getNom() . ' pour lesquels vous souhaitez voir des statistiques',
+            'conditionAffichageForm1' => true,
+            'affichageEffectifParStatut' => false
+            ]);
+    }
+
+    /**
+     * @Route("/plusieurs-evaluations/groupes/{slug}/choisir-evaluations", name="plusieurs_evaluations_groupes_choisir_evaluations")
+     */
+    public function plusieursEvaluationsGroupesChoisirEvals(Request $request, EvaluationRepository $repoEval, GroupeEtudiantRepository $repoGroupe, StatisticsManager $statsManager, GroupeEtudiant $groupe): Response
+    {
+        $session = $request->getSession();
+        $typeGraph = $session->get('typeGraphique');
+        $form = $this->createFormBuilder()
+            ->add('evaluations', EntityType::class, [
+                'class' => Evaluation::Class,
+                'choice_label' => false,
+                'label' => false,
+                'expanded' => true,
+                'multiple' => true,
+                'choices' => $groupe->getEvaluations()
+            ])
+            ->getForm();
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $evaluations = $form->get('evaluations')->getData();
+            $listeStatsParGroupe = array(); // On initialise un tableau vide qui contiendra les statistiques des groupes choisis
+            $lesGroupes = array(); // On regroupe le groupe principal et les sous groupes pour faciliter la requete
+            foreach ($request->getSession()->get('sousGroupes') as $sousGroupe) {
+                array_push($lesGroupes, $sousGroupe);
+            }
+            return $this->render('statistiques/affichage_stats_classiques.html.twig', [
+                'parties' => $statsManager->calculerStatsPlusieursEvals('groupes', $lesGroupes, $evaluations),
+                'evaluations' => $evaluations,
+                'groupes' => $lesGroupes,
+                'titrePage' => 'Consulter les statistiques sur ' . count($evaluations) . ' évaluation(s)',
+                'plusieursEvals' => true
+                ]);
+        }
+        return $this->render('statistiques/formulaire_parametrage_statistiques.html.twig', [
+            'form' => $form->createView(),
+            'nbForm' => 1,
+            'titrePage' => 'Analyse des résultats de groupe(s) d’étudiant(s) sur plusieurs évaluations',
+            'activerToutSelectionner' => true,
+            'typeForm1' => 'evaluations',
+            'sousTitreForm1' => 'Sélectionner les évaluations pour lesquelles vous souhaitez voir des statistiques pour les groupes précédemment sélectionnés',
+            'conditionAffichageForm1' => true,
+            'casBoutonValider' => 4
+        ]);
+    }
 
     ///////////////////////////////////
     //FIN STATS PLUSIEURS EVAL GROUPE//
