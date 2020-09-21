@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block titrePage %}Liste des groupes{% endblock %}
+{% block titrePage %}{% trans %}index_titre_page{% endtrans %}{% endblock %}
 
 {% block groupes %}active{% endblock %}
 
@@ -8,7 +8,7 @@
     {% if groupes is not empty %} {# On teste si la chaine représentant l'arbre n'est pas vide : si oui cela veut dire qu'il n'y a aucun groupe #}
         <div class='bouton' align=center>
             <a class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm" href="#"
-               onclick="onReorderTableByHierarchie()">Afficher les groupes de manière hiérarchique</a>
+               onclick="onReorderTableByHierarchie()">{% trans %}index_label_btn_ordre_hierarchique{% endtrans %}</a>
         </div>
         <div class="table-responsive table-hover">
             <table class="table" id="table">
@@ -41,21 +41,21 @@
                         <td>
                             <a href='{{ path("groupe_etudiant_show", {slug : groupe.slug}) }}'><i class='icon-eye'
                                                                                                   data-toggle='tooltip'
-                                                                                                  title='Consulter {{ groupe.nom }}'></i></a>
+                                                                                                  title='{% trans with {'nom': groupe.nom } %}tooltip_groupe_consulter{% endtrans %}'></i></a>
                             <a {% if groupe.estEvaluable %}href='{{ path("evaluation_new", {slug : groupe.slug}) }}' {% endif %}><i
                                         class='icon-eval-simple' data-toggle='tooltip'
-                                        title='Créer une évaluation pour {{ groupe.nom }}'></i></a>
+                                        title='{% trans with {'nom': groupe.nom } %}tooltip_groupe_eval{% endtrans %}'></i></a>
                             <a {% if groupe.estEvaluable %} href='{{ path('evaluation_avec_parties_new', {slug: groupe.slug}) }}' {% endif %}><i
                                         class='icon-eval-composee' data-toggle='tooltip'
-                                        title='Créer une évaluation avec des parties pour {{ groupe.nom }}'></i></a>
+                                        title='{% trans with {'nom': groupe.nom } %}tooltip_groupe_eval_parties{% endtrans %}'></i></a>
                             <a {% if is_granted('ROLE_ADMIN') %} href='{{ path("groupe_etudiant_new_sousGroupe", {slug : groupe.slug}) }}' {% endif %}><i
                                         class='icon-plus' data-toggle='tooltip'
-                                        title='Créer un sous groupe à partir de {{ groupe.nom }}'></i></a>
+                                        title='{% trans with {'nom': groupe.nom } %}tooltip_groupe_creer{% endtrans %}'></i></a>
                             <a {% if is_granted('ROLE_ADMIN') %} href="{{ path("groupe_etudiant_edit", {slug:groupe.slug}) }}" {% endif %}><i
                                         class='icon-pencil-1' data-toggle='tooltip'
-                                        title='Modifier {{ groupe.nom }}'></i></a>
+                                        title='{% trans with {'nom': groupe.nom } %}tooltip_groupe_modifier{% endtrans %}'></i></a>
                             <a {% if is_granted('ROLE_ADMIN') %} href='{{ path ("groupe_etudiant_delete", {slug:groupe.slug}) }}' onclick='EcritureModale("{{ path ("groupe_etudiant_delete", {slug:groupe.slug}) }}")' data-toggle='modal' {% endif %}><i
-                                        class='icon-trash' data-toggle='tooltip' title='Supprimer {{ groupe.nom }}'></i></a>
+                                        class='icon-trash' data-toggle='tooltip' title='{% trans with {'nom': groupe.nom } %}tooltip_groupe_supprimer{% endtrans %}'></i></a>
                         </td>
                     </tr>
                 {% endfor %}
@@ -138,8 +138,18 @@
             language: {
                 // Suppression du label Rechercher et ajout du placeholder
                 search: "_INPUT_",
-                searchPlaceholder: "Rechercher...",
-                "url": "{{ asset('tradfr.json') }}"
+                searchPlaceholder: "{% trans %}rechercher{% endtrans %}",
+                oPaginate: {
+                    sFirst:      "{% trans %}premier{% endtrans %}",
+                    sPrevious:   "{% trans %}precedent{% endtrans %}",
+                    sNext:       "{% trans %}suivant{% endtrans %}",
+                    sLast:       "{% trans %}dernier{% endtrans %}"
+                },
+                sProcessing:     "{% trans %}traitement{% endtrans %}",
+                sLoadingRecords: "{% trans %}chargement{% endtrans %}",
+                sZeroRecords:    "{% trans %}aucune_correspondance{% endtrans %}",
+                sEmptyTable:     "{% trans %}table_vide{% endtrans %}",
+                sLengthMenu:     "{% trans %}afficher_x_elements{% endtrans %}"
             },
             columns: [null, null, {
                 "orderable": false

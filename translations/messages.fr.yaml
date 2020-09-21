@@ -1,0 +1,46 @@
+# TRADUCTIONS COMMUNES
+
+# login
+
+
+# Barre de menu
+groupes: Groupes
+statuts_etudiants: Statuts étudiants
+etudiants: Étudiants
+enseignants: Enseignants
+evaluations: Évaluations
+mes_evaluations: Mes évaluations
+autres_evaluations: Autres évaluations
+statistiques: Statistiques
+tutoriels: Tutoriels
+reset_app: Réinitialiser l'application
+
+# menu déroulant profil
+consulter_profil: Consulter mon profil
+modifier_mdp : Modifier mon mot de passe
+logout: Déconnexion
+
+
+# GROUPES ETUDIANTS
+# Page index
+index_titre_page: Liste des groupes
+index_label_btn_ordre_hierarchique : Afficher les groupes de manière hiérarchique
+tooltip_groupe_consulter: Consulter nom
+tooltip_groupe_eval: Créer une évaluation pour nom
+tooltip_groupe_eval_parties: Créer une évaluation avec des parties pour nom
+tooltip_groupe_creer: Créer un sous groupe à partir de nom
+tooltip_groupe_modifier: Modifier nom
+tooltip_groupe_supprimer: Supprimer nom
+
+
+# TRADUCTIONS DATATABLES
+afficher_x_elements: Afficher _MENU_ éléments
+rechercher: Rechercher...
+suivant: Suivant
+precedent: Précédent
+premier: Premier
+dernier: Dernier
+traitement: Traitement en cours...
+chargement: Chargement en cours...
+table_vide: Aucune donnée disponible dans le tableau
+aucune_correspondance: Aucun élément à afficher
