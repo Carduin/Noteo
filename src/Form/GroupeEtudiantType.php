@@ -43,10 +43,10 @@ class GroupeEtudiantType extends AbstractType
               'mapped' => false,
               'constraints' => [new File([
                   'maxSize' => '16Mi',
-                  'uploadFormSizeErrorMessage' => 'Le fichier ajouté est trop volumineux'
+                  'uploadFormSizeErrorMessage' => $this->translator->trans('fichier_trop_volumineux')
               ])],
               'attr' => [
-                'placeholder' => 'Aucun fichier choisi',
+                'placeholder' => $this->translator->trans('pas_fichier_choisi'),
                 'accept' => '.csv'
               ]
             ])
