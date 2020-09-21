@@ -35,7 +35,23 @@ consulter_profil: Consulter mon profil
 modifier_mdp : Modifier mon mot de passe
 logout: Déconnexion
 
+# titres de colonnes
+nom: Nom
+effectif: Effectif
+description: Description
+createur: Créateur
+evaluable: Évaluable
+
+# divers
+avertissement: Avertissement
+aide: Aide
+
 # GROUPES ETUDIANTS
+# modales
+modale_groupe_evaluable: Cet attribut d'un groupe détermine si vous pourrez, ou non, créer des évaluations pour celui-ci.
+modale_groupe_supprimer: 'Êtes-vous sur de vouloir supprimer le groupe ? <br>Cette action supprimera :<ul><li>Tous ses sous-groupes</li><li>Toutes les évaluations associées</li></ul>'
+modale_groupe_supprimer_confirmer: Supprimer le groupe
+
 # Page index
 index_titre_page: Liste des groupes
 index_label_btn_ordre_hierarchique : Afficher les groupes de manière hiérarchique
@@ -45,6 +61,8 @@ tooltip_groupe_eval_parties: Créer une évaluation avec des parties pour nom
 tooltip_groupe_creer: Créer un sous groupe à partir de nom
 tooltip_groupe_modifier: Modifier nom
 tooltip_groupe_supprimer: Supprimer nom
+pas_de_groupes: Vous n'avez aucun groupe d'étudiants
+importer_groupe: Importer un groupes d'étudiants
 
 
 # TRADUCTIONS DATATABLES

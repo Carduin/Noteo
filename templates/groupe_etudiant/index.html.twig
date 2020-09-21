@@ -14,11 +14,11 @@
             <table class="table" id="table">
                 <thead>
                 <tr>
-                    <th>Nom</th>
-                    <th>Effectif</th>
-                    <th>Description</th>
-                    <th>Créateur</th>
-                    <th>Évaluable <a href="#HelpEvaluable" data-toggle='modal' data-target='#HelpEvaluable'><i
+                    <th>{% trans %}nom{% endtrans %}</th>
+                    <th>{% trans %}effectif{% endtrans %}</th>
+                    <th>{% trans %}description{% endtrans %}</th>
+                    <th>{% trans %}createur{% endtrans %}</th>
+                    <th>{% trans %}evaluable{% endtrans %} <a href="#HelpEvaluable" data-toggle='modal' data-target='#HelpEvaluable'><i
                                     class="icon-help-circled"></i></a></th>
                     <th></th>
                 </tr>
@@ -64,11 +64,10 @@
         </div>
     {% else %}
         <div class="info">
-            <h1 class="h4 mb-0 text-gray-800">Vous n'avez aucun groupe d'étudiants</h1>
+            <h1 class="h4 mb-0 text-gray-800">{% trans %}pas_de_groupes{% endtrans %}</h1>
         </div>
         <div class='bouton' align=center>
-            <a href="{{ path('groupe_etudiant_new') }}" class="d-sm-inline-block btn btn-sm btn-primary shadow-sm">Importer
-                un groupe d'étudiants</a>
+            <a href="{{ path('groupe_etudiant_new') }}" class="d-sm-inline-block btn btn-sm btn-primary shadow-sm">{% trans %}importer_groupe{% endtrans %}</a>
         </div>
     {% endif %}
     <div class="modal fade" id="delGroupe" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
@@ -76,22 +75,16 @@
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Avertissement</h5>
+                    <h5 class="modal-title" id="exampleModalLabel">{% trans %}avertissement{% endtrans %}</h5>
                     <button class="close" type="button" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">x</span>
                     </button>
                 </div>
                 <div class="modal-body">
-                    Êtes-vous sur de vouloir supprimer le groupe ? <br>
-                    Cette action supprimera :
-                    <ul>
-                        <li>Tous ses sous-groupes</li>
-                        <li>Toutes les évaluations associées</li>
-                    </ul>
+                    {{ 'modale_groupe_supprimer'|trans|raw }}
                 </div>
                 <div class="modal-footer">
-                    <a class="d-sm-inline-block btn btn-sm btn-primary shadow-sm" id="BoutonSupprimerModale" href="#">Supprimer
-                        le groupe</a>
+                    <a class="d-sm-inline-block btn btn-sm btn-primary shadow-sm" id="BoutonSupprimerModale" href="#">{% trans %}modale_groupe_supprimer_confirmer{% endtrans %}</a>
                 </div>
             </div>
         </div>
@@ -102,13 +95,13 @@
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Aide</h5>
+                    <h5 class="modal-title" id="exampleModalLabel">{% trans %}aide{% endtrans %}</h5>
                     <button class="close" type="button" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">x</span>
                     </button>
                 </div>
                 <div align=center class="modal-body">
-                    Cet attribut d'un groupe détermine si vous pourrez, ou non, créer des évaluations pour celui-ci.
+                    {% trans %}modale_groupe_evaluable{% endtrans %}
                 </div>
                 <div class="modal-footer">
                     <button class="d-sm-inline-block btn btn-sm btn-primary shadow-sm" type="button"
