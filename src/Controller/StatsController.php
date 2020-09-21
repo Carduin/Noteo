@@ -79,7 +79,6 @@ class StatsController extends AbstractController
         ]);
     }
 
-    //<editor-fold desc="Statistiques évaluation simple">
     ///////////////////////
     ///STATS EVAL SIMPLE///
     ///////////////////////
@@ -197,9 +196,7 @@ class StatsController extends AbstractController
     ///////////////////////
     ////FIN EVAL SIMPLE////
     ///////////////////////
-    //</editor-fold>
 
-    //<editor-fold desc="Statistiques évaluation parties">
     ///////////////////////
     ///STATS EVAL PARTIE///
     ///////////////////////
@@ -318,9 +315,7 @@ class StatsController extends AbstractController
     ///////////////////////
     ////FIN EVAL PARTIE////
     ///////////////////////
-    //</editor-fold>
 
-    //<editor-fold desc="Statistiques plusieurs évals groupes">
     ///////////////////////////////
     //STATS PLUSIEURS EVAL GROUPE//
     ///////////////////////////////
@@ -459,9 +454,7 @@ class StatsController extends AbstractController
     ///////////////////////////////////
     //FIN STATS PLUSIEURS EVAL GROUPE//
     ///////////////////////////////////
-    //</editor-fold>
 
-    //<editor-fold desc="Statistiques plusieurs évals statuts">
     ////////////////////////////////
     //STATS PLUSIEURS EVAL STATUTS//
     ////////////////////////////////
@@ -553,9 +546,7 @@ class StatsController extends AbstractController
     ////////////////////////////////////
     //FIN STATS PLUSIEURS EVAL STATUTS//
     ////////////////////////////////////
-    //</editor-fold>
 
-    //<editor-fold desc="Statistiques fiche étudiant">
     ////////////////////////
     //STATS FICHE ETUDIANT//
     ////////////////////////
@@ -617,9 +608,7 @@ class StatsController extends AbstractController
     /////////////////////////////
     //FIN STATS FICHE ETUDIANT //
     /////////////////////////////
-    //</editor-fold>
 
-    //<editor-fold desc="Statistiques évolution groupe">
     //////////////////////////
     //STATS EVOLUTION GROUPE//
     //////////////////////////
@@ -770,9 +759,7 @@ class StatsController extends AbstractController
     //////////////////////////////
     //FIN STATS EVOLUTION GROUPE//
     //////////////////////////////
-    //</editor-fold>
 
-    //<editor-fold desc="Statistiques évolution statuts">
     ///////////////////////////////
     ////STATS EVOLUTION STATUTS////
     ///////////////////////////////
@@ -973,9 +960,7 @@ class StatsController extends AbstractController
     ///////////////////////////////
     //FIN STATS EVOLUTION STATUTS//
     ///////////////////////////////
-    //</editor-fold>
 
-    //<editor-fold desc="Statistiques comparaison évaluations">
     /////////////////////////
     ////STATS COMPARAISON////
     /////////////////////////
@@ -1126,9 +1111,7 @@ class StatsController extends AbstractController
     /////////////////////////
     //FIN STATS COMPARAISON//
     /////////////////////////
-    //</editor-fold>
 
-    //<editor-fold desc="Envoi du mail aux étudiants">
     ///////////////////////
     ///////ENVOI MAIL//////
     ///////////////////////
@@ -1253,5 +1236,4 @@ class StatsController extends AbstractController
     ///////////////////////
     /////FIN ENVOI MAIL////
     ///////////////////////
-    //</editor-fold>
 }
