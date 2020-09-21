@@ -2,22 +2,24 @@
 
 namespace App\Form;
 
-use App\Entity\GroupeEtudiant;
-use App\Entity\Enseignant;
 use App\Entity\Etudiant;
-use Doctrine\ORM\EntityRepository;
-use App\Repository\GroupeEtudiantRepository;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Translation\TranslatorInterface;
 
 class GroupeEtudiantEditType extends AbstractType
 {
+    private $translator;
+
+    public function __construct(TranslatorInterface $translator) {
+        $this->translator = $translator;
+    }
+
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
       $builder
@@ -30,7 +32,7 @@ class GroupeEtudiantEditType extends AbstractType
           ])
 
           ->add('estEvaluable', ChoiceType::class, [
-            'choices' => ['Oui' => true, 'Non' => false],
+            'choices' => [$this->translator->trans('oui') => true, $this->translator->trans('non') => false],
             'data' => $options['estEvaluable'],
             'expanded' => true, // Pour avoir des boutons radio
             'label_attr' =>  [

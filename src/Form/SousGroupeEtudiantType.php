@@ -19,6 +19,7 @@ class SousGroupeEtudiantType extends AbstractType
     public function __construct(TranslatorInterface $translator) {
         $this->translator = $translator;
     }
+
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
       $builder
