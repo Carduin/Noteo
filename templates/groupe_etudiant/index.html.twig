@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block titrePage %}{% trans %}index_titre_page{% endtrans %}{% endblock %}
+{% block titrePage %}{% trans %}index_groupe_titre_page{% endtrans %}{% endblock %}
 
 {% block groupes %}active{% endblock %}
 
@@ -37,7 +37,7 @@
                         <td>{{ groupe.etudiants|length }}</td>
                         <td>{{ groupe.description }}</td>
                         <td>{{ groupe.enseignant.prenom }} {{ groupe.enseignant.nom }}</td>
-                        <td>{{ groupe.estEvaluable ? 'Oui' : 'Non' }}</td>
+                        <td>{{ groupe.estEvaluable ? 'oui' | trans  : 'non' | trans }}</td>
                         <td>
                             <a href='{{ path("groupe_etudiant_show", {slug : groupe.slug}) }}'><i class='icon-eye'
                                                                                                   data-toggle='tooltip'

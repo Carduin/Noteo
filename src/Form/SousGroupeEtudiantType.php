@@ -2,20 +2,23 @@
 
 namespace App\Form;
 
-use App\Entity\GroupeEtudiant;
 use App\Entity\Etudiant;
-use App\Entity\Enseignant;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Translation\TranslatorInterface;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 
 class SousGroupeEtudiantType extends AbstractType
 {
+    private $translator;
+
+    public function __construct(TranslatorInterface $translator) {
+        $this->translator = $translator;
+    }
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
       $builder
@@ -27,7 +30,7 @@ class SousGroupeEtudiantType extends AbstractType
             ]
           ])
           ->add('estEvaluable', ChoiceType::class, [
-            'choices' => ['Oui' => true, 'Non' => false],
+            'choices' => [$this->translator->trans('oui') => true, $this->translator->trans('non') => false],
             'data' => true,
             'expanded' => true,
             'label_attr' =>  [

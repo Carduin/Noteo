@@ -1,5 +1,4 @@
-# TRADUCTIONS COMMUNES
-
+####### TRADUCTIONS COMMUNES
 #pages erreurs
 aie: Aïe
 erreur: Une erreur est survenue
@@ -49,15 +48,16 @@ avertissement: Avertissement
 aide: Aide
 oui: Oui
 non: Non
+enregistrer: Enregistrer
 
-# GROUPES ETUDIANTS
+####### GROUPES ETUDIANTS
 # modales
 modale_groupe_evaluable: Cet attribut d'un groupe détermine si vous pourrez, ou non, créer des évaluations pour celui-ci.
 modale_groupe_supprimer: 'Êtes-vous sur de vouloir supprimer le groupe ? <br>Cette action supprimera :<ul><li>Tous ses sous-groupes</li><li>Toutes les évaluations associées</li></ul>'
 modale_groupe_supprimer_confirmer: Supprimer le groupe
 
 # Page index
-index_titre_page: Liste des groupes
+index_groupe_titre_page: Liste des groupes
 index_label_btn_ordre_hierarchique : Afficher les groupes de manière hiérarchique
 tooltip_groupe_consulter: Consulter nom
 tooltip_groupe_eval: Créer une évaluation pour nom
@@ -68,12 +68,25 @@ tooltip_groupe_supprimer: Supprimer nom
 pas_de_groupes: Vous n'avez aucun groupe d'étudiants
 importer_groupe: Importer un groupes d'étudiants
 
-# Page consulter
-show_groupe_description: Description du groupe
+# Page modifier
+modifier_groupe_titre_page: Modifier nom
+
+# Page nouveau sous groupe
+nouveau_sous_groupe_titre_page: Créer un sous groupe pour nom
+
+# formulaires
+form_groupe_nom: Nom du groupe
+form_groupe_description: Description du groupe
+form_groupe_ajouter_etudiants: Ajouter des étudiants au groupe
+form_groupe_retirer_etudiants: Retirer des étudiants du groupe
+form_groupe_fichier_csv: Fichier CSV (séparateur ;)
+form_groupe_telecharger_modele: Télécharger un modèle
+groupe_creer_sous_groupe: Créer le sous groupe
+groupe_creer_groupe: Créer le groupe
 
 
 
-# TRADUCTIONS DATATABLES
+####### TRADUCTIONS DATATABLES
 afficher_x_elements: Afficher _MENU_ éléments
 rechercher: Rechercher...
 suivant: Suivant
@@ -82,5 +95,5 @@ premier: Premier
 dernier: Dernier
 traitement: Traitement en cours...
 chargement: Chargement en cours...
-table_vide: Aucune donnée disponible dans le tableau
+table_vide: Aucune donnée disponible
 aucune_correspondance: Aucun élément à afficher

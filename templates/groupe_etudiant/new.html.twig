@@ -6,28 +6,6 @@
 
 {% block contenu %}
     {{ include('groupe_etudiant/_ajout_haut_niveau_form.html.twig') }}
-    <!-- Modale du ? de évaluable -->
-    <div class="modal fade" id="HelpEvaluable" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-         aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Aide</h5>
-                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">x</span>
-                    </button>
-                </div>
-                <div align=center class="modal-body">
-                    Cet attribut d'un groupe détermine si vous pourrez, ou non, créer des évaluations pour celui-ci.
-                </div>
-                <div class="modal-footer">
-                    <button class="d-sm-inline-block btn btn-sm btn-primary shadow-sm" type="button"
-                            data-dismiss="modal">Ok
-                    </button>
-                </div>
-            </div>
-        </div>
-    </div>
 {% endblock %}
 
 {% block javascripts %}
