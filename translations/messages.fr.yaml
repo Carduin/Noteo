@@ -120,6 +120,26 @@ statut_creer_statut: Créer le groupe
 ####### REINITIALISATION APPLICATION
 app_reset_texte: 'Réinitialiser l''application aura pour effet de supprimer de l''application: <ul><li>Tous les groupes</li><li>Tous les groupes d''étudiants ayant un statut particulier</li><li>Toutes les évaluations</li><li>Tous les étudiants</li></ul>Les profils des enseignants ne seront pas supprimés et les statistiques ne seront plus consultables.'
 
+####### TUTORIELS
+tuto_titre_creer_eval_parties: Créer une évaluation par parties
+tuto_texte_creer_eval_parties: Découvrez comment créer des évaluations par parties, pour pouvoir obtenir une plus grande précision sur les statistiques.
+tuto_titre_eval_simple: Analyse d’une évaluation simple
+tuto_texte_eval_simple: Découvrez comment obtenir des statistiques sur une évaluation spécifique dans laquelle l’enseignant a saisi une note sur 20 pour chaque étudiant.
+tuto_titre_eval_parties: Analyse d’une évaluation par parties
+tuto_texte_eval_parties: Découvrez comment obtenir des statistiques sur une évaluation spécifique dans laquelle l’enseignant a saisi pour chaque étudiant une note sur les différentes parties composant son évaluation.
+tuto_titre_plusieurs_evals_groupes: Analyse des résultats de groupe(s) d’étudiant(s) sur plusieurs évaluations
+tuto_texte_plusieurs_evals_groupes: Découvrez comment observer les résultats de un ou plusieurs groupes d’étudiants sur plusieurs évaluations.
+tuto_titre_plusieurs_evals_statut: Analyse des résultats d’un statut d’étudiants sur plusieurs évaluations
+tuto_texte_plusieurs_evals_statut: Découvrez comment observer les résultats d'un groupe d’étudiants ayant un statut particulier sur plusieurs évaluations.
+tuto_titre_comparaison: Comparaison des résultats d’une évaluation spécifique à un ensemble d’évaluations
+tuto_texte_comparaison: Découvrez comment comparer les résultats obtenus à une évaluation par rapport à un ensemble d’évaluations.
+tuto_titre_fiche_etudiant: Évolution chronologique des résultats d’un étudiant
+tuto_texte_fiche_etudiant: Découvrez comment observer, à partir de plusieurs évaluations, l’évolution chronologique des notes d’un étudiant.
+tuto_titre_evolution_groupe: Évolution des résultats des étudiants d'un groupe sur plusieurs évaluations
+tuto_texte_evolution_groupe: Découvrez comment obtenir, pour chaque étudiant d'un groupe, une courbe détaillant l'évolution chronologique des résultats des l'étudiant aux évaluations choisies.
+tuto_titre_evolution_statut: Évolution des résultats des étudiants d'un statut sur plusieurs évaluations
+tuto_texte_evolution_statut: Découvrez comment obtenir, pour chaque étudiant d'un statut, une courbe détaillant l'évolution chronologique des résultats des l'étudiant aux évaluations choisies.
+
 ####### TRADUCTIONS DATATABLES
 afficher_x_elements: Afficher _MENU_ éléments
 rechercher: Rechercher...
