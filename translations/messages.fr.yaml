@@ -1,7 +1,22 @@
 # TRADUCTIONS COMMUNES
 
-# login
+#pages erreurs
+aie: Aïe
+erreur: Une erreur est survenue
+401: Utilisateur non authentifié
+403: Accès refusé
+404: Page non trouvée
+500: Erreur serveur
+503: Erreur serveur
+504: Le serveur n'a pas répondu
 
+# login
+placeholder_mail: Mail
+placeholder_mdp: Mot de passe
+remember_me: Se souvenir de moi
+log_in: Se connecter
+acceder_noteo: Accéder à Noteo
+connecte_en_tant_que: Vous êtes connecté(e) en tant que
 
 # Barre de menu
 groupes: Groupes
@@ -19,7 +34,6 @@ reset_app: Réinitialiser l'application
 consulter_profil: Consulter mon profil
 modifier_mdp : Modifier mon mot de passe
 logout: Déconnexion
-
 
 # GROUPES ETUDIANTS
 # Page index
