@@ -1,0 +1,44 @@
+{{ form_errors(form.parties) }}
+<div class="row">
+    <div class="col-lg-4">
+    </div>
+    <div class="col-lg-4">
+        <div class="table-responsive table-hover">
+            <table class="table" id="parties">
+                <thead>
+                <th>
+                    {% if activerToutSelectionner %}
+                        <input type="checkbox" onclick="cocherToutesLesCases('form[parties][]', this.checked )"
+                               name="checkbox" title="Tout cocher"/>
+                    {% endif %}
+                </th>
+                <th>Intitulé</th>
+                <th>Barème</th>
+                </thead>
+                <tbody>
+                {% for partie in form.parties %}
+                    {# store index of the category in a variable #}
+                    {% set index = partie.vars.value %}
+                    {# get entity object from its index in the Categories Field #}
+                    {% set entity = form.parties.vars.choices[index].data %}
+                    <tr>
+                        <td>{{ form_widget(form.parties[index]) }}</td>
+                        <td>
+                            {# Indentation du groupe en fonction de son niveau pour avoir une décomposition #}
+                            {% if entity.lvl > 0 %}
+                                {% for i in 1.. entity.lvl %}
+                                    &emsp;
+                                {% endfor %}
+                            {% endif %}
+                            {{ entity.intitule }}
+                        </td>
+                        <td>{{ entity.bareme }}</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="col-lg-4">
+    </div>
+</div>

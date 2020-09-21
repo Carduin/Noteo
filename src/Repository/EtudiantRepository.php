@@ -58,7 +58,7 @@ class EtudiantRepository extends ServiceEntityRepository
      * @return Etudiant[] Returns an array of Etudiant objects
      */
 
-    public function findAllConcernedByAtLeastOneEvaluation() // ne retourne que les statuts qui ont des étudiants
+    public function findAllParticipatedAtLeastOneEvaluation() // ne retourne que les statuts qui ont des étudiants
     {
         return $this->getEntityManager()->createQuery('
         SELECT e

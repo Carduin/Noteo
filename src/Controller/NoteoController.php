@@ -23,7 +23,7 @@ class NoteoController extends AbstractController
      */
     public function tutoriels()
     {
-        return $this->render('tutoriels/pageTutoriels.html.twig');
+        return $this->render('tutoriels/page_tutoriels.html.twig');
     }
 
     /**

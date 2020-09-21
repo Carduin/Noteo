@@ -1,0 +1,298 @@
+{% extends 'base.html.twig' %}
+
+{% block titrePage %}{{ titrePage }}{% endblock %}
+
+{% block statistiques %}active{% endblock %}
+
+{% block contenu %}
+    {% set afficherBtnSuivant = false %}
+    {{ form_start(form) }}
+    {# Section 1 (premier formulaire affichable) #}
+    {% if conditionAffichageForm1 %}
+        {% set afficherBtnSuivant = true %}
+        <h1 class="h4 mb-0 text-gray-800">{{ sousTitreForm1 | default("") }}</h1>
+        <br>
+        {% if messageWarningForm1 is defined %}
+            <span style="font-size:15px"><i class="icon-attention-circled"></i></span>{{ messageWarningForm1 }}<br/><br/>
+        {% endif %}
+        {% if typeForm1 == 'evaluations' %}
+            {{ include('statistiques/_form_evaluations.html.twig')}}
+        {% elseif typeForm1 == 'groupes' %}
+            {{ include('statistiques/_form_groupes.html.twig')}}
+        {% elseif typeForm1 == 'statuts' %}
+            {% include('statistiques/_form_statuts.html.twig') %}
+        {% elseif typeForm1 == 'etudiants' %}
+            {% include('statistiques/_form_etudiants.html.twig') %}
+        {% elseif typeForm1 == 'parties' %}
+            {% include('statistiques/_form_parties.html.twig') %}
+        {% endif %}
+    {% else %}
+        <div class="info">
+            <h5 class="h5 mb-0 text-gray-800">{{ messageAlternatifForm1 | default("") | raw }}</h5>
+        </div>
+    {% endif %}
+
+    {% if nbForm >= 2 %}
+        {# Section 2 (deuxième formulaire affichable) #}
+        {% if conditionAffichageForm2 %}
+            {% set afficherBtnSuivant = true %}
+            <h1 class="h4 mb-0 text-gray-800">{{ sousTitreForm2 | default("") }}</h1>
+            <br>
+            {% if messageWarningForm2 is defined %}
+                <span style="font-size:15px"><i class="icon-attention-circled"></i></span>{{ messageWarningForm2 }}<br/><br/>
+            {% endif %}
+            {% if typeForm2 == 'evaluations' %}
+                {{ include('statistiques/_form_evaluations.html.twig')}}
+            {% elseif typeForm2 == 'groupes' %}
+                {{ include('statistiques/_form_groupes.html.twig')}}
+            {% elseif typeForm2 == 'statuts' %}
+                {% include('statistiques/_form_statuts.html.twig') %}
+            {% elseif typeForm2 == 'etudiants' %}
+                {% include('statistiques/_form_etudiants.html.twig') %}
+            {% elseif typeForm2 == 'parties' %}
+                {% include('statistiques/_form_parties.html.twig') %}
+            {% endif %}
+        {% else %}
+            <div class="info">
+                <h5 class="h5 mb-0 text-gray-800">{{ messageAlternatifForm2 | default("") | raw }}</h5>
+            </div>
+        {% endif %}
+    {% endif %}
+
+    {% if nbForm >= 3 %}
+        {# Section 3 (troisème formulaire affichable) #}
+        {% if conditionAffichageForm3 %}
+            {% set afficherBtnSuivant = true %}
+            <h1 class="h4 mb-0 text-gray-800">{{ sousTitreForm3 | default("") }}</h1>
+            <br>
+            {% if messageWarningForm2 is defined %}
+                <span style="font-size:15px"><i class="icon-attention-circled"></i></span>{{ messageWarningForm3 }}<br/><br/>
+            {% endif %}
+            {% if typeForm3 == 'evaluations' %}
+                {{ include('statistiques/_form_evaluations.html.twig')}}
+            {% elseif typeForm3 == 'groupes' %}
+                {{ include('statistiques/_form_groupes.html.twig')}}
+            {% elseif typeForm3 == 'statuts' %}
+                {{ include('statistiques/_form_statuts.html.twig') }}
+            {% elseif typeForm3 == 'etudiants' %}
+                {% include('statistiques/_form_etudiants.html.twig') %}
+            {% elseif typeForm3 == 'parties' %}
+                {% include('statistiques/_form_parties.html.twig') %}
+            {% endif %}
+        {% else %}
+            <div class="info">
+                <h5 class="h5 mb-0 text-gray-800">{{ messageAlternatifForm3 | default("") | raw }}</h5>
+            </div>
+        {% endif %}
+    {% endif %}
+
+    {% if afficherBtnSuivant %}
+        <div class='bouton' align=center>
+            <button class="d-sm-inline-block btn btn-sm btn-primary shadow-sm" id="valider">Suivant</button>
+        </div>
+    {% endif %}
+    {{ form_end(form) }}
+{% endblock %}
+
+{% block datatables %}
+    <script type="text/javascript">
+        //Datatables pour le formulaire évaluation
+        var tableEvaluations = $('#evaluations').DataTable({
+            language: {
+                // Suppression du label Rechercher et ajout du placeholder
+                search: "_INPUT_",
+                searchPlaceholder: "Rechercher...",
+                "url": "{{ asset('tradfr.json') }}"
+            },
+            order: [2, 'desc'],
+            columns: [{"orderable": false}, null, null, {"orderable": false}, null],
+            lengthMenu: [
+                [15, 30, 45, -1],
+                [15, 30, 45, "Tout"]
+            ],
+            columnDefs: [{
+                "sType": "date-eu",
+                targets: 2
+            }],
+            pageLength: {{ app.user.preferenceNbElementsTableaux }}, <!-- Pour que le nombre d'éléments affichés par défaut soit celui de la préference de l'utilisateur -->
+            info: false,
+            "fnInitComplete": function (oSettings, json) {
+                $("[name='form[evaluations]']").first().attr('checked', true)  //Pour cocher le premier choix par défaut
+            }
+        });
+        {% if affichageEffectifParStatut is defined and affichageEffectifParStatut %}
+        {% set tableauColonnesDatatablesGroupes = [{"orderable": false}, null, null, null, {"orderable": false}, {"orderable": false}] %}
+        {% else %}
+        {% set tableauColonnesDatatablesGroupes = [{"orderable": false}, null, null, {"orderable": false}, {"orderable": false}] %}
+        {% endif %}
+        var tableGroupes = $('#groupes').DataTable({
+            language: {
+                // Suppression du label Rechercher et ajout du placeholder
+                search: "_INPUT_",
+                searchPlaceholder: "Rechercher...",
+                "url": "{{ asset('tradfr.json') }}"
+            },
+            aaSorting: [],
+            columns: {{ tableauColonnesDatatablesGroupes|json_encode()|raw }},
+            lengthMenu: [
+                [15, 30, 45, -1],
+                [15, 30, 45, "Tout"]
+            ],
+            pageLength: {{ app.user.preferenceNbElementsTableaux }}, <!-- Pour que le nombre d'éléments affichés par défaut soit celui de la préference de l'utilisateur -->
+            info: false,
+            "fnInitComplete": function (oSettings, json) {
+                $("[name='form[groupes]']").first().attr('checked', true)  //Pour cocher le premier choix par défaut
+            }
+        });
+        var tableStatuts = $('#statuts').DataTable({
+            language: {
+                // Suppression du label Rechercher et ajout du placeholder
+                search: "_INPUT_",
+                searchPlaceholder: "Rechercher...",
+                "url": "{{ asset('tradfr.json') }}"
+            },
+            order: [
+                [1, "asc"]
+            ],
+            columns: [{"orderable": false}, null, null, null],
+            lengthMenu: [
+                [15, 30, 45, -1],
+                [15, 30, 45, "Tout"]
+            ],
+            pageLength: {{ app.user.preferenceNbElementsTableaux }}, <!-- Pour que le nombre d'éléments affichés par défaut soit celui de la préference de l'utilisateur -->
+            info: false,
+        });
+        var tableEtudiants = $('#etudiants').DataTable({
+            language: {
+                // Suppression du label Rechercher et ajout du placeholder
+                search: "_INPUT_",
+                searchPlaceholder: "Rechercher...",
+                "url": "{{ asset('tradfr.json') }}"
+            },
+            order: [1, 'asc'],
+            columns: [{"orderable": false}, null, null, {"orderable": false}],
+            lengthMenu: [
+                [15, 30, 45, -1],
+                [15, 30, 45, "Tout"]
+            ],
+            pageLength: {{ app.user.preferenceNbElementsTableaux }}, <!-- Pour que le nombre d'éléments affichés par défaut soit celui de la préference de l'utilisateur -->
+            info: false,
+            "fnInitComplete": function (oSettings, json) {
+                $("[name='form[etudiants]']").first().attr('checked', true)  //Pour cocher le premier choix par défaut
+            }
+        });
+
+        $("[name='form']").on('submit', function () {
+            tableEvaluations.search("").draw(); //Pour annuler la recherche effectuée dans le champ en haut à droite du tableau
+            tableEvaluations.rows().nodes().page.len(-1).draw();
+            tableGroupes.search("").draw();
+            tableGroupes.rows().nodes().page.len(-1).draw();
+            tableStatuts.search("").draw();
+            tableStatuts.rows().nodes().page.len(-1).draw();
+            tableEtudiants.search("").draw();
+            tableEtudiants.rows().nodes().page.len(-1).draw();
+            });
+    </script>
+{% endblock %}
+
+{% block javascripts %}
+    <script>
+        window.onload = function () {
+            checkCasesCocheesPage()
+        }
+        $("[name='checkbox']").on('click', function () {
+            checkCasesCocheesPage()
+        })
+        //Event listerner pour déclencher le check à chaque case cochée
+        $("[name='form[groupes][]']").on('click', function () {
+            checkCasesCocheesPage()
+        })
+        $("[name='form[statuts][]']").on('click', function () {
+            checkCasesCocheesPage()
+        })
+        $("[name='form[parties][]']").on('click', function () {
+            checkCasesCocheesPage()
+        })
+        $("[name='form[evaluations][]']").on('click', function () {
+            checkCasesCocheesPage()
+        })
+
+        function checkCasesCocheesPage() {
+            groupesCheck = false; //Au moins un groupe coché
+            statutsCheck = false; //Au moins un statut coché
+            partiesCheck = false; //Au moins une partie cochée
+            evaluationsCheck = false; //Au moins une évaluation cochée
+            cas = parseInt('{{ casBoutonValider }}');
+            $("#valider").attr('disabled', true)
+            $("[name='form[groupes][]']").each(function () {
+                if (this.checked) {
+                    groupesCheck = true;
+                    return false; //Equivalent d'un break, car un seul coché suffit
+                }
+            })
+            $("[name='form[evaluations][]']").each(function () {
+                if (this.checked) {
+                    evaluationsCheck = true;
+                    return false;
+                }
+            })
+            $("[name='form[statuts][]']").each(function () {
+                if (this.checked) {
+                    statutsCheck = true;
+                    return false;
+                }
+            })
+            $("[name='form[parties][]']").each(function () {
+                if (this.checked) {
+                    partiesCheck = true;
+                    return false;
+                }
+            })
+            switch(cas) {
+                case 0:
+                    $("#valider").attr('disabled', false); //Pas de validation
+                    break;
+                case 1:
+                    if(groupesCheck || statutsCheck) {
+                        $("#valider").attr('disabled', false);
+                    }
+                    break;
+                case 2:
+                    if ((groupesCheck || statutsCheck) && partiesCheck) {
+                        $("#valider").attr('disabled', false);
+                    }
+                    break;
+                case 3:
+                    if (groupesCheck) {
+                        $("#valider").attr('disabled', false);
+                    }
+                    break;
+                case 4:
+                    if (evaluationsCheck) {
+                        $("#valider").attr('disabled', false);
+                    }
+                    break;
+            }
+        }
+    </script>
+{% endblock %}
+
+{% block stylesheets %}
+    <style>
+        span.green {
+            color: green;
+        }
+
+        span.orange {
+            color: orange;
+        }
+
+        span.red {
+            color: red;
+        }
+
+        .fontSized {
+            font-size: 1.2em;
+        }
+    </style>
+{% endblock %}

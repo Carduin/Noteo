@@ -2,10 +2,295 @@
 
 namespace App\Manager;
 
+use App\Repository\EtudiantRepository;
+use App\Repository\PointsRepository;
 
 class StatisticsManager {
 
-    public function __construct() {
+    private $repoPoints;
+    private $repoEtudiants;
+
+    public function __construct(PointsRepository $repoPoints, EtudiantRepository $repoEtudiants) {
+        $this->repoPoints = $repoPoints;
+        $this->repoEtudiants = $repoEtudiants;
+    }
+
+    public function calculerStatsPlusieursEvals($type= '', $groupes = [], $evaluations = []) {
+        $statistiques = [];
+        foreach ($groupes as $groupe) // On récupère les notes du groupe principal et des sous groupes sur toutes les évaluations choisis
+        {
+            $tabPoints = array();
+            switch ($type) {
+                case 'statuts' :
+                    foreach ($evaluations as $eval) {
+                        array_push($tabPoints, $this->repoPoints->findAllNotesByStatut($eval->getId(), $groupe->getId()));
+                    }
+                    break;
+                case 'groupes' :
+                    foreach ($evaluations as $eval) {
+                        array_push($tabPoints, $this->repoPoints->findAllNotesByGroupe($eval->getId(), $groupe->getId()));
+                    }
+                    break;
+            }
+            //On crée une copie de tabPoints qui contiendra les valeurs des notes pour simplifier le tableau renvoyé par la requete
+            $copieTabPoints = array();
+            foreach ($tabPoints as $element) {
+                foreach ($element as $point) {
+                    foreach ($point as $note) {
+                        $copieTabPoints[] = $note;
+                    }
+                }
+            }
+            //On remplit le tableau qui contiendra toutes les statistiques du groupe
+            $listeStatsParGroupe[] = array("nom" => $groupe->getNom(),
+                "repartition" => $this->repartition($copieTabPoints),
+                "listeNotes" => $copieTabPoints,
+                "moyenne" => $this->moyenne($copieTabPoints),
+                "ecartType" => $this->ecartType($copieTabPoints),
+                "minimum" => $this->minimum($copieTabPoints),
+                "maximum" => $this->maximum($copieTabPoints),
+                "mediane" => $this->mediane($copieTabPoints)
+            );
+        }
+        $statistiques = [["nom" => "Évaluations", "bareme" => 20, "stats" => $listeStatsParGroupe]];
+        return $statistiques;
+    }
+
+    public function calculerStatsEvolution($type = '', $groupes = [], $evaluations = [], $statut = []) {
+        $statistiques = array();
+        $typeGroupe = array();
+        $typeGroupe["type"] = $type;
+        if ($type == "statut") {
+            array_push($typeGroupe, $statut);
+        }
+        $statistiques["typeGroupe"] = $typeGroupe;
+        $statistiques["evaluations"] = $evaluations;
+
+        foreach ($groupes as $groupe) {
+            $groupeEtudiant = array();
+            $etudiants = array();
+            strcmp ( $type , 'groupe' ) == 0 ? $recupEtudiantsGroupe = $groupe->getEtudiants() : $recupEtudiantsGroupe = $this->repoEtudiants->findAllByOneStatutAndOneGroupe($statut, $groupe);
+            $groupeEtudiant["nom"] = $groupe->getNom();
+
+            foreach ($recupEtudiantsGroupe as $etudiant) {
+                $notesEtudiant = array();
+                $etudiantCourant = array();
+                $etudiantCourant["nomPrenom"] = strval($etudiant->getNom() . " " . $etudiant->getPrenom());
+
+                foreach ($evaluations as $evaluation) {
+                    $notesEtEtudiants = $this->repoPoints->findNotesAndEtudiantByEvaluation($evaluation);
+                    $etudiantsEvaluation = array();
+                    foreach ($notesEtEtudiants as $note) {
+                        array_push($etudiantsEvaluation, $note->getEtudiant());
+                    }
+
+                    foreach ($notesEtEtudiants as $points) {
+                        if ($points->getEtudiant() == $etudiant) {
+                            array_push($notesEtudiant, $points->getValeur());
+                        }
+                    }
+                    if (!in_array($etudiant, $etudiantsEvaluation)) {
+                        array_push($notesEtudiant, "NaN");
+                    }
+                    $etudiantCourant["notes"] = $notesEtudiant; // on pousse les notes de l'étudiant courant
+                }
+                array_push($etudiants, $etudiantCourant); //on pousse l'étudiant
+            }
+            $groupeEtudiant["etudiants"] = $etudiants;
+            array_push($statistiques, $groupeEtudiant);
+        }
+        return $statistiques;
+    }
+
+    public function calculerStatsFicheEtudiant($etudiant = [], $evaluations = [], $groupes = [], $statuts = []) {
+        $statistiques = array();
+        foreach ($evaluations as $eval) {
+            foreach ($groupes as $groupe) {
+                // On récupère le classement de l'étudiant dans le groupe et sa note
+                $tabRang = $this->repoPoints->findAllNotesByGroupe($eval->getId(), $groupe->getId());
+                $copieTabRang = array();
+                foreach ($tabRang as $element) {
+                    $copieTabRang[] = $element["valeur"];
+                }
+                $effectif = sizeof($copieTabRang);
+                $noteEtudiant = $this->repoPoints->findNoteByEvalAndStudent($eval->getId(), $etudiant->getId())[0]['valeur'];
+                $position = array_search($noteEtudiant, $copieTabRang) + 1;
+                $classement = strval($position) . " / " . strval($effectif);
+                //On récupère la moyenne du groupe
+                $tabPoints = array();
+                array_push($tabPoints, $this->repoPoints->findAllNotesByGroupe($eval->getId(), $groupe->getId()));
+                //On crée une copie de tabPoints qui contiendra les valeurs des notes pour simplifier le tableau renvoyé par la requete
+                $copieTabPoints = array();
+                foreach ($tabPoints as $element) {
+                    foreach ($element as $point) {
+                        foreach ($point as $note) {
+                            $copieTabPoints[] = $note;
+                        }
+                    }
+                }
+                $statistiques[] = array(
+                    "eval" => $eval->getNom(),
+                    "groupe" => $groupe->getNom(),
+                    "position" => $classement,
+                    "moyenneGroupe" => $this->moyenne($copieTabPoints),
+                    "noteEtudiant" => $noteEtudiant
+                );
+            }
+            foreach ($statuts as $statut) {
+                // On récupère le classement de l'étudiant dans le groupe et sa note
+                $tabRang = $this->repoPoints->findAllNotesByStatut($eval->getId(), $statut->getId());
+                $copieTabRang = array();
+                foreach ($tabRang as $element) {
+                    $copieTabRang[] = $element["valeur"];
+                }
+                $effectif = sizeof($copieTabRang);
+                $noteEtudiant = $this->repoPoints->findNoteByEvalAndStudent($eval->getId(), $etudiant->getId())[0]['valeur'];
+                $position = array_search($noteEtudiant, $copieTabRang) + 1;
+                $classement = strval($position) . " / " . strval($effectif);
+                //On récupère la moyenne du groupe
+                $tabPoints = array();
+                array_push($tabPoints, $this->repoPoints->findAllNotesByStatut($eval->getId(), $statut->getId()));
+                //On crée une copie de tabPoints qui contiendra les valeurs des notes pour simplifier le tableau renvoyé par la requete
+                $copieTabPoints = array();
+                foreach ($tabPoints as $element) {
+                    foreach ($element as $point) {
+                        foreach ($point as $note) {
+                            $copieTabPoints[] = $note;
+                        }
+                    }
+                }
+                $statistiques[] = array(
+                    "eval" => $eval->getNom(),
+                    "groupe" => $statut->getNom(),
+                    "position" => $classement,
+                    "moyenneGroupe" => $this->moyenne($copieTabPoints),
+                    "noteEtudiant" => $noteEtudiant
+                );
+            }
+        }
+        return $statistiques;
+    }
+
+    public function calculerStatsComparaison($evaluation = [], $groupes = [], $statuts = [], $autresEvaluations=[] ) {
+        $statistiques = [];
+        $tabStatsComparaison = array();
+        foreach ($groupes as $groupe) {
+            // déterminer la moyenne du groupe courant à l'évaluation de référence
+            $pointsEvaluationGroupe = $this->repoPoints->findAllNotesByGroupe($evaluation->getId(), $groupe->getId());
+            $moyenneEvaluationGroupe = array();
+            foreach ($pointsEvaluationGroupe as $note) {
+                $moyenneEvaluationGroupe[] = $note["valeur"];
+            }
+            $moyenneEvaluationCouranteGroupe = $this->moyenne($moyenneEvaluationGroupe);
+            //déterminer la moyenne des moyennes aux évaluations
+            $moyennesGroupeTmp = array();
+            foreach ($autresEvaluations as $evaluationCourante) { // pour chaque évaluation, on détermine sa moyenne pour le groupe courant
+                //determiner la moyenne de l'évaluation courante
+                $tabPoints = $this->repoPoints->findAllNotesByGroupe($evaluationCourante->getId(), $groupe->getId()); // on récupère les notes
+                //on crée un tableau temporaire ou on stoque séparement chaque note
+                $copieTab = array();
+                foreach ($tabPoints as $note) {
+                    $copieTab[] = $note["valeur"];
+                }
+                $moyenneEvaluationCourante = $this->moyenne($copieTab); // on determine la moyenne du controle courant
+                array_push($moyennesGroupeTmp, $moyenneEvaluationCourante);
+            }
+            //on détermine la moyenne des moyennes
+            $moyenneDesMoyennesEvaluations = $this->moyenne($moyennesGroupeTmp);
+            $tabStatsComparaison[] = [
+                "nom" => $groupe->getNom(),
+                "moyenneControleCourant" => $moyenneEvaluationCouranteGroupe,
+                "moyenneAutresControles" => $moyenneDesMoyennesEvaluations,
+            ];
+        }
+        ///on traite les statistiques pour tous les statuts
+        foreach ($statuts as $statut) {
+            /// déterminer la moyenne du groupe courant à l'évaluation
+            $pointsEvaluationStatut = $this->repoPoints->findAllNotesByStatut($evaluation->getId(), $statut->getId());
+            $moyenneEvaluationCouranteStatut = array();
+            foreach ($pointsEvaluationStatut as $note) {
+                $moyenneEvaluationCouranteStatut[] = $note["valeur"];
+            }
+            $moyenneEvaluationCouranteStatut = $this->moyenne($moyenneEvaluationCouranteStatut);
+            /// déterminer la moyenne des moyennes aux évaluations
+            $moyennesTmp = array();
+
+            foreach ($autresEvaluations as $evaluationCourante) { // pour chaque évaluation, on détermine sa moyenne pour le groupe courant
+                //determiner la moyenne de l'évaluation courante
+                $tabPoints = $this->repoPoints->findAllNotesByStatut($evaluationCourante->getId(), $statut->getId()); // on récupère les notes
+                //on crée un tableau temporaire ou on stoque séparement chaque note
+                $copieTab = array();
+                foreach ($tabPoints as $note) {
+                    $copieTab[] = $note["valeur"];
+                }
+                $moyenneEvaluationCourante = $this->moyenne($copieTab); // on determine la moyenne du controle courant
+                array_push($moyennesTmp, $moyenneEvaluationCourante);
+            }
+            //on détermine la moyenne des moyennes
+            $moyenneDesMoyennesEvaluations = $this->moyenne($moyennesTmp);
+            $tabStatsComparaison[] = [
+                "nom" => $statut->getNom(),
+                "moyenneControleCourant" => $moyenneEvaluationCouranteStatut,
+                "moyenneAutresControles" => $moyenneDesMoyennesEvaluations,
+            ];
+        }
+        $statistiques = [[
+            "nom" => "Comparaison de " . $evaluation->getNom() . " à " . (count($autresEvaluations)) . ' évaluation(s)',
+            "stats" => $tabStatsComparaison
+        ]];
+
+        return $statistiques;
+    }
+
+    public function calculerStatsClassiques($evaluation = [], $groupes = [], $statuts = [], $parties = []) {
+        $statistiques = [];
+        foreach ($parties as $partie) {
+            $statsDuGroupePourLaPartie = [];
+            foreach ($groupes as $groupe) {
+                $notesGroupe = $this->repoPoints->findByGroupeAndPartie($evaluation->getId(), $groupe->getId(), $partie->getId());
+                //On fait une copie du résultat de la requête pour simplifier le format de renvoi utilisé par doctrine
+                $copieTabPoints = array();
+                foreach ($notesGroupe as $element) {
+                    $copieTabPoints[] = $element["valeur"];
+                }
+                $statsDuGroupePourLaPartie[] = [
+                    "nom" => $groupe->getNom(),
+                    "repartition" => $this->repartition($copieTabPoints),
+                    "listeNotes" => $copieTabPoints,
+                    "moyenne" => $this->moyenne($copieTabPoints),
+                    "ecartType" => $this->ecartType($copieTabPoints),
+                    "minimum" => $this->minimum($copieTabPoints),
+                    "maximum" => $this->maximum($copieTabPoints),
+                    "mediane" => $this->mediane($copieTabPoints),
+                ];
+            }
+            $statsDuStatutPourLaPartie = [];
+            foreach ($statuts as $statut) {
+                $notesStatut = $this->repoPoints->findByStatutAndPartie($evaluation->getId(), $statut->getId(), $partie->getId());
+                //On fait une copie du résultat de la requête pour simplifier le format de renvoi utilisé par doctrine
+                $copieTabPoints = array();
+                foreach ($notesStatut as $element) {
+                    $copieTabPoints[] = $element["valeur"];
+                }
+                $statsDuStatutPourLaPartie[] = [
+                    "nom" => $statut->getNom(),
+                    "repartition" => $this->repartition($copieTabPoints),
+                    "listeNotes" => $copieTabPoints,
+                    "moyenne" => $this->moyenne($copieTabPoints),
+                    "ecartType" => $this->ecartType($copieTabPoints),
+                    "minimum" => $this->minimum($copieTabPoints),
+                    "maximum" => $this->maximum($copieTabPoints),
+                    "mediane" => $this->mediane($copieTabPoints),
+                ];
+            }
+            //Ajout des stats de la partie (groupe + statut) dans le tableau général
+            $statistiques[] = [
+                "nom" => $partie->getIntitule(),
+                "bareme" => $partie->getBareme(),
+                "stats" => array_merge($statsDuGroupePourLaPartie, $statsDuStatutPourLaPartie)
+            ];
+        }
+        return $statistiques;
 
     }
 
