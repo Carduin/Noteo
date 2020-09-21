@@ -56,6 +56,12 @@ modale_groupe_evaluable: Cet attribut d'un groupe détermine si vous pourrez, ou
 modale_groupe_supprimer: 'Êtes-vous sur de vouloir supprimer le groupe ? <br>Cette action supprimera :<ul><li>Tous ses sous-groupes</li><li>Toutes les évaluations associées</li></ul>'
 modale_groupe_supprimer_confirmer: Supprimer le groupe
 
+# formulaires
+form_groupe_nom: Nom du groupe
+form_groupe_description: Description du groupe
+form_groupe_ajouter_etudiants: Ajouter des étudiants au groupe
+form_groupe_retirer_etudiants: Retirer des étudiants du groupe
+
 # Page index
 index_groupe_titre_page: Liste des groupes
 index_label_btn_ordre_hierarchique : Afficher les groupes de manière hiérarchique
@@ -82,12 +88,33 @@ form_groupe_telecharger_modele: Télécharger un modèle
 pas_fichier_choisi: Aucun fichier choisi
 fichier_trop_volumineux: Le fichier ajouté est trop volumineux
 
-# formulaires
-form_groupe_nom: Nom du groupe
-form_groupe_description: Description du groupe
-form_groupe_ajouter_etudiants: Ajouter des étudiants au groupe
-form_groupe_retirer_etudiants: Retirer des étudiants du groupe
+####### STATUTS ETUDIANTS
+# modales
+modale_statut_supprimer: 'Êtes-vous sur de vouloir supprimer le statut d''étudiant ? <br> Vous ne pourrez plus voir de statistiques sur ce regroupement d''étudiants.'
+modale_statut_supprimer_confirmer: Supprimer le statut
 
+# formulaires
+form_statut_nom: Nom du groupe
+form_statut_description: Description du groupe
+form_statut_ajouter_etudiants: Ajouter des étudiants au groupe
+form_statut_retirer_etudiants: Retirer des étudiants du groupe
+
+# page index
+index_statut_titre_page: Liste des groupes d'étudiants ayant un statut particulier
+index_statut_btn_creer: Créer un groupe
+tooltip_statut_consulter: Consulter nom
+tooltip_statut_modifier: Modifier nom
+tooltip_statut_supprimer: Supprimer nom
+pas_de_statut: Vous n'avez aucun groupe d'étudiants ayant un statut particulier
+
+# page consulter
+consulter_statut_etudiants: Liste des étudiants du groupe
+# page modifier
+modifier_statut_titre_page: Modifier nom
+
+# page créer
+creer_statut_titre_page: Créer un groupe d'étudiants ayant un statut particulier
+statut_creer_statut: Créer le groupe
 
 ####### TRADUCTIONS DATATABLES
 afficher_x_elements: Afficher _MENU_ éléments
