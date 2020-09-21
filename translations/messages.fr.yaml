@@ -42,6 +42,7 @@ effectif: Effectif
 description: Description
 createur: Créateur
 evaluable: Évaluable
+statuts: Statut(s)
 
 # divers
 avertissement: Avertissement
@@ -89,6 +90,10 @@ pas_fichier_choisi: Aucun fichier choisi
 fichier_trop_volumineux: Le fichier ajouté est trop volumineux
 
 ####### STATUTS ETUDIANTS
+# messages globaux
+message_alternatif_pas_de_statut_part_1: 'Il est possible d''obtenir des statistiques sur des groupes d''étudiants ayant un statut particulier (boursiers, redoublants, ...). Vous pouvez créer de tels groupes <a href='
+message_alternatif_pas_de_statut_part_2: '>ici</a>.'
+
 # modales
 modale_statut_supprimer: 'Êtes-vous sur de vouloir supprimer le statut d''étudiant ? <br> Vous ne pourrez plus voir de statistiques sur ce regroupement d''étudiants.'
 modale_statut_supprimer_confirmer: Supprimer le statut
@@ -116,6 +121,41 @@ modifier_statut_titre_page: Modifier nom
 # page créer
 creer_statut_titre_page: Créer un groupe d'étudiants ayant un statut particulier
 statut_creer_statut: Créer le groupe
+
+####### ETUDIANTS
+# modales
+modale_etudiant_supprimer: 'Êtes-vous sur de vouloir supprimer l''étudiant ? <br>Cette action:<ul><li>Retirera l''étudiant tous les groupes</li><li>Supprimera sa note pour toutes les évaluations auxquelles il a participé</li></ul>'
+modale_etudiant_supprimer_confirmer: Supprimer l'étudiant
+
+# formulaires
+form_etudiant_nom: Nom
+form_etudiant_prenom: Prénom
+form_etudiant_mail: Mail
+form_etudiant_demissionaire: Démissionaire
+form_etudiant_statuts: Statut(s)
+form_etudiant_message_info:
+
+# page index
+index_etudiant_titre_page: Liste des étudiants
+index_etudiant_btn_creer: Ajouter un étudiant
+tooltip_etudiant_consulter: Consulter nom prenom
+tooltip_etudiant_modifier: Modifier nom prenom
+tooltip_etudiant_supprimer: Supprimer nom prenom
+pas_d_etudiants: Vous n'avez aucun étudiant
+
+# page consulter
+consulter_etudiant_liste_groupes: Groupe(s) au(x)quel(s) appartient l'étudiant
+
+# page modifier
+modifier_etudiant_titre_page: Modifier nom prenom
+modifier_etudiant_message_creer_groupe_part_1: 'Pour modifier les groupes auxquels appartient cet étudiant, rendez-vous <a href="'
+modifier_etudiant_message_creer_groupe_part_2: '">ici</a>. '
+modifier_etudiant_message_creer_statut_part_1: 'Si vous souhaitez ajouter ou retirer cet étudiant d''un groupe d''étudiants possèdant un statut particulier, rendez-vous <a href="'
+modifier_etudiant_message_creer_statut_part_2: '">ici</a>.'
+# page créer
+creer_etudiant_titre_page: Ajouter un étudiant
+creer_etudiant_ajouter_groupe: Ajouter l'étudiant à un groupe d'étudiants ayant un statut particulier (optionnel)
+etudiant_creer_etudiant: Ajouter l'étudiant
 
 ####### REINITIALISATION APPLICATION
 app_reset_texte: 'Réinitialiser l''application aura pour effet de supprimer de l''application: <ul><li>Tous les groupes</li><li>Tous les groupes d''étudiants ayant un statut particulier</li><li>Toutes les évaluations</li><li>Tous les étudiants</li></ul>Les profils des enseignants ne seront pas supprimés et les statistiques ne seront plus consultables.'

@@ -7,29 +7,29 @@
 {% block contenu %}
     <div class='bouton' align=center>
         <a class="d-sm-inline-block btn btn-sm btn-primary shadow-sm"
-           href="{{ path('etudiant_edit', {'id': etudiant.id}) }}">Modifier {{ etudiant.prenom }} {{ etudiant.nom }}</a>
+           href="{{ path('etudiant_edit', {'id': etudiant.id}) }}">{% trans with {'nom': etudiant.nom, 'prenom': etudiant.prenom } %}modifier_etudiant_titre_page{% endtrans %}</a>
     </div>
     <div class="table-responsive">
         <table class="table">
             <tbody>
             <tr>
-                <th class="intitule">Nom</th>
+                <th class="intitule">{% trans%}form_etudiant_nom{% endtrans %}</th>
                 <td>{{ etudiant.nom }}</td>
             </tr>
             <tr>
-                <th class="intitule">Prénom</th>
+                <th class="intitule">{% trans%}form_etudiant_prenom{% endtrans %}</th>
                 <td>{{ etudiant.prenom }}</td>
             </tr>
             <tr>
-                <th class="intitule">Mail</th>
+                <th class="intitule">{% trans%}form_etudiant_mail{% endtrans %}</th>
                 <td>{{ etudiant.mail }}</td>
             </tr>
             <tr>
-                <th class="intitule">Démissionaire</th>
-                <td>{{ etudiant.estDemissionaire ? 'Oui' : 'Non' }}</td>
+                <th class="intitule">{% trans%}form_etudiant_demissionaire{% endtrans %}</th>
+                <td>{{ etudiant.estDemissionaire ? 'oui' |trans : 'non' | trans }}</td>
             </tr>
             <tr>
-                <th class="intitule">Statut(s)</th>
+                <th class="intitule">{% trans%}form_etudiant_statuts{% endtrans %}</th>
                 <td>
                     {% for statut in etudiant.statuts %}
                         <font size=4><span class="badge badge-primary">{{ statut.nom }}</span></font>
@@ -39,14 +39,14 @@
             </tbody>
         </table>
     </div>
-    <br> <h1 class="h4 mb-0 text-gray-800">Groupe(s) au(x)quel(s) appartient l'étudiant</h1> <br>
+    <br> <h1 class="h4 mb-0 text-gray-800">{% trans%}consulter_etudiant_liste_groupes{% endtrans %}</h1> <br>
     <div class="table-responsive">
         <table class="table" id="groupes">
             <thead>
             <tr>
-                <th>Nom</th>
-                <th>Description</th>
-                <th>Créateur</th>
+                <th>{% trans%}nom{% endtrans %}</th>
+                <th>{% trans%}description{% endtrans %}</th>
+                <th>{% trans%}createur{% endtrans %}</th>
             </tr>
             </thead>
             <tbody>
@@ -77,8 +77,18 @@
                 language: {
                     // Suppression du label Rechercher et ajout du placeholder
                     search: "_INPUT_",
-                    searchPlaceholder: "Rechercher...",
-                    "url": "{{ asset('tradfr.json') }}"
+                    searchPlaceholder: "{% trans %}rechercher{% endtrans %}",
+                    oPaginate: {
+                        sFirst:      "{% trans %}premier{% endtrans %}",
+                        sPrevious:   "{% trans %}precedent{% endtrans %}",
+                        sNext:       "{% trans %}suivant{% endtrans %}",
+                        sLast:       "{% trans %}dernier{% endtrans %}"
+                    },
+                    sProcessing:     "{% trans %}traitement{% endtrans %}",
+                    sLoadingRecords: "{% trans %}chargement{% endtrans %}",
+                    sZeroRecords:    "{% trans %}aucune_correspondance{% endtrans %}",
+                    sEmptyTable:     "{% trans %}table_vide{% endtrans %}",
+                    sLengthMenu:     "{% trans %}afficher_x_elements{% endtrans %}"
                 },
                 columns: [null, null, {"orderable": false}],
                 lengthMenu: [

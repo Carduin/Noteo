@@ -1,11 +1,11 @@
 {% extends 'base.html.twig' %}
 
-{% block titrePage %}Ajouter un étudiant{% endblock %}
+{% block titrePage %}{% trans %}creer_etudiant_titre_page{% endtrans %}{% endblock %}
 
 {% block etudiants %}active{% endblock %}
 
 {% block contenu %}
-    {{ include('etudiant/_form.html.twig', {'button_label': 'Ajouter l\'étudiant'}) }}
+    {{ include('etudiant/_form.html.twig', {'button_label': 'etudiant_creer_etudiant'}) }}
 {% endblock %}
 
 {% block datatables %}
@@ -14,8 +14,18 @@
             language: {
                 // Suppression du label Rechercher et ajout du placeholder
                 search: "_INPUT_",
-                searchPlaceholder: "Rechercher...",
-                "url": "{{ asset('tradfr.json') }}"
+                searchPlaceholder: "{% trans %}rechercher{% endtrans %}",
+                oPaginate: {
+                    sFirst:      "{% trans %}premier{% endtrans %}",
+                    sPrevious:   "{% trans %}precedent{% endtrans %}",
+                    sNext:       "{% trans %}suivant{% endtrans %}",
+                    sLast:       "{% trans %}dernier{% endtrans %}"
+                },
+                sProcessing:     "{% trans %}traitement{% endtrans %}",
+                sLoadingRecords: "{% trans %}chargement{% endtrans %}",
+                sZeroRecords:    "{% trans %}aucune_correspondance{% endtrans %}",
+                sEmptyTable:     "{% trans %}table_vide{% endtrans %}",
+                sLengthMenu:     "{% trans %}afficher_x_elements{% endtrans %}"
             },
             order: [1, 'asc'],
             columns: [{"orderable": false}, null, null, null],
