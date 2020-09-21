@@ -37,6 +37,8 @@ logout: Déconnexion
 
 # titres de colonnes
 nom: Nom
+prenom: Prénom
+mail: Mail
 effectif: Effectif
 description: Description
 createur: Créateur
@@ -45,6 +47,8 @@ evaluable: Évaluable
 # divers
 avertissement: Avertissement
 aide: Aide
+oui: Oui
+non: Non
 
 # GROUPES ETUDIANTS
 # modales
@@ -63,6 +67,10 @@ tooltip_groupe_modifier: Modifier nom
 tooltip_groupe_supprimer: Supprimer nom
 pas_de_groupes: Vous n'avez aucun groupe d'étudiants
 importer_groupe: Importer un groupes d'étudiants
+
+# Page consulter
+show_groupe_description: Description du groupe
+
 
 
 # TRADUCTIONS DATATABLES

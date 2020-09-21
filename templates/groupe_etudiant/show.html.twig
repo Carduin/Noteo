@@ -8,24 +8,24 @@
     {% if is_granted('ROLE_ADMIN') %}
         <div class='bouton' align=center>
             <a class="d-sm-inline-block btn btn-sm btn-primary shadow-sm"
-               href="{{ path('groupe_etudiant_edit', {'slug': groupe_etudiant.slug}) }}">Modifier {{ groupe_etudiant.nom }}</a>
+               href="{{ path('groupe_etudiant_edit', {'slug': groupe_etudiant.slug}) }}">{% trans with {'nom': groupe_etudiant.nom } %}tooltip_groupe_modifier{% endtrans %}</a>
         </div>
     {% endif %}
     <div class="table-responsive">
         <table class="table">
             <tbody>
             <tr>
-                <th class="intitule" ondblclick="InvasionCommuniste()">Description du groupe</th>
+                <th class="intitule" ondblclick="InvasionCommuniste()">{% trans %}show_groupe_description{% endtrans %}</th>
                 <td>{{ groupe_etudiant.description }}</td>
             </tr>
             <tr>
-                <th class="intitule">Évaluable <a href="#HelpEvaluable" data-toggle='modal'
+                <th class="intitule">{% trans %}evaluable{% endtrans %} <a href="#HelpEvaluable" data-toggle='modal'
                                                   data-target='#HelpEvaluable'><i class="icon-help-circled"></i></a>
                 </th>
-                <td>{{ groupe_etudiant.estEvaluable ? 'Oui' : 'Non' }}</td>
+                <td>{{ groupe_etudiant.estEvaluable ? 'oui' | trans : 'non' | trans }}</td>
             </tr>
             <tr>
-                <th class="intitule">Créateur</th>
+                <th class="intitule">{% trans %}createur{% endtrans %}</th>
                 <td>{{ groupe_etudiant.enseignant.prenom }} {{ groupe_etudiant.enseignant.nom }}</td>
             </tr>
             </tbody>
@@ -36,9 +36,9 @@
         <table class="table" id="etud">
             <thead>
             <tr>
-                <th>Nom</th>
-                <th>Prénom</th>
-                <th>Mail</th>
+                <th>{% trans %}nom{% endtrans %}</th>
+                <th>{% trans %}prenom{% endtrans %}</th>
+                <th>{% trans %}mail{% endtrans %}</th>
             </tr>
             </thead>
             <tbody>
@@ -66,7 +66,7 @@
                     </button>
                 </div>
                 <div align=center class="modal-body">
-                    Cet attribut d'un groupe détermine si vous pourrez, ou non, créer des évaluations pour celui-ci.
+                    {% trans %}modale_groupe_evaluable{% endtrans %}
                 </div>
                 <div class="modal-footer">
                     <button class="d-sm-inline-block btn btn-sm btn-primary shadow-sm" type="button"
@@ -85,8 +85,18 @@
                 language: {
                     // Suppression du label Rechercher et ajout du placeholder
                     search: "_INPUT_",
-                    searchPlaceholder: "Rechercher...",
-                    "url": "{{ asset('tradfr.json') }}"
+                    searchPlaceholder: "{% trans %}rechercher{% endtrans %}",
+                    oPaginate: {
+                        sFirst:      "{% trans %}premier{% endtrans %}",
+                        sPrevious:   "{% trans %}precedent{% endtrans %}",
+                        sNext:       "{% trans %}suivant{% endtrans %}",
+                        sLast:       "{% trans %}dernier{% endtrans %}"
+                    },
+                    sProcessing:     "{% trans %}traitement{% endtrans %}",
+                    sLoadingRecords: "{% trans %}chargement{% endtrans %}",
+                    sZeroRecords:    "{% trans %}aucune_correspondance{% endtrans %}",
+                    sEmptyTable:     "{% trans %}table_vide{% endtrans %}",
+                    sLengthMenu:     "{% trans %}afficher_x_elements{% endtrans %}"
                 },
                 order: [
                     [0, "asc"]
