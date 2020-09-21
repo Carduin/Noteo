@@ -109,12 +109,16 @@ pas_de_statut: Vous n'avez aucun groupe d'étudiants ayant un statut particulier
 
 # page consulter
 consulter_statut_etudiants: Liste des étudiants du groupe
+
 # page modifier
 modifier_statut_titre_page: Modifier nom
 
 # page créer
 creer_statut_titre_page: Créer un groupe d'étudiants ayant un statut particulier
 statut_creer_statut: Créer le groupe
+
+####### REINITIALISATION APPLICATION
+app_reset_texte: 'Réinitialiser l''application aura pour effet de supprimer de l''application: <ul><li>Tous les groupes</li><li>Tous les groupes d''étudiants ayant un statut particulier</li><li>Toutes les évaluations</li><li>Tous les étudiants</li></ul>Les profils des enseignants ne seront pas supprimés et les statistiques ne seront plus consultables.'
 
 ####### TRADUCTIONS DATATABLES
 afficher_x_elements: Afficher _MENU_ éléments
