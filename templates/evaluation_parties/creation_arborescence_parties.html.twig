@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block titrePage %}Créer des parties pour {{ app.session.get('nomEval') }}{% endblock %}
+{% block titrePage %}{% trans with {'nom':app.session.get('nomEval')}%}creer_eval_parties_saisie_arbo_titre_page{% endtrans %}{% endblock %}
 
 {% block evaluations %}active{% endblock %}
 
@@ -25,11 +25,9 @@
             background-color: #0275d8;
             border-radius: 10px;
         }
-
         div .blue {
             color: #0275d8
         }
-
         div .red {
             color: red
         }
@@ -37,28 +35,27 @@
 {% endblock %}
 
 {% block contenu %}
-    <h1 class="h4 mb-0 text-gray-800">Sélectionner une partie pour ajouter une sous-partie, modifier une partie, ou
-        supprimer une partie</h1> <br>
+    <h1 class="h4 mb-0 text-gray-800">{% trans %}creer_eval_parties_saisie_arbo_sous_titre_page{% endtrans %}</h1> <br>
     <div class="row">
         <div class="col-lg-4">
         </div>
         <div class="col-lg-4">
             <div class='bouton' align=center>
                 <button class="btn btn-success" onclick="onCreerPartie()"
-                        title="Créer une sous-partie pour la partie sélectionnée" data-toggle="tooltip"><i
+                        title="{% trans %}tooltip_partie_ajouter{% endtrans %}" data-toggle="tooltip"><i
                             class="icon-plus"></i></button>
                 <button id="boutonModifier" class="btn btn-primary" onclick="onModifierPartie()"
-                        title="Modifier la partie sélectionnée" data-toggle="tooltip"><i class="icon-pencil-1"></i>
+                        title="{% trans %}tooltip_partie_modifier{% endtrans %}" data-toggle="tooltip"><i class="icon-pencil-1"></i>
                 </button>
                 <button id="boutonSupprimer" class="btn btn-danger" onclick="onSupprimerPartie()"
-                        title="Supprimer la partie sélectionnée" data-toggle="tooltip"><i class="icon-trash"></i>
+                        title="{% trans %}tooltip_partie_supprimer{% endtrans %}" data-toggle="tooltip"><i class="icon-trash"></i>
                 </button>
             </div>
             <div id="arbre_boot">
             </div>
             <div class='bouton' align=center>
                 <button id="boutonConfirmation" onclick='onConfirmerCreation()'
-                        class="d-sm-inline-block btn btn-sm btn-primary shadow-sm">Suivant
+                        class="d-sm-inline-block btn btn-sm btn-primary shadow-sm">{% trans %}suivant{% endtrans %}
                 </button>
             </div>
         </div>
@@ -70,7 +67,7 @@
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="titreModaleFormulaire">Créer une partie</h5>
+                    <h5 class="modal-title" id="titreModaleFormulaire">{% trans %}modale_creer_partie_titre{% endtrans %}</h5>
                     <button class="close" type="button" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">x</span>
                     </button>
@@ -80,14 +77,12 @@
                         <table align="center" class="table">
                             <tbody>
                             <tr>
-                                <th class="intitule"><label for="statut_nom" class="required">Intitulé de la
-                                        partie</label></th>
+                                <th class="intitule"><label for="statut_nom" class="required">{% trans %}form_partie_intitule{% endtrans %}</label></th>
                                 <td><input type="text" id="champIntitule" required maxlength="255" minlength="4"
                                            class="form-control"></td>
                             </tr>
                             <tr>
-                                <th class="intitule"><label for="statut_description" class="required">Barème de la
-                                        partie</label></th>
+                                <th class="intitule"><label for="statut_description" class="required">{% trans %}form_partie_bareme{% endtrans %}</label></th>
                                 <td><input type="number" id="champBareme" required min="0" step="0.01"
                                            class="form-control"></td>
                             </tr>
@@ -95,8 +90,7 @@
                         </table>
                     </div>
                     <div class="modal-footer">
-                        <button type="submit" class="d-sm-inline-block btn btn-sm btn-primary shadow-sm">Valider
-                        </button>
+                        <button type="submit" class="d-sm-inline-block btn btn-sm btn-primary shadow-sm">{% trans %}valider{% endtrans %}</button>
                     </div>
                 </form>
             </div>
@@ -107,20 +101,16 @@
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Actions sur les parties</h5>
+                    <h5 class="modal-title" id="exampleModalLabel">{% trans %}modale_pas_de_partie_choisie_titre{% endtrans %}</h5>
                     <button class="close" type="button" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">x</span>
                     </button>
                 </div>
                 <div class="modal-body">
-                    <div style="text-align: center; font-weight: bold">Vous n'avez pas sélectionné de partie</div>
+                    <div style="text-align: center; font-weight: bold">{% trans %}modale_pas_de_partie_choisie_sous_titre{% endtrans %}</div>
                     <br>
                     <ul>
-                        <li>Pour ajouter une nouvelle partie, veuillez cliquer sur une partie dans le tableau à laquelle
-                            vous voulez ajouter une sous-partie
-                        </li>
-                        <li>Pour modifier une partie, veuillez cliquer sur une partie que vous désirez modifier</li>
-                        <li>Pour supprimer une partie, veuillez cliquer sur une partie que vous désirez supprimer</li>
+                        {% trans %}modale_pas_de_partie_choisie_contenu{% endtrans %}
                     </ul>
                 </div>
                 <div class="modal-footer">
@@ -135,26 +125,25 @@
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">Attention</h5>
+                    <h5 class="modal-title">{% trans %}avertissement{% endtrans %}</h5>
                     <button class="close" type="button" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">x</span>
                     </button>
                 </div>
                 <div class="modal-body">
                     <div class="red" id="erreur-pas-de-parties">
-                        <i class="icon-attention-circled"></i>Vous n'avez pas créé de parties pour l'évaluation.
+                        <i class="icon-attention-circled"></i>{% trans %}modale_pas_de_partie_cree_titre{% endtrans %}
                         <br><br>
                     </div>
                     <div class="red" id="erreur-une-seule-partie">
-                        <i class="icon-attention-circled"></i>L'évaluation ne possède qu'une seule sous-partie
-                        <br><br>
+                        <i class="icon-attention-circled"></i>{% trans %}modale_une_seule_partie_cree_titre{% endtrans %}<br><br>
                     </div>
-                    Une fois validé, vous ne pourrez plus modifier les parties de cette évaluation.
+                    {% trans %}modale_une_seule_partie_cree_contenu{% endtrans %}
                 </div>
                 <div class="modal-footer">
                     {{ form_start(form) }}
                     {{ form_widget(form.arbre) }}
-                    <button class="d-sm-inline-block btn btn-sm btn-primary">Suivant</button>
+                    <button class="d-sm-inline-block btn btn-sm btn-primary">{% trans %}suivant{% endtrans %}</button>
                     {{ form_end(form) }}
                 </div>
             </div>

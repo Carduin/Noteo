@@ -63,6 +63,7 @@ aide: Aide
 oui: Oui
 non: Non
 enregistrer: Enregistrer
+valider: Valider
 
 ####### GROUPES ETUDIANTS
 # modales
@@ -186,12 +187,18 @@ modifier_enseignant_label_preference: Préférence de tri des tableaux
 creer_enseignant_titre_page: Ajouter un enseignant
 creer_enseignant_creer_enseignant: Ajouter l'enseignant
 
-
 ####### EVALUATIONS
 # modales
 modale_evaluation_supprimer: 'Êtes-vous sur de vouloir supprimer cette évaluation ?<br>Toutes les notes associées seront supprimées.'
 modale_evaluation_supprimer_confirmer: Supprimer l'évaluation
-
+modale_creer_partie_titre: Créer une partie
+modale_modifier_partie_titre: Modifier une partie
+modale_pas_de_partie_choisie_titre: Actions sur les parties
+modale_pas_de_partie_choisie_sous_titre: Vous n'avez pas sélectionné de partie
+modale_pas_de_partie_choisie_contenu: '<li>Pour ajouter une nouvelle partie, veuillez cliquer sur une partie dans le tableau à laquelle vous voulez ajouter une sous-partie</li><li>Pour modifier une partie, veuillez cliquer sur une partie que vous désirez modifier</li><li>Pour supprimer une partie, veuillez cliquer sur une partie que vous désirez supprimer</li>'
+modale_une_seule_partie_cree_titre: L'évaluation ne possède qu'une seule sous-partie
+modale_pas_de_partie_cree_titre: Vous n'avez pas créé de parties pour l'évaluation
+modale_une_seule_partie_cree_contenu: Une fois validé, vous ne pourrez plus modifier les parties de cette évaluation.
 # formulaires
 form_evaluation_nom: Nom de l'évaluation
 form_evaluation_groupe: Groupe évalué
@@ -201,7 +208,6 @@ form_evaluation_date: Date de l'évaluation
 form_evaluation_pdf: Fichier PDF
 form_evaluation_notes_modifier: Modifier les notes des étudiants
 form_evaluation_notes_consulter: Notes des étudiants
-
 # page index
 index_evaluation_titre_page_mes_evals: Liste de mes évaluations
 index_evaluation_titre_page_autres_evals: Liste des autres évaluations
@@ -212,11 +218,9 @@ tooltip_evaluation_modifier: Modifier nom
 tooltip_evaluation_supprimer: Supprimer nom
 index_evaluation_pas_evals_mes_evals: Vous n'avez aucune évaluation
 index_evaluation_pas_evals_autres_evals: Les autres enseignants n'ont aucune évaluation
-
 # page choisir groupe à évaluer
 choix_groupe_evaluation_titre_page: Choisir le groupe à évaluer
 choix_groupe_evaluation_btn_valider: Créer l'évaluation pour ce groupe
-
 # page mail previsualisation
 previsualisation_mail_titre_page: Envoyer les statistiques aux étudiants
 previsualisation_mail_titre_apercu: Aperçu du mail que les étudiants du groupe nom recevront
@@ -225,7 +229,6 @@ previsualisation_mail_btn_valider: Envoyer le mail aux nombre étudiants
 previsualisation_mail_pdf_erreur_taille: Le fichier choisi est trop volumineux
 previsualisation_mail_pdf_erreur_type: Le fichier choisi n'est pas un PDF
 previsualisation_mail_pdf_placeholder: Aucun fichier choisi
-
 # template de mail envoyé
 template_mail_envoye_bonjour: Bonjour prenom nom
 template_mail_infos_evals: Veuillez trouver dans ce mail les informations concernant l'évaluation nomEval du date sur le groupe nomGroupe.
@@ -234,7 +237,6 @@ template_mail_votre_rang: Votre rang
 template_mail_effectif_groupe: (nb étudiants)
 template_mail_effectif_repartition: nb étudiant(s)
 template_mail_mentions_legales: 'Votre nom, prénom et vos notes ont été récoltés afin de produire des statistiques sur le taux de réussite des étudiants. La loi « Informatique et Liberté » vous permet de demander la suppression de vos données personnelles figurant dans une base de données à travers le droit d’opposition (article 38 de la loi n° 78-17 du 6/01/1978) et le droit de rectification (article 40 de la loi n° 78-17 du 6/01/1978). Pour exercer ces droits, veuillez en informer l’administrateur : <a href="mailto:mailAdmin">mailAdmin</a><br>En cas de suppression de vosinformations, vous ne recevrez plus de statistiques concernant votre taux de réussite aux différentes évaluations.'
-
 # page consulter
 consulter_evaluation_btn_stats: Consulter les statistiques pour nom
 # page modifier
@@ -244,7 +246,16 @@ modifier_evaluation_message_info_absent: Si un étudiant était absent à l'éva
 creer_eval_simple_titre_page: Créer une évaluation
 creer_eval_simple_btn_valider: Enregistrer les notes
 # page créer parties (saisie infos)
+creer_eval_parties_saisie_info_titre_page: Créer une évaluation avec des parties
 # page créer parties (saisie arborescence)
+creer_eval_parties_saisie_arbo_titre_page: Créer des parties pour nom
+creer_eval_parties_saisie_arbo_sous_titre_page: Sélectionner une partie pour ajouter une sous-partie, modifier une partie, ou supprimer une partie
+tooltip_partie_ajouter: Créer une sous partie pour la partie sélectionnée
+tooltip_partie_modifier: Modifier la partie sélectionnée
+tooltip_partie_supprimer: Supprimer la partie sélectionnée
+form_partie_intitule: Intitulé de la partie
+form_partie_bareme:  Barème de la partie
+
 
 ####### REINITIALISATION APPLICATION
 app_reset_texte: 'Réinitialiser l''application aura pour effet de supprimer de l''application: <ul><li>Tous les groupes</li><li>Tous les groupes d''étudiants ayant un statut particulier</li><li>Toutes les évaluations</li><li>Tous les étudiants</li></ul>Les profils des enseignants ne seront pas supprimés et les statistiques ne seront plus consultables.'
