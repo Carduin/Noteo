@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block titrePage %}Créer une évaluation avec des parties{% endblock %}
+{% block titrePage %}{% trans %}creer_eval_parties_saisie_info_titre_page{% endtrans %}{% endblock %}
 
 {% block evaluations %}active{% endblock %}
 
@@ -14,18 +14,18 @@
         <table align="center" class="table">
             <tbody>
             <tr>
-                <th class="intitule"><label for="evaluation_nom">Nom de l'évaluation</label></th>
+                <th class="intitule"><label for="evaluation_nom">{% trans %}form_evaluation_nom{% endtrans %}</label></th>
                 <td>{{ form_help(form.nom) }}{{ form_errors(form.nom) }}{{ form_widget(form.nom) }}</td>
             </tr>
             <tr>
-                <th class="intitule"><label for="evaluation_date">Date de l'évaluation</label></th>
+                <th class="intitule"><label for="evaluation_date">{% trans %}form_evaluation_date{% endtrans %}</label></th>
                 <td>{{ form_errors(form.date) }}{{ form_widget(form.date) }}</td>
             </tr>
             </tbody>
         </table>
     </div>
     <div class='bouton' align=center>
-        <button class="d-sm-inline-block btn btn-sm btn-primary shadow-sm">Suivant</button>
+        <button class="d-sm-inline-block btn btn-sm btn-primary shadow-sm">{% trans %}suivant{% endtrans %}</button>
     </div>
     {{ form_end(form) }}
 {% endblock %}

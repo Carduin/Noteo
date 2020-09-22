@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block titrePage %}Créer une évaluation{% endblock %}
+{% block titrePage %}{% trans %}creer_eval_simple_titre_page{% endtrans %}{% endblock %}
 
 {% block evaluations %}active{% endblock %}
 
@@ -11,7 +11,7 @@
 {% block collapsed %}{% endblock %}
 
 {% block contenu %}
-    {{ include('evaluation/_form.html.twig', {'button_label': 'Enregistrer les notes'}) }}
+    {{ include('evaluation/_form.html.twig', {'button_label': 'creer_eval_simple_btn_valider'}) }}
 {% endblock %}
 
 {% block datatables %}
@@ -21,8 +21,18 @@
             language: {
                 // Suppression du label Rechercher et ajout du placeholder
                 search: "_INPUT_",
-                searchPlaceholder: "Rechercher...",
-                "url": "{{ asset('tradfr.json') }}"
+                searchPlaceholder: "{% trans %}rechercher{% endtrans %}",
+                oPaginate: {
+                    sFirst:      "{% trans %}premier{% endtrans %}",
+                    sPrevious:   "{% trans %}precedent{% endtrans %}",
+                    sNext:       "{% trans %}suivant{% endtrans %}",
+                    sLast:       "{% trans %}dernier{% endtrans %}"
+                },
+                sProcessing:     "{% trans %}traitement{% endtrans %}",
+                sLoadingRecords: "{% trans %}chargement{% endtrans %}",
+                sZeroRecords:    "{% trans %}aucune_correspondance{% endtrans %}",
+                sEmptyTable:     "{% trans %}table_vide{% endtrans %}",
+                sLengthMenu:     "{% trans %}afficher_x_elements{% endtrans %}"
             },
             order: [
                 [0, "asc"]

@@ -80,8 +80,7 @@ class EvaluationController extends AbstractController
             ->add('nom', TextType::class, [
                 'constraints' => [
                     new NotBlank,
-                    new Length(['max' => 255]),
-                    new Regex(['pattern' => '/[a-zA-Z0-9]/', 'message' => 'Le nom de l\'évaluation doit contenir au moins un chiffre ou une lettre'])
+                    new Length(['max' => 255])
                 ]
             ])
             ->add('date', DateType::class, [
