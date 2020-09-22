@@ -193,7 +193,7 @@ modale_evaluation_supprimer: 'Êtes-vous sur de vouloir supprimer cette évaluat
 modale_evaluation_supprimer_confirmer: Supprimer l'évaluation
 
 # formulaires
-form_evaluations_nom: Nom de l'évaluation
+form_evaluation_nom: Nom de l'évaluation
 form_evaluation_groupe: Groupe évalué
 form_evaluation_createur: Créateur
 form_evaluation_csv: Télécharger l'évaluation au format CSV
@@ -236,7 +236,9 @@ template_mail_effectif_repartition: nb étudiant(s)
 template_mail_mentions_legales: 'Votre nom, prénom et vos notes ont été récoltés afin de produire des statistiques sur le taux de réussite des étudiants. La loi « Informatique et Liberté » vous permet de demander la suppression de vos données personnelles figurant dans une base de données à travers le droit d’opposition (article 38 de la loi n° 78-17 du 6/01/1978) et le droit de rectification (article 40 de la loi n° 78-17 du 6/01/1978). Pour exercer ces droits, veuillez en informer l’administrateur : <a href="mailto:mailAdmin">mailAdmin</a><br>En cas de suppression de vosinformations, vous ne recevrez plus de statistiques concernant votre taux de réussite aux différentes évaluations.'
 
 # page consulter
-# page modifier profil
+# page modifier
+modifier_evaluation_titre_page: Modifier nom
+modifier_evaluation_message_info_absent: Si un étudiant était absent à l'évaluation, saisissez -1. Sa note ne sera pas prise en compte pour les statistiques
 # page créer simple
 # page créer parties (saisie infos)
 # page créer parties (saisie arborescence)
