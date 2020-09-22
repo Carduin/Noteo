@@ -1,30 +1,30 @@
 {% extends 'base.html.twig' %}
 
-{% block titrePage %}Envoyer les statistiques aux étudiants{% endblock %}
+{% block titrePage %}{% trans %}previsualisation_mail_titre_page{% endtrans %}{% endblock %}
 
 {% block statistiques %}active{% endblock %}
 
 {% block contenu %}
     {{ form_start(form) }}
-    <h1 class="h4 mb-0 text-gray-800">Aperçu du mail que les étudiants du groupe {{ nomGroupe }} recevront</h1> <br>
+    <h1 class="h4 mb-0 text-gray-800">{% trans with {'nom': nomGroupe } %}previsualisation_mail_titre_apercu{% endtrans %}</h1> <br>
     <div align=center>
         <iframe src="{{ path("exemple_mail",{id:evaluation.id}) }}"
                 style="overflow:hidden;height:60vh;width:60vw"></iframe>
     </div>
     <br>
-    <h1 class="h4 mb-0 text-gray-800">Joindre un fichier PDF au mail (optionnel)</h1> <br>
+    <h1 class="h4 mb-0 text-gray-800">{% trans %}previsualisation_mail_titre_pdf{% endtrans %}</h1> <br>
     <div class="table-responsive">
         <table align="center" class="table">
             <tbody>
             <tr>
-                <th class="intitule"><label for="groupe_etudiant_fichier" class="required">Fichier PDF</label></th>
+                <th class="intitule"><label for="groupe_etudiant_fichier" class="required">{% trans %}form_evaluation_pdf{% endtrans %}</label></th>
                 <td>{{ form_errors(form.fichierPDF) }}{{ form_widget(form.fichierPDF) }}</td>
             </tr>
             </tbody>
         </table>
     </div>
     <div class='bouton' align=center>
-        <button type="submit" class="btn btn-primary">Envoyer le mail aux {{ nbEtudiants }} étudiants</button>
+        <button type="submit" class="btn btn-primary">{% trans with {'nombre': nbEtudiants} %}previsualisation_mail_btn_valider{% endtrans %}</button>
     </div>
     {{ form_end(form) }}
 {% endblock %}

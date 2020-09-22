@@ -22,6 +22,8 @@ use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Translation\Translator;
+use Symfony\Component\Translation\TranslatorInterface;
 use Symfony\Component\Validator\Constraints\File;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Constraints\NotNull;
@@ -1119,7 +1121,7 @@ class StatsController extends AbstractController
     /**
      * @Route("/previsualisation-mail/{slug}", name="previsualisation_mail", methods={"GET", "POST"})
      */
-    public function envoiMail(Evaluation $evaluation, Request $request, PointsRepository $pointsRepository, Swift_Mailer $mailer, Filesystem $filesystem): Response
+    public function envoiMail(Evaluation $evaluation, TranslatorInterface $translator, Request $request, PointsRepository $pointsRepository, Swift_Mailer $mailer, Filesystem $filesystem): Response
     {
         $nbEtudiants = count($evaluation->getGroupe()->getEtudiants());
         $nomGroupe = $evaluation->getGroupe()->getNom();
@@ -1130,11 +1132,11 @@ class StatsController extends AbstractController
                 'constraints' => [new File([
                     'maxSize' => '8Mi',
                     'mimeTypes' => 'application/pdf',
-                    'mimeTypesMessage' => 'Le fichier ajouté n\'est pas un fichier pdf',
-                    'uploadFormSizeErrorMessage' => 'Le fichier ajouté est trop volumineux'
+                    'mimeTypesMessage' => $translator->trans('previsualisation_mail_pdf_erreur_type'),
+                    'uploadFormSizeErrorMessage' => $translator->trans('previsualisation_mail_pdf_erreur_taille')
                 ])],
                 'attr' => [
-                    'placeholder' => 'Aucun fichier choisi',
+                    'placeholder' => $translator->trans('previsualisation_mail_pdf_placeholder'),
                     'accept' => '.pdf'
                 ]
             ])
