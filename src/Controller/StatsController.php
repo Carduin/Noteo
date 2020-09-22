@@ -221,7 +221,7 @@ class StatsController extends AbstractController
             ->getForm();
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            return $this->redirectToRoute('eval_parties_choix_parametres_et_afficher_stats', [
+            return $this->redirectToRoute('eval_parties_choisir_parametres_et_afficher_stats', [
                 'slug' => $form->get('evaluations')->getData()->getSlug()
             ]);
         }
@@ -239,7 +239,7 @@ class StatsController extends AbstractController
     }
 
     /**
-     * @Route("/eval-parties/{slug}/choisir-groupes-et-statuts", name="eval_parties_choix_parametres_et_afficher_stats", methods={"GET","POST"})
+     * @Route("/eval-parties/{slug}/choisir-groupes-et-statuts", name="eval_parties_choisir_parametres_et_afficher_stats", methods={"GET","POST"})
      */
     public function evalPartieschoisirParametresEtAfficherStats(Request $request, StatisticsManager $statsManager, Evaluation $evaluation, StatutRepository $repoStatut, GroupeEtudiantRepository $repoGroupe): Response
     {

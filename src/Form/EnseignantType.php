@@ -18,7 +18,6 @@ class EnseignantType extends AbstractType
 
     public function __construct(TranslatorInterface $translator) {
         $this->translator = $translator;
-        //$this->translator->trans('oui')
     }
   public function buildForm(FormBuilderInterface $builder, array $options)
   {

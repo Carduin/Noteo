@@ -18,8 +18,8 @@
                href="{{ path('evaluation_edit', {'slug': evaluation.slug}) }}">Modifier {{ evaluation.nom }}</a>
         {% endif %}
         <a class="d-sm-inline-block btn btn-sm btn-primary shadow-sm"
-           {% if evaluation.parties|length > 1 %}{{ app.session.set('typeGraphique', 'histogramme') }}href="{{ path('statistiques_classiques_choisir_groupes_parties_statuts', {'slug' : evaluation.slug, 'typeStat':'classique-avec-parties'}) }}"
-           {% else %}{{ app.session.set('typeGraphique', 'histogramme') }}href="{{ path('statistiques_classiques_choisir_groupes_parties_statuts', {'slug' : evaluation.slug, 'typeStat':'classique'}) }}"{% endif %}>Consulter
+           {% if evaluation.parties|length > 1 %}{{ app.session.set('typeGraphique', 'histogramme') }}href="{{ path('eval_parties_choisir_parametres_et_afficher_stats', {'slug' : evaluation.slug}) }}"
+           {% else %}{{ app.session.set('typeGraphique', 'histogramme') }}href="{{ path('eval_simple_choisir_parametres_et_afficher_stats', {'slug' : evaluation.slug}) }}"{% endif %}>Consulter
             les statistiques pour {{ evaluation.nom }}</a>
     </div>
     <div class="table-responsive">
