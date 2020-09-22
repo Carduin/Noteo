@@ -240,6 +240,8 @@ template_mail_mentions_legales: 'Votre nom, prénom et vos notes ont été réco
 modifier_evaluation_titre_page: Modifier nom
 modifier_evaluation_message_info_absent: Si un étudiant était absent à l'évaluation, saisissez -1. Sa note ne sera pas prise en compte pour les statistiques
 # page créer simple
+creer_eval_simple_titre_page: Créer une évaluation
+creer_eval_simple_btn_valider: Enregistrer les notes
 # page créer parties (saisie infos)
 # page créer parties (saisie arborescence)
 
