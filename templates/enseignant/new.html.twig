@@ -1,9 +1,9 @@
 {% extends 'base.html.twig' %}
 
-{% block titrePage %}Ajouter un enseignant{% endblock %}
+{% block titrePage %}{% trans %}creer_enseignant_titre_page{% endtrans %}{% endblock %}
 
 {% block enseignants %}active{% endblock %}
 
 {% block contenu %}
-    {{ include('enseignant/_form.html.twig', {'button_label': 'Ajouter l\'enseignant'}) }}
+    {{ include('enseignant/_form.html.twig', {'button_label': 'creer_enseignant_creer_enseignant'}) }}
 {% endblock %}

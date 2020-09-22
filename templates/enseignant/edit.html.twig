@@ -1,6 +1,12 @@
 {% extends 'base.html.twig' %}
 
-{% block titrePage %}Modifier {% if enseignant == app.user %}mon profil{% else %}{{ enseignant.prenom }} {{ enseignant.nom }}{% endif %}{% endblock %}
+{% block titrePage %}
+    {% if enseignant == app.user %}
+        {% trans %}modifier_profil_enseignant_connecte{% endtrans %}
+    {% else %}
+        {% trans with {'nom': enseignant.nom, 'prenom': enseignant.prenom } %}modifier_profil_autre_enseignant{% endtrans %}
+    {% endif %}
+{% endblock %}
 
 {% block enseignants %}active{% endblock %}
 
@@ -8,9 +14,10 @@
     {% if enseignant != app.user %}
         <div class='bouton' align=center>
             <a class="d-sm-inline-block btn btn-sm btn-primary shadow-sm"
-               href="{{ path('enseignant_edit_password', {'id': enseignant.id}) }}">Modifier le mot de passe
-                de {{ enseignant.prenom }} {{ enseignant.nom }}</a>
+               href="{{ path('enseignant_edit_password', {'id': enseignant.id}) }}">
+                {% trans with {'nom': enseignant.nom, 'prenom': enseignant.prenom } %}modifier_mdp_autre_enseignant{% endtrans %}
+            </a>
         </div>
     {% endif %}
-    {{ include('enseignant/_form.html.twig', {'button_label': 'Enregistrer'}) }}
+    {{ include('enseignant/_form.html.twig', {'button_label': 'enregistrer'}) }}
 {% endblock %}

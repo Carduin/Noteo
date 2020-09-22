@@ -7,10 +7,17 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Translation\TranslatorInterface;
 use Symfony\Component\Validator\Constraints\NotNull;
 
 class EnseignantEditType extends AbstractType
 {
+    private $translator;
+
+    public function __construct(TranslatorInterface $translator) {
+        $this->translator = $translator;
+    }
+
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
@@ -19,8 +26,8 @@ class EnseignantEditType extends AbstractType
         ->add('email')
         ->add('estAdmin', ChoiceType::class, [
           'constraints' => [new NotNull],
-          'help' => 'Si vous vous retirez vos droits d\'administrateur, assurez-vous qu\'une autre personne dispose de ces derniers.',
-          'choices' => ['Oui' => true, 'Non' => false],
+          'help' => '$this->translator->trans(\'form_enseignant_message_info_droits\')',
+          'choices' => [$this->translator->trans('oui') => true, $this->translator->trans('non') => false],
           'data' => $options['estAdmin'],
           'mapped' => false,
           'disabled' => $options['champDesactive'],
@@ -34,9 +41,9 @@ class EnseignantEditType extends AbstractType
                 '15' => 15,
                 '30' => 30,
                 '45' => 45,
-                'Tous les éléments' => -1
+                $this->translator->trans('tous_les_elements') => -1
             ],
-            'label' => 'Préférence de tri des tableaux'
+            'label' => $this->translator->trans('form_enseignant_preference_tableau')
         ])
         ;
     }

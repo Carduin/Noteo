@@ -1,4 +1,4 @@
-####### TRADUCTIONS COMMUNES
+####### TRADUCTIONS GENERALES
 #pages erreurs
 aie: Aïe
 erreur: Une erreur est survenue
@@ -34,7 +34,7 @@ consulter_profil: Consulter mon profil
 modifier_mdp : Modifier mon mot de passe
 logout: Déconnexion
 
-# titres de colonnes
+# titres de colonnes tableaux
 nom: Nom
 prenom: Prénom
 mail: Mail
@@ -43,6 +43,7 @@ description: Description
 createur: Créateur
 evaluable: Évaluable
 statuts: Statut(s)
+administrateur: Administrateur
 
 # divers
 avertissement: Avertissement
@@ -56,13 +57,11 @@ enregistrer: Enregistrer
 modale_groupe_evaluable: Cet attribut d'un groupe détermine si vous pourrez, ou non, créer des évaluations pour celui-ci.
 modale_groupe_supprimer: 'Êtes-vous sur de vouloir supprimer le groupe ? <br>Cette action supprimera :<ul><li>Tous ses sous-groupes</li><li>Toutes les évaluations associées</li></ul>'
 modale_groupe_supprimer_confirmer: Supprimer le groupe
-
 # formulaires
 form_groupe_nom: Nom du groupe
 form_groupe_description: Description du groupe
 form_groupe_ajouter_etudiants: Ajouter des étudiants au groupe
 form_groupe_retirer_etudiants: Retirer des étudiants du groupe
-
 # Page index
 index_groupe_titre_page: Liste des groupes
 index_label_btn_ordre_hierarchique : Afficher les groupes de manière hiérarchique
@@ -74,36 +73,29 @@ tooltip_groupe_modifier: Modifier nom
 tooltip_groupe_supprimer: Supprimer nom
 pas_de_groupes: Vous n'avez aucun groupe d'étudiants
 importer_groupe: Importer un groupes d'étudiants
-
 # Page modifier
 modifier_groupe_titre_page: Modifier nom
-
 # Page nouveau sous groupe
 nouveau_sous_groupe_titre_page: Créer un sous groupe pour nom
 groupe_creer_sous_groupe: Créer le sous groupe
-
 # Page import groupe
 groupe_creer_groupe: Créer le groupe
 form_groupe_fichier_csv: Fichier CSV (séparateur ;)
 form_groupe_telecharger_modele: Télécharger un modèle
 pas_fichier_choisi: Aucun fichier choisi
 fichier_trop_volumineux: Le fichier ajouté est trop volumineux
-
 ####### STATUTS ETUDIANTS
 # messages globaux
 message_alternatif_pas_de_statut_part_1: 'Il est possible d''obtenir des statistiques sur des groupes d''étudiants ayant un statut particulier (boursiers, redoublants, ...). Vous pouvez créer de tels groupes <a href='
 message_alternatif_pas_de_statut_part_2: '>ici</a>.'
-
 # modales
 modale_statut_supprimer: 'Êtes-vous sur de vouloir supprimer le statut d''étudiant ? <br> Vous ne pourrez plus voir de statistiques sur ce regroupement d''étudiants.'
 modale_statut_supprimer_confirmer: Supprimer le statut
-
 # formulaires
 form_statut_nom: Nom du groupe
 form_statut_description: Description du groupe
 form_statut_ajouter_etudiants: Ajouter des étudiants au groupe
 form_statut_retirer_etudiants: Retirer des étudiants du groupe
-
 # page index
 index_statut_titre_page: Liste des groupes d'étudiants ayant un statut particulier
 index_statut_btn_creer: Créer un groupe
@@ -111,41 +103,32 @@ tooltip_statut_consulter: Consulter nom
 tooltip_statut_modifier: Modifier nom
 tooltip_statut_supprimer: Supprimer nom
 pas_de_statut: Vous n'avez aucun groupe d'étudiants ayant un statut particulier
-
 # page consulter
 consulter_statut_etudiants: Liste des étudiants du groupe
-
 # page modifier
 modifier_statut_titre_page: Modifier nom
-
 # page créer
 creer_statut_titre_page: Créer un groupe d'étudiants ayant un statut particulier
 statut_creer_statut: Créer le groupe
-
 ####### ETUDIANTS
 # modales
 modale_etudiant_supprimer: 'Êtes-vous sur de vouloir supprimer l''étudiant ? <br>Cette action:<ul><li>Retirera l''étudiant tous les groupes</li><li>Supprimera sa note pour toutes les évaluations auxquelles il a participé</li></ul>'
 modale_etudiant_supprimer_confirmer: Supprimer l'étudiant
-
 # formulaires
 form_etudiant_nom: Nom
 form_etudiant_prenom: Prénom
 form_etudiant_mail: Mail
 form_etudiant_demissionaire: Démissionaire
 form_etudiant_statuts: Statut(s)
-form_etudiant_message_info:
-
 # page index
 index_etudiant_titre_page: Liste des étudiants
 index_etudiant_btn_creer: Ajouter un étudiant
-tooltip_etudiant_consulter: Consulter nom prenom
-tooltip_etudiant_modifier: Modifier nom prenom
-tooltip_etudiant_supprimer: Supprimer nom prenom
+tooltip_etudiant_consulter: Consulter prenom nom
+tooltip_etudiant_modifier: Modifier prenom nom
+tooltip_etudiant_supprimer: Supprimer prenom nom
 pas_d_etudiants: Vous n'avez aucun étudiant
-
 # page consulter
 consulter_etudiant_liste_groupes: Groupe(s) au(x)quel(s) appartient l'étudiant
-
 # page modifier
 modifier_etudiant_titre_page: Modifier nom prenom
 modifier_etudiant_message_creer_groupe_part_1: 'Pour modifier les groupes auxquels appartient cet étudiant, rendez-vous <a href="'
@@ -156,6 +139,40 @@ modifier_etudiant_message_creer_statut_part_2: '">ici</a>.'
 creer_etudiant_titre_page: Ajouter un étudiant
 creer_etudiant_ajouter_groupe: Ajouter l'étudiant à un groupe d'étudiants ayant un statut particulier (optionnel)
 etudiant_creer_etudiant: Ajouter l'étudiant
+####### ENSEIGNANTS
+# modales
+modale_enseignant_supprimer: 'Êtes-vous sur de vouloir supprimer l''enseignant ? <br>Cette action supprimera:<ul><li> Les groupes qu''il a créé</li><li> Les statuts qu''il a créé</li><li> Les évaluations qu''il a créé</li></ul>'
+modale_enseignant_supprimer_confirmer: Supprimer l'enseignant
+# formulaires
+form_enseignant_nom: Nom
+form_enseignant_prenom: Prénom
+form_enseignant_mail: Mail
+form_enseignant_administrateur: Administrateur
+form_enseignant_preference_tableau: Préférence du nombre d'éléments affichés dans les tableaux
+form_enseignant_mdp: Mot de passe
+form_enseignant_message_info_droits: Si vous vous retirez vos droits d'administrateur, assurez-vous qu'une autre personne dispose de ces derniers.
+form_enseignant_mdp_invalide: Les mots de passe saisis ne correspondent pas
+form_enseignant_placeholder_mpd_1: Saisir le mot de passe
+form_enseignant_placeholder_mpd_2: Confirmation
+# page index
+index_enseignant_titre_page: Liste des enseignants
+index_enseignant_btn_creer: Ajouter un enseignant
+tooltip_enseignant_consulter: Consulter prenom nom
+tooltip_enseignant_modifier: Modifier prenom nom
+tooltip_enseignant_supprimer: Supprimer prenom nom
+#modifier mon profil / modifier le profil de xx
+modifier_profil_enseignant_connecte: Modifier mon profil
+modifier_profil_autre_enseignant: Modifier prenom nom
+modifier_mdp_enseignant_connecte: Modifier mon mot de passe
+modifier_mdp_autre_enseignant: Modifier le mot de passe de prenom nom
+# page consulter
+elements: éléments
+tous_les_elements: Tous les éléments
+# page modifier profil
+modifier_enseignant_label_preference: Préférence de tri des tableaux
+# page créer
+creer_enseignant_titre_page: Ajouter un enseignant
+creer_enseignant_creer_enseignant: Ajouter l'enseignant
 
 ####### REINITIALISATION APPLICATION
 app_reset_texte: 'Réinitialiser l''application aura pour effet de supprimer de l''application: <ul><li>Tous les groupes</li><li>Tous les groupes d''étudiants ayant un statut particulier</li><li>Toutes les évaluations</li><li>Tous les étudiants</li></ul>Les profils des enseignants ne seront pas supprimés et les statistiques ne seront plus consultables.'
