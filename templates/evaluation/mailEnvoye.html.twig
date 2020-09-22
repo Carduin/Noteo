@@ -1,10 +1,10 @@
-Bonjour {{ etudiantsEtNotes.etudiant.prenom }} {{ etudiantsEtNotes.etudiant.nom }},<br><br>
-Veuillez trouver dans ce mail les informations concernant l'évaluation {{ etudiantsEtNotes.partie.evaluation.nom }} du {{ etudiantsEtNotes.partie.evaluation.date | date("d/m/Y") }} sur le groupe {{ etudiantsEtNotes.partie.evaluation.groupe.nom }}.
+{% trans with {'nom':etudiantsEtNotes.etudiant.nom, 'prenom':etudiantsEtNotes.etudiant.prenom} %}template_mail_envoye_bonjour{% endtrans %},<br><br>
+{% trans with {'nomGroupe':etudiantsEtNotes.partie.evaluation.groupe.nom, 'nomEval':etudiantsEtNotes.partie.evaluation.nom,'date':etudiantsEtNotes.partie.evaluation.date | date("d/m/Y")} %}template_mail_infos_evals{% endtrans %}
 <h3>{{ etudiantsEtNotes.partie.intitule }}</h3>
 <table border="1" style="border-collapse:collapse;">
     <tr>
-        <th width=200em>Votre note</th>
-        <th width=200em>Votre rang</th>
+        <th width=200em>{% trans %}template_mail_votre_note{% endtrans %}</th>
+        <th width=200em>{% trans %}template_mail_votre_rang{% endtrans %}</th>
     </tr>
     <tr style="text-align:center;">
         <td>{{ etudiantsEtNotes.valeur }} / {{ etudiantsEtNotes.partie.bareme }}</td>
@@ -17,37 +17,32 @@ Veuillez trouver dans ce mail les informations concernant l'évaluation {{ etudi
         <tr>
             <th width=200em>
                 {{ statsUnGroupe.nom }}
-                ({{ statsUnGroupe.listeNotes | length }} étudiants)
+                {% trans with {'nb' : statsUnGroupe.listeNotes | length} %}template_mail_effectif_groupe{% endtrans %}
             </th>
-            <th width=200em>Répartition des notes</th>
+            <th width=200em>{% trans %}repartition_notes{% endtrans %}</th>
         </tr>
         <tr style="text-align:center;">
             <td>
-                Moyenne : {{ statsUnGroupe.moyenne }}<br>
-                Écart-type : {{ statsUnGroupe.ecartType }}<br>
-                Minimum : {{ statsUnGroupe.minimum }}<br>
-                Maximum : {{ statsUnGroupe.maximum }}<br>
-                Médiane : {{ statsUnGroupe.mediane }}
+                {% trans %}moyenne{% endtrans %} : {{ statsUnGroupe.moyenne }}<br>
+                {% trans %}ecart_type{% endtrans %} : {{ statsUnGroupe.ecartType }}<br>
+                {% trans %}minimum{% endtrans %} : {{ statsUnGroupe.minimum }}<br>
+                {% trans %}maximum{% endtrans %} : {{ statsUnGroupe.maximum }}<br>
+                {% trans %}mediane{% endtrans %} : {{ statsUnGroupe.mediane }}
             </td>
             <td>
                 <br>
-                [0; 4[ : {{ statsUnGroupe.repartition[0] }} étudiant(s)<br>
-                [4; 8[ : {{ statsUnGroupe.repartition[1] }} étudiant(s)<br>
-                [8; 12[ : {{ statsUnGroupe.repartition[2] }} étudiant(s)<br>
-                [12; 16[ : {{ statsUnGroupe.repartition[3] }} étudiant(s)<br>
-                [16; 20] : {{ statsUnGroupe.repartition[4] }} étudiant(s)<br><br>
+                [0; 4[ : {% trans with {'nb' : statsUnGroupe.repartition[0] } %}template_mail_effectif_repartition{% endtrans %}<br>
+                [4; 8[ : {% trans with {'nb' : statsUnGroupe.repartition[1] } %}template_mail_effectif_repartition{% endtrans %}<br>
+                [8; 12[ : {% trans with {'nb' : statsUnGroupe.repartition[2] } %}template_mail_effectif_repartition{% endtrans %}<br>
+                [12; 16[ : {% trans with {'nb' : statsUnGroupe.repartition[3] } %}template_mail_effectif_repartition{% endtrans %}<br>
+                [16; 20] : {% trans with {'nb' : statsUnGroupe.repartition[4] } %}template_mail_effectif_repartition{% endtrans %}<br><br>
             </td>
         </tr>
     </table>
     <br>
 {% endfor %}
 <p style="font-size:10px;text-align:justify;margin-top:20px;">
-    Votre nom, prénom et vos notes ont été récoltés afin de produire des statistiques sur le taux de réussite des
-    étudiants. La loi « Informatique et Liberté » vous permet de demander la suppression de vos données personnelles
-    figurant dans une base de données à travers le droit d’opposition (article 38 de la loi n° 78-17 du 6/01/1978) et le
-    droit de rectification (article 40 de la loi n° 78-17 du 6/01/1978). Pour exercer ces droits, veuillez en informer
-    l’administrateur : <a href="mailto:{{ mailAdmin }}">{{ mailAdmin }}</a><br>En cas de suppression de vos
-    informations, vous ne recevrez plus de statistiques concernant votre taux de réussite aux différentes évaluations.
+    {% trans with {'mailAdmin': mailAdmin} %}template_mail_mentions_legales{% endtrans %}
 </p>
 <div align=center style="margin-top:50px;">
     <img width="150em" src="{{ app.request.getSchemeAndHttpHost() ~ asset('img/banniere_noteo.jpg') }}" alt="">

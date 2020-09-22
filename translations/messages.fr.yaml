@@ -45,10 +45,17 @@ evaluable: Évaluable
 statuts: Statut(s)
 administrateur: Administrateur
 note_sur_20: Note (/20)
-moyenne: Moyenne
 evaluation: Évaluation
 date: Date
 groupe: Groupe
+
+#statistiques
+moyenne: Moyenne
+ecart_type: Écart-type
+minimum: Minimum
+maximum: Maximum
+mediane: Médiane
+repartition_notes: Répartition des notes
 
 # divers
 avertissement: Avertissement
@@ -218,7 +225,16 @@ previsualisation_mail_btn_valider: Envoyer le mail aux nombre étudiants
 previsualisation_mail_pdf_erreur_taille: Le fichier choisi est trop volumineux
 previsualisation_mail_pdf_erreur_type: Le fichier choisi n'est pas un PDF
 previsualisation_mail_pdf_placeholder: Aucun fichier choisi
-# mail envoyé
+
+# template de mail envoyé
+template_mail_envoye_bonjour: Bonjour prenom nom
+template_mail_infos_evals: Veuillez trouver dans ce mail les informations concernant l'évaluation nomEval du date sur le groupe nomGroupe.
+template_mail_votre_note: Votre note
+template_mail_votre_rang: Votre rang
+template_mail_effectif_groupe: (nb étudiants)
+template_mail_effectif_repartition: nb étudiant(s)
+template_mail_mentions_legales: 'Votre nom, prénom et vos notes ont été récoltés afin de produire des statistiques sur le taux de réussite des étudiants. La loi « Informatique et Liberté » vous permet de demander la suppression de vos données personnelles figurant dans une base de données à travers le droit d’opposition (article 38 de la loi n° 78-17 du 6/01/1978) et le droit de rectification (article 40 de la loi n° 78-17 du 6/01/1978). Pour exercer ces droits, veuillez en informer l’administrateur : <a href="mailto:mailAdmin">mailAdmin</a><br>En cas de suppression de vosinformations, vous ne recevrez plus de statistiques concernant votre taux de réussite aux différentes évaluations.'
+
 # page consulter
 # page modifier profil
 # page créer simple
