@@ -1198,7 +1198,7 @@ class StatsController extends AbstractController
             ]);
 
         }
-        return $this->render('evaluation/previsualisationMail.html.twig', [
+        return $this->render('statistiques/previsualisationMail.html.twig', [
             'evaluation' => $evaluation,
             'nbEtudiants' => $nbEtudiants,
             'nomGroupe' => $nomGroupe,
@@ -1226,7 +1226,7 @@ class StatsController extends AbstractController
         $noteEtudiant = $notesEtudiants[0]->getValeur();
         $position = array_search($noteEtudiant, $copieTabRang) + 1;
         $mailAdmin = $_ENV['MAIL_ADMINISTRATEUR'];
-        return $this->render('evaluation/mailEnvoye.html.twig', [
+        return $this->render('statistiques/mailEnvoye.html.twig', [
             'etudiantsEtNotes' => $notesEtudiants[0],
             'stats' => $stats,
             'position' => $position,
