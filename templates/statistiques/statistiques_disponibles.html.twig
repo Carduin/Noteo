@@ -91,11 +91,10 @@
     <!-- STATS CLASSIQUES -->
     <div class="card">
         <li class="list-group-item text-white" style="background-color:#bdc3c7;">
-            Analyse d’une évaluation simple
+            {% trans %}page_stats_eval_simple_titre_principal{% endtrans %}
         </li>
         <div class="card-body">
-            Obtenez des statistiques sur une évaluation spécifique dans laquelle l’enseignant a saisi une note sur 20
-            pour chaque étudiant.
+            {% trans %}page_stats_eval_simple_sous_titre_principal{% endtrans %}
             <hr>
             <div class="card-deck">
                 <div class="card">
@@ -105,21 +104,19 @@
                          alt="Card image cap">
                     <div class="card-body">
                         <hr>
-                        <h5 class="card-title">Répartition des notes (histogramme)</h5>
+                        <h5 class="card-title">{% trans %}repartition_notes_histo{% endtrans %}</h5>
                         <p class="card-text">
-                            Obtenez, pour des groupes donnés (groupes de TD/TP par exemple) et/ou des profils donnés,
-                            (étudiants ayant le statut de boursier, redoublant...), la répartition des notes sous forme
-                            <b>d'histogramme</b>.
+                            {% trans %}page_stats_eval_simple_histo_description{% endtrans %}
                         </p>
                         {% if not statistiques.evalSimple.disponible %}
-                            <span style="font-size:15px; color: #0275d8"><i class="icon-attention-circled"></i>Statistique indisponible : <a
-                                        href="{{ path("evaluation_choose_group", {"typeEval" : "simple"}) }}">Créez des évaluations simples</a></span>
+                            <span style="font-size:15px; color: #0275d8"><i class="icon-attention-circled"></i>{% trans %}page_stats_statistiques_indisponible{% endtrans %}<a
+                                        href="{{ path("evaluation_choose_group", {"typeEval" : "simple"}) }}">{% trans %}page_stats_pas_eval_simple{% endtrans %}</a></span>
                             <br><br>
                         {% endif %}
                         <button {% if not statistiques.evalSimple.disponible %}disabled{% endif %}
                                 onclick="location.href='{{ path('eval_simple_choisir_evaluation', {'typeGraphique' : 'histogramme'}) }}'"
                                 class="btn {% if statistiques.evalSimple.disponible %}btn-primary{% else %}btn-secondary{% endif %}">
-                            Consulter ce type de statistiques
+                            {% trans %}consulter_type_stats{% endtrans %}
                         </button>
                     </div>
                 </div>
@@ -130,21 +127,19 @@
                          alt="Card image cap">
                     <div class="card-body">
                         <hr>
-                        <h5 class="card-title">Répartition des notes (boîte à moustache)</h5>
+                        <h5 class="card-title">{% trans %}repartition_notes_bam{% endtrans %}</h5>
                         <p class="card-text">
-                            Obtenez, pour des groupes donnés (groupes de TD/TP par exemple) et/ou des profils donnés,
-                            (étudiants ayant le statut de boursier, redoublant...), la répartition des notes sous forme
-                            de <b>boîte à moustache</b>.
+                            {% trans %}page_stats_eval_simple_bam_description{% endtrans %}
                         </p>
                         {% if not statistiques.evalSimple.disponible %}
-                            <span style="font-size:15px; color: #0275d8"><i class="icon-attention-circled"></i>Statistique indisponible : <a
-                                        href="{{ path("evaluation_choose_group", {"typeEval" : "simple"}) }}">Créez des évaluations simples</a></span>
+                            <span style="font-size:15px; color: #0275d8"><i class="icon-attention-circled"></i>{% trans %}page_stats_statistiques_indisponible{% endtrans %}<a
+                                        href="{{ path("evaluation_choose_group", {"typeEval" : "simple"}) }}">{% trans %}page_stats_pas_eval_simple{% endtrans %}</a></span>
                             <br><br>
                         {% endif %}
                         <button {% if not statistiques.evalSimple.disponible %}disabled{% endif %}
                                 onclick="location.href='{{ path('eval_simple_choisir_evaluation', {'typeGraphique' : 'boite-moustache'}) }}'"
                                 class="btn {% if statistiques.evalSimple.disponible %}btn-primary{% else %}btn-secondary{% endif %}">
-                            Consulter ce type de statistiques
+                            {% trans %}consulter_type_stats{% endtrans %}
                         </button>
                     </div>
                 </div>
@@ -155,21 +150,19 @@
                          alt="Card image cap">
                     <div class="card-body">
                         <hr>
-                        <h5 class="card-title">Moyenne et écart-type (histogramme)</h5>
+                        <h5 class="card-title">{% trans %}moyenne_ecart_type{% endtrans %}</h5>
                         <p class="card-text">
-                            Obtenez, pour des groupes donnés (groupes de TD/TP par exemple) et/ou des profils donnés,
-                            (étudiants ayant le statut de boursier, redoublant...),la moyenne et l’écart-type sous forme
-                            <b>d'histogramme</b>.
+                            {% trans %}page_stats_eval_simple_moyenne_ecart_type_description{% endtrans %}
                         </p>
                         {% if not statistiques.evalSimple.disponible %}
-                            <span style="font-size:15px; color: #0275d8"><i class="icon-attention-circled"></i>Statistique indisponible : <a
-                                        href="{{ path("evaluation_choose_group", {"typeEval" : "simple"}) }}">Créez des évaluations simples</a></span>
+                            <span style="font-size:15px; color: #0275d8"><i class="icon-attention-circled"></i>{% trans %}page_stats_statistiques_indisponible{% endtrans %}<a
+                                        href="{{ path("evaluation_choose_group", {"typeEval" : "simple"}) }}">{% trans %}page_stats_pas_eval_simple{% endtrans %}</a></span>
                             <br><br>
                         {% endif %}
                         <button {% if not statistiques.evalSimple.disponible %}disabled{% endif %}
                                 onclick="location.href='{{ path('eval_simple_choisir_evaluation', {'typeGraphique' : 'moyenne'}) }}'"
                                 class="btn {% if statistiques.evalSimple.disponible %}btn-primary{% else %}btn-secondary{% endif %}">
-                            Consulter ce type de statistiques
+                            {% trans %}consulter_type_stats{% endtrans %}
                         </button>
                     </div>
                 </div>

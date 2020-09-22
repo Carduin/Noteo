@@ -8,7 +8,6 @@ erreur: Une erreur est survenue
 500: Erreur serveur
 503: Erreur serveur
 504: Le serveur n'a pas répondu
-
 # login
 placeholder_mail: Mail
 placeholder_mdp: Mot de passe
@@ -16,7 +15,6 @@ remember_me: Se souvenir de moi
 log_in: Se connecter
 acceder_noteo: Accéder à Noteo
 connecte_en_tant_que: Vous êtes connecté(e) en tant que
-
 # Barre de menu
 groupes: Groupes
 statuts_etudiants: Statuts étudiants
@@ -28,12 +26,10 @@ autres_evaluations: Autres évaluations
 statistiques: Statistiques
 tutoriels: Tutoriels
 reset_app: Réinitialiser l'application
-
 # menu déroulant profil
 consulter_profil: Consulter mon profil
 modifier_mdp : Modifier mon mot de passe
 logout: Déconnexion
-
 # titres de colonnes tableaux
 nom: Nom
 prenom: Prénom
@@ -48,7 +44,9 @@ note_sur_20: Note (/20)
 evaluation: Évaluation
 date: Date
 groupe: Groupe
-
+effectif_statut: Effectif Statut
+intitule: Intitulé
+bareme: Barème
 #statistiques
 moyenne: Moyenne
 ecart_type: Écart-type
@@ -56,7 +54,6 @@ minimum: Minimum
 maximum: Maximum
 mediane: Médiane
 repartition_notes: Répartition des notes
-
 # divers
 avertissement: Avertissement
 aide: Aide
@@ -64,7 +61,6 @@ oui: Oui
 non: Non
 enregistrer: Enregistrer
 valider: Valider
-
 ####### GROUPES ETUDIANTS
 # modales
 modale_groupe_evaluable: Cet attribut d'un groupe détermine si vous pourrez, ou non, créer des évaluations pour celui-ci.
@@ -186,7 +182,6 @@ modifier_enseignant_label_preference: Préférence de tri des tableaux
 # page créer
 creer_enseignant_titre_page: Ajouter un enseignant
 creer_enseignant_creer_enseignant: Ajouter l'enseignant
-
 ####### EVALUATIONS
 # modales
 modale_evaluation_supprimer: 'Êtes-vous sur de vouloir supprimer cette évaluation ?<br>Toutes les notes associées seront supprimées.'
@@ -255,8 +250,28 @@ tooltip_partie_modifier: Modifier la partie sélectionnée
 tooltip_partie_supprimer: Supprimer la partie sélectionnée
 form_partie_intitule: Intitulé de la partie
 form_partie_bareme:  Barème de la partie
-
-
+####### PAGE STATISTIQUES
+# Général
+consulter_type_stats: Consulter ce type de statistiques
+repartition_notes_histo: Répartition des notes (histogramme)
+repartition_notes_bam: Répartition des notes (boîte à moustache)
+moyenne_ecart_type: Moyenne et écart-type (histogramme)
+# Messages d'erreur
+page_stats_statistiques_indisponible: 'Statistique indisponible : '
+page_stats_pas_eval_simple: Créez des évaluations simples
+# Stats éval simple
+page_stats_eval_simple_titre_principal: Analyse d’une évaluation simple
+page_stats_eval_simple_sous_titre_principal: Obtenez des statistiques sur une évaluation spécifique dans laquelle l’enseignant a saisi une note sur 20 pour chaque étudiant.
+page_stats_eval_simple_histo_description: 'Obtenez, pour des groupes donnés (groupes de TD/TP par exemple) et/ou des profils donnés, (étudiants ayant le statut de boursier, redoublant...), la répartition des notes sous forme <b>d''histogramme</b>.'
+page_stats_eval_simple_bam_description: 'Obtenez, pour des groupes donnés (groupes de TD/TP par exemple) et/ou des profils donnés, (étudiants ayant le statut de boursier, redoublant...), la répartition des notes sous forme de <b>boîte à moustache</b>.'
+page_stats_eval_simple_moyenne_ecart_type_description: 'Obtenez, pour des groupes donnés (groupes de TD/TP par exemple) et/ou des profils donnés, (étudiants ayant le statut de boursier, redoublant...), la moyenne et l’écart-type sous forme <b>d''histogramme</b>.'
+####### FORMULAIRES STATISTIQUES
+# Stats éval simple
+formulaire_stats_eval_simple_titre_choix_eval: Analyse d’une évaluation simple
+formulaire_stats_eval_simple_sous_titre_choix_eval: Choisir l'évaluation pour laquelle vous désirez consulter les statistiques
+formulaire_stats_eval_simple_titre_choix_groupes: Analyse d'une évaluation simple (nom)
+formulaire_stats_eval_simple_sous_titre_groupes_choix_groupes: Sélectionner les groupes pour lesquels vous souhaitez consulter les statistiques
+formulaire_stats_eval_simple_sous_titre_statuts_choix_groupes: Sélectionner les groupes d'étudiants ayant un statut particulier pour lesquels vous souhaitez consulter les statistiques
 ####### REINITIALISATION APPLICATION
 app_reset_texte: 'Réinitialiser l''application aura pour effet de supprimer de l''application: <ul><li>Tous les groupes</li><li>Tous les groupes d''étudiants ayant un statut particulier</li><li>Toutes les évaluations</li><li>Tous les étudiants</li></ul>Les profils des enseignants ne seront pas supprimés et les statistiques ne seront plus consultables.'
 ####### TUTORIELS

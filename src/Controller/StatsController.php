@@ -22,7 +22,6 @@ use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Translation\Translator;
 use Symfony\Component\Translation\TranslatorInterface;
 use Symfony\Component\Validator\Constraints\File;
 use Symfony\Component\Validator\Constraints\NotBlank;
@@ -34,6 +33,12 @@ use Symfony\Component\Filesystem\Filesystem;
  */
 class StatsController extends AbstractController
 {
+    private  $translator;
+
+    public function __construct(TranslatorInterface $translator) {
+        $this->translator = $translator;
+    }
+
     /**
      * @Route("/", name="statistiques", methods={"GET"})
      */
@@ -112,13 +117,13 @@ class StatsController extends AbstractController
         return $this->render('statistiques/formulaire_parametrage_statistiques.html.twig', [
             'form' => $form->createView(),
             'nbForm' => 1,
-            'titrePage' => 'Analyse d’une évaluation simple',
+            'titrePage' => $this->translator->trans('formulaire_stats_eval_simple_titre_choix_eval'),
             'activerToutSelectionner' => false,
             'colorationEffectif' => false,
             'casBoutonValider' => 0,
             'typeForm1' => 'evaluations',
             'conditionAffichageForm1' => true,
-            'sousTitreForm1' => 'Choisir l\'évaluation pour laquelle vous désirez consulter les statistiques',
+            'sousTitreForm1' => $this->translator->trans('formulaire_stats_eval_simple_sous_titre_choix_eval'),
         ]);
     }
 
@@ -180,18 +185,18 @@ class StatsController extends AbstractController
             'form' => $form->createView(),
             'nbForm' => 2,
             'activerToutSelectionner' => true,
-            'titrePage' => "Analyse d’une évaluation simple (" . $evaluation->getNom() . ")",
+            'titrePage' => $this->translator->trans('formulaire_stats_eval_simple_titre_choix_groupes', ['nom'=>$evaluation->getNom()]),
             'colorationEffectif' => false,
             'casBoutonValider' => 1,
             'typeForm1' => 'groupes',
             'affichageEffectifParStatut' => false,
-            'sousTitreForm1' => 'Sélectionner les groupes pour lesquels vous souhaitez consulter les statistiques',
+            'sousTitreForm1' => $this->translator->trans('formulaire_stats_eval_simple_sous_titre_groupes_choix_groupes'),
             'conditionAffichageForm1' => true,
             'indentationGroupes' => true,
             'typeForm2' => 'statuts',
-            'sousTitreForm2' => 'Sélectionner les groupes d\'étudiants ayant un statut particulier pour lesquels vous souhaitez consulter les statistiques',
+            'sousTitreForm2' => $this->translator->trans('formulaire_stats_eval_simple_sous_titre_statuts_choix_groupes'),
             'conditionAffichageForm2' => !empty($statuts),
-            'messageAlternatifForm2' => 'Il est possible d\'obtenir des statistiques sur des groupes d\'étudiantsayant un statut particulier (boursiers, redoublants, ...). Vous pouvez créer de tels groupes <a href="' . $this->generateUrl('statut_new') . '">ici</a>.'
+            'messageAlternatifForm2' => $this->translator->trans('message_alternatif_pas_de_statut_part_1') . $this->generateUrl('statut_new') . $this->translator->trans('message_alternatif_pas_de_statut_part_2')
         ]);
     }
 
