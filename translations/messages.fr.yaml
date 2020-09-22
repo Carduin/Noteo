@@ -44,6 +44,11 @@ createur: Créateur
 evaluable: Évaluable
 statuts: Statut(s)
 administrateur: Administrateur
+note_sur_20: Note (/20)
+moyenne: Moyenne
+evaluation: Évaluation
+date: Date
+groupe: Groupe
 
 # divers
 avertissement: Avertissement
@@ -173,6 +178,34 @@ modifier_enseignant_label_preference: Préférence de tri des tableaux
 # page créer
 creer_enseignant_titre_page: Ajouter un enseignant
 creer_enseignant_creer_enseignant: Ajouter l'enseignant
+
+####### EVALUATIONS
+# modales
+modale_evaluation_supprimer: 'Êtes-vous sur de vouloir supprimer cette évaluation ?<br>Toutes les notes associées seront supprimées.'
+modale_evaluation_supprimer_confirmer: Supprimer l'évaluation
+# formulaires
+form_evaluations_nom: Nom de l'évaluation
+form_evaluation_groupe: Groupe évalué
+form_evaluation_createur: Créateur
+form_evaluation_csv: Télécharger l'évaluation au format CSV
+form_evaluation_date: Date de l'évaluation
+form_evaluation_notes_modifier: Modifier les notes des étudiants
+form_evaluation_notes_consulter: Notes des étudiants
+# page index
+index_evaluation_titre_page_mes_evals: Liste de mes évaluations
+index_evaluation_titre_page_autres_evals: Liste des autres évaluations
+index_evaluation_btn_creer_simple: Créer une évaluation
+index_evaluation_btn_creer_partie: Créer une évaluation avec des parties
+tooltip_evaluation_consulter: Consulter les notes pour nom
+tooltip_evaluation_modifier: Modifier nom
+tooltip_evaluation_supprimer: Supprimer nom
+index_evaluation_pas_evals_mes_evals: Vous n'avez aucune évaluation
+index_evaluation_pas_evals_autres_evals: Les autres enseignants n'ont aucune évaluation
+# page consulter
+# page modifier profil
+# page créer simple
+# page créer parties (saisie infos)
+# page créer parties (saisie arborescence)
 
 ####### REINITIALISATION APPLICATION
 app_reset_texte: 'Réinitialiser l''application aura pour effet de supprimer de l''application: <ul><li>Tous les groupes</li><li>Tous les groupes d''étudiants ayant un statut particulier</li><li>Toutes les évaluations</li><li>Tous les étudiants</li></ul>Les profils des enseignants ne seront pas supprimés et les statistiques ne seront plus consultables.'
