@@ -8,10 +8,10 @@
                        name="checkbox" title="Tout cocher"/>
             {% endif %}
         </th>
-        <th>Nom</th>
-        <th>Date</th>
-        <th>Groupe</th>
-        <th>Créateur</th>
+        <th>{% trans %}nom{% endtrans %}</th>
+        <th>{% trans %}date{% endtrans %}</th>
+        <th>{% trans %}groupe{% endtrans %}</th>
+        <th>{% trans %}createur{% endtrans %}</th>
         </thead>
         <tbody>
         {% for evaluation in form.evaluations %}
