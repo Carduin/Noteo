@@ -376,12 +376,10 @@
     <!-- STATS PLUSIEURS EVALS, STATUT -->
     <div class="card">
         <li class="list-group-item text-white" style="background-color:#bdc3c7;">
-            Analyse des résultats d’un statut d’étudiants sur plusieurs évaluations
+            {% trans %}page_stats_plusieurs_evals_statut_titre_principal{% endtrans %}
         </li>
         <div class="card-body">
-            Observez les résultats d'un groupe d’étudiants ayant un statut particulier (boursiers, redoublants... par
-            exemple) sur
-            plusieurs évaluations.
+            {% trans %}page_stats_plusieurs_evals_statut_sous_titre_principal{% endtrans %}
             <hr>
             <div class="card-deck">
                 <div class="card">
@@ -391,31 +389,28 @@
                          alt="Card image cap">
                     <div class="card-body">
                         <hr>
-                        <h5 class="card-title">Répartition des notes (histogramme)</h5>
+                        <h5 class="card-title">{% trans %}repartition_notes_histo{% endtrans %}</h5>
                         <p class="card-text">
-                            Sélectionnez plusieurs évaluations (par exemple toutes les évaluations en mathématiques) et
-                            obtenez, sous forme <b>d'histogramme</b>,
-                            la répartition globale des notes pour un ou plusieurs statut d’étudiants (boursiers,
-                            redoublants... par exemple).
+                            {% trans %}page_stats_plusieurs_evals_statut_histo_description{% endtrans %}
                         </p>
                         {% if not statistiques.plusieursEvalsStatuts.disponible %}
                             <span style="font-size:15px; color: #0275d8"><i class="icon-attention-circled"></i>
-                            Statistique indisponible :
+                            {% trans %}page_stats_statistiques_indisponible{% endtrans %}
                             {% if statistiques.plusieursEvalsStatuts.nombreStatuts < 1 %}
-                                <a href="{{ path("statut_new") }}">Créez un statut</a>
+                                <a href="{{ path("statut_new") }}">{% trans %}page_stats_pas_statut{% endtrans %}</a>
                             {% endif %}
                             {% if statistiques.plusieursEvalsStatuts.nombreStatuts < 1 and statistiques.plusieursEvalsStatuts.nombreEvals < 2 %}
-                                et
+                                {% trans %}page_stats_puis{% endtrans %}
                             {% endif %}
                             {% if statistiques.plusieursEvalsStatuts.nombreEvals < 2 %}
-                                <a href="{{ path("evaluation_choose_group", {"typeEval" : "simple"}) }}"> Créez des évaluations</a></span>
+                                <a href="{{ path("evaluation_choose_group", {"typeEval" : "simple"}) }}"> {% trans %}page_stats_pas_eval{% endtrans %}</a></span>
                             {% endif %}
                             <br><br>
                         {% endif %}
                         <button {% if not statistiques.plusieursEvalsStatuts.disponible %}disabled{% endif %}
                                 onclick="location.href='{{ path('plusieurs_evaluations_statut_choisir_statut', {'typeGraphique': 'histogramme'}) }}'"
                                 class="btn {% if statistiques.plusieursEvalsStatuts.disponible %}btn-primary{% else %}btn-secondary{% endif %}">
-                            Consulter ce type de statistiques
+                            {% trans %}consulter_type_stats{% endtrans %}
                         </button>
                     </div>
                 </div>
@@ -426,31 +421,28 @@
                          alt="Card image cap">
                     <div class="card-body">
                         <hr>
-                        <h5 class="card-title">Répartition des notes (boîte à moustache)</h5>
+                        <h5 class="card-title">{% trans %}repartition_notes_bam{% endtrans %}</h5>
                         <p class="card-text">
-                            Sélectionnez plusieurs évaluations (par exemple toutes les évaluations en mathématiques) et
-                            obtenez,
-                            sous forme de <b>boîte à moustaches</b>,la répartition globale des notes pour un ou
-                            plusieurs statuts d’étudiants (boursiers, redoublants... par exemple).
+                            {% trans %}page_stats_plusieurs_evals_statut_bam_description{% endtrans %}
                         </p>
                         {% if not statistiques.plusieursEvalsStatuts.disponible %}
                             <span style="font-size:15px; color: #0275d8"><i class="icon-attention-circled"></i>
-                            Statistique indisponible :
+                            {% trans %}page_stats_statistiques_indisponible{% endtrans %}
                             {% if statistiques.plusieursEvalsStatuts.nombreStatuts < 1 %}
-                                <a href="{{ path("statut_new") }}">Créez un statut</a>
+                                <a href="{{ path("statut_new") }}">{% trans %}page_stats_pas_statut{% endtrans %}</a>
                             {% endif %}
                             {% if statistiques.plusieursEvalsStatuts.nombreStatuts < 1 and statistiques.plusieursEvalsStatuts.nombreEvals < 2 %}
-                                et
+                                {% trans %}page_stats_puis{% endtrans %}
                             {% endif %}
                             {% if statistiques.plusieursEvalsStatuts.nombreEvals < 2 %}
-                                <a href="{{ path("evaluation_choose_group", {"typeEval" : "simple"}) }}"> Créez des évaluations</a></span>
+                                <a href="{{ path("evaluation_choose_group", {"typeEval" : "simple"}) }}"> {% trans %}page_stats_pas_eval{% endtrans %}</a></span>
                             {% endif %}
                             <br><br>
                         {% endif %}
                         <button {% if not statistiques.plusieursEvalsStatuts.disponible %}disabled{% endif %}
                                 onclick="location.href='{{ path('plusieurs_evaluations_statut_choisir_statut', {'typeGraphique': 'boite-moustache'}) }}'"
                                 class="btn {% if statistiques.plusieursEvalsStatuts.disponible %}btn-primary{% else %}btn-secondary{% endif %}">
-                            Consulter ce type de statistiques
+                            {% trans %}consulter_type_stats{% endtrans %}
                         </button>
                     </div>
                 </div>
@@ -461,31 +453,28 @@
                          alt="Card image cap">
                     <div class="card-body">
                         <hr>
-                        <h5 class="card-title">Moyenne et écart-type (histogramme)</h5>
+                        <h5 class="card-title">{% trans %}moyenne_ecart_type{% endtrans %}</h5>
                         <p class="card-text">
-                            Sélectionnez plusieurs évaluations (par exemple toutes les évaluations en mathématiques) et
-                            obtenez,
-                            sous forme <b>d'histogramme</b>,la moyenne et l’écart-type pour un ou plusieurs profils
-                            d’étudiants (boursiers, redoublants... par exemple).
+                            {% trans %}page_stats_plusieurs_evals_statut_moyenne_ecart_type_description{% endtrans %}
                         </p>
                         {% if not statistiques.plusieursEvalsStatuts.disponible %}
                             <span style="font-size:15px; color: #0275d8"><i class="icon-attention-circled"></i>
-                            Statistique indisponible :
+                            {% trans %}page_stats_statistiques_indisponible{% endtrans %}
                             {% if statistiques.plusieursEvalsStatuts.nombreStatuts < 1 %}
-                                <a href="{{ path("statut_new") }}">Créez un statut</a>
+                                <a href="{{ path("statut_new") }}">{% trans %}page_stats_pas_statut{% endtrans %}</a>
                             {% endif %}
                             {% if statistiques.plusieursEvalsStatuts.nombreStatuts < 1 and statistiques.plusieursEvalsStatuts.nombreEvals < 2 %}
-                                et
+                                {% trans %}page_stats_puis{% endtrans %}
                             {% endif %}
                             {% if statistiques.plusieursEvalsStatuts.nombreEvals < 2 %}
-                                <a href="{{ path("evaluation_choose_group", {"typeEval" : "simple"}) }}"> Créez des évaluations</a></span>
+                                <a href="{{ path("evaluation_choose_group", {"typeEval" : "simple"}) }}"> {% trans %}page_stats_pas_eval{% endtrans %}</a></span>
                             {% endif %}
                             <br><br>
                         {% endif %}
                         <button {% if not statistiques.plusieursEvalsStatuts.disponible %}disabled{% endif %}
                                 onclick="location.href='{{ path('plusieurs_evaluations_statut_choisir_statut', {'typeGraphique': 'moyenne'}) }}'"
                                 class="btn {% if statistiques.plusieursEvalsStatuts.disponible %}btn-primary{% else %}btn-secondary{% endif %}">
-                            Consulter ce type de statistiques
+                            {% trans %}consulter_type_stats{% endtrans %}
                         </button>
                     </div>
                 </div>

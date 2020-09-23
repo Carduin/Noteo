@@ -496,12 +496,12 @@ class StatsController extends AbstractController
             'nbForm' => 1,
             'casBoutonValider' => 0,
             'activerToutSelectionner' => false,
-            'titrePage' => 'Analyse des résultats d’un statut d’étudiants sur plusieurs évaluations',
+            'titrePage' => $this->translator->trans('formulaire_stats_plusieurs_evals_statut_titre_choix_statut'),
             'typeForm1' => 'groupes',
             'colorationEffectif' => false,
             'indentationGroupes' => false,
             'affichageEffectifParStatut' => false,
-            'sousTitreForm1' => 'Sélectionner le groupe d\'étudiants ayant un statut particulier pour lequel vous souhaitez voir des statistiques',
+            'sousTitreForm1' => $this->translator->trans('formulaire_stats_plusieurs_evals_statut_sous_titre_choix_statut'),
             'conditionAffichageForm1' => true,
         ]);
     }
@@ -541,10 +541,10 @@ class StatsController extends AbstractController
         return $this->render('statistiques/formulaire_parametrage_statistiques.html.twig', [
             'form' => $form->createView(),
             'nbForm' => 1,
-            'titrePage' => 'Analyse des résultats d’un statut d’étudiants sur plusieurs évaluations (' . $statut->getNom() . ')',
+            'titrePage' => $this->translator->trans('formulaire_stats_plusieurs_evals_statut_titre_choix_evals', ['nom' => $statut->getNom()]),
             'activerToutSelectionner' => true,
             'typeForm1' => 'evaluations',
-            'sousTitreForm1' => 'Sélectionner les évaluations pour lesquelles vous souhaitez voir des statistiques',
+            'sousTitreForm1' => $this->translator->trans('formulaire_stats_plusieurs_evals_statut_sous_titre_choix_evals'),
             'conditionAffichageForm1' => true,
             'casBoutonValider' => 4
         ]);
@@ -1127,7 +1127,7 @@ class StatsController extends AbstractController
     /**
      * @Route("/previsualisation-mail/{slug}", name="previsualisation_mail", methods={"GET", "POST"})
      */
-    public function envoiMail(Evaluation $evaluation, TranslatorInterface $translator, Request $request, PointsRepository $pointsRepository, Swift_Mailer $mailer, Filesystem $filesystem): Response
+    public function envoiMail(Evaluation $evaluation, Request $request, PointsRepository $pointsRepository, Swift_Mailer $mailer, Filesystem $filesystem): Response
     {
         $nbEtudiants = count($evaluation->getGroupe()->getEtudiants());
         $nomGroupe = $evaluation->getGroupe()->getNom();
@@ -1138,11 +1138,11 @@ class StatsController extends AbstractController
                 'constraints' => [new File([
                     'maxSize' => '8Mi',
                     'mimeTypes' => 'application/pdf',
-                    'mimeTypesMessage' => $translator->trans('previsualisation_mail_pdf_erreur_type'),
-                    'uploadFormSizeErrorMessage' => $translator->trans('previsualisation_mail_pdf_erreur_taille')
+                    'mimeTypesMessage' => $this->translator->trans('previsualisation_mail_pdf_erreur_type'),
+                    'uploadFormSizeErrorMessage' => $this->translator->trans('previsualisation_mail_pdf_erreur_taille')
                 ])],
                 'attr' => [
-                    'placeholder' => $translator->trans('previsualisation_mail_pdf_placeholder'),
+                    'placeholder' => $this->translator->trans('previsualisation_mail_pdf_placeholder'),
                     'accept' => '.pdf'
                 ]
             ])
