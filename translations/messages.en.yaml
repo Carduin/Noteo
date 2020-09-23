@@ -63,6 +63,27 @@ enregistrer: Save
 valider: Confirm
 ####### REINITIALISATION APPLICATION
 app_reset_texte: 'Resetting the app will remove: <ul><li>all groups</li><li>all student status</li><li>all assessments</li><li>all students</li></ul>Teacher profiles will not be deleted, but you will not be able to generate statistics anymore.'
+####### TUTORIELS
+tuto_titre_page: Watch the tutorials (french)
+tuto_titre_creer_eval_parties: Create an assessment divided into several parts
+tuto_texte_creer_eval_parties: Find out how to create assessments divided into several parts, to obtain greater precision in the statistics.
+tuto_titre_eval_simple: Analysis of a simple assessment
+tuto_texte_eval_simple: Find out how to get statistics on a specific assessment for which the teacher entered a mark out of 20 for each student.
+tuto_titre_eval_parties: Analysis of an assessment divided into several parts
+tuto_texte_eval_parties: Find out how to get statistics on a specific assessment for which the teacher entered a mark for each student over the different parts of their assessment.
+tuto_titre_plusieurs_evals_groupes: Analysis of the results of group(s) of student(s) over several assessments
+tuto_texte_plusieurs_evals_groupes: Find out how to get the results of one or more groups of students over multiple assessments.
+tuto_titre_plusieurs_evals_statut: Analysis of the results of a student status over several assessments
+tuto_texte_plusieurs_evals_statut: Find out how to get the results of a group of a student status over multiple assessments.
+tuto_titre_comparaison: Comparison of the results of a specific assessment to a set of assessments
+tuto_texte_comparaison: Find out how to compare the results of an assessment to a set of assessments.
+tuto_titre_fiche_etudiant: Chronological evolution of a student's results
+tuto_texte_fiche_etudiant: Find out how to observe the evolution of a student's grades over time over multiple assessments.
+tuto_titre_evolution_groupe: Evolution of the results of the students belonging to a group over several assessments
+tuto_texte_evolution_groupe: Find out how to obtain, for each student of a group, a curve detailing the chronological evolution of the student's results over the chosen assessments.
+tuto_titre_evolution_statut: Evolution of the results of the students having a given student status
+tuto_texte_evolution_statut: Find out how to obtain, for each student having a given student status, a curve detailing the chronological evolution of the student's results over the chosen assessments.
+
 ####### TRADUCTIONS DATATABLES
 afficher_x_elements: Display _MENU_ elements
 rechercher: Search...
