@@ -1,0 +1,77 @@
+####### TRADUCTIONS GENERALES
+#pages erreurs
+aie: Ouch
+erreur: An erreur has occured
+401: Unauthenticated user
+403: Access denied
+404: Page not found
+500: Server error
+503: Server error
+504: The server did not respond
+# login
+placeholder_mail: Mail
+placeholder_mdp: Password
+remember_me: Remember me
+log_in: Log in
+acceder_noteo: Access Noteo
+connecte_en_tant_que: Connected as
+# Barre de menu
+groupes: Groups
+statuts_etudiants: Student status
+etudiants: Students
+enseignants: Teachers
+evaluations: Assessments
+mes_evaluations: My assessments
+autres_evaluations: Other assessments
+statistiques: Statistics
+tutoriels: Tutorials
+reset_app: Reset the application
+# menu déroulant profil
+consulter_profil: See my profile
+modifier_mdp : Edit my password
+logout: Log out
+# titres de colonnes tableaux
+nom: Last name
+prenom: First name
+mail: Mail
+effectif: Headcount
+description: Description
+createur: Creator
+evaluable: Can be assessed
+statuts: Status
+administrateur: Administrator
+note_sur_20: Mark (/20)
+evaluation: Assessment
+date: Date
+groupe: Group
+effectif_statut: Status headcount
+intitule: Title
+bareme: Scale
+#statistiques
+moyenne: Average
+ecart_type: Standard deviation
+minimum: Minimum
+maximum: Maximum
+mediane: Median
+repartition_notes: Mark distribution
+# divers
+avertissement: Warning
+aide: Help
+oui: Yes
+non: No
+enregistrer: Save
+valider: Confirm
+####### REINITIALISATION APPLICATION
+app_reset_texte: 'Resetting the app will remove: <ul><li>all groups</li><li>all student status</li><li>all assessments</li><li>all students</li></ul>Teacher profiles will not be deleted, but you will not be able to generate statistics anymore.'
+####### TRADUCTIONS DATATABLES
+afficher_x_elements: Display _MENU_ elements
+rechercher: Search...
+suivant: Next
+precedent: Previous
+premier: First
+dernier: Last
+traitement: Processing...
+chargement: Loading...
+table_vide: No data available
+aucune_correspondance: No elements to display
+
