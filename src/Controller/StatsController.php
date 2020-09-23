@@ -1108,6 +1108,7 @@ class StatsController extends AbstractController
             'sousTitreForm1' => 'Sélectionner les groupes pour lesquels vous souhaitez consulter les statistiques',
             'conditionAffichageForm1' => true,
             'indentationGroupes' => true,
+            'affichageEffectifParStatut' => false,
             'typeForm2' => 'statuts',
             'sousTitreForm2' => 'Sélectionner les groupes d\'étudiants ayant un statut particulier pour lesquels vous souhaitez consulter les statistiques',
             'conditionAffichageForm2' => !empty($choixStatuts),
