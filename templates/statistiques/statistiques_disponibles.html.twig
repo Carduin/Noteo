@@ -485,15 +485,10 @@
     <!-- EVOLUTION ETUDIANTS -->
     <div class="card">
         <li class="list-group-item text-white" style="background-color:#bdc3c7;">
-            Évolution chronologique des résultats d’un étudiant ou d’un ensemble d’étudiants
+            {% trans %}page_stats_evolution_titre_principal{% endtrans %}
         </li>
         <div class="card-body">
-            Observez, à partir de plusieurs évaluations, l’évolution chronologique des notes:
-            <ul>
-                <li>d’un étudiant</li>
-                <li>des étudiants appartenant à un ou plusieurs groupes (groupes de TD/TP)</li>
-                <li>des étudiants ayant un profil donné (boursiers, redoublants...)</li>
-            </ul>
+            {% trans %}page_stats_evolution_sous_titre_principal{% endtrans %}
             <hr>
             <div class="card-deck">
                 <div class="card">
@@ -503,40 +498,36 @@
                          alt="Card image cap">
                     <div class="card-body">
                         <hr>
-                        <h5 class="card-title">Fiche étudiant</h5>
+                        <h5 class="card-title">{% trans %}fiche_etudiant{% endtrans %}</h5>
                         <p class="card-text">
-                            Sélectionnez un étudiant et obtenez une page récapitulative de ses résultats sur toutes les
-                            évaluations auxquelles il a participé sous
-                            forme de <b>courbes d'évolution</b> chronologiques, <b>d'histogrammes</b>, et de <b>classements</b>
-                            parmis les groupes ou statuts d'étudiants
-                            auxquels il appartient.
+                            {% trans %}page_stats_evolution_fiche_etudiant_description{% endtrans %}
                         </p>
                         {% if not statistiques.ficheEtudiant.disponible %}
                             <span style="font-size:15px; color: #0275d8"><i class="icon-attention-circled"></i>
-                            Statistique indisponible :
+                            {% trans %}page_stats_statistiques_indisponible{% endtrans %}
                             {% if statistiques.ficheEtudiant.nombreEtudiants < 1 %}
                                 {% if is_granted('ROLE_ADMIN') %}
                                     {% if statistiques.plusieursEvalsGroupes.nombreGroupes < 1 %}
-                                        <a href="{{ path("groupe_etudiant_new") }}">Créez des étudiants</a>
+                                        <a href="{{ path("groupe_etudiant_new") }}">{% trans %}page_stats_pas_etudiants_admin_connecte{% endtrans %}</a>
                                     {% else %}
-                                        <a href="{{ path("etudiant_new") }}">Créez des étudiants</a>
+                                        <a href="{{ path("etudiant_new") }}">{% trans %}page_stats_pas_etudiants_admin_connecte{% endtrans %}</a>
                                     {% endif %}
                                 {% else %}
-                                    Demandez à l'administrateur de créer des étudiants
+                                    {% trans %}page_stats_pas_etudiants_pas_admin_connecte{% endtrans %}
                                 {% endif %}
                             {% endif %}
                             {% if statistiques.ficheEtudiant.nombreEtudiants < 1 and statistiques.ficheEtudiant.nombreEvals < 2 %}
-                                puis
+                                {% trans %}page_stats_puis{% endtrans %}
                             {% endif %}
                             {% if statistiques.ficheEtudiant.nombreEvals < 2 %}
-                                <a href="{{ path("evaluation_choose_group", {"typeEval" : "simple"}) }}"> Créez des évaluations</a></span>
+                                <a href="{{ path("evaluation_choose_group", {"typeEval" : "simple"}) }}"> {% trans %}page_stats_pas_eval{% endtrans %}</a></span>
                             {% endif %}
                             <br><br>
                         {% endif %}
                         <button {% if not statistiques.ficheEtudiant.disponible %}disabled{% endif %}
                                 onclick="location.href='{{ path('fiche_etudiant_choisir_etudiant') }}'"
                                 class="btn {% if statistiques.ficheEtudiant.disponible %}btn-primary{% else %}btn-secondary{% endif %}">
-                            Consulter ce type de statistiques
+                            {% trans %}consulter_type_stats{% endtrans %}
                         </button>
                     </div>
                 </div>
@@ -547,33 +538,32 @@
                          alt="Card image cap">
                     <div class="card-body">
                         <hr>
-                        <h5 class="card-title">Évolution des résultats des étudiants d'un groupe sur plusieurs
-                            évaluations</h5>
-                        <p class="card-text">Sélectionnez un groupe d'étudiants, une suite d'évaluations et obtenez,
-                            pour chaque étudiant, une courbe détaillant l'évolution des résultats
-                            des l'étudiant aux évaluations choisies, de manière chronologique.</p>
+                        <h5 class="card-title">{% trans %}evolution_groupe{% endtrans %}</h5>
+                        <p class="card-text">
+                            {% trans %}page_stats_evolution_groupe_description{% endtrans %}
+                        </p>
                         {% if not statistiques.plusieursEvalsGroupes.disponible %}
                             <span style="font-size:15px; color: #0275d8"><i class="icon-attention-circled"></i>
-                            Statistique indisponible :
+                            {% trans %}page_stats_statistiques_indisponible{% endtrans %}
                             {% if statistiques.plusieursEvalsGroupes.nombreGroupes < 1 %}
                                 {% if is_granted('ROLE_ADMIN') %}
-                                    <a href="{{ path("groupe_etudiant_new") }}">Créez des groupes</a>
+                                    <a href="{{ path("groupe_etudiant_new") }}">{% trans %}page_stats_pas_groupes_admin_connecte{% endtrans %}</a>
                                 {% else %}
-                                    Demandez à l'administrateur de créer des groupes
+                                    {% trans %}page_stats_pas_etudiants_pas_admin_connecte{% endtrans %}
                                 {% endif %}
                             {% endif %}
                             {% if statistiques.plusieursEvalsGroupes.nombreGroupes < 1 and statistiques.plusieursEvalsGroupes.nombreEvals < 2 %}
-                                puis
+                                {% trans %}page_stats_puis{% endtrans %}
                             {% endif %}
                             {% if statistiques.plusieursEvalsGroupes.nombreEvals < 2 %}
-                                <a href="{{ path("evaluation_choose_group", {"typeEval" : "simple"}) }}"> Créez des évaluations</a></span>
+                                <a href="{{ path("evaluation_choose_group", {"typeEval" : "simple"}) }}"> {% trans %}page_stats_pas_eval{% endtrans %}</a></span>
                             {% endif %}
                             <br><br>
                         {% endif %}
                         <button {% if not statistiques.plusieursEvalsGroupes.disponible %}disabled{% endif %}
                                 onclick="location.href='{{ path('evolution_groupes_choisir_haut_niveau') }}'"
                                 class="btn {% if statistiques.plusieursEvalsGroupes.disponible %}btn-primary{% else %}btn-secondary{% endif %}">
-                            Consulter ce type de statistiques
+                            {% trans %}consulter_type_stats{% endtrans %}
                         </button>
                     </div>
                 </div>
@@ -584,30 +574,30 @@
                          alt="Card image cap">
                     <div class="card-body">
                         <hr>
-                        <h5 class="card-title">Évolution des résultats des étudiants d'un statut sur plusieurs
-                            évaluations</h5>
-                        <p class="card-text">Sélectionnez un groupe d'étudiants ayant un statut particulier, une suite
-                            d'évaluations et obtenez, pour chaque étudiant, une courbe détaillant l'évolution des
-                            résultats
-                            des l'étudiant aux évaluations choisies, de manière chronologique.</p>
+                        <h5 class="card-title">
+                            {% trans %}evolution_statut{% endtrans %}
+                        </h5>
+                        <p class="card-text">
+                            {% trans %}page_stats_evolution_statut_description{% endtrans %}
+                        </p>
                         {% if not statistiques.plusieursEvalsStatuts.disponible %}
                             <span style="font-size:15px; color: #0275d8"><i class="icon-attention-circled"></i>
-                            Statistique indisponible :
+                            {% trans %}page_stats_statistiques_indisponible{% endtrans %}
                             {% if statistiques.plusieursEvalsStatuts.nombreStatuts < 1 %}
-                                <a href="{{ path("statut_new") }}">Créez un statut</a>
+                                <a href="{{ path("statut_new") }}">{% trans %}page_stats_pas_statut{% endtrans %}</a>
                             {% endif %}
                             {% if statistiques.plusieursEvalsStatuts.nombreStatuts < 1 and statistiques.plusieursEvalsStatuts.nombreEvals < 2 %}
-                                et
+                                {% trans %}page_stats_puis{% endtrans %}
                             {% endif %}
                             {% if statistiques.plusieursEvalsStatuts.nombreEvals < 2 %}
-                                <a href="{{ path("evaluation_choose_group", {"typeEval" : "simple"}) }}"> Créez des évaluations</a></span>
+                                <a href="{{ path("evaluation_choose_group", {"typeEval" : "simple"}) }}"> {% trans %}page_stats_pas_eval{% endtrans %}</a></span>
                             {% endif %}
                             <br><br>
                         {% endif %}
                         <button {% if not statistiques.plusieursEvalsStatuts.disponible %}disabled{% endif %}
                                 onclick="location.href='{{ path('evolution_statut_choisir_statut') }}'"
                                 class="btn {% if statistiques.plusieursEvalsStatuts.disponible %}btn-primary{% else %}btn-secondary{% endif %}">
-                            Consulter ce type de statistiques
+                            {% trans %}consulter_type_stats{% endtrans %}
                         </button>
                     </div>
                 </div>
@@ -619,14 +609,10 @@
     <!-- STATS COMPARAISON -->
     <div class="card">
         <li class="list-group-item text-white" style="background-color:#bdc3c7;">
-            Comparaison des résultats d’une évaluation spécifique à un ensemble d’évaluations
+            {% trans %}page_stats_comparaison_titre_principal{% endtrans %}
         </li>
         <div class="card-body">
-            Comparez les résultats obtenus à une évaluation par rapport à un ensemble d’évaluations (par exemple:
-            comparer les résultats obtenus par les étudiants à une évaluation d’algorithmique par rapport à l’ensemble
-            des évaluations en informatique).
-            La comparaison peut porter sur des groupes spécifiques (groupes de TD/TP par exemple) et/ou des étudiants
-            ayant un statut particulier (boursiers, redoublants...).
+            {% trans %}page_stats_comparaison_sous_titre_principal{% endtrans %}
             <hr>
             <div class="card-deck">
                 <div class="card">
@@ -637,14 +623,14 @@
                     <div class="card-body">
                         <hr>
                         {% if not statistiques.comparaison.disponible %}
-                            <span style="font-size:15px; color: #0275d8"><i class="icon-attention-circled"></i>Statistique indisponible : <a
-                                        href="{{ path("evaluation_choose_group", {"typeEval" : "simple"}) }}"> Créez des évaluations</a></span>
+                            <span style="font-size:15px; color: #0275d8"><i class="icon-attention-circled"></i>{% trans %}page_stats_statistiques_indisponible{% endtrans %}<a
+                                        href="{{ path("evaluation_choose_group", {"typeEval" : "simple"}) }}"> {% trans %}page_stats_pas_eval{% endtrans %}</a></span>
                             <br><br>
                         {% endif %}
                         <button {% if not statistiques.comparaison.disponible %}disabled{% endif %}
                                 onclick="location.href='{{ path('comparaison_choisir_evaluation_reference', {'typeGraphique' : 'moyenne'}) }}'"
                                 class="btn {% if statistiques.comparaison.disponible %}btn-primary{% else %}btn-secondary{% endif %}">
-                            Consulter ce type de statistiques
+                            {% trans %}consulter_type_stats{% endtrans %}
                         </button>
                     </div>
                 </div>
