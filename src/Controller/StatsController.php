@@ -602,12 +602,12 @@ class StatsController extends AbstractController
         return $this->render('statistiques/formulaire_parametrage_statistiques.html.twig', [
             'form' => $form->createView(),
             'nbForm' => 1,
-            'titrePage' => 'Évolution chronologique des résultats d’un étudiant',
+            'titrePage' => $this->translator->trans('formulaire_stats_fiche_etudiant_titre'),
             'activerToutSelectionner' => false,
             'colorationEffectif' => false,
             'casBoutonValider' => 0,
             'typeForm1' => 'etudiants',
-            'sousTitreForm1' => 'Sélectionner l\'étudiant pour consulter sa fiche',
+            'sousTitreForm1' => $this->translator->trans('formulaire_stats_fiche_etudiant_sous_titre'),
             'conditionAffichageForm1' => true,
         ]);
     }

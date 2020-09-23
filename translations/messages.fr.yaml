@@ -329,7 +329,9 @@ formulaire_stats_plusieurs_evals_statut_titre_choix_statut: Analyse des résulta
 formulaire_stats_plusieurs_evals_statut_sous_titre_choix_statut: Sélectionner le groupe d'étudiants ayant un statut particulier pour lequel vous souhaitez voir des statistiques
 formulaire_stats_plusieurs_evals_statut_titre_choix_evals: Analyse des résultats d’un statut d’étudiants sur plusieurs évaluations (nom)
 formulaire_stats_plusieurs_evals_statut_sous_titre_choix_evals: Sélectionner les évaluations pour lesquelles vous souhaitez voir des statistiques
-
+# Stats fiche étudiant
+formulaire_stats_fiche_etudiant_titre: Évolution chronologique des résultats d’un étudiant
+formulaire_stats_fiche_etudiant_sous_titre: Sélectionner l'étudiant pour consulter sa fiche
 ####### REINITIALISATION APPLICATION
 app_reset_texte: 'Réinitialiser l''application aura pour effet de supprimer de l''application: <ul><li>Tous les groupes</li><li>Tous les groupes d''étudiants ayant un statut particulier</li><li>Toutes les évaluations</li><li>Tous les étudiants</li></ul>Les profils des enseignants ne seront pas supprimés et les statistiques ne seront plus consultables.'
 ####### TUTORIELS
