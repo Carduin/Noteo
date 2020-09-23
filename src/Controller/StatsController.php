@@ -359,9 +359,9 @@ class StatsController extends AbstractController
             'indentationGroupes' => false,
             'casBoutonValider' => 0,
             'activerToutSelectionner' => false,
-            'titrePage' => 'Analyse des résultats de groupe(s) d’étudiant(s) sur plusieurs évaluations',
+            'titrePage' => $this->translator->trans('formulaire_stats_plusieurs_evals_groupes_titre_choix_groupe'),
             'typeForm1' => 'groupes',
-            'sousTitreForm1' => 'Sélectionner le groupe pour lequel vous souhaitez voir des statistiques',
+            'sousTitreForm1' => $this->translator->trans('formulaire_stats_plusieurs_evals_groupes_sous_titre_choix_groupe'),
             'conditionAffichageForm1' => true,
             'affichageEffectifParStatut' => false
             ]);
@@ -405,9 +405,9 @@ class StatsController extends AbstractController
             'indentationGroupes' => true,
             'casBoutonValider' => 3,
             'activerToutSelectionner' => true,
-            'titrePage' => 'Analyse des résultats de groupe(s) d’étudiant(s) sur plusieurs évaluations',
+            'titrePage' => $this->translator->trans('formulaire_stats_plusieurs_evals_groupes_titre_choix_sous_groupes'),
             'typeForm1' => 'groupes',
-            'sousTitreForm1' => 'Sélectionner les sous-groupes de ' . $groupe->getNom() . ' pour lesquels vous souhaitez voir des statistiques',
+            'sousTitreForm1' => $this->translator->trans('formulaire_stats_plusieurs_evals_groupes_sous_titre_choix_sous_groupes', ['nom' => $groupe->getNom()]),
             'conditionAffichageForm1' => true,
             'affichageEffectifParStatut' => false
             ]);
@@ -449,10 +449,10 @@ class StatsController extends AbstractController
         return $this->render('statistiques/formulaire_parametrage_statistiques.html.twig', [
             'form' => $form->createView(),
             'nbForm' => 1,
-            'titrePage' => 'Analyse des résultats de groupe(s) d’étudiant(s) sur plusieurs évaluations',
+            'titrePage' => $this->translator->trans('formulaire_stats_plusieurs_evals_groupes_titre_choix_evals'),
             'activerToutSelectionner' => true,
             'typeForm1' => 'evaluations',
-            'sousTitreForm1' => 'Sélectionner les évaluations pour lesquelles vous souhaitez voir des statistiques pour les groupes précédemment sélectionnés',
+            'sousTitreForm1' => $this->translator->trans('formulaire_stats_plusieurs_evals_groupes_sous_titre_choix_evals'),
             'conditionAffichageForm1' => true,
             'casBoutonValider' => 4
         ]);

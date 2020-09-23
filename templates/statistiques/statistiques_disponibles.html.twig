@@ -255,11 +255,10 @@
     <!--  STATS PLUSIEURS EVALS, GROUPE  -->
     <div class="card">
         <li class="list-group-item text-white" style="background-color:#bdc3c7;">
-            Analyse des résultats de groupe(s) d’étudiant(s) sur plusieurs évaluations
+            {% trans%}page_stats_plusieurs_evals_groupes_titre_principal{% endtrans %}
         </li>
         <div class="card-body">
-            Observez les résultats de un ou plusieurs groupes d’étudiants (groupes de TD/TP par exemple) sur plusieurs
-            évaluations.
+            {% trans%}page_stats_plusieurs_evals_groupes_sous_titre_principal{% endtrans %}
             <hr>
             <div class="card-deck">
                 <div class="card">
@@ -269,35 +268,32 @@
                          alt="Card image cap">
                     <div class="card-body">
                         <hr>
-                        <h5 class="card-title">Répartition des notes (histogramme)</h5>
+                        <h5 class="card-title">{% trans%}repartition_notes_histo{% endtrans %}</h5>
                         <p class="card-text">
-                            Sélectionnez plusieurs évaluations (par exemple toutes les évaluations en anglais) et
-                            obtenez, sous
-                            forme <b>d'histogramme</b>, la répartition globale des notes pour un ou plusieurs groupes
-                            d’étudiants donnés (groupes de TD/TP par exemple).
+                            {% trans%}page_stats_plusieurs_evals_groupes_histo_description{% endtrans %}
                         </p>
                         {% if not statistiques.plusieursEvalsGroupes.disponible %}
                             <span style="font-size:15px; color: #0275d8"><i class="icon-attention-circled"></i>
-                            Statistique indisponible :
+                            {% trans%}page_stats_statistiques_indisponible{% endtrans %}
                             {% if statistiques.plusieursEvalsGroupes.nombreGroupes < 1 %}
                                 {% if is_granted('ROLE_ADMIN') %}
-                                    <a href="{{ path("groupe_etudiant_new") }}">Créez des groupes</a>
+                                    <a href="{{ path("groupe_etudiant_new") }}">{% trans%}page_stats_pas_groupes_admin_connecte{% endtrans %}</a>
                                 {% else %}
-                                    Demandez à l'administrateur de créer des groupes
+                                    {% trans%}page_stats_pas_groupes_pas_admin_connecte{% endtrans %}
                                 {% endif %}
                             {% endif %}
                             {% if statistiques.plusieursEvalsGroupes.nombreGroupes < 1 and statistiques.plusieursEvalsGroupes.nombreEvals < 2 %}
-                                puis
+                                {% trans%}page_stats_puis{% endtrans %}
                             {% endif %}
                             {% if statistiques.plusieursEvalsGroupes.nombreEvals < 2 %}
-                                <a href="{{ path("evaluation_choose_group", {"typeEval" : "simple"}) }}"> Créez des évaluations</a></span>
+                                <a href="{{ path("evaluation_choose_group", {"typeEval" : "simple"}) }}"> {% trans%}page_stats_pas_eval{% endtrans %}</a></span>
                             {% endif %}
                             <br><br>
                         {% endif %}
                         <button {% if not statistiques.plusieursEvalsGroupes.disponible %}disabled{% endif %}
                                 onclick="location.href='{{ path('plusieurs_evaluations_groupes_choisir_haut_niveau', {'typeGraphique': 'histogramme'}) }}'"
                                 class="btn {% if statistiques.plusieursEvalsGroupes.disponible %}btn-primary{% else %}btn-secondary{% endif %}">
-                            Consulter ce type de statistiques
+                            {% trans%}consulter_type_stats{% endtrans %}
                         </button>
                     </div>
                 </div>
@@ -308,36 +304,32 @@
                          alt="Card image cap">
                     <div class="card-body">
                         <hr>
-                        <h5 class="card-title">Répartition des notes (boîte à moustache)</h5>
+                        <h5 class="card-title">{% trans%}repartition_notes_bam{% endtrans %}</h5>
                         <p class="card-text">
-                            Sélectionnez plusieurs évaluations (par exemple toutes les évaluations en anglais) et
-                            obtenez,
-                            sous forme de <b>boîte à moustaches</b>, la répartition globale des notes pour un ou
-                            plusieurs groupes d’étudiants donnés
-                            (groupes de TD/TP par exemple).
+                            {% trans%}page_stats_plusieurs_evals_groupes_bam_description{% endtrans %}
                         </p>
                         {% if not statistiques.plusieursEvalsGroupes.disponible %}
                             <span style="font-size:15px; color: #0275d8"><i class="icon-attention-circled"></i>
-                            Statistique indisponible :
+                            {% trans%}page_stats_statistiques_indisponible{% endtrans %}
                             {% if statistiques.plusieursEvalsGroupes.nombreGroupes < 1 %}
                                 {% if is_granted('ROLE_ADMIN') %}
-                                    <a href="{{ path("groupe_etudiant_new") }}">Créez des groupes</a>
+                                    <a href="{{ path("groupe_etudiant_new") }}">{% trans%}page_stats_pas_groupes_admin_connecte{% endtrans %}</a>
                                 {% else %}
-                                    Demandez à l'administrateur de créer des groupes
+                                    {% trans%}page_stats_pas_groupes_pas_admin_connecte{% endtrans %}
                                 {% endif %}
                             {% endif %}
                             {% if statistiques.plusieursEvalsGroupes.nombreGroupes < 1 and statistiques.plusieursEvalsGroupes.nombreEvals < 2 %}
-                                puis
+                                {% trans%}page_stats_puis{% endtrans %}
                             {% endif %}
                             {% if statistiques.plusieursEvalsGroupes.nombreEvals < 2 %}
-                                <a href="{{ path("evaluation_choose_group", {"typeEval" : "simple"}) }}"> Créez des évaluations</a></span>
+                                <a href="{{ path("evaluation_choose_group", {"typeEval" : "simple"}) }}"> {% trans%}page_stats_pas_eval{% endtrans %}</a></span>
                             {% endif %}
                             <br><br>
                         {% endif %}
                         <button {% if not statistiques.plusieursEvalsGroupes.disponible %}disabled{% endif %}
                                 onclick="location.href='{{ path('plusieurs_evaluations_groupes_choisir_haut_niveau', {'typeGraphique': 'boite-moustache'}) }}'"
                                 class="btn {% if statistiques.plusieursEvalsGroupes.disponible %}btn-primary{% else %}btn-secondary{% endif %}">
-                            Consulter ce type de statistiques
+                            {% trans%}consulter_type_stats{% endtrans %}
                         </button>
                     </div>
                 </div>
@@ -348,35 +340,32 @@
                          alt="Card image cap">
                     <div class="card-body">
                         <hr>
-                        <h5 class="card-title">Moyenne et écart-type (histogramme)</h5>
+                        <h5 class="card-title">{% trans%}moyenne_ecart_type{% endtrans %}</h5>
                         <p class="card-text">
-                            Sélectionnez plusieurs évaluations (par exemple toutes les évaluations en anglais) et
-                            obtenez, sous
-                            forme <b>d'histogramme</b>, la moyenne globale et l’écart-type pour des groupes donnés
-                            (groupes de TD/TP par exemple).
+                            {% trans%}page_stats_plusieurs_evals_groupes_moyenne_ecart_type_description{% endtrans %}
                         </p>
                         {% if not statistiques.plusieursEvalsGroupes.disponible %}
                             <span style="font-size:15px; color: #0275d8"><i class="icon-attention-circled"></i>
-                            Statistique indisponible :
+                            {% trans%}page_stats_statistiques_indisponible{% endtrans %}
                             {% if statistiques.plusieursEvalsGroupes.nombreGroupes < 1 %}
                                 {% if is_granted('ROLE_ADMIN') %}
-                                    <a href="{{ path("groupe_etudiant_new") }}">Créez des groupes</a>
+                                    <a href="{{ path("groupe_etudiant_new") }}">{% trans%}page_stats_pas_groupes_admin_connecte{% endtrans %}</a>
                                 {% else %}
-                                    Demandez à l'administrateur de créer des groupes
+                                    {% trans%}page_stats_pas_groupes_pas_admin_connecte{% endtrans %}
                                 {% endif %}
                             {% endif %}
                             {% if statistiques.plusieursEvalsGroupes.nombreGroupes < 1 and statistiques.plusieursEvalsGroupes.nombreEvals < 2 %}
-                                puis
+                                {% trans%}page_stats_puis{% endtrans %}
                             {% endif %}
                             {% if statistiques.plusieursEvalsGroupes.nombreEvals < 2 %}
-                                <a href="{{ path("evaluation_choose_group", {"typeEval" : "simple"}) }}"> Créez des évaluations</a></span>
+                                <a href="{{ path("evaluation_choose_group", {"typeEval" : "simple"}) }}"> {% trans%}page_stats_pas_eval{% endtrans %}</a></span>
                             {% endif %}
                             <br><br>
                         {% endif %}
                         <button {% if not statistiques.plusieursEvalsGroupes.disponible %}disabled{% endif %}
                                 onclick="location.href='{{ path('plusieurs_evaluations_groupes_choisir_haut_niveau', {'typeGraphique': 'moyenne'}) }}'"
                                 class="btn {% if statistiques.plusieursEvalsGroupes.disponible %}btn-primary{% else %}btn-secondary{% endif %}">
-                            Consulter ce type de statistiques
+                            {% trans%}consulter_type_stats{% endtrans %}
                         </button>
                     </div>
                 </div>

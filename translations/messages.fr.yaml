@@ -260,6 +260,10 @@ moyenne_ecart_type: Moyenne et écart-type (histogramme)
 page_stats_statistiques_indisponible: 'Statistique indisponible : '
 page_stats_pas_eval_simple: Créez des évaluations simples
 page_stats_pas_eval_parties: Créez des évaluations par parties
+page_stats_pas_groupes_admin_connecte: Créez des groupes
+page_stats_pas_groupes_pas_admin_connecte: Demandez à l'administrateur de créer des groupes
+page_stats_puis: puis
+page_stats_pas_eval: Créez des évaluations
 # Stats éval simple
 page_stats_eval_simple_titre_principal: Analyse d’une évaluation simple
 page_stats_eval_simple_sous_titre_principal: Obtenez des statistiques sur une évaluation spécifique dans laquelle l’enseignant a saisi une note sur 20 pour chaque étudiant.
@@ -272,6 +276,12 @@ page_stats_eval_parties_sous_titre_principal: Obtenez des statistiques sur une �
 page_stats_eval_parties_histo_description: 'Obtenez, pour des groupes donnés (groupes de TD/TP par exemple) et/ou des profils donnés, (étudiants ayant le statut de boursier, redoublant...), et pour chaque partie de l’évaluation, la répartition des notes sous forme <b>d''histogramme</b>.'
 page_stats_eval_parties_bam_description: 'Obtenez, pour des groupes donnés (groupes de TD/TP par exemple) et/ou des profils donnés, (étudiants ayant le statut de boursier, redoublant...), et pour chaque partie de l’évaluation, la répartition des notes sous forme de <b>boîte à moustache</b>.'
 page_stats_eval_parties_moyenne_ecart_type_description: 'Obtenez, pour des groupes donnés (groupes de TD/TP par exemple) et/ou des profils donnés, (étudiants ayant le statut de boursier, redoublant...), et pour chaque partie de l’évaluation, la moyenne et l’écart-type sous forme <b>d''histogramme</b>.'
+# Stats plusieurs_evals_groupes
+page_stats_plusieurs_evals_groupes_titre_principal: Analyse des résultats de groupe(s) d’étudiant(s) sur plusieurs évaluations
+page_stats_plusieurs_evals_groupes_sous_titre_principal: Observez les résultats de un ou plusieurs groupes d’étudiants (groupes de TD/TP par exemple) sur plusieurs évaluations.
+page_stats_plusieurs_evals_groupes_histo_description: 'Sélectionnez plusieurs évaluations (par exemple toutes les évaluations en anglais) et obtenez, sous forme <b>d''histogramme</b>, la répartition globale des notes pour un ou plusieurs groupes d’étudiants donnés (groupes de TD/TP par exemple).'
+page_stats_plusieurs_evals_groupes_bam_description: 'Sélectionnez plusieurs évaluations (par exemple toutes les évaluations en anglais) et obtenez, sous forme de <b>boîte à moustaches</b>, la répartition globale des notes pour un ou plusieurs groupes d’étudiants donnés (groupes de TD/TP par exemple).'
+page_stats_plusieurs_evals_groupes_moyenne_ecart_type_description: 'Sélectionnez plusieurs évaluations (par exemple toutes les évaluations en anglais) et obtenez, sous forme <b>d''histogramme</b>, la moyenne globale et l’écart-type pour des groupes donnés (groupes de TD/TP par exemple).'
 
 ####### FORMULAIRES STATISTIQUES
 # Stats éval simple
@@ -287,7 +297,13 @@ formulaire_stats_eval_parties_titre_choix_groupes: Analyse d'une évaluation ave
 formulaire_stats_eval_parties_sous_titre_groupes_choix_groupes: Sélectionner les groupes pour lesquels vous souhaitez consulter les statistiques
 formulaire_stats_eval_parties_sous_titre_statuts_choix_groupes: Sélectionner les groupes d'étudiants ayant un statut particulier pour lesquels vous souhaitez consulter les statistiques
 formulaire_stats_eval_parties_sous_titre_parties_choix_groupes: Sélectionner au moins une partie de l'évaluation pour laquelle vous souhaitez consulter les statistiques
-
+# Stats plusieurs evals groupes
+formulaire_stats_plusieurs_evals_groupes_titre_choix_groupe: Analyse des résultats de groupe(s) d’étudiant(s) sur plusieurs évaluations
+formulaire_stats_plusieurs_evals_groupes_sous_titre_choix_groupe: Sélectionner le groupe pour lequel vous souhaitez voir des statistiques
+formulaire_stats_plusieurs_evals_groupes_titre_choix_sous_groupes: Analyse des résultats de groupe(s) d’étudiant(s) sur plusieurs évaluations
+formulaire_stats_plusieurs_evals_groupes_sous_titre_choix_sous_groupes: Sélectionner les sous-groupes de nom pour lesquels vous souhaitez voir des statistiques
+formulaire_stats_plusieurs_evals_groupes_titre_choix_evals: Analyse des résultats de groupe(s) d’étudiant(s) sur plusieurs évaluations
+formulaire_stats_plusieurs_evals_groupes_sous_titre_choix_evals: Sélectionner les évaluations pour lesquelles vous souhaitez voir des statistiques pour les groupes précédemment sélectionnés
 ####### REINITIALISATION APPLICATION
 app_reset_texte: 'Réinitialiser l''application aura pour effet de supprimer de l''application: <ul><li>Tous les groupes</li><li>Tous les groupes d''étudiants ayant un statut particulier</li><li>Toutes les évaluations</li><li>Tous les étudiants</li></ul>Les profils des enseignants ne seront pas supprimés et les statistiques ne seront plus consultables.'
 ####### TUTORIELS
