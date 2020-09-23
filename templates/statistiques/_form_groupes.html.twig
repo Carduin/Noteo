@@ -8,13 +8,13 @@
                        title="Tout cocher"/>
             {% endif %}
         </th>
-        <th>Nom</th>
-        <th>Effectif</th>
+        <th>{% trans %}nom{% endtrans %}</th>
+        <th>{% trans %}effectif{% endtrans %}</th>
         {% if affichageEffectifParStatut  %}
-            <th>Effectif statut</th>
+            <th>{% trans %}effectif_statut{% endtrans %}</th>
         {% endif %}
-        <th>Description</th>
-        <th>Créateur</th>
+        <th>{% trans %}description{% endtrans %}</th>
+        <th>{% trans %}createur{% endtrans %}</th>
         </thead>
         <tbody>
         {% for groupe in form.groupes %}

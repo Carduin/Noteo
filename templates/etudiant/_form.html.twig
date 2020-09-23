@@ -26,8 +26,8 @@
 {% if edit %}
     <div class="info">
         <h5 class="h5 mb-0 text-gray-800">
-         {{ 'modifier_etudiant_message_creer_groupe_part_1' |trans | raw }}{{ path('groupe_etudiant_index') }}{{ 'modifier_etudiant_message_creer_groupe_part_2' |trans | raw }}<br>
-         {{ 'modifier_etudiant_message_creer_statut_part_1' |trans | raw }}{{ path('statut_index') }}{{ 'modifier_etudiant_message_creer_statut_part_2' |trans | raw }}
+            {% trans with {'url': path('groupe_etudiant_index')} %}modifier_etudiant_message_creer_groupe{% endtrans %}<br>
+            {% trans with {'url': path('statut_index')} %}modifier_etudiant_message_creer_statut{% endtrans %}
         </h5>
     </div>
 {% endif %}
@@ -63,7 +63,7 @@
         {% else %}
             <div class="info">
                 <h5 class="h5 mb-0 text-gray-800">
-                    {{ 'message_alternatif_pas_de_statut_part_1' |trans |raw }}{{ path('statut_new') }}{{ 'message_alternatif_pas_de_statut_part_2' |trans |raw }}
+                    {% trans with {'url': path('statut_new')} %}message_alternatif_pas_de_statut{% endtrans %}
                 </h5>
             </div>
         {% endif %}
