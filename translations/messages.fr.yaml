@@ -259,12 +259,20 @@ moyenne_ecart_type: Moyenne et écart-type (histogramme)
 # Messages d'erreur
 page_stats_statistiques_indisponible: 'Statistique indisponible : '
 page_stats_pas_eval_simple: Créez des évaluations simples
+page_stats_pas_eval_parties: Créez des évaluations par parties
 # Stats éval simple
 page_stats_eval_simple_titre_principal: Analyse d’une évaluation simple
 page_stats_eval_simple_sous_titre_principal: Obtenez des statistiques sur une évaluation spécifique dans laquelle l’enseignant a saisi une note sur 20 pour chaque étudiant.
 page_stats_eval_simple_histo_description: 'Obtenez, pour des groupes donnés (groupes de TD/TP par exemple) et/ou des profils donnés, (étudiants ayant le statut de boursier, redoublant...), la répartition des notes sous forme <b>d''histogramme</b>.'
 page_stats_eval_simple_bam_description: 'Obtenez, pour des groupes donnés (groupes de TD/TP par exemple) et/ou des profils donnés, (étudiants ayant le statut de boursier, redoublant...), la répartition des notes sous forme de <b>boîte à moustache</b>.'
 page_stats_eval_simple_moyenne_ecart_type_description: 'Obtenez, pour des groupes donnés (groupes de TD/TP par exemple) et/ou des profils donnés, (étudiants ayant le statut de boursier, redoublant...), la moyenne et l’écart-type sous forme <b>d''histogramme</b>.'
+# Stats éval parties
+page_stats_eval_parties_titre_principal: Analyse d’une évaluation par parties
+page_stats_eval_parties_sous_titre_principal: Obtenez des statistiques sur une évaluation spécifique dans laquelle l’enseignant a saisi pour chaque étudiant une note sur les différentes parties composant son évaluation (Question de cours, exercice 1, exercice 2 par exemple).
+page_stats_eval_parties_histo_description: 'Obtenez, pour des groupes donnés (groupes de TD/TP par exemple) et/ou des profils donnés, (étudiants ayant le statut de boursier, redoublant...), et pour chaque partie de l’évaluation, la répartition des notes sous forme <b>d''histogramme</b>.'
+page_stats_eval_parties_bam_description: 'Obtenez, pour des groupes donnés (groupes de TD/TP par exemple) et/ou des profils donnés, (étudiants ayant le statut de boursier, redoublant...), et pour chaque partie de l’évaluation, la répartition des notes sous forme de <b>boîte à moustache</b>.'
+page_stats_eval_parties_moyenne_ecart_type_description: 'Obtenez, pour des groupes donnés (groupes de TD/TP par exemple) et/ou des profils donnés, (étudiants ayant le statut de boursier, redoublant...), et pour chaque partie de l’évaluation, la moyenne et l’écart-type sous forme <b>d''histogramme</b>.'
+
 ####### FORMULAIRES STATISTIQUES
 # Stats éval simple
 formulaire_stats_eval_simple_titre_choix_eval: Analyse d’une évaluation simple
@@ -272,6 +280,14 @@ formulaire_stats_eval_simple_sous_titre_choix_eval: Choisir l'évaluation pour l
 formulaire_stats_eval_simple_titre_choix_groupes: Analyse d'une évaluation simple (nom)
 formulaire_stats_eval_simple_sous_titre_groupes_choix_groupes: Sélectionner les groupes pour lesquels vous souhaitez consulter les statistiques
 formulaire_stats_eval_simple_sous_titre_statuts_choix_groupes: Sélectionner les groupes d'étudiants ayant un statut particulier pour lesquels vous souhaitez consulter les statistiques
+# Stats éval simple
+formulaire_stats_eval_parties_titre_choix_eval: Analyse d’une évaluation avec parties
+formulaire_stats_eval_parties_sous_titre_choix_eval: Choisir l'évaluation pour laquelle vous désirez consulter les statistiques
+formulaire_stats_eval_parties_titre_choix_groupes: Analyse d'une évaluation avec parties (nom)
+formulaire_stats_eval_parties_sous_titre_groupes_choix_groupes: Sélectionner les groupes pour lesquels vous souhaitez consulter les statistiques
+formulaire_stats_eval_parties_sous_titre_statuts_choix_groupes: Sélectionner les groupes d'étudiants ayant un statut particulier pour lesquels vous souhaitez consulter les statistiques
+formulaire_stats_eval_parties_sous_titre_parties_choix_groupes: Sélectionner au moins une partie de l'évaluation pour laquelle vous souhaitez consulter les statistiques
+
 ####### REINITIALISATION APPLICATION
 app_reset_texte: 'Réinitialiser l''application aura pour effet de supprimer de l''application: <ul><li>Tous les groupes</li><li>Tous les groupes d''étudiants ayant un statut particulier</li><li>Toutes les évaluations</li><li>Tous les étudiants</li></ul>Les profils des enseignants ne seront pas supprimés et les statistiques ne seront plus consultables.'
 ####### TUTORIELS
