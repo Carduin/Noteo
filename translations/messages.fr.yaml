@@ -64,7 +64,7 @@ valider: Valider
 ####### GROUPES ETUDIANTS
 # modales
 modale_groupe_evaluable: Cet attribut d'un groupe détermine si vous pourrez, ou non, créer des évaluations pour celui-ci.
-modale_groupe_supprimer: 'Êtes-vous sur de vouloir supprimer le groupe ? <br>Cette action supprimera :<ul><li>Tous ses sous-groupes</li><li>Toutes les évaluations associées</li></ul>'
+modale_groupe_supprimer: 'Êtes-vous sur de vouloir supprimer le groupe ? <br>Cette action supprimera :<ul><li>Tous ses sous groupes</li><li>Toutes les évaluations associées</li></ul>'
 modale_groupe_supprimer_confirmer: Supprimer le groupe
 # formulaires
 form_groupe_nom: Nom du groupe
@@ -187,8 +187,8 @@ modale_creer_partie_titre: Créer une partie
 modale_modifier_partie_titre: Modifier une partie
 modale_pas_de_partie_choisie_titre: Actions sur les parties
 modale_pas_de_partie_choisie_sous_titre: Vous n'avez pas sélectionné de partie
-modale_pas_de_partie_choisie_contenu: '<li>Pour ajouter une nouvelle partie, veuillez cliquer sur une partie dans le tableau à laquelle vous voulez ajouter une sous-partie</li><li>Pour modifier une partie, veuillez cliquer sur une partie que vous désirez modifier</li><li>Pour supprimer une partie, veuillez cliquer sur une partie que vous désirez supprimer</li>'
-modale_une_seule_partie_cree_titre: L'évaluation ne possède qu'une seule sous-partie
+modale_pas_de_partie_choisie_contenu: '<li>Pour ajouter une nouvelle partie, veuillez cliquer sur une partie dans le tableau à laquelle vous voulez ajouter une sous partie</li><li>Pour modifier une partie, veuillez cliquer sur une partie que vous désirez modifier</li><li>Pour supprimer une partie, veuillez cliquer sur une partie que vous désirez supprimer</li>'
+modale_une_seule_partie_cree_titre: L'évaluation ne possède qu'une seule sous partie
 modale_pas_de_partie_cree_titre: Vous n'avez pas créé de parties pour l'évaluation
 modale_une_seule_partie_cree_contenu: Une fois validé, vous ne pourrez plus modifier les parties de cette évaluation.
 # formulaires
@@ -241,7 +241,7 @@ creer_eval_simple_btn_valider: Enregistrer les notes
 creer_eval_parties_saisie_info_titre_page: Créer une évaluation avec des parties
 # page créer parties (saisie arborescence)
 creer_eval_parties_saisie_arbo_titre_page: Créer des parties pour nom
-creer_eval_parties_saisie_arbo_sous_titre_page: Sélectionner une partie pour ajouter une sous-partie, modifier une partie, ou supprimer une partie
+creer_eval_parties_saisie_arbo_sous_titre_page: Sélectionner une partie pour ajouter une sous partie, modifier une partie, ou supprimer une partie
 tooltip_partie_ajouter: Créer une sous partie pour la partie sélectionnée
 tooltip_partie_modifier: Modifier la partie sélectionnée
 tooltip_partie_supprimer: Supprimer la partie sélectionnée
@@ -318,7 +318,7 @@ formulaire_stats_eval_parties_sous_titre_parties_choix_groupes: Sélectionner au
 formulaire_stats_plusieurs_evals_groupes_titre_choix_groupe: Analyse des résultats de groupe(s) d’étudiant(s) sur plusieurs évaluations
 formulaire_stats_plusieurs_evals_groupes_sous_titre_choix_groupe: Sélectionner le groupe pour lequel vous souhaitez voir des statistiques
 formulaire_stats_plusieurs_evals_groupes_titre_choix_sous_groupes: Analyse des résultats de groupe(s) d’étudiant(s) sur plusieurs évaluations
-formulaire_stats_plusieurs_evals_groupes_sous_titre_choix_sous_groupes: Sélectionner les sous-groupes de nom pour lesquels vous souhaitez voir des statistiques
+formulaire_stats_plusieurs_evals_groupes_sous_titre_choix_sous_groupes: Sélectionner les sous groupes de nom pour lesquels vous souhaitez voir des statistiques
 formulaire_stats_plusieurs_evals_groupes_titre_choix_evals: Analyse des résultats de groupe(s) d’étudiant(s) sur plusieurs évaluations
 formulaire_stats_plusieurs_evals_groupes_sous_titre_choix_evals: Sélectionner les évaluations pour lesquelles vous souhaitez voir des statistiques pour les groupes précédemment sélectionnés
 # Stats plusieurs evals statut
@@ -338,6 +338,17 @@ formulaire_stats_comparaison_message_alternatif_autres_evals: '<p> Aucune évalu
 formulaire_stats_comparaison_titre_choix_groupes: Comparaison des résultats d’une évaluation spécifique à un ensemble d’évaluations
 formulaire_stats_comparaison_sous_titre_groupes_choix_groupes: Sélectionner les groupes pour lesquels vous souhaitez consulter les statistiques
 formulaire_stats_comparaison_sous_titre_statuts_choix_groupes: Sélectionner les groupes d'étudiants ayant un statut particulier pour lesquels vous souhaitez consulter les statistiques
+# Stats evolution groupe
+formulaire_stats_evolution_groupe_titre_choix_groupe: Évolution chronologique des résultats d’un ensemble d’étudiants
+formulaire_stats_evolution_groupe_sous_titre_choix_groupe: Sélectionner le groupe pour lequel vous souhaitez voir des statistiques
+formulaire_stats_evolution_groupe_warning_choix_groupe: La couleur de l'effectif d'un groupe indique la facilité de lecture du graphique qui sera généré pour ce groupe.
+formulaire_stats_evolution_groupe_titre_choix_sous_groupes: Évolution chronologique des résultats d’un ensemble d’étudiants
+formulaire_stats_evolution_groupe_sous_titre_choix_sous_groupes: Sélectionner les sous groupes de nom pour lesquels vous souhaitez voir des statistiques
+formulaire_stats_evolution_groupe_warning_choix_sous_groupes: La couleur de l'effectif d'un groupe indique la facilité de lecture du graphique qui sera généré pour ce groupe.
+formulaire_stats_evolution_groupe_titre_choix_evals: Évolution chronologique des résultats d’un ensemble d’étudiants
+formulaire_stats_evolution_groupe_sous_titre_choix_evals: Sélectionner les évaluations pour lesquelles vous souhaitez voir des statistiques pour les groupes précédemment sélectionnés
+
+# Stats evolution statut
 
 ####### REINITIALISATION APPLICATION
 app_reset_texte: 'Réinitialiser l''application aura pour effet de supprimer de l''application: <ul><li>Tous les groupes</li><li>Tous les groupes d''étudiants ayant un statut particulier</li><li>Toutes les évaluations</li><li>Tous les étudiants</li></ul>Les profils des enseignants ne seront pas supprimés et les statistiques ne seront plus consultables.'

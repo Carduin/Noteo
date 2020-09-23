@@ -652,12 +652,12 @@ class StatsController extends AbstractController
             'indentationGroupes' => false,
             'casBoutonValider' => 0,
             'activerToutSelectionner' => false,
-            'titrePage' => 'Évolution chronologique des résultats d’un ensemble d’étudiants',
+            'titrePage' => $this->translator->trans('formulaire_stats_evolution_groupe_titre_choix_groupe'),
             'typeForm1' => 'groupes',
-            'sousTitreForm1' => 'Sélectionner le groupe pour lequel vous souhaitez voir des statistiques',
+            'sousTitreForm1' => $this->translator->trans('formulaire_stats_evolution_groupe_sous_titre_choix_groupe'),
             'conditionAffichageForm1' => true,
             'affichageEffectifParStatut' => false,
-            'messageWarningForm1' => 'La couleur de l\'effectif d\'un groupe indique la facilité de lecture du graphique qui sera généré pour ce groupe.'
+            'messageWarningForm1' => $this->translator->trans('formulaire_stats_evolution_groupe_warning_choix_groupe')
         ]);
     }
 
@@ -699,12 +699,12 @@ class StatsController extends AbstractController
             'indentationGroupes' => true,
             'casBoutonValider' => 3,
             'activerToutSelectionner' => true,
-            'titrePage' => 'Évolution chronologique des résultats d’un ensemble d’étudiants',
+            'titrePage' => $this->translator->trans('formulaire_stats_evolution_groupe_titre_choix_sous_groupes'),
             'typeForm1' => 'groupes',
-            'sousTitreForm1' => 'Sélectionner les sous-groupes de ' . $groupe->getNom() . ' pour lesquels vous souhaitez voir des statistiques',
+            'sousTitreForm1' => $this->translator->trans('formulaire_stats_evolution_groupe_sous_titre_choix_sous_groupes', ['nom'=>$groupe->getNom()]),
             'conditionAffichageForm1' => true,
             'affichageEffectifParStatut' => false,
-            'messageWarningForm1' => 'La couleur de l\'effectif d\'un groupe indique la facilité de lecture du graphique qui sera généré pour ce groupe.'
+            'messageWarningForm1' => $this->translator->trans('formulaire_stats_evolution_groupe_warning_choix_sous_groupes')
         ]);
     }
 
@@ -754,10 +754,10 @@ class StatsController extends AbstractController
         return $this->render('statistiques/formulaire_parametrage_statistiques.html.twig', [
             'form' => $form->createView(),
             'nbForm' => 1,
-            'titrePage' => 'Évolution chronologique des résultats d’un ensemble d’étudiants',
+            'titrePage' => $this->translator->trans('formulaire_stats_evolution_groupe_titre_choix_evals'),
             'activerToutSelectionner' => true,
             'typeForm1' => 'evaluations',
-            'sousTitreForm1' => 'Sélectionner les évaluations pour lesquelles vous souhaitez voir des statistiques pour les groupes précédemment sélectionnés',
+            'sousTitreForm1' => $this->translator->trans('formulaire_stats_evolution_groupe_sous_titre_choix_evals'),
             'conditionAffichageForm1' => true,
             'casBoutonValider' => 4
         ]);
