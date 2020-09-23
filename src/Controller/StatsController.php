@@ -801,10 +801,10 @@ class StatsController extends AbstractController
             'indentationGroupes' => false,
             'activerToutSelectionner' => false,
             'casBoutonValider' => 0,
-            'titrePage' => 'Évolution chronologique des résultats d’un ensemble d’étudiants appartenant à un statut',
+            'titrePage' => $this->translator->trans('formulaire_stats_evolution_statut_titre_choix_statut'),
             'typeForm1' => 'groupes',
-            'sousTitreForm1' => 'Sélectionner le groupe d\'étudiants ayant un statut particulier pour lequel vous souhaitez voir des statistiques',
-            'messageWarningForm1' => 'La couleur de l\'effectif d\'un groupe indique la facilité de lecture du graphique qui sera généré pour ce groupe.',
+            'sousTitreForm1' => $this->translator->trans('formulaire_stats_evolution_statut_sous_titre_choix_statut'),
+            'messageWarningForm1' => $this->translator->trans('formulaire_stats_evolution_statut_warning_choix_statut'),
             'conditionAffichageForm1' => true,
             'colorationEffectif' => true,
             'affichageEffectifParStatut' => false
@@ -849,13 +849,13 @@ class StatsController extends AbstractController
             'indentationGroupes' => false,
             'casBoutonValider' => 0,
             'activerToutSelectionner' => false,
-            'titrePage' => 'Évolution chronologique des résultats d’un ensemble d’étudiants appartenant à un statut',
+            'titrePage' => $this->translator->trans('formulaire_stats_evolution_statut_titre_choix_groupe'),
             'typeForm1' => 'groupes',
-            'sousTitreForm1' => 'Sélectionner le groupe pour lequel vous souhaitez voir des statistiques pour le statut concerné précédemment sélectionné',
+            'sousTitreForm1' => $this->translator->trans('formulaire_stats_evolution_statut_sous_titre_choix_groupe'),
             'conditionAffichageForm1' => true,
             'affichageEffectifParStatut' => true,
             'effectifsParStatut' => $effectifsParStatut,
-            'messageWarningForm1' => 'La couleur de l\'effectif d\'un groupe indique la facilité de lecture du graphique qui sera généré pour ce groupe.'
+            'messageWarningForm1' => $this->translator->trans('formulaire_stats_evolution_statut_warning_choix_groupe')
         ]);
     }
 
@@ -901,13 +901,13 @@ class StatsController extends AbstractController
             'indentationGroupes' => true,
             'casBoutonValider' => 3,
             'activerToutSelectionner' => true,
-            'titrePage' => 'Évolution chronologique des résultats d’un ensemble d’étudiants appartenant à un statut',
+            'titrePage' => $this->translator->trans('formulaire_stats_evolution_statut_titre_choix_sous_groupes'),
             'typeForm1' => 'groupes',
-            'sousTitreForm1' => 'Sélectionner les sous-groupes de ' . $groupe->getNom() . ' comportant des étudiants du statut \'' . $statut->getNom() . '\' et pour lesquels vous souhaitez voir des statistiques',
+            'sousTitreForm1' => $this->translator->trans('formulaire_stats_evolution_statut_sous_titre_choix_sous_groupes', ['nomGroupe'=> $groupe->getNom(), 'nomStatut'=>$statut->getNom()]),
             'conditionAffichageForm1' => true,
             'affichageEffectifParStatut' => true,
             'effectifsParStatut' => $effectifsParStatut,
-            'messageWarningForm1' => 'La couleur de l\'effectif d\'un groupe indique la facilité de lecture du graphique qui sera généré pour ce groupe.'
+            'messageWarningForm1' => $this->translator->trans('formulaire_stats_evolution_statut_warning_choix_sous_groupes')
         ]);
     }
 
