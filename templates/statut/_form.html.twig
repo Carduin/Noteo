@@ -3,11 +3,11 @@
     <table align="center" class="table">
         <tbody>
         <tr>
-            <th class="intitule"><label for="statut_nom" class="required">Nom du groupe</label></th>
+            <th class="intitule"><label for="statut_nom" class="required">{% trans %}form_statut_nom{% endtrans %}</label></th>
             <td>{{ form_help(form.nom) }}{{ form_errors(form.nom) }}{{ form_widget(form.nom) }}</td>
         </tr>
         <tr>
-            <th class="intitule"><label for="statut_description" class="required">Description du groupe</label></th>
+            <th class="intitule"><label for="statut_description" class="required">{% trans %}form_statut_description{% endtrans %}</label></th>
             <td>{{ form_errors(form.description) }}{{ form_widget(form.description) }}</td>
         </tr>
         </tbody>
@@ -19,16 +19,16 @@
 {% elseif route == "statut_edit" %}
     {% set param1ToutCocher = 'statut_edit[lesEtudiantsAAjouter][]' %}
 {% endif %}
-<br> <h1 class="h4 mb-0 text-gray-800">Ajouter des étudiants au groupe</h1> <br>
+<br> <h1 class="h4 mb-0 text-gray-800">{% trans %}form_statut_ajouter_etudiants{% endtrans %}</h1> <br>
 <div class="table-responsive">
     <table class="table table-hover" id="etudAjout">
         <thead>
         <tr>
             <th><input type="checkbox" onclick="cocherToutesLesCases('{{ param1ToutCocher }}', this.checked)"
                        id="checkbox" title="Tout cocher"/></th>
-            <th>Nom</th>
-            <th>Prénom</th>
-            <th>Mail</th>
+            <th>{% trans %}nom_famille{% endtrans %}</th>
+            <th>{% trans %}prenom{% endtrans %}</th>
+            <th>{% trans %}mail{% endtrans %}</th>
         </tr>
         </thead>
         <tbody>
@@ -50,7 +50,7 @@
     </table>
 </div>
 {% if edit %}
-    <br> <h1 class="h4 mb-0 text-gray-800">Retirer des étudiants du groupe</h1> <br>
+    <br> <h1 class="h4 mb-0 text-gray-800">{% trans %}form_statut_retirer_etudiants{% endtrans %}</h1> <br>
     <div class="table-responsive">
         <table class="table table-hover" id="etudSuppr">
             <thead>
@@ -58,9 +58,9 @@
                 <th><input type="checkbox"
                            onclick="cocherToutesLesCases('statut_edit[lesEtudiantsASupprimer][]', this.checked, etudSuppr)"
                            id="checkbox" title="Tout cocher"/></th>
-                <th>Nom</th>
-                <th>Prénom</th>
-                <th>Mail</th>
+                <th>{% trans %}nom_famille{% endtrans %}</th>
+                <th>{% trans %}prenom{% endtrans %}</th>
+                <th>{% trans %}mail{% endtrans %}</th>
             </tr>
             </thead>
             <tbody>
@@ -83,7 +83,7 @@
     </div>
 {% endif %}
 <div class='bouton' align=center>
-    <button class="d-sm-inline-block btn btn-sm btn-primary shadow-sm">{{ button_label|default('Enregistrer') }}</button>
+    <button class="d-sm-inline-block btn btn-sm btn-primary shadow-sm">{{ button_label|default('enregistrer') | trans  }}</button>
 </div>
 
 {{ form_end(form) }}

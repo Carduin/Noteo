@@ -15,30 +15,29 @@
     <div class='bouton' align=center>
         {% if evaluation.enseignant == app.user or is_granted('ROLE_ADMIN') %}
             <a class="d-sm-inline-block btn btn-sm btn-primary shadow-sm"
-               href="{{ path('evaluation_edit', {'slug': evaluation.slug}) }}">Modifier {{ evaluation.nom }}</a>
+               href="{{ path('evaluation_edit', {'slug': evaluation.slug}) }}">{% trans with{'nom':evaluation.nom} %}modifier_evaluation_titre_page{% endtrans %}</a>
         {% endif %}
         <a class="d-sm-inline-block btn btn-sm btn-primary shadow-sm"
-           {% if evaluation.parties|length > 1 %}{{ app.session.set('typeGraphique', 'histogramme') }}href="{{ path('statistiques_classiques_choisir_groupes_parties_statuts', {'slug' : evaluation.slug, 'typeStat':'classique-avec-parties'}) }}"
-           {% else %}{{ app.session.set('typeGraphique', 'histogramme') }}href="{{ path('statistiques_classiques_choisir_groupes_parties_statuts', {'slug' : evaluation.slug, 'typeStat':'classique'}) }}"{% endif %}>Consulter
-            les statistiques pour {{ evaluation.nom }}</a>
+           {% if evaluation.parties|length > 1 %}{{ app.session.set('typeGraphique', 'histogramme') }}href="{{ path('eval_parties_choisir_parametres_et_afficher_stats', {'slug' : evaluation.slug}) }}"
+           {% else %}{{ app.session.set('typeGraphique', 'histogramme') }}href="{{ path('eval_simple_choisir_parametres_et_afficher_stats', {'slug' : evaluation.slug}) }}"{% endif %}>{% trans with{'nom':evaluation.nom} %}consulter_evaluation_btn_stats{% endtrans %}</a>
     </div>
     <div class="table-responsive">
         <table class="table">
             <tbody>
             <tr>
-                <th class="intitule">Date de l'évaluation</th>
+                <th class="intitule">{% trans %}form_evaluation_date{% endtrans %}</th>
                 <td>{{ evaluation.date | date("d/m/Y") }}</td>
             </tr>
             <tr>
-                <th class="intitule">Groupe évalué</th>
+                <th class="intitule">{% trans %}form_evaluation_groupe{% endtrans %}</th>
                 <td>{{ evaluation.groupe.nom }}</td>
             </tr>
             <tr>
-                <th class="intitule">Créateur</th>
+                <th class="intitule">{% trans %}form_evaluation_createur{% endtrans %}</th>
                 <td>{{ evaluation.enseignant.prenom }} {{ evaluation.enseignant.nom }}</td>
             </tr>
             <tr>
-                <th class="intitule">Télécharger l'évaluation au format CSV</th>
+                <th class="intitule">{% trans %}form_evaluation_csv{% endtrans %}</th>
                 <td><a id="export" href="javascript:exportTableToCSV('{{ evaluation.nom }}.csv')"><i
                                 style="font-size: 25px;" data-toggle='tooltip'
                                 title="Exporter les statistiques au format CSV" class="icon-file-excel"></i> </a></td>
@@ -46,18 +45,18 @@
             </tbody>
         </table>
     </div>
-    <br><h1 class="h4 mb-0 text-gray-800">Notes des étudiants</h1> <br>
+    <br><h1 class="h4 mb-0 text-gray-800">{% trans %}form_evaluation_notes_consulter{% endtrans %}</h1> <br>
     <div class="table-responsive table-hover">
         <table data-cols-width="25,25, 10" class="table" id="etud">
             <thead>
-            <th>Nom</th>
-            <th>Prénom</th>
+            <th>{% trans %}nom_famille{% endtrans %}</th>
+            <th>{% trans %}prenom{% endtrans %}</th>
             {% if evaluation.parties|length != 1 %}
                 {% for partie in evaluation.parties %}
                     <th>{{ partie.intitule }} (/{{ partie.bareme }})</th>
                 {% endfor %}
             {% else %}
-                <th>Note (/20)</th>
+                <th>{% trans %}note_sur_20{% endtrans %}</th>
             {% endif %}
             </thead>
             <tbody>
@@ -103,8 +102,18 @@
             language: {
                 // Suppression du label Rechercher et ajout du placeholder
                 search: "_INPUT_",
-                searchPlaceholder: "Rechercher...",
-                "url": "{{ asset('tradfr.json') }}"
+                searchPlaceholder: "{% trans %}rechercher{% endtrans %}",
+                oPaginate: {
+                    sFirst:      "{% trans %}premier{% endtrans %}",
+                    sPrevious:   "{% trans %}precedent{% endtrans %}",
+                    sNext:       "{% trans %}suivant{% endtrans %}",
+                    sLast:       "{% trans %}dernier{% endtrans %}"
+                },
+                sProcessing:     "{% trans %}traitement{% endtrans %}",
+                sLoadingRecords: "{% trans %}chargement{% endtrans %}",
+                sZeroRecords:    "{% trans %}aucune_correspondance{% endtrans %}",
+                sEmptyTable:     "{% trans %}table_vide{% endtrans %}",
+                sLengthMenu:     "{% trans %}afficher_x_elements{% endtrans %}"
             },
             order: [
                 [0, "asc"]
@@ -112,7 +121,7 @@
             columns: {{ tableauColonnes | json_encode | raw }},
             lengthMenu: [
                 [15, 30, 45, -1],
-                [15, 30, 45, "Tout"]
+                [15, 30, 45, "{% trans %}tout_elements{% endtrans %}"]
             ],
             pageLength: {{ app.user.preferenceNbElementsTableaux }}, <!-- Pour que le nombre d'éléments affichés par défaut soit celui de la préference de l'utilisateur -->
             info: false,

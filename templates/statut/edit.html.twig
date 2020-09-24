@@ -1,11 +1,11 @@
 {% extends 'base.html.twig' %}
 
-{% block titrePage %}Modifier {{ statut.nom }}{% endblock %}
+{% block titrePage %}{% trans with {'nom': statut.nom } %}modifier_statut_titre_page{% endtrans %}{% endblock %}
 
 {% block statutsEtudiants %}active{% endblock %}
 
 {% block contenu %}
-    {{ include('statut/_form.html.twig', {'button_label': 'Enregistrer'}) }}
+    {{ include('statut/_form.html.twig', {'button_label': 'enregistrer'}) }}
 {% endblock %}
 
 {% block datatables %}
@@ -15,8 +15,18 @@
             language: {
                 // Suppression du label Rechercher et ajout du placeholder
                 search: "_INPUT_",
-                searchPlaceholder: "Rechercher...",
-                "url": "{{ asset('tradfr.json') }}"
+                searchPlaceholder: "{% trans %}rechercher{% endtrans %}",
+                oPaginate: {
+                    sFirst:      "{% trans %}premier{% endtrans %}",
+                    sPrevious:   "{% trans %}precedent{% endtrans %}",
+                    sNext:       "{% trans %}suivant{% endtrans %}",
+                    sLast:       "{% trans %}dernier{% endtrans %}"
+                },
+                sProcessing:     "{% trans %}traitement{% endtrans %}",
+                sLoadingRecords: "{% trans %}chargement{% endtrans %}",
+                sZeroRecords:    "{% trans %}aucune_correspondance{% endtrans %}",
+                sEmptyTable:     "{% trans %}table_vide{% endtrans %}",
+                sLengthMenu:     "{% trans %}afficher_x_elements{% endtrans %}"
             },
             order: [
                 [1, "asc"]
@@ -24,7 +34,7 @@
             columns: [{"orderable": false}, null, null, {"orderable": false}],
             lengthMenu: [
                 [15, 30, 45, -1],
-                [15, 30, 45, "Tout"]
+                [15, 30, 45, "{% trans %}tout_elements{% endtrans %}"]
             ],
             pageLength: {{ app.user.preferenceNbElementsTableaux }}, <!-- Pour que le nombre d'éléments affichés par défaut soit celui de la préference de l'utilisateur -->
             info: false,
@@ -35,8 +45,18 @@
             language: {
                 // Suppression du label Rechercher et ajout du placeholder
                 search: "_INPUT_",
-                searchPlaceholder: "Rechercher...",
-                "url": "{{ asset('tradfr.json') }}"
+                searchPlaceholder: "{% trans %}rechercher{% endtrans %}",
+                oPaginate: {
+                    sFirst:      "{% trans %}premier{% endtrans %}",
+                    sPrevious:   "{% trans %}precedent{% endtrans %}",
+                    sNext:       "{% trans %}suivant{% endtrans %}",
+                    sLast:       "{% trans %}dernier{% endtrans %}"
+                },
+                sProcessing:     "{% trans %}traitement{% endtrans %}",
+                sLoadingRecords: "{% trans %}chargement{% endtrans %}",
+                sZeroRecords:    "{% trans %}aucune_correspondance{% endtrans %}",
+                sEmptyTable:     "{% trans %}table_vide{% endtrans %}",
+                sLengthMenu:     "{% trans %}afficher_x_elements{% endtrans %}"
             },
             order: [
                 [1, "asc"]
@@ -44,7 +64,7 @@
             columns: [{"orderable": false}, null, null, {"orderable": false}],
             lengthMenu: [
                 [15, 30, 45, -1],
-                [15, 30, 45, "Tout"]
+                [15, 30, 45, "{% trans %}tout_elements{% endtrans %}"]
             ],
             pageLength: {{ app.user.preferenceNbElementsTableaux }}, <!-- Pour que le nombre d'éléments affichés par défaut soit celui de la préference de l'utilisateur -->
             info: false,

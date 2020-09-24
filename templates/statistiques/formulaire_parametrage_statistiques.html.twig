@@ -26,10 +26,12 @@
         {% elseif typeForm1 == 'parties' %}
             {% include('statistiques/_form_parties.html.twig') %}
         {% endif %}
+        <br>
     {% else %}
         <div class="info">
             <h5 class="h5 mb-0 text-gray-800">{{ messageAlternatifForm1 | default("") | raw }}</h5>
         </div>
+        <br>
     {% endif %}
 
     {% if nbForm >= 2 %}
@@ -52,10 +54,12 @@
             {% elseif typeForm2 == 'parties' %}
                 {% include('statistiques/_form_parties.html.twig') %}
             {% endif %}
+            <br>
         {% else %}
             <div class="info">
                 <h5 class="h5 mb-0 text-gray-800">{{ messageAlternatifForm2 | default("") | raw }}</h5>
             </div>
+            <br>
         {% endif %}
     {% endif %}
 
@@ -79,16 +83,18 @@
             {% elseif typeForm3 == 'parties' %}
                 {% include('statistiques/_form_parties.html.twig') %}
             {% endif %}
+            <br>
         {% else %}
             <div class="info">
                 <h5 class="h5 mb-0 text-gray-800">{{ messageAlternatifForm3 | default("") | raw }}</h5>
             </div>
+            <br>
         {% endif %}
     {% endif %}
 
     {% if afficherBtnSuivant %}
         <div class='bouton' align=center>
-            <button class="d-sm-inline-block btn btn-sm btn-primary shadow-sm" id="valider">Suivant</button>
+            <button class="d-sm-inline-block btn btn-sm btn-primary shadow-sm" id="valider">{% trans %}suivant{% endtrans %}</button>
         </div>
     {% endif %}
     {{ form_end(form) }}
@@ -101,14 +107,24 @@
             language: {
                 // Suppression du label Rechercher et ajout du placeholder
                 search: "_INPUT_",
-                searchPlaceholder: "Rechercher...",
-                "url": "{{ asset('tradfr.json') }}"
+                searchPlaceholder: "{% trans %}rechercher{% endtrans %}",
+                oPaginate: {
+                    sFirst:      "{% trans %}premier{% endtrans %}",
+                    sPrevious:   "{% trans %}precedent{% endtrans %}",
+                    sNext:       "{% trans %}suivant{% endtrans %}",
+                    sLast:       "{% trans %}dernier{% endtrans %}"
+                },
+                sProcessing:     "{% trans %}traitement{% endtrans %}",
+                sLoadingRecords: "{% trans %}chargement{% endtrans %}",
+                sZeroRecords:    "{% trans %}aucune_correspondance{% endtrans %}",
+                sEmptyTable:     "{% trans %}table_vide{% endtrans %}",
+                sLengthMenu:     "{% trans %}afficher_x_elements{% endtrans %}"
             },
             order: [2, 'desc'],
             columns: [{"orderable": false}, null, null, {"orderable": false}, null],
             lengthMenu: [
                 [15, 30, 45, -1],
-                [15, 30, 45, "Tout"]
+                [15, 30, 45, "{% trans %}tout_elements{% endtrans %}"]
             ],
             columnDefs: [{
                 "sType": "date-eu",
@@ -129,14 +145,24 @@
             language: {
                 // Suppression du label Rechercher et ajout du placeholder
                 search: "_INPUT_",
-                searchPlaceholder: "Rechercher...",
-                "url": "{{ asset('tradfr.json') }}"
+                searchPlaceholder: "{% trans %}rechercher{% endtrans %}",
+                oPaginate: {
+                    sFirst:      "{% trans %}premier{% endtrans %}",
+                    sPrevious:   "{% trans %}precedent{% endtrans %}",
+                    sNext:       "{% trans %}suivant{% endtrans %}",
+                    sLast:       "{% trans %}dernier{% endtrans %}"
+                },
+                sProcessing:     "{% trans %}traitement{% endtrans %}",
+                sLoadingRecords: "{% trans %}chargement{% endtrans %}",
+                sZeroRecords:    "{% trans %}aucune_correspondance{% endtrans %}",
+                sEmptyTable:     "{% trans %}table_vide{% endtrans %}",
+                sLengthMenu:     "{% trans %}afficher_x_elements{% endtrans %}"
             },
             aaSorting: [],
             columns: {{ tableauColonnesDatatablesGroupes|json_encode()|raw }},
             lengthMenu: [
                 [15, 30, 45, -1],
-                [15, 30, 45, "Tout"]
+                [15, 30, 45, "{% trans %}tout_elements{% endtrans %}"]
             ],
             pageLength: {{ app.user.preferenceNbElementsTableaux }}, <!-- Pour que le nombre d'éléments affichés par défaut soit celui de la préference de l'utilisateur -->
             info: false,
@@ -148,8 +174,18 @@
             language: {
                 // Suppression du label Rechercher et ajout du placeholder
                 search: "_INPUT_",
-                searchPlaceholder: "Rechercher...",
-                "url": "{{ asset('tradfr.json') }}"
+                searchPlaceholder: "{% trans %}rechercher{% endtrans %}",
+                oPaginate: {
+                    sFirst:      "{% trans %}premier{% endtrans %}",
+                    sPrevious:   "{% trans %}precedent{% endtrans %}",
+                    sNext:       "{% trans %}suivant{% endtrans %}",
+                    sLast:       "{% trans %}dernier{% endtrans %}"
+                },
+                sProcessing:     "{% trans %}traitement{% endtrans %}",
+                sLoadingRecords: "{% trans %}chargement{% endtrans %}",
+                sZeroRecords:    "{% trans %}aucune_correspondance{% endtrans %}",
+                sEmptyTable:     "{% trans %}table_vide{% endtrans %}",
+                sLengthMenu:     "{% trans %}afficher_x_elements{% endtrans %}"
             },
             order: [
                 [1, "asc"]
@@ -157,7 +193,7 @@
             columns: [{"orderable": false}, null, null, null],
             lengthMenu: [
                 [15, 30, 45, -1],
-                [15, 30, 45, "Tout"]
+                [15, 30, 45, "{% trans %}tout_elements{% endtrans %}"]
             ],
             pageLength: {{ app.user.preferenceNbElementsTableaux }}, <!-- Pour que le nombre d'éléments affichés par défaut soit celui de la préference de l'utilisateur -->
             info: false,
@@ -166,14 +202,24 @@
             language: {
                 // Suppression du label Rechercher et ajout du placeholder
                 search: "_INPUT_",
-                searchPlaceholder: "Rechercher...",
-                "url": "{{ asset('tradfr.json') }}"
+                searchPlaceholder: "{% trans %}rechercher{% endtrans %}",
+                oPaginate: {
+                    sFirst:      "{% trans %}premier{% endtrans %}",
+                    sPrevious:   "{% trans %}precedent{% endtrans %}",
+                    sNext:       "{% trans %}suivant{% endtrans %}",
+                    sLast:       "{% trans %}dernier{% endtrans %}"
+                },
+                sProcessing:     "{% trans %}traitement{% endtrans %}",
+                sLoadingRecords: "{% trans %}chargement{% endtrans %}",
+                sZeroRecords:    "{% trans %}aucune_correspondance{% endtrans %}",
+                sEmptyTable:     "{% trans %}table_vide{% endtrans %}",
+                sLengthMenu:     "{% trans %}afficher_x_elements{% endtrans %}"
             },
             order: [1, 'asc'],
             columns: [{"orderable": false}, null, null, {"orderable": false}],
             lengthMenu: [
                 [15, 30, 45, -1],
-                [15, 30, 45, "Tout"]
+                [15, 30, 45, "{% trans %}tout_elements{% endtrans %}"]
             ],
             pageLength: {{ app.user.preferenceNbElementsTableaux }}, <!-- Pour que le nombre d'éléments affichés par défaut soit celui de la préference de l'utilisateur -->
             info: false,

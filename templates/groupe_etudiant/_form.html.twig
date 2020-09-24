@@ -3,16 +3,16 @@
     <table align="center" class="table">
         <tbody>
         <tr>
-            <th class="intitule"><label for="groupe_etudiant_nom" class="required">Nom du groupe</label></th>
+            <th class="intitule"><label for="groupe_etudiant_nom" class="required">{% trans %}form_groupe_nom{% endtrans %}</label></th>
             <td>{{ form_help(form.nom) }}{{ form_errors(form.nom) }}{{ form_widget(form.nom) }}</td>
         </tr>
         <tr>
-            <th class="intitule"><label for="groupe_etudiant_description" class="required">Description du groupe</label>
+            <th class="intitule"><label for="groupe_etudiant_description" class="required">{% trans %}form_groupe_description{% endtrans %}</label>
             </th>
             <td>{{ form_errors(form.description) }}{{ form_widget(form.description) }}</td>
         </tr>
         <tr>
-            <th class="intitule"><label for="groupe_etudiant_estEvaluable" class="required">Évaluable</label> <a
+            <th class="intitule"><label for="groupe_etudiant_estEvaluable" class="required">{% trans %}evaluable{% endtrans %}</label> <a
                         href="#HelpEvaluable" data-toggle='modal' data-target='#HelpEvaluable'><i
                             class="icon-help-circled"></i></a></th>
             <td>{{ form_errors(form.estEvaluable) }}{{ form_widget(form.estEvaluable) }}</td>
@@ -20,16 +20,16 @@
         </tbody>
     </table>
 </div>
-<h1 class="h4 mb-0 text-gray-800">Ajouter des étudiants au groupe</h1> <br>
+<h1 class="h4 mb-0 text-gray-800">{% trans %}form_groupe_ajouter_etudiants{% endtrans %}</h1> <br>
 <div class="table-responsive">
     <table class="table table-hover" id="tableAjouter">
         <thead>
         <th><input type="checkbox"
                    onclick="cocherToutesLesCases('groupe_etudiant_edit[etudiantsAAjouter][]', this.checked)"
                    id="checkbox" title="Tout cocher"/></th>
-        <th>Nom</th>
-        <th>Prénom</th>
-        <th>Mail</th>
+        <th>{% trans %}nom_famille{% endtrans %}</th>
+        <th>{% trans %}prenom{% endtrans %}</th>
+        <th>{% trans %}mail{% endtrans %}</th>
         </thead>
         <tbody>
         {% for etudiant in form.etudiantsAAjouter %}
@@ -48,16 +48,16 @@
     </table>
 </div>
 {% if edit %}
-    <br> <h1 class="h4 mb-0 text-gray-800">Retirer des étudiants du groupe</h1> <br>
+    <br> <h1 class="h4 mb-0 text-gray-800">{% trans %}form_groupe_retirer_etudiants{% endtrans %}</h1> <br>
     <div class="table-responsive">
         <table class="table table-hover" id="tableSupprimer">
             <thead>
             <th><input type="checkbox"
                        onclick="cocherToutesLesCases('groupe_etudiant_edit[etudiantsASupprimer][]', this.checked)"
                        id="checkbox" title="Tout cocher"/></th>
-            <th>Nom</th>
-            <th>Prénom</th>
-            <th>Mail</th>
+            <th>{% trans %}nom_famille{% endtrans %}</th>
+            <th>{% trans %}prenom{% endtrans %}</th>
+            <th>{% trans %}mail{% endtrans %}</th>
             </thead>
             <tbody>
             {% for etudiant in form.etudiantsASupprimer %}
@@ -77,6 +77,30 @@
     </div>
 {% endif %}
 <div class='bouton' align=center>
-    <button class="d-sm-inline-block btn btn-sm btn-primary shadow-sm">{{ button_label|default('Enregistrer') }}</button>
+    <button class="d-sm-inline-block btn btn-sm btn-primary shadow-sm">{{ button_label|default('enregistrer') |trans }}</button>
+</div>
+
+
+<!-- Modale du ? de évaluable -->
+<div class="modal fade" id="HelpEvaluable" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">{% trans %}aide{% endtrans %}</h5>
+                <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">x</span>
+                </button>
+            </div>
+            <div align=center class="modal-body">
+                {% trans %}modale_groupe_evaluable{% endtrans %}
+            </div>
+            <div class="modal-footer">
+                <button class="d-sm-inline-block btn btn-sm btn-primary shadow-sm" type="button"
+                        data-dismiss="modal">Ok
+                </button>
+            </div>
+        </div>
+    </div>
 </div>
 {{ form_end(form) }}

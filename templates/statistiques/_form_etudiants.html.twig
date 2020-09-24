@@ -2,9 +2,9 @@
     <table class="table" id="etudiants">
         <thead>
         <th></th>
-        <th>Nom</th>
-        <th>Prenom</th>
-        <th>Mail</th>
+        <th>{% trans %}nom{% endtrans %}</th>
+        <th>{% trans %}prenom{% endtrans %}</th>
+        <th>{% trans %}mail{% endtrans %}</th>
         </thead>
         <tbody>
         {% for etudiant in form.etudiants %}

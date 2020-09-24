@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block titrePage %}Modifier {{ etudiant.prenom }} {{ etudiant.nom }}{% endblock %}
+{% block titrePage %}{% trans with {'nom': etudiant.nom, 'prenom': etudiant.prenom } %}modifier_etudiant_titre_page{% endtrans %}{% endblock %}
 
 {% block etudiants %}active{% endblock %}
 

@@ -9,10 +9,16 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Translation\TranslatorInterface;
 use Symfony\Component\Validator\Constraints\NotNull;
 
 class EnseignantType extends AbstractType
 {
+    private $translator;
+
+    public function __construct(TranslatorInterface $translator) {
+        $this->translator = $translator;
+    }
   public function buildForm(FormBuilderInterface $builder, array $options)
   {
     $builder
@@ -21,9 +27,8 @@ class EnseignantType extends AbstractType
     ->add('email')
     ->add('estAdmin', ChoiceType::class, [
       'constraints' => [new NotNull],
-      'help' => 'Si vous vous retirez vos droits d\'administrateur, assurez-vous qu\'une autre personne dispose de ces derniers.',
-      'choices' => ['Oui' => true, 'Non' => false],
-      'data' => $options['estAdmin'],
+      'help' => '$this->translator->trans(\'form_enseignant_message_info_droits\')',
+      'choices' => [$this->translator->trans('oui') => true, $this->translator->trans('non') => false],'data' => $options['estAdmin'],
       'mapped' => false,
       'disabled' => $options['champDesactive'],
       'expanded' => true, // Pour avoir des boutons radio
@@ -33,11 +38,11 @@ class EnseignantType extends AbstractType
     ])
     ->add('password',RepeatedType::class, [
       'type' => PasswordType::class,
-      'invalid_message' => 'Les mots de passe saisis ne correspondent pas.',
+      'invalid_message' => $this->translator->trans('form_enseignant_mdp_invalide'),
       'options' => ['attr' => ['class' => 'password-field']],
       'required' => true,
-      'first_options'  => ['label' => 'Saisir le mot de passe'],
-      'second_options' => ['label' => 'Confirmation'],
+      'first_options'  => ['label' => $this->translator->trans('form_enseignant_placeholder_mpd_1')],
+      'second_options' => ['label' => $this->translator->trans('form_enseignant_placeholder_mpd_2')],
     ])
     ;
   }

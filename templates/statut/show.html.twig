@@ -8,31 +8,31 @@
     {% if statut.enseignant == app.user or is_granted('ROLE_ADMIN') %}
         <div class='bouton' align=center>
             <a class="d-sm-inline-block btn btn-sm btn-primary shadow-sm"
-               href="{{ path('statut_edit', {'slug': statut.slug}) }}">Modifier {{ statut.nom }}</a>
+               href="{{ path('statut_edit', {'slug': statut.slug}) }}">{% trans with {'nom': statut.nom } %}modifier_statut_titre_page{% endtrans %}</a>
         </div>
     {% endif %}
     <div class="table-responsive">
         <table class="table">
             <tbody>
             <tr>
-                <th class="intitule">Description du groupe</th>
+                <th class="intitule">{% trans %}form_statut_description{% endtrans %}</th>
                 <td>{{ statut.description }}</td>
             </tr>
             <tr>
-                <th class="intitule">Créateur</th>
+                <th class="intitule">{% trans %}createur{% endtrans %}</th>
                 <td>{{ statut.enseignant.prenom }} {{ statut.enseignant.nom }}</td>
             </tr>
             </tbody>
         </table>
     </div>
-    <br> <h1 class="h4 mb-0 text-gray-800">Liste des étudiants du groupe</h1> <br>
+    <br> <h1 class="h4 mb-0 text-gray-800">{% trans %}consulter_statut_etudiants{% endtrans %}</h1> <br>
     <div class="table-responsive">
         <table class="table" id="etud">
             <thead>
             <tr>
-                <th>Nom</th>
-                <th>Prénom</th>
-                <th>Mail</th>
+                <th>{% trans %}nom_famille{% endtrans %}</th>
+                <th>{% trans %}prenom{% endtrans %}</th>
+                <th>{% trans %}mail{% endtrans %}</th>
             </tr>
             </thead>
             <tbody>
@@ -48,23 +48,27 @@
             </tbody>
         </table>
     </div>
-
-
 {% endblock %}
 
-
-
 {% block datatables %}
-
     <script type="text/javascript">
-
         $(document).ready(function () {
             $('#etud').dataTable({
                 language: {
                     // Suppression du label Rechercher et ajout du placeholder
                     search: "_INPUT_",
-                    searchPlaceholder: "Rechercher...",
-                    "url": "{{ asset('tradfr.json') }}"
+                    searchPlaceholder: "{% trans %}rechercher{% endtrans %}",
+                    oPaginate: {
+                        sFirst:      "{% trans %}premier{% endtrans %}",
+                        sPrevious:   "{% trans %}precedent{% endtrans %}",
+                        sNext:       "{% trans %}suivant{% endtrans %}",
+                        sLast:       "{% trans %}dernier{% endtrans %}"
+                    },
+                    sProcessing:     "{% trans %}traitement{% endtrans %}",
+                    sLoadingRecords: "{% trans %}chargement{% endtrans %}",
+                    sZeroRecords:    "{% trans %}aucune_correspondance{% endtrans %}",
+                    sEmptyTable:     "{% trans %}table_vide{% endtrans %}",
+                    sLengthMenu:     "{% trans %}afficher_x_elements{% endtrans %}"
                 },
                 order: [
                     [0, "asc"]
@@ -72,12 +76,11 @@
                 columns: [null, null, {"orderable": false}],
                 lengthMenu: [
                     [15, 30, 45, -1],
-                    [15, 30, 45, "Tout"]
+                    [15, 30, 45, "{% trans %}tout_elements{% endtrans %}"]
                 ],
                 pageLength: {{ app.user.preferenceNbElementsTableaux }}, <!-- Pour que le nombre d'éléments affichés par défaut soit celui de la préference de l'utilisateur -->
                 info: false,
             });
         });
     </script>
-
 {% endblock %}

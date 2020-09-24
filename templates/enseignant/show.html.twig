@@ -7,45 +7,44 @@
 {% block contenu %}
     <div class='bouton' align=center>
         <a class="d-sm-inline-block btn btn-sm btn-primary shadow-sm"
-           href="{{ path('enseignant_edit', {'id': enseignant.id}) }}">Modifier {% if enseignant == app.user %}mon profil{% else %}{{ enseignant.prenom }} {{ enseignant.nom }}{% endif %}</a>
+           href="{{ path('enseignant_edit', {'id': enseignant.id}) }}">{% if enseignant == app.user %}{% trans %}modifier_profil_enseignant_connecte{% endtrans %}{% else %}{% trans with {'nom' : enseignant.nom, 'prenom' : enseignant.prenom} %}modifier_profil_autre_enseignant{% endtrans %}{% endif %}</a>
         {% if enseignant != app.user %}
             <a class="d-sm-inline-block btn btn-sm btn-primary shadow-sm"
-               href="{{ path('enseignant_edit_password', {'id': enseignant.id}) }}">Modifier le mot de passe
-                de {{ enseignant.prenom }} {{ enseignant.nom }}</a>
+               href="{{ path('enseignant_edit_password', {'id': enseignant.id}) }}">{% trans with {'nom' : enseignant.nom, 'prenom' : enseignant.prenom} %}modifier_mdp_autre_enseignant{% endtrans %}</a>
         {% endif %}
     </div>
     <div class="table-responsive">
         <table class="table">
             <tbody>
             <tr>
-                <th class="intitule">Nom</th>
+                <th class="intitule">{% trans %}form_enseignant_nom{% endtrans %}</th>
                 <td>{{ enseignant.nom }}</td>
             </tr>
             <tr>
-                <th class="intitule">Prénom</th>
+                <th class="intitule">{% trans %}form_enseignant_prenom{% endtrans %}</th>
                 <td>{{ enseignant.prenom }}</td>
             </tr>
             <tr>
-                <th class="intitule">Mail</th>
+                <th class="intitule">{% trans %}form_enseignant_mail{% endtrans %}</th>
                 <td>{{ enseignant.email }}</td>
             </tr>
             <tr>
-                <th class="intitule">Administrateur</th>
+                <th class="intitule">{% trans %}form_enseignant_administrateur{% endtrans %}</th>
                 <td>
                     {% if 'ROLE_ADMIN' in enseignant.roles %}
-                        Oui
+                    {% trans %}oui{% endtrans %}
                     {% else %}
-                        Non
+                        {% trans %}non{% endtrans %}
                     {% endif %}
                 </td>
             </tr>
             <tr>
-                <th class="intitule">Préférence du nombre d'éléments affichés dans les tableaux</th>
+                <th class="intitule">{% trans %}form_enseignant_preference_tableau{% endtrans %}</th>
                 <td>
                     {% if enseignant.preferenceNbElementsTableaux != -1 %}
-                        {{ enseignant.preferenceNbElementsTableaux }} éléments
+                        {{ enseignant.preferenceNbElementsTableaux }} {% trans %}elements{% endtrans %}
                     {% else %}
-                        Tous les éléments
+                        {% trans %}tous_les_elements{% endtrans %}
                     {% endif %}
                 </td>
             </tr>

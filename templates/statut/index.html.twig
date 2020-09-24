@@ -1,23 +1,22 @@
 {% extends 'base.html.twig' %}
 
-{% block titrePage %}Liste des groupes d'étudiants ayant un statut particulier{% endblock %}
+{% block titrePage %}{% trans %}index_statut_titre_page{% endtrans %}{% endblock %}
 
 {% block statutsEtudiants %}active{% endblock %}
 
 {% block contenu %}
     {% if statuts is not empty %}
         <div class='bouton' align=center>
-            <a class="d-sm-inline-block btn btn-sm btn-primary shadow-sm" href="{{ path('statut_new') }}">Créer un
-                groupe</a>
+            <a class="d-sm-inline-block btn btn-sm btn-primary shadow-sm" href="{{ path('statut_new') }}">{% trans %}index_statut_btn_creer{% endtrans %}</a>
         </div>
         <div class="table-responsive table-hover">
             <table class="table" id="table">
                 <thead>
                 <tr>
-                    <th>Nom</th>
-                    <th>Effectif</th>
-                    <th>Description</th>
-                    <th>Créateur</th>
+                    <th>{% trans %}nom{% endtrans %}</th>
+                    <th>{% trans %}effectif{% endtrans %}</th>
+                    <th>{% trans %}description{% endtrans %}</th>
+                    <th>{% trans %}createur{% endtrans %}</th>
                     <th></th>
                 </tr>
                 </thead>
@@ -31,12 +30,12 @@
                         <td>
                             <a href="{{ path('statut_show', {'slug': statut.slug}) }}"><i class="icon-eye"
                                                                                           data-toggle='tooltip'
-                                                                                          title='Consulter {{ statut.nom }}'></i></a>
+                                                                                          title='{% trans with {'nom': statut.nom } %}tooltip_statut_consulter{% endtrans %}'></i></a>
                             <a {% if statut.enseignant.id == app.user.id or is_granted('ROLE_ADMIN') %} href="{{ path('statut_edit', {'slug': statut.slug}) }}" {% endif %}><i
                                         class="icon-pencil-1" data-toggle='tooltip'
-                                        title='Modifier {{ statut.nom }}'></i></a>
+                                        title='{% trans with {'nom': statut.nom } %}tooltip_statut_modifier{% endtrans %}'></i></a>
                             <a {% if statut.enseignant.id == app.user.id or is_granted('ROLE_ADMIN') %} href="#" onclick="supprimerStatutEtudiant('{{ path('statut_delete', {'slug': statut.slug}) }}')" {% endif %}><i
-                                        class="icon-trash" data-toggle='tooltip' title='Supprimer {{ statut.nom }}'></i></a>
+                                        class="icon-trash" data-toggle='tooltip' title='{% trans with {'nom': statut.nom } %}tooltip_statut_supprimer{% endtrans %}'></i></a>
                         </td>
                     </tr>
                 {% endfor %}
@@ -45,11 +44,10 @@
         </div>
     {% else %}
         <div class="info">
-            <h1 class="h4 mb-0 text-gray-800">Vous n'avez aucun groupe d'étudiants ayant un statut particulier</h1>
+            <h1 class="h4 mb-0 text-gray-800">{% trans %}pas_de_statut{% endtrans %}</h1>
         </div>
         <div class='bouton' align=center>
-            <a class="d-sm-inline-block btn btn-sm btn-primary shadow-sm" href="{{ path('statut_new') }}">Créer un
-                groupe</a>
+            <a class="d-sm-inline-block btn btn-sm btn-primary shadow-sm" href="{{ path('statut_new') }}">{% trans %}index_statut_btn_creer{% endtrans %}</a>
         </div>
     {% endif %}
     <div class="modal fade" id="delStatutEtudiant" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
@@ -57,18 +55,16 @@
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Avertissement</h5>
+                    <h5 class="modal-title" id="exampleModalLabel">{% trans %}avertissement{% endtrans %}</h5>
                     <button class="close" type="button" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">x</span>
                     </button>
                 </div>
                 <div class="modal-body">
-                    Êtes-vous sur de vouloir supprimer le statut d'étudiant ? <br>
-                    Vous ne pourrez plus voir de statistiques sur ce regroupement d'étudiants.
+                    {{ 'modale_statut_supprimer' |trans |raw }}
                 </div>
                 <div class="modal-footer">
-                    <a class="d-sm-inline-block btn btn-sm btn-primary shadow-sm" id="BoutonSupprimerModale" href="#">Supprimer
-                        le groupe</a>
+                    <a class="d-sm-inline-block btn btn-sm btn-primary shadow-sm" id="BoutonSupprimerModale" href="#">{% trans %}modale_statut_supprimer_confirmer{% endtrans %}</a>
                 </div>
             </div>
         </div>
@@ -90,8 +86,18 @@
                 language: {
                     // Suppression du label Rechercher et ajout du placeholder
                     search: "_INPUT_",
-                    searchPlaceholder: "Rechercher...",
-                    "url": "{{ asset('tradfr.json') }}"
+                    searchPlaceholder: "{% trans %}rechercher{% endtrans %}",
+                    oPaginate: {
+                        sFirst:      "{% trans %}premier{% endtrans %}",
+                        sPrevious:   "{% trans %}precedent{% endtrans %}",
+                        sNext:       "{% trans %}suivant{% endtrans %}",
+                        sLast:       "{% trans %}dernier{% endtrans %}"
+                    },
+                    sProcessing:     "{% trans %}traitement{% endtrans %}",
+                    sLoadingRecords: "{% trans %}chargement{% endtrans %}",
+                    sZeroRecords:    "{% trans %}aucune_correspondance{% endtrans %}",
+                    sEmptyTable:     "{% trans %}table_vide{% endtrans %}",
+                    sLengthMenu:     "{% trans %}afficher_x_elements{% endtrans %}"
                 },
                 order: [
                     [1, "asc"]
@@ -99,7 +105,7 @@
                 columns: [null, null, {"orderable": false}, null, {"orderable": false}],
                 lengthMenu: [
                     [15, 30, 45, -1],
-                    [15, 30, 45, "Tout"]
+                    [15, 30, 45, "{% trans %}tout_elements{% endtrans %}"]
                 ],
                 pageLength: {{ app.user.preferenceNbElementsTableaux }}, <!-- Pour que le nombre d'éléments affichés par défaut soit celui de la préference de l'utilisateur -->
                 info: false,

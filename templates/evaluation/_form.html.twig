@@ -3,25 +3,25 @@
     <table align="center" class="table">
         <tbody>
         <tr>
-            <th class="intitule"><label for="evaluation_nom">Nom de l'évaluation</label></th>
+            <th class="intitule"><label for="evaluation_nom">{% trans %}form_evaluation_nom{% endtrans %}</label></th>
             <td>{{ form_help(form.nom) }}{{ form_errors(form.nom) }}{{ form_widget(form.nom) }}</td>
         </tr>
         <tr>
-            <th class="intitule"><label for="evaluation_date">Date de l'évaluation</label></th>
+            <th class="intitule"><label for="evaluation_date">{% trans %}form_evaluation_date{% endtrans %}</label></th>
             <td>{{ form_errors(form.date) }}{{ form_widget(form.date) }}</td>
         </tr>
         </tbody>
     </table>
 </div>
 <div class='bouton' align=center>
-    <span style="font-size:15px" class="badge badge-pill badge-primary"><i class="icon-attention-circled"></i> Si un étudiant était absent à l'évaluation, saisissez -1. Sa note ne sera pas prise en compte pour les statistiques</span>
+    <span style="font-size:15px" class="badge badge-pill badge-primary"><i class="icon-attention-circled"></i>{% trans %}modifier_evaluation_message_info_absent{% endtrans %}</span>
 </div>
-<br> <h1 class="h4 mb-0 text-gray-800">Modifier les notes des étudiants</h1> <br>
+<br> <h1 class="h4 mb-0 text-gray-800">{% trans %}form_evaluation_notes_modifier{% endtrans %}</h1> <br>
 <div class="table-responsive">
     <table class="table table-hover" id="etudiants">
         <thead>
-        <th>Nom</th>
-        <th>Prénom</th>
+        <th>{% trans %}nom_famille{% endtrans %}</th>
+        <th>{% trans %}prenom{% endtrans %}</th>
         {% if parties|length != 1 %}
             {% for partie in parties %}
                 <th>
@@ -32,11 +32,11 @@
                 </th>
             {% endfor %}
             <th>
-                Note finale (/20)
+                {% trans %}note_sur_20{% endtrans %}
             </th>
         {% else %}
             <th>
-                Note finale (/20)
+                {% trans %}note_sur_20{% endtrans %}
             </th>
         {% endif %}
         </thead>
@@ -64,6 +64,6 @@
     </table>
 </div>
 <div class='bouton' align=center>
-    <button class="d-sm-inline-block btn btn-sm btn-primary shadow-sm">{{ button_label|default('Enregistrer') }}</button>
+    <button class="d-sm-inline-block btn btn-sm btn-primary shadow-sm">{{ button_label|default('enregistrer') | trans }}</button>
 </div>
 {{ form_end(form) }}

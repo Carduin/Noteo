@@ -1,0 +1,49 @@
+{% trans with {'nom':etudiantsEtNotes.etudiant.nom, 'prenom':etudiantsEtNotes.etudiant.prenom} %}template_mail_envoye_bonjour{% endtrans %},<br><br>
+{% trans with {'nomGroupe':etudiantsEtNotes.partie.evaluation.groupe.nom, 'nomEval':etudiantsEtNotes.partie.evaluation.nom,'date':etudiantsEtNotes.partie.evaluation.date | date("d/m/Y")} %}template_mail_infos_evals{% endtrans %}
+<h3>{{ etudiantsEtNotes.partie.intitule }}</h3>
+<table border="1" style="border-collapse:collapse;">
+    <tr>
+        <th width=200em>{% trans %}template_mail_votre_note{% endtrans %}</th>
+        <th width=200em>{% trans %}template_mail_votre_rang{% endtrans %}</th>
+    </tr>
+    <tr style="text-align:center;">
+        <td>{{ etudiantsEtNotes.valeur }} / {{ etudiantsEtNotes.partie.bareme }}</td>
+        <td>{{ position }} / {{ effectif }}</td>
+    </tr>
+</table>
+<br>
+{% for statsUnGroupe in stats[0].stats %}
+    <table border="1" style="border-collapse:collapse;">
+        <tr>
+            <th width=200em>
+                {{ statsUnGroupe.nom }}
+                {% trans with {'nb' : statsUnGroupe.listeNotes | length} %}template_mail_effectif_groupe{% endtrans %}
+            </th>
+            <th width=200em>{% trans %}repartition_notes{% endtrans %}</th>
+        </tr>
+        <tr style="text-align:center;">
+            <td>
+                {% trans %}moyenne{% endtrans %} : {{ statsUnGroupe.moyenne }}<br>
+                {% trans %}ecart_type{% endtrans %} : {{ statsUnGroupe.ecartType }}<br>
+                {% trans %}minimum{% endtrans %} : {{ statsUnGroupe.minimum }}<br>
+                {% trans %}maximum{% endtrans %} : {{ statsUnGroupe.maximum }}<br>
+                {% trans %}mediane{% endtrans %} : {{ statsUnGroupe.mediane }}
+            </td>
+            <td>
+                <br>
+                [0; 4[ : {% trans with {'nb' : statsUnGroupe.repartition[0] } %}template_mail_effectif_repartition{% endtrans %}<br>
+                [4; 8[ : {% trans with {'nb' : statsUnGroupe.repartition[1] } %}template_mail_effectif_repartition{% endtrans %}<br>
+                [8; 12[ : {% trans with {'nb' : statsUnGroupe.repartition[2] } %}template_mail_effectif_repartition{% endtrans %}<br>
+                [12; 16[ : {% trans with {'nb' : statsUnGroupe.repartition[3] } %}template_mail_effectif_repartition{% endtrans %}<br>
+                [16; 20] : {% trans with {'nb' : statsUnGroupe.repartition[4] } %}template_mail_effectif_repartition{% endtrans %}<br><br>
+            </td>
+        </tr>
+    </table>
+    <br>
+{% endfor %}
+<p style="font-size:10px;text-align:justify;margin-top:20px;">
+    {% trans with {'mailAdmin': mailAdmin} %}template_mail_mentions_legales{% endtrans %}
+</p>
+<div align=center style="margin-top:50px;">
+    <img width="150em" src="{{ app.request.getSchemeAndHttpHost() ~ asset('img/banniere_noteo.jpg') }}" alt="">
+</div>

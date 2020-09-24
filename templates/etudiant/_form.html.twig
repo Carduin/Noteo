@@ -3,20 +3,20 @@
     <table align="center" class="table">
         <tbody>
         <tr>
-            <th class="intitule"><label for="etudiant_nom" class="required">Nom</label></th>
+            <th class="intitule"><label for="etudiant_nom" class="required">{% trans %}form_etudiant_nom{% endtrans %}</label></th>
             <td>{{ form_errors(form.nom) }}{{ form_widget(form.nom) }}</td>
         </tr>
         <tr>
-            <th class="intitule"><label for="etudiant_prenom" class="required">Prénom</label></th>
+            <th class="intitule"><label for="etudiant_prenom" class="required">{% trans %}form_etudiant_prenom{% endtrans %}</label></th>
             <td>{{ form_errors(form.prenom) }}{{ form_widget(form.prenom) }}</td>
         </tr>
         <tr>
-            <th class="intitule"><label for="etudiant_mail" class="required">Mail</label></th>
+            <th class="intitule"><label for="etudiant_mail" class="required">{% trans %}form_etudiant_mail{% endtrans %}</label></th>
             <td>{{ form_errors(form.mail) }}{{ form_widget(form.mail) }}</td>
         </tr>
         {% if edit %}
             <tr>
-                <th class="intitule"><label for="etudiant_estDemissionaire" class="required">Démissionaire</label></th>
+                <th class="intitule"><label for="etudiant_estDemissionaire" class="required">{% trans %}form_etudiant_demissionaire{% endtrans %}</label></th>
                 <td>{{ form_errors(form.estDemissionaire) }}{{ form_widget(form.estDemissionaire) }}</td>
             </tr>
         {% endif %}
@@ -25,26 +25,24 @@
 </div>
 {% if edit %}
     <div class="info">
-        <h5 class="h5 mb-0 text-gray-800">Pour modifier les groupes auxquels appartient cet étudiant, rendez-vous <a
-                    href="{{ path('groupe_etudiant_index') }}">ici</a>. <br>
-            Si vous souhaitez ajouter ou retirer cet étudiant d'un groupe d'étudiants possèdant un statut particulier,
-            rendez-vous <a href="{{ path('statut_index') }}">ici</a>.</h5>
+        <h5 class="h5 mb-0 text-gray-800">
+            {% trans with {'url': path('groupe_etudiant_index')} %}modifier_etudiant_message_creer_groupe{% endtrans %}<br>
+            {% trans with {'url': path('statut_index')} %}modifier_etudiant_message_creer_statut{% endtrans %}
+        </h5>
     </div>
 {% endif %}
     {% if formStatut.statuts is defined %}
         {% if formStatut.statuts is not empty %}
-            <br><h1 class="h4 mb-0 text-gray-800"> Ajouter l'étudiant à un groupe d'étudiants ayant un statut
-            particulier
-            (optionnel)</h1> <br>
+            <br><h1 class="h4 mb-0 text-gray-800">{% trans %}creer_etudiant_ajouter_groupe{% endtrans %}</h1> <br>
             <div class="table-responsive table-hover">
                 <table class="table" id="statuts">
                     <thead>
                     <th><input type="checkbox" onclick="cocherToutesLesCases('form[statuts][]', this.checked)"
                                id="checkbox"
                                title="Tout cocher"/></th>
-                    <th>Nom</th>
-                    <th>Description</th>
-                    <th>Créateur</th>
+                    <th>{% trans %}nom{% endtrans %}</th>
+                    <th>{% trans %}description{% endtrans %}</th>
+                    <th>{% trans %}createur{% endtrans %}</th>
                     </thead>
                     <tbody>
                     {% for statut in formStatut.statuts %}
@@ -65,14 +63,12 @@
         {% else %}
             <div class="info">
                 <h5 class="h5 mb-0 text-gray-800">
-                    Il est possible d'obtenir des statistiques sur des groupes d'étudiants
-                    ayant un statut particulier (boursiers, redoublants, ...). Vous pouvez créer de tels groupes <a
-                            href="{{ path('statut_new') }}">ici</a>.
+                    {% trans with {'url': path('statut_new')} %}message_alternatif_pas_de_statut{% endtrans %}
                 </h5>
             </div>
         {% endif %}
     {% endif %}
 <div class='bouton' align=center>
-    <button class="d-sm-inline-block btn btn-sm btn-primary shadow-sm">{{ button_label|default('Enregistrer') }}</button>
+    <button class="d-sm-inline-block btn btn-sm btn-primary shadow-sm">{{ button_label|default('enregistrer') | trans }}</button>
 </div>
 {{ form_end(form) }}

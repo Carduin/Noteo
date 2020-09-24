@@ -40,7 +40,7 @@
         <li class="nav-item {% block groupes %}{% endblock %}">
             <a class="nav-link" href="{{ path('groupe_etudiant_index') }}">
                 <i class="icon-users"></i>
-                <span>Groupes</span></a>
+                <span>{% trans %}groupes{% endtrans %}</span></a>
         </li>
         <!-- Divider -->
         <hr class="sidebar-divider my-0">
@@ -48,7 +48,7 @@
         <li class="nav-item {% block statutsEtudiants %}{% endblock %}">
             <a class="nav-link" href="{{ path('statut_index') }}">
                 <i class="icon-tags"></i>
-                <span>Statuts étudiants</span></a>
+                <span>{% trans %}statuts_etudiants{% endtrans %}</span></a>
         </li>
         {% if is_granted('ROLE_ADMIN') %}
             <!-- Divider -->
@@ -57,7 +57,7 @@
             <li class="nav-item {% block etudiants %}{% endblock %}">
                 <a class="nav-link" href="{{ path('etudiant_index') }}">
                     <i class="icon-user"></i>
-                    <span>Étudiants</span></a>
+                    <span>{% trans %}etudiants{% endtrans %}</span></a>
             </li>
         {% endif %}
         {% if is_granted('ROLE_ADMIN') %}
@@ -67,7 +67,7 @@
             <li class="nav-item {% block enseignants %}{% endblock %}">
                 <a class="nav-link" href="{{ path('enseignant_index') }}">
                     <i class="icon-teacher"></i>
-                    <span>Enseignants</span></a>
+                    <span>{% trans %}enseignants{% endtrans %}</span></a>
             </li>
         {% endif %}
         <!-- Divider -->
@@ -77,15 +77,15 @@
             <a class="nav-link {% block collapsed %}collapsed{% endblock %}" href="#" data-toggle="collapse"
                data-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
                 <i class="icon-evaluation"></i>
-                <span>Évaluations</span>
+                <span>{% trans %}evaluations{% endtrans %}</span>
             </a>
             <div id="collapseTwo" class="collapse {% block show %}{% endblock %}" aria-labelledby="headingTwo"
                  data-parent="#accordionSidebar">
                 <div class="bg-white py-2 collapse-inner rounded">
                     <a class="collapse-item {% block mesEvaluations %}{% endblock %}"
-                       href="{{ path('evaluation_enseignant') }}">Mes évaluations</a>
+                       href="{{ path('evaluation_enseignant') }}">{% trans %}mes_evaluations{% endtrans %}</a>
                     <a class="collapse-item {% block autresEvaluations %}{% endblock %}"
-                       href="{{ path('evaluation_autres') }}">Autres évaluations</a>
+                       href="{{ path('evaluation_autres') }}">{% trans %}autres_evaluations{% endtrans %}</a>
                 </div>
             </div>
         </li>
@@ -95,7 +95,7 @@
         <li class="nav-item {% block statistiques %}{% endblock %}">
             <a class="nav-link" href="{{ path('statistiques') }}">
                 <i class="icon-logo-noteo"></i>
-                <span>Statistiques</span></a>
+                <span>{% trans %}statistiques{% endtrans %}</span></a>
         </li>
         <!-- Divider -->
         <hr class="sidebar-divider my-0">
@@ -103,7 +103,7 @@
         <li class="nav-item {% block tutoriels %}{% endblock %}">
             <a class="nav-link" href="{{ path('tutoriels') }}">
                 <i class="fas fa-question-circle"></i>
-                <span>Tutoriels</span></a>
+                <span>{% trans %}tutoriels{% endtrans %}</span></a>
         </li>
         {% if is_granted("ROLE_ADMIN") %}
             <!-- Divider -->
@@ -112,7 +112,7 @@
             <li class="nav-item {% block optionsAppli %}{% endblock %}">
                 <a class="nav-link" data-toggle='modal' data-target='#validationVidageBD' href="#validationVidageBD">
                     <i class="fas fa-database"></i>
-                    <span>Réinitialiser l'application</span></a>
+                    <span>{% trans %}reset_app{% endtrans %}</span></a>
             </li>
         {% endif %}
         <!-- Divider -->
@@ -149,16 +149,15 @@
                              aria-labelledby="userDropdown">
                             <a class="dropdown-item" href="{{ path('enseignant_show', {'id': app.user.id}) }}">
                                 <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
-                                Consulter mon profil
+                                {% trans %}consulter_profil{% endtrans %}
                             </a>
                             <a class="dropdown-item" href="{{ path('enseignant_edit_password', {'id': app.user.id}) }}">
-                                <i class="icon-key-1 mr-2 text-gray-400"></i>
-                                Modifier mon mot de passe
+                                <i class="icon-key-1 mr-2 text-gray-400"></i>{% trans %}modifier_mdp{% endtrans %}
                             </a>
                             <div class="dropdown-divider"></div>
                             <a class="dropdown-item" href="{{ path('app_logout') }}">
                                 <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
-                                Déconnexion
+                                {% trans %}logout{% endtrans %}
                             </a>
                         </div>
                     </li>
@@ -197,23 +196,16 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Attention</h5>
+                <h5 class="modal-title" id="exampleModalLabel">{% trans %}avertissement{% endtrans %}</h5>
                 <button class="close" type="button" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">x</span>
                 </button>
             </div>
             <div class="modal-body">
-                Réinitialiser l'application aura pour effet de supprimer de l'application :
-                <ul>
-                    <li>Tous les groupes</li>
-                    <li>Tous les groupes d'étudiants ayant un statut particulier</li>
-                    <li>Toutes les évaluations</li>
-                    <li>Tous les étudiants</li>
-                </ul>
-                Les profils des enseignants ne seront pas supprimés et les statistiques ne seront plus consultables.
+                {% trans %}app_reset_texte{% endtrans %}
             </div>
             <div class="modal-footer">
-                <a class="d-sm-inline-block btn btn-sm btn-primary shadow-sm" href="{{ path('app_reset') }}">Valider</a>
+                <a class="d-sm-inline-block btn btn-sm btn-primary shadow-sm" href="{{ path('app_reset') }}">{% trans %}valider{% endtrans %}</a>
             </div>
         </div>
     </div>

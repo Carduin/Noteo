@@ -1,23 +1,22 @@
 {% extends 'base.html.twig' %}
 
-{% block titrePage %}Liste des enseignants{% endblock %}
+{% block titrePage %}{% trans %}index_enseignant_titre_page{% endtrans %}{% endblock %}
 
 {% block enseignants %}active{% endblock %}
 
 {% block contenu %}
     {% if enseignants is not empty %}
         <div class='bouton' align=center>
-            <a class="d-sm-inline-block btn btn-sm btn-primary shadow-sm" href="{{ path('enseignant_new') }}">Ajouter un
-                enseignant</a>
+            <a class="d-sm-inline-block btn btn-sm btn-primary shadow-sm" href="{{ path('enseignant_new') }}">{% trans %}index_enseignant_btn_creer{% endtrans %}</a>
         </div>
         <div class="table-responsive table-hover">
             <table class="table" id="table">
                 <thead>
                 <tr>
-                    <th>Nom</th>
-                    <th>Prénom</th>
-                    <th>Mail</th>
-                    <th>Administrateur</th>
+                    <th>{% trans %}nom_famille{% endtrans %}</th>
+                    <th>{% trans %}prenom{% endtrans %}</th>
+                    <th>{% trans %}mail{% endtrans %}</th>
+                    <th>{% trans %}administrateur{% endtrans %}</th>
                     <th></th>
                 </tr>
                 </thead>
@@ -37,15 +36,15 @@
                         <td>
                             <a href="{{ path('enseignant_show', {'id': enseignant.id}) }}"><i class="icon-eye"
                                                                                               data-toggle='tooltip'
-                                                                                              title='Consulter {{ enseignant.prenom }} {{ enseignant.nom }}'></i></a>
+                                                                                              title='{% trans with {'nom':enseignant.nom, 'prenom':enseignant.prenom} %}tooltip_enseignant_consulter{% endtrans %}'></i></a>
                             <a href="{{ path('enseignant_edit', {'id': enseignant.id}) }}"><i class="icon-pencil-1"
                                                                                               data-toggle='tooltip'
-                                                                                              title='Modifier {{ enseignant.prenom }} {{ enseignant.nom }}'></i></a>
+                                                                                              title='{% trans with {'nom':enseignant.nom, 'prenom':enseignant.prenom} %}tooltip_enseignant_modifier{% endtrans %}'></i></a>
                             {% if enseignant != app.user %}
                                 <a href="#"
                                    onclick="supprimerEnseignant('{{ path('enseignant_delete', {'id': enseignant.id}) }}')"><i
                                             class="icon-trash" data-toggle='tooltip'
-                                            title='Supprimer {{ enseignant.prenom }} {{ enseignant.nom }}'></i></a>
+                                            title='{% trans with {'nom':enseignant.nom, 'prenom':enseignant.prenom} %}tooltip_enseignant_supprimer{% endtrans %}'></i></a>
                             {% endif %}
                         </td>
                     </tr>
@@ -53,37 +52,22 @@
                 </tbody>
             </table>
         </div>
-    {% else %}
-        <div class="info">
-            <h2 class="h4 mb-0 text-gray-800">Vous n'avez aucun enseignant</h2>
-        </div>
-        <div class='bouton' align=center>
-            <a class="d-sm-inline-block btn btn-sm btn-primary shadow-sm" href="{{ path('enseignant_new') }}">Créer un
-                enseignant</a>
-        </div>
     {% endif %}
     <div class="modal fade" id="delEns" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
          aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Avertissement</h5>
+                    <h5 class="modal-title" id="exampleModalLabel">{% trans %}avertissement{% endtrans %}</h5>
                     <button class="close" type="button" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">x</span>
                     </button>
                 </div>
                 <div class="modal-body">
-                    Êtes-vous sur de vouloir supprimer l'enseignant ? <br>
-                    Cette action supprimera :
-                    <ul>
-                        <li> Les groupes qu'il a créé</li>
-                        <li> Les statuts qu'il a créé</li>
-                        <li> Les évaluations qu'il a créé</li>
-                    </ul>
+                    {% trans %}modale_enseignant_supprimer{% endtrans %}
                 </div>
                 <div class="modal-footer">
-                    <a class="d-sm-inline-block btn btn-sm btn-primary shadow-sm" id="BoutonSupprimerModale" href="#">Supprimer
-                        l'enseignant</a>
+                    <a class="d-sm-inline-block btn btn-sm btn-primary shadow-sm" id="BoutonSupprimerModale" href="#">{% trans %}modale_enseignant_supprimer_confirmer{% endtrans %}</a>
                 </div>
             </div>
         </div>
@@ -95,9 +79,20 @@
         $(document).ready(function () {
             $('#table').dataTable({
                 language: {
+                    // Suppression du label Rechercher et ajout du placeholder
                     search: "_INPUT_",
-                    searchPlaceholder: "Rechercher...",
-                    "url": "{{ asset('tradfr.json') }}"
+                    searchPlaceholder: "{% trans %}rechercher{% endtrans %}",
+                    oPaginate: {
+                        sFirst:      "{% trans %}premier{% endtrans %}",
+                        sPrevious:   "{% trans %}precedent{% endtrans %}",
+                        sNext:       "{% trans %}suivant{% endtrans %}",
+                        sLast:       "{% trans %}dernier{% endtrans %}"
+                    },
+                    sProcessing:     "{% trans %}traitement{% endtrans %}",
+                    sLoadingRecords: "{% trans %}chargement{% endtrans %}",
+                    sZeroRecords:    "{% trans %}aucune_correspondance{% endtrans %}",
+                    sEmptyTable:     "{% trans %}table_vide{% endtrans %}",
+                    sLengthMenu:     "{% trans %}afficher_x_elements{% endtrans %}"
                 },
                 order: [
                     [0, "asc"]
@@ -105,7 +100,7 @@
                 columns: [null, null, {"orderable": false}, null, {"orderable": false}],
                 lengthMenu: [
                     [15, 30, 45, -1],
-                    [15, 30, 45, "Tout"]
+                    [15, 30, 45, "{% trans %}tout_elements{% endtrans %}"]
                 ],
                 pageLength: {{ app.user.preferenceNbElementsTableaux }}, <!-- Pour que le nombre d'éléments affichés par défaut soit celui de la préference de l'utilisateur -->
                 info: false,

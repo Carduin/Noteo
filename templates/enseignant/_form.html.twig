@@ -3,33 +3,32 @@
     <table align="center" class="table">
         <tbody>
         <tr>
-            <th class="intitule"><label for="enseignant_nom" class="required">Nom</label></th>
+            <th class="intitule"><label for="enseignant_nom" class="required">{% trans %}form_enseignant_nom{% endtrans %}</label></th>
             <td class="champ">{{ form_errors(form.nom) }}{{ form_widget(form.nom) }}</td>
         </tr>
         <tr>
-            <th class="intitule"><label for="enseignant_prenom" class="required">Prénom</label></th>
+            <th class="intitule"><label for="enseignant_prenom" class="required">{% trans %}form_enseignant_prenom{% endtrans %}</label></th>
             <td class="champ">{{ form_errors(form.prenom) }}{{ form_widget(form.prenom) }}</td>
         </tr>
         <tr>
-            <th class="intitule"><label for="enseignant_mail" class="required">Mail</label></th>
+            <th class="intitule"><label for="enseignant_mail" class="required">{% trans %}form_enseignant_mail{% endtrans %}</label></th>
             <td class="champ">{{ form_errors(form.email) }}{{ form_widget(form.email) }}</td>
         </tr>
         <tr>
-            <th class="intitule"><label for="enseignant_estAdmin" class="required">Administrateur</label></th>
+            <th class="intitule"><label for="enseignant_estAdmin" class="required">{% trans %}form_enseignant_administrateur{% endtrans %}</label></th>
             <td class="champ">{{ form_errors(form.estAdmin) }}{{ form_widget(form.estAdmin) }}{% if enseignant == app.user and is_granted('ROLE_ADMIN') %}
-                    <span style="font-size:13px;color:red;"><i class="icon-attention-circled"></i> Si vous vous retirez vos droits d'administrateur, assurez-vous qu'une autre personne dispose de ces derniers.</span>{% endif %}
+                    <span style="font-size:13px;color:red;"><i class="icon-attention-circled"></i>{% trans %}form_enseignant_message_info_droits{% endtrans %}</span>{% endif %}
             </td>
         </tr>
         {% if edit %}
             <tr>
-                <th class="intitule"><label for="enseignant_motDePasse" class="required">Préférence du nombre d'éléments
-                        affichés dans les tableaux</label></th>
+                <th class="intitule"><label for="enseignant_motDePasse" class="required">{% trans %}form_enseignant_preference_tableau{% endtrans %}</label></th>
                 <td class="champ">{{ form_errors(form.preferenceNbElementsTableaux) }}{{ form_widget(form.preferenceNbElementsTableaux) }}</td>
             </tr>
         {% endif %}
         {% if not edit %}
             <tr>
-                <th class="intitule"><label for="enseignant_motDePasse" class="required">Mot de passe</label></th>
+                <th class="intitule"><label for="enseignant_motDePasse" class="required">{% trans %}form_enseignant_mdp{% endtrans %}</label></th>
                 <td class="champ">{{ form_errors(form.password) }}{{ form_widget(form.password) }}</td>
             </tr>
         {% endif %}
@@ -37,6 +36,6 @@
     </table>
 </div>
 <div class='bouton' align=center>
-    <button class="d-sm-inline-block btn btn-sm btn-primary shadow-sm">{{ button_label|default('Enregistrer') }}</button>
+    <button class="d-sm-inline-block btn btn-sm btn-primary shadow-sm">{{ button_label|default('enregistrer') | trans }}</button>
 </div>
 {{ form_end(form) }}

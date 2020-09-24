@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block titrePage %}Liste des groupes{% endblock %}
+{% block titrePage %}{% trans %}index_groupe_titre_page{% endtrans %}{% endblock %}
 
 {% block groupes %}active{% endblock %}
 
@@ -8,17 +8,17 @@
     {% if groupes is not empty %} {# On teste si la chaine représentant l'arbre n'est pas vide : si oui cela veut dire qu'il n'y a aucun groupe #}
         <div class='bouton' align=center>
             <a class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm" href="#"
-               onclick="onReorderTableByHierarchie()">Afficher les groupes de manière hiérarchique</a>
+               onclick="onReorderTableByHierarchie()">{% trans %}index_label_btn_ordre_hierarchique{% endtrans %}</a>
         </div>
         <div class="table-responsive table-hover">
             <table class="table" id="table">
                 <thead>
                 <tr>
-                    <th>Nom</th>
-                    <th>Effectif</th>
-                    <th>Description</th>
-                    <th>Créateur</th>
-                    <th>Évaluable <a href="#HelpEvaluable" data-toggle='modal' data-target='#HelpEvaluable'><i
+                    <th>{% trans %}nom{% endtrans %}</th>
+                    <th>{% trans %}effectif{% endtrans %}</th>
+                    <th>{% trans %}description{% endtrans %}</th>
+                    <th>{% trans %}createur{% endtrans %}</th>
+                    <th>{% trans %}evaluable{% endtrans %} <a href="#HelpEvaluable" data-toggle='modal' data-target='#HelpEvaluable'><i
                                     class="icon-help-circled"></i></a></th>
                     <th></th>
                 </tr>
@@ -37,25 +37,25 @@
                         <td>{{ groupe.etudiants|length }}</td>
                         <td>{{ groupe.description }}</td>
                         <td>{{ groupe.enseignant.prenom }} {{ groupe.enseignant.nom }}</td>
-                        <td>{{ groupe.estEvaluable ? 'Oui' : 'Non' }}</td>
+                        <td>{{ groupe.estEvaluable ? 'oui' | trans  : 'non' | trans }}</td>
                         <td>
                             <a href='{{ path("groupe_etudiant_show", {slug : groupe.slug}) }}'><i class='icon-eye'
                                                                                                   data-toggle='tooltip'
-                                                                                                  title='Consulter {{ groupe.nom }}'></i></a>
+                                                                                                  title='{% trans with {'nom': groupe.nom } %}tooltip_groupe_consulter{% endtrans %}'></i></a>
                             <a {% if groupe.estEvaluable %}href='{{ path("evaluation_new", {slug : groupe.slug}) }}' {% endif %}><i
                                         class='icon-eval-simple' data-toggle='tooltip'
-                                        title='Créer une évaluation pour {{ groupe.nom }}'></i></a>
+                                        title='{% trans with {'nom': groupe.nom } %}tooltip_groupe_eval{% endtrans %}'></i></a>
                             <a {% if groupe.estEvaluable %} href='{{ path('evaluation_avec_parties_new', {slug: groupe.slug}) }}' {% endif %}><i
                                         class='icon-eval-composee' data-toggle='tooltip'
-                                        title='Créer une évaluation avec des parties pour {{ groupe.nom }}'></i></a>
+                                        title='{% trans with {'nom': groupe.nom } %}tooltip_groupe_eval_parties{% endtrans %}'></i></a>
                             <a {% if is_granted('ROLE_ADMIN') %} href='{{ path("groupe_etudiant_new_sousGroupe", {slug : groupe.slug}) }}' {% endif %}><i
                                         class='icon-plus' data-toggle='tooltip'
-                                        title='Créer un sous groupe à partir de {{ groupe.nom }}'></i></a>
+                                        title='{% trans with {'nom': groupe.nom } %}tooltip_groupe_creer{% endtrans %}'></i></a>
                             <a {% if is_granted('ROLE_ADMIN') %} href="{{ path("groupe_etudiant_edit", {slug:groupe.slug}) }}" {% endif %}><i
                                         class='icon-pencil-1' data-toggle='tooltip'
-                                        title='Modifier {{ groupe.nom }}'></i></a>
+                                        title='{% trans with {'nom': groupe.nom } %}tooltip_groupe_modifier{% endtrans %}'></i></a>
                             <a {% if is_granted('ROLE_ADMIN') %} href='{{ path ("groupe_etudiant_delete", {slug:groupe.slug}) }}' onclick='EcritureModale("{{ path ("groupe_etudiant_delete", {slug:groupe.slug}) }}")' data-toggle='modal' {% endif %}><i
-                                        class='icon-trash' data-toggle='tooltip' title='Supprimer {{ groupe.nom }}'></i></a>
+                                        class='icon-trash' data-toggle='tooltip' title='{% trans with {'nom': groupe.nom } %}tooltip_groupe_supprimer{% endtrans %}'></i></a>
                         </td>
                     </tr>
                 {% endfor %}
@@ -64,11 +64,10 @@
         </div>
     {% else %}
         <div class="info">
-            <h1 class="h4 mb-0 text-gray-800">Vous n'avez aucun groupe d'étudiants</h1>
+            <h1 class="h4 mb-0 text-gray-800">{% trans %}pas_de_groupes{% endtrans %}</h1>
         </div>
         <div class='bouton' align=center>
-            <a href="{{ path('groupe_etudiant_new') }}" class="d-sm-inline-block btn btn-sm btn-primary shadow-sm">Importer
-                un groupe d'étudiants</a>
+            <a href="{{ path('groupe_etudiant_new') }}" class="d-sm-inline-block btn btn-sm btn-primary shadow-sm">{% trans %}importer_groupe{% endtrans %}</a>
         </div>
     {% endif %}
     <div class="modal fade" id="delGroupe" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
@@ -76,22 +75,16 @@
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Avertissement</h5>
+                    <h5 class="modal-title" id="exampleModalLabel">{% trans %}avertissement{% endtrans %}</h5>
                     <button class="close" type="button" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">x</span>
                     </button>
                 </div>
                 <div class="modal-body">
-                    Êtes-vous sur de vouloir supprimer le groupe ? <br>
-                    Cette action supprimera :
-                    <ul>
-                        <li>Tous ses sous-groupes</li>
-                        <li>Toutes les évaluations associées</li>
-                    </ul>
+                    {{ 'modale_groupe_supprimer'|trans|raw }}
                 </div>
                 <div class="modal-footer">
-                    <a class="d-sm-inline-block btn btn-sm btn-primary shadow-sm" id="BoutonSupprimerModale" href="#">Supprimer
-                        le groupe</a>
+                    <a class="d-sm-inline-block btn btn-sm btn-primary shadow-sm" id="BoutonSupprimerModale" href="#">{% trans %}modale_groupe_supprimer_confirmer{% endtrans %}</a>
                 </div>
             </div>
         </div>
@@ -102,13 +95,13 @@
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Aide</h5>
+                    <h5 class="modal-title" id="exampleModalLabel">{% trans %}aide{% endtrans %}</h5>
                     <button class="close" type="button" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">x</span>
                     </button>
                 </div>
                 <div align=center class="modal-body">
-                    Cet attribut d'un groupe détermine si vous pourrez, ou non, créer des évaluations pour celui-ci.
+                    {% trans %}modale_groupe_evaluable{% endtrans %}
                 </div>
                 <div class="modal-footer">
                     <button class="d-sm-inline-block btn btn-sm btn-primary shadow-sm" type="button"
@@ -138,8 +131,18 @@
             language: {
                 // Suppression du label Rechercher et ajout du placeholder
                 search: "_INPUT_",
-                searchPlaceholder: "Rechercher...",
-                "url": "{{ asset('tradfr.json') }}"
+                searchPlaceholder: "{% trans %}rechercher{% endtrans %}",
+                oPaginate: {
+                    sFirst:      "{% trans %}premier{% endtrans %}",
+                    sPrevious:   "{% trans %}precedent{% endtrans %}",
+                    sNext:       "{% trans %}suivant{% endtrans %}",
+                    sLast:       "{% trans %}dernier{% endtrans %}"
+                },
+                sProcessing:     "{% trans %}traitement{% endtrans %}",
+                sLoadingRecords: "{% trans %}chargement{% endtrans %}",
+                sZeroRecords:    "{% trans %}aucune_correspondance{% endtrans %}",
+                sEmptyTable:     "{% trans %}table_vide{% endtrans %}",
+                sLengthMenu:     "{% trans %}afficher_x_elements{% endtrans %}"
             },
             columns: [null, null, {
                 "orderable": false
@@ -148,7 +151,7 @@
             }],
             lengthMenu: [
                 [15, 30, 45, -1],
-                [15, 30, 45, "Tout"]
+                [15, 30, 45, "{% trans %}tout_elements{% endtrans %}"]
             ],
             pageLength: {{ app.user.preferenceNbElementsTableaux }}, <!-- Pour que le nombre d'éléments affichés par défaut soit celui de la préference de l'utilisateur -->
             info: false,

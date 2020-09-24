@@ -1,12 +1,12 @@
 {% extends 'base.html.twig' %}
 
-{% if mine %}
-    {% set texte = 'Liste de mes évaluations' %}
-{% else %}
-    {% set texte = 'Liste des autres évaluations' %}
-{% endif %}
-
-{% block titrePage %}{{ texte }}{% endblock %}
+{% block titrePage %}
+    {% if mine %}
+        {% trans %}index_evaluation_titre_page_mes_evals{% endtrans %}
+    {% else %}
+        {% trans %}index_evaluation_titre_page_autres_evals{% endtrans %}
+    {% endif %}
+{% endblock %}
 {% block evaluations %}active{% endblock %}
 
 {% block show %}show{% endblock %}
@@ -21,21 +21,20 @@
         {% if mine %}
             <div class='bouton' align=center>
                 <a class="d-sm-inline-block btn btn-sm btn-primary shadow-sm"
-                   href="{{ path('evaluation_choose_group', {'typeEval':'simple'}) }}">Créer une évaluation</a>
+                   href="{{ path('evaluation_choose_group', {'typeEval':'simple'}) }}">{% trans %}index_evaluation_btn_creer_simple{% endtrans %}</a>
                 <a class="d-sm-inline-block btn btn-sm btn-primary shadow-sm"
-                   href="{{ path('evaluation_choose_group', {'typeEval':'avec-parties'}) }}">Créer une évaluation avec
-                    des parties</a>
+                   href="{{ path('evaluation_choose_group', {'typeEval':'avec-parties'}) }}">{% trans %}index_evaluation_btn_creer_partie{% endtrans %}</a>
             </div>
         {% endif %}
         <div class="table-responsive table-hover">
             <table class="table" id="table">
                 <thead>
                 <tr>
-                    <th>Évaluation</th>
-                    <th>Date</th>
-                    <th>Moyenne</th>
-                    <th>Groupe</th>
-                    <th>Créateur</th>
+                    <th>{% trans %}nom{% endtrans %}</th>
+                    <th>{% trans %}date{% endtrans %}</th>
+                    <th>{% trans %}moyenne{% endtrans %}</th>
+                    <th>{% trans %}groupe{% endtrans %}</th>
+                    <th>{% trans %}createur{% endtrans %}</th>
                     <th></th>
                 </tr>
                 </thead>
@@ -65,13 +64,13 @@
                         <td>
                             <a href="{{ path('evaluation_show', {'slug': evaluation.slug}) }}"><i class="icon-eye"
                                                                                                   data-toggle='tooltip'
-                                                                                                  title="Consulter les notes pour {{ evaluation.nom }}"></i></a>
+                                                                                                  title="{% trans with {'nom': evaluation.nom} %}tooltip_evaluation_consulter{% endtrans %}"></i></a>
                             <a {% if evaluation.enseignant == app.user or is_granted('ROLE_ADMIN') %} href="{{ path('evaluation_edit', {'slug': evaluation.slug}) }}" {% endif %}><i
                                         class="icon-pencil-1" data-toggle='tooltip'
-                                        title="Modifier {{ evaluation.nom }}"></i></a>
+                                        title="{% trans with {'nom': evaluation.nom} %}tooltip_evaluation_modifier{% endtrans %}"></i></a>
                             <a {% if evaluation.enseignant == app.user or is_granted('ROLE_ADMIN') %} href="{{ path('evaluation_delete', {'slug': evaluation.slug}) }}" onclick="EcritureModale('{{ path('evaluation_delete', {'slug': evaluation.slug}) }}')" data-toggle='modal' {% endif %}><i
                                         class="icon-trash" data-toggle='tooltip'
-                                        title="Supprimer {{ evaluation.nom }}"></i></a>
+                                        title="{% trans with {'nom': evaluation.nom} %}tooltip_evaluation_supprimer{% endtrans %}"></i></a>
                         </td>
                     </tr>
                 {% endfor %}
@@ -80,16 +79,20 @@
         </div>
     {% else %}
         <div class="info">
-            <h1 class="h4 mb-0 text-gray-800">{% if mine %}Vous n'avez{% else %}Les autres enseignants n'ont{% endif %}
-                aucune évaluation</h1>
+            <h1 class="h4 mb-0 text-gray-800">
+                {% if mine %}
+                    {% trans %}index_evaluation_pas_evals_mes_evals{% endtrans %}
+                {% else %}
+                    {% trans %}index_evaluation_pas_evals_autres_evals{% endtrans %}
+                {% endif %}
+            </h1>
         </div>
         {% if mine %}
             <div class='bouton' align=center>
                 <a class="d-sm-inline-block btn btn-sm btn-primary shadow-sm"
-                   href="{{ path('evaluation_choose_group', {'typeEval':'simple'}) }}">Créer une évaluation</a>
+                   href="{{ path('evaluation_choose_group', {'typeEval':'simple'}) }}">{% trans %}index_evaluation_btn_creer_simple{% endtrans %}</a>
                 <a class="d-sm-inline-block btn btn-sm btn-primary shadow-sm"
-                   href="{{ path('evaluation_choose_group', {'typeEval':'avec-parties'}) }}">Créer une évaluation avec
-                    des parties</a>
+                   href="{{ path('evaluation_choose_group', {'typeEval':'avec-parties'}) }}">{% trans %}index_evaluation_btn_creer_partie{% endtrans %}</a>
             </div>
         {% endif %}
     {% endif %}
@@ -98,18 +101,16 @@
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Avertissement</h5>
+                    <h5 class="modal-title" id="exampleModalLabel">{% trans %}avertissement{% endtrans %}</h5>
                     <button class="close" type="button" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">x</span>
                     </button>
                 </div>
                 <div class="modal-body">
-                    Êtes-vous sur de vouloir supprimer cette évaluation ? <br>
-                    Toutes les notes associées seront supprimées.
+                    {% trans %}modale_evaluation_supprimer{% endtrans %}
                 </div>
                 <div class="modal-footer">
-                    <a class="d-sm-inline-block btn btn-sm btn-primary shadow-sm" id="BoutonSupprimerModale" href="#">Supprimer
-                        l'évaluation</a>
+                    <a class="d-sm-inline-block btn btn-sm btn-primary shadow-sm" id="BoutonSupprimerModale" href="#">{% trans %}modale_evaluation_supprimer_confirmer{% endtrans %}</a>
                 </div>
             </div>
         </div>
@@ -134,8 +135,18 @@
                 language: {
                     // Suppression du label Rechercher et ajout du placeholder
                     search: "_INPUT_",
-                    searchPlaceholder: "Rechercher...",
-                    "url": "{{ asset('tradfr.json') }}"
+                    searchPlaceholder: "{% trans %}rechercher{% endtrans %}",
+                    oPaginate: {
+                        sFirst:      "{% trans %}premier{% endtrans %}",
+                        sPrevious:   "{% trans %}precedent{% endtrans %}",
+                        sNext:       "{% trans %}suivant{% endtrans %}",
+                        sLast:       "{% trans %}dernier{% endtrans %}"
+                    },
+                    sProcessing:     "{% trans %}traitement{% endtrans %}",
+                    sLoadingRecords: "{% trans %}chargement{% endtrans %}",
+                    sZeroRecords:    "{% trans %}aucune_correspondance{% endtrans %}",
+                    sEmptyTable:     "{% trans %}table_vide{% endtrans %}",
+                    sLengthMenu:     "{% trans %}afficher_x_elements{% endtrans %}"
                 },
                 columns: [null, null, null, null, null, {"orderable": false}],
                 order: [
@@ -143,7 +154,7 @@
                 ],
                 lengthMenu: [
                     [15, 30, 45, -1],
-                    [15, 30, 45, "Tout"]
+                    [15, 30, 45, "{% trans %}tout_elements{% endtrans %}"]
                 ],
                 pageLength: {{ app.user.preferenceNbElementsTableaux }}, <!-- Pour que le nombre d'éléments affichés par défaut soit celui de la préference de l'utilisateur -->
                 info: false,

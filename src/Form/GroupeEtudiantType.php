@@ -3,20 +3,24 @@
 namespace App\Form;
 
 use App\Entity\GroupeEtudiant;
-use App\Entity\Enseignant;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
-use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Translation\TranslatorInterface;
 use Symfony\Component\Validator\Constraints\File;
-use Symfony\Component\Validator\Constraints\NotBlank;
 
 class GroupeEtudiantType extends AbstractType
 {
+    private $translator;
+
+    public function __construct(TranslatorInterface $translator) {
+        $this->translator = $translator;
+    }
+
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
@@ -27,7 +31,7 @@ class GroupeEtudiantType extends AbstractType
               ]
             ])
             ->add('estEvaluable', ChoiceType::class, [
-              'choices' => ['Oui' => true, 'Non' => false],
+              'choices' => [$this->translator->trans('oui') => true, $this->translator->trans('non') => false],
               'data' => false,
               'expanded' => true,
               'label_attr' =>  [
@@ -39,10 +43,10 @@ class GroupeEtudiantType extends AbstractType
               'mapped' => false,
               'constraints' => [new File([
                   'maxSize' => '16Mi',
-                  'uploadFormSizeErrorMessage' => 'Le fichier ajouté est trop volumineux'
+                  'uploadFormSizeErrorMessage' => $this->translator->trans('fichier_trop_volumineux')
               ])],
               'attr' => [
-                'placeholder' => 'Aucun fichier choisi',
+                'placeholder' => $this->translator->trans('pas_fichier_choisi'),
                 'accept' => '.csv'
               ]
             ])

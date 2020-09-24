@@ -2,7 +2,7 @@
 
 {% block tutoriels %}active{% endblock %}
 
-{% block titrePage %}Visionner les tutoriels de l'application{% endblock %}
+{% block titrePage %}{% trans %}tuto_titre_page{% endtrans %}{% endblock %}
 
 {% block stylesheets %}
     <style>
@@ -19,11 +19,10 @@
         <!-- Créer évaluation par parties -->
         <div class="card">
             <div class="card-body">
-                <h5 style="font-weight: bold" class="card-title">Créer une évaluation par parties</h5>
+                <h5 style="font-weight: bold" class="card-title">{% trans %}tuto_titre_creer_eval_parties{% endtrans %}</h5>
                 <hr>
                 <p class="card-text">
-                    Découvrez comment créer des évaluations par parties, pour pouvoir obtenir une plus grande précision
-                    sur les statistiques.
+                    {% trans %}tuto_texte_creer_eval_parties{% endtrans %}
                 </p>
                 <!-- 16:9 aspect ratio -->
                 <div class="embed-responsive embed-responsive-16by9">
@@ -37,13 +36,10 @@
         <!-- Eval simple -->
         <div class="card">
             <div class="card-body">
-                <h5 style="font-weight: bold" class="card-title">Analyse d’une évaluation simple</h5>
+                <h5 style="font-weight: bold" class="card-title">{% trans %}tuto_titre_eval_simple{% endtrans %}</h5>
                 <hr>
                 <p class="card-text">
-                    Découvrez comment obtenir des statistiques sur une évaluation spécifique dans laquelle l’enseignant
-                    a saisi une note
-                    sur 20
-                    pour chaque étudiant.
+                    {% trans %}tuto_texte_eval_simple{% endtrans %}
                 </p>
                 <!-- 16:9 aspect ratio -->
                 <div class="embed-responsive embed-responsive-16by9">
@@ -57,12 +53,10 @@
         <!-- Eval parties -->
         <div class="card">
             <div class="card-body">
-                <h5 style="font-weight: bold" class="card-title">Analyse d’une évaluation par parties</h5>
+                <h5 style="font-weight: bold" class="card-title">{% trans %}tuto_titre_eval_parties{% endtrans %}</h5>
                 <hr>
                 <p class="card-text">
-                    Découvrez comment obtenir des statistiques sur une évaluation spécifique dans laquelle l’enseignant
-                    a saisi pour chaque étudiant
-                    une note sur les différentes parties composant son évaluation.
+                    {% trans %}tuto_texte_eval_parties{% endtrans %}
                 </p>
                 <!-- 16:9 aspect ratio -->
                 <div class="embed-responsive embed-responsive-16by9">
@@ -79,12 +73,10 @@
         <!-- Groupes plusieurs évals -->
         <div class="card">
             <div class="card-body">
-                <h5 style="font-weight: bold" class="card-title">Analyse des résultats de groupe(s) d’étudiant(s) sur
-                    plusieurs évaluations</h5>
+                <h5 style="font-weight: bold" class="card-title">{% trans %}tuto_titre_plusieurs_evals_groupes{% endtrans %}</h5>
                 <hr>
                 <p class="card-text">
-                    Découvrez comment observer les résultats de un ou plusieurs groupes d’étudiants sur plusieurs
-                    évaluations.
+                    {% trans %}tuto_texte_plusieurs_evals_groupes{% endtrans %}
                 </p>
                 <!-- 16:9 aspect ratio -->
                 <div class="embed-responsive embed-responsive-16by9">
@@ -98,12 +90,10 @@
         <!-- Statuts plusieurs évals -->
         <div class="card">
             <div class="card-body">
-                <h5 style="font-weight: bold" class="card-title">Analyse des résultats d’un statut d’étudiants sur
-                    plusieurs évaluations</h5>
+                <h5 style="font-weight: bold" class="card-title">{% trans %}tuto_titre_plusieurs_evals_statut{% endtrans %}</h5>
                 <hr>
                 <p class="card-text">
-                    Découvrez comment observer les résultats d'un groupe d’étudiants ayant un statut particulier sur
-                    plusieurs évaluations.
+                    {% trans %}tuto_texte_plusieurs_evals_statut{% endtrans %}
                 </p>
                 <!-- 16:9 aspect ratio -->
                 <div class="embed-responsive embed-responsive-16by9">
@@ -117,11 +107,10 @@
         <!-- Comparaison résultats -->
         <div class="card">
             <div class="card-body">
-                <h5 style="font-weight: bold" class="card-title">Analyse d’une évaluation par parties</h5>
+                <h5 style="font-weight: bold" class="card-title">{% trans %}tuto_titre_comparaison{% endtrans %}</h5>
                 <hr>
                 <p class="card-text">
-                    Découvrez comment comparer les résultats obtenus à une évaluation par rapport à un ensemble
-                    d’évaluations.
+                    {% trans %}tuto_texte_comparaison{% endtrans %}
                 </p>
                 <!-- 16:9 aspect ratio -->
                 <div class="embed-responsive embed-responsive-16by9">
@@ -138,12 +127,10 @@
         <!-- Fiche étudiant -->
         <div class="card">
             <div class="card-body">
-                <h5 style="font-weight: bold" class="card-title">Évolution chronologique des résultats d’un
-                    étudiant</h5>
+                <h5 style="font-weight: bold" class="card-title">{% trans %}tuto_titre_fiche_etudiant{% endtrans %}</h5>
                 <hr>
                 <p class="card-text">
-                    Découvrez comment observer, à partir de plusieurs évaluations, l’évolution chronologique des notes
-                    d’un étudiant.
+                    {% trans %}tuto_texte_fiche_etudiant{% endtrans %}
                 </p>
                 <!-- 16:9 aspect ratio -->
                 <div class="embed-responsive embed-responsive-16by9">
@@ -157,12 +144,10 @@
         <!-- Evolution Groupes -->
         <div class="card">
             <div class="card-body">
-                <h5 style="font-weight: bold" class="card-title">Évolution des résultats des étudiants d'un groupe sur
-                    plusieurs évaluations</h5>
+                <h5 style="font-weight: bold" class="card-title">{% trans %}tuto_titre_evolution_groupe{% endtrans %}</h5>
                 <hr>
                 <p class="card-text">
-                    Découvrez comment obtenir, pour chaque étudiant d'un groupe, une courbe détaillant l'évolution
-                    chronologique des résultats des l'étudiant aux évaluations choisies.
+                    {% trans %}tuto_texte_evolution_groupe{% endtrans %}
                 </p>
                 <!-- 16:9 aspect ratio -->
                 <div class="embed-responsive embed-responsive-16by9">
@@ -176,12 +161,10 @@
         <!-- Evolution Statuts -->
         <div class="card">
             <div class="card-body">
-                <h5 style="font-weight: bold" class="card-title">Évolution des résultats des étudiants d'un statut sur
-                    plusieurs évaluations</h5>
+                <h5 style="font-weight: bold" class="card-title">{% trans %}tuto_titre_evolution_statut{% endtrans %}</h5>
                 <hr>
                 <p class="card-text">
-                    Découvrez comment obtenir, pour chaque étudiant d'un statut, une courbe détaillant l'évolution
-                    chronologique des résultats des l'étudiant aux évaluations choisies.
+                    {% trans %}tuto_texte_evolution_statut{% endtrans %}
                 </p>
                 <!-- 16:9 aspect ratio -->
                 <div class="embed-responsive embed-responsive-16by9">

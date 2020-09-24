@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block titrePage %}Liste des étudiants{% endblock %}
+{% block titrePage %}{% trans %}index_etudiant_titre_page{% endtrans %}{% endblock %}
 
 {% block etudiants %}active{% endblock %}
 
@@ -8,17 +8,17 @@
     {% if etudiants is not empty %}
         <div class='bouton' align=center>
             <a class="d-sm-inline-block btn btn-sm btn-primary shadow-sm" href="{{ path('etudiant_new') }}">
-                Ajouter un étudiant
+                {% trans %}index_etudiant_btn_creer{% endtrans %}
             </a>
         </div>
         <div class="table-responsive table-hover">
             <table class="table" id="table">
                 <thead>
                 <tr>
-                    <th>Nom</th>
-                    <th>Prénom</th>
-                    <th>Statut(s)</th>
-                    <th>Mail</th>
+                    <th>{% trans %}nom_famille{% endtrans %}</th>
+                    <th>{% trans %}prenom{% endtrans %}</th>
+                    <th>{% trans %}statuts{% endtrans %}</th>
+                    <th>{% trans %}mail{% endtrans %}</th>
                     <th></th>
                 </tr>
                 </thead>
@@ -36,14 +36,14 @@
                         <td>
                             <a href="{{ path('etudiant_show', {'id': etudiant.id}) }}"><i class="icon-eye"
                                                                                           data-toggle='tooltip'
-                                                                                          title='Consulter {{ etudiant.prenom }} {{ etudiant.nom }}'></i></a>
+                                                                                          title='{% trans with {'nom': etudiant.nom, 'prenom': etudiant.prenom } %}tooltip_etudiant_consulter{% endtrans %}'></i></a>
                             <a href="{{ path('etudiant_edit', {'id': etudiant.id}) }}"><i class="icon-pencil-1"
                                                                                           data-toggle='tooltip'
-                                                                                          title='Modifier {{ etudiant.prenom }} {{ etudiant.nom }}'></i></a>
+                                                                                          title='{% trans with {'nom': etudiant.nom, 'prenom': etudiant.prenom } %}tooltip_etudiant_modifier{% endtrans %}'></i></a>
                             <a href="#"
                                onclick="supprimerEtudiant('{{ path('etudiant_delete', {'id': etudiant.id}) }}')"><i
                                         class="icon-trash" data-toggle='tooltip'
-                                        title='Supprimer {{ etudiant.prenom }} {{ etudiant.nom }}'></i></a>
+                                        title='{% trans with {'nom': etudiant.nom, 'prenom': etudiant.prenom } %}tooltip_etudiant_supprimer{% endtrans %}'></i></a>
                         </td>
                     </tr>
                 {% endfor %}
@@ -52,11 +52,11 @@
         </div>
     {% else %}
         <div class="info">
-            <h2 class="h4 mb-0 text-gray-800">Vous n'avez aucun étudiant</h2>
+            <h2 class="h4 mb-0 text-gray-800">{% trans %}pas_d_etudiants{% endtrans %}</h2>
         </div>
         <div class='bouton' align=center>
             <a class="d-sm-inline-block btn btn-sm btn-primary shadow-sm" href="{{ path('groupe_etudiant_new') }}">
-                Importer un groupe d'étudiants
+                {% trans %}importer_groupe{% endtrans %}
             </a>
         </div>
     {% endif %}
@@ -65,22 +65,17 @@
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Avertissement</h5>
+                    <h5 class="modal-title" id="exampleModalLabel">{% trans %}avertissement{% endtrans %}</h5>
                     <button class="close" type="button" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">x</span>
                     </button>
                 </div>
                 <div class="modal-body">
-                    Êtes-vous sur de vouloir supprimer l'étudiant ? <br>
-                    Cette action :
-                    <ul>
-                        <li>Retirera l'étudiant tous les groupes</li>
-                        <li>Supprimera sa note pour toutes les évaluations auxquelles il a participé</li>
-                    </ul>
+                    {% trans %}modale_etudiant_supprimer{% endtrans %}
                 </div>
                 <div class="modal-footer">
                     <a class="d-sm-inline-block btn btn-sm btn-primary shadow-sm" id="BoutonSupprimerModale" href="#">
-                        Supprimer l'étudiant
+                        {% trans %}modale_etudiant_supprimer_confirmer{% endtrans %}
                     </a>
                 </div>
             </div>
@@ -95,8 +90,18 @@
                 language: {
                     // Suppression du label Rechercher et ajout du placeholder
                     search: "_INPUT_",
-                    searchPlaceholder: "Rechercher...",
-                    "url": "{{ asset('tradfr.json') }}"
+                    searchPlaceholder: "{% trans %}rechercher{% endtrans %}",
+                    oPaginate: {
+                        sFirst:      "{% trans %}premier{% endtrans %}",
+                        sPrevious:   "{% trans %}precedent{% endtrans %}",
+                        sNext:       "{% trans %}suivant{% endtrans %}",
+                        sLast:       "{% trans %}dernier{% endtrans %}"
+                    },
+                    sProcessing:     "{% trans %}traitement{% endtrans %}",
+                    sLoadingRecords: "{% trans %}chargement{% endtrans %}",
+                    sZeroRecords:    "{% trans %}aucune_correspondance{% endtrans %}",
+                    sEmptyTable:     "{% trans %}table_vide{% endtrans %}",
+                    sLengthMenu:     "{% trans %}afficher_x_elements{% endtrans %}"
                 },
                 order: [
                     [0, "asc"]
@@ -104,7 +109,7 @@
                 columns: [null, null, null, {"orderable": false}, {"orderable": false}],
                 lengthMenu: [
                     [15, 30, 45, -1],
-                    [15, 30, 45, "Tout"]
+                    [15, 30, 45, "{% trans %}tout_elements{% endtrans %}"]
                 ],
                 pageLength: {{ app.user.preferenceNbElementsTableaux }}, <!-- Pour que le nombre d'éléments affichés par défaut soit celui de la préference de l'utilisateur -->
                 info: false,

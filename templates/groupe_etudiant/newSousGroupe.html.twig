@@ -1,42 +1,31 @@
 {% extends 'base.html.twig' %}
 
-{% block titrePage %}Créer un sous groupe de {{ nomParent }}{% endblock %}
+{% block titrePage %}{% trans with {'nom': nomParent } %}nouveau_sous_groupe_titre_page{% endtrans %}{% endblock %}
 
 {% block groupes %}active{% endblock %}
 
 {% block contenu %}
-    {{ include('groupe_etudiant/_form.html.twig', {'button_label': 'Créer le sous groupe'}) }}
-    <!-- Modale du ? de évaluable -->
-    <div class="modal fade" id="HelpEvaluable" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-         aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Aide</h5>
-                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">x</span>
-                    </button>
-                </div>
-                <div align=center class="modal-body">
-                    Cet attribut d'un groupe détermine si vous pourrez, ou non, créer des évaluations pour celui-ci.
-                </div>
-                <div class="modal-footer">
-                    <button class="d-sm-inline-block btn btn-sm btn-primary shadow-sm" type="button"
-                            data-dismiss="modal">Ok
-                    </button>
-                </div>
-            </div>
-        </div>
-    </div>
+    {{ include('groupe_etudiant/_form.html.twig', {'button_label': 'groupe_creer_sous_groupe' }) }}
 {% endblock %}
 
 {% block datatables %}
     <script>
         var table = $('#tableAjouter').DataTable({
             language: {
+                // Suppression du label Rechercher et ajout du placeholder
                 search: "_INPUT_",
-                searchPlaceholder: "Rechercher...",
-                "url": "{{ asset('tradfr.json') }}"
+                searchPlaceholder: "{% trans %}rechercher{% endtrans %}",
+                oPaginate: {
+                    sFirst:      "{% trans %}premier{% endtrans %}",
+                    sPrevious:   "{% trans %}precedent{% endtrans %}",
+                    sNext:       "{% trans %}suivant{% endtrans %}",
+                    sLast:       "{% trans %}dernier{% endtrans %}"
+                },
+                sProcessing:     "{% trans %}traitement{% endtrans %}",
+                sLoadingRecords: "{% trans %}chargement{% endtrans %}",
+                sZeroRecords:    "{% trans %}aucune_correspondance{% endtrans %}",
+                sEmptyTable:     "{% trans %}table_vide{% endtrans %}",
+                sLengthMenu:     "{% trans %}afficher_x_elements{% endtrans %}"
             },
             order: [
                 [1, "asc"]
@@ -44,7 +33,7 @@
             columns: [{"orderable": false}, null, null, {"orderable": false}],
             lengthMenu: [
                 [15, 30, 45, -1],
-                [15, 30, 45, "Tout"]
+                [15, 30, 45, "{% trans %}tout_elements{% endtrans %}"]
             ],
             pageLength: {{ app.user.preferenceNbElementsTableaux }}, <!-- Pour que le nombre d'éléments affichés par défaut soit celui de la préference de l'utilisateur -->
             info: false,
