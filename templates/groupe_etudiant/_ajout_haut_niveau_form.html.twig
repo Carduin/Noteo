@@ -28,4 +28,27 @@
 <div class='bouton' align=center>
     <button class="d-sm-inline-block btn btn-sm btn-primary shadow-sm">{{ button_label|default('groupe_creer_groupe') |trans }}</button>
 </div>
+
+<!-- Modale du ? de évaluable -->
+<div class="modal fade" id="HelpEvaluable" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">{% trans %}aide{% endtrans %}</h5>
+                <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">x</span>
+                </button>
+            </div>
+            <div align=center class="modal-body">
+                {% trans %}modale_groupe_evaluable{% endtrans %}
+            </div>
+            <div class="modal-footer">
+                <button class="d-sm-inline-block btn btn-sm btn-primary shadow-sm" type="button"
+                        data-dismiss="modal">Ok
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
 {{ form_end(form) }}

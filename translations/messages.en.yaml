@@ -20,35 +20,36 @@ groupes: Groups
 statuts_etudiants: Student status
 etudiants: Students
 enseignants: Teachers
-evaluations: Assessments
-mes_evaluations: My assessments
-autres_evaluations: Other assessments
+evaluations: Evaluations
+mes_evaluations: My evaluations
+autres_evaluations: Other evaluations
 statistiques: Statistics
 tutoriels: Tutorials
 reset_app: Reset the application
 # menu déroulant profil
 consulter_profil: See my profile
-modifier_mdp : Edit my password
+modifier_mdp: Edit my password
 logout: Log out
 # titres de colonnes tableaux
-nom: Last name
+nom: Name
+nom_famille: Last name
 prenom: First name
 mail: Mail
 effectif: Headcount
 description: Description
 createur: Creator
-evaluable: Can be assessed
+evaluable: Can be evaluated
 statuts: Status
 administrateur: Administrator
 note_sur_20: Mark (/20)
-evaluation: Assessment
+evaluation: evaluation
 date: Date
 groupe: Group
 effectif_statut: Status headcount
 intitule: Title
 bareme: Scale
 #statistiques
-moyenne: Average
+moyenne: Mean
 ecart_type: Standard deviation
 minimum: Minimum
 maximum: Maximum
@@ -61,29 +62,270 @@ oui: Yes
 non: No
 enregistrer: Save
 valider: Confirm
+####### GROUPES ETUDIANTS
+# modales
+modale_groupe_evaluable: This attribute determines whether or not you will be able to create evaluations over it.
+modale_groupe_supprimer: 'Do you really want to delete this group? <br>This action will remove:<ul><li>all its sub groups</li><li>all evaluations related to it</li></ul>'
+modale_groupe_supprimer_confirmer: Delete group
+# formulaires
+form_groupe_nom: Group name
+form_groupe_description: Group description
+form_groupe_ajouter_etudiants: Add students to group
+form_groupe_retirer_etudiants: Remove students from group
+# Page index
+index_groupe_titre_page: Group list
+index_label_btn_ordre_hierarchique: Display groups hierarchically
+tooltip_groupe_consulter: Show nom
+tooltip_groupe_eval: Create an evaluation over nom
+tooltip_groupe_eval_parties: Create an evaluation divided into parts over nom
+tooltip_groupe_creer: Create a sub group from nom
+tooltip_groupe_modifier: Edit nom
+tooltip_groupe_supprimer: Delete nom
+pas_de_groupes: You currently have no groups
+importer_groupe: Import a group
+# Page modifier
+modifier_groupe_titre_page: Edit nom
+# Page nouveau sous groupe
+nouveau_sous_groupe_titre_page: Create a sub group from nom
+groupe_creer_sous_groupe: Create sub group
+# Page import groupe
+groupe_creer_groupe: Create group
+form_groupe_fichier_csv: CSV File (separator ;)
+form_groupe_telecharger_modele: Download a template
+pas_fichier_choisi: No file chosen
+fichier_trop_volumineux: Chosen file is too big
+# page consulter
+consulter_groupe_etudiants: Students belonging to the group
+####### STATUTS ETUDIANTS
+# messages globaux
+message_alternatif_pas_de_statut: 'You can generate statistics over groups of students having a particular status (scholarship holders, repeating students, ...). You can create such groups <a href="url">here</a>.'
+# modales
+modale_statut_supprimer: 'Do you really want to delete this status? <br> You will not be able to generate statistics over it anymore.'
+modale_statut_supprimer_confirmer: Delete status
+# formulaires
+form_statut_nom: Group name
+form_statut_description: Group description
+form_statut_ajouter_etudiants: Add students to group
+form_statut_retirer_etudiants: Remove students from group
+# page index
+index_statut_titre_page: Group of students having a particular status list
+index_statut_btn_creer: Create a group
+tooltip_statut_consulter: Show nom
+tooltip_statut_modifier: Edit nom
+tooltip_statut_supprimer: Delete nom
+pas_de_statut: You currently have no groups of students having a particular status
+# page consulter
+consulter_statut_etudiants: Students belonging to the group
+# page modifier
+modifier_statut_titre_page: Edit nom
+# page créer
+creer_statut_titre_page: Create a group of students having a particular status
+statut_creer_statut: Create group
+####### ETUDIANTS
+# modales
+modale_etudiant_supprimer: 'Do you really wand to delete this student? <br>This action will:<ul><li>Remove the student from the groups they belong to</li><li>Delete their mark for every evaluation they participated to</li></ul>'
+modale_etudiant_supprimer_confirmer: Delete student
+# formulaires
+form_etudiant_nom: Last name
+form_etudiant_prenom: First name
+form_etudiant_mail: Mail
+form_etudiant_demissionaire: Resigning
+form_etudiant_statuts: Status
+# page index
+index_etudiant_titre_page: Student list
+index_etudiant_btn_creer: Add student
+tooltip_etudiant_consulter: Show prenom nom
+tooltip_etudiant_modifier: Edit prenom nom
+tooltip_etudiant_supprimer: Delete prenom nom
+pas_d_etudiants: You currently have no students
+# page consulter
+consulter_etudiant_liste_groupes: Groups the student belongs to
+# page modifier
+modifier_etudiant_titre_page: Edit nom prenom
+modifier_etudiant_message_creer_groupe: 'To change the groups the student belongs to, go <a href="url">here</a>. '
+modifier_etudiant_message_creer_statut: 'If you wish to add ou remove this student from a group of students having a particular profile, go <a href="url">here</a>.'
+# page créer
+creer_etudiant_titre_page: Add student
+creer_etudiant_ajouter_groupe: Add student to groups of students having a particular profile (optional)
+etudiant_creer_etudiant: Create student
+####### ENSEIGNANTS
+# modales
+modale_enseignant_supprimer: 'Do you really want to delete this teacher? <br>This action will delete:<ul><li> The groups they created</li><li>The status they created</li><li>The evaluations they created</li></ul>'
+modale_enseignant_supprimer_confirmer: Delete teacher
+# formulaires
+form_enseignant_nom: Last name
+form_enseignant_prenom: First name
+form_enseignant_mail: Mail
+form_enseignant_administrateur: Administrator
+form_enseignant_preference_tableau: Preference of number of elements displayed in tables
+form_enseignant_mdp: Password
+form_enseignant_message_info_droits: If you remove your own administration rights, make sure you have given them to someone else before.
+form_enseignant_mdp_invalide: The passwords do not match
+form_enseignant_placeholder_mpd_1: Type password
+form_enseignant_placeholder_mpd_2: Confirm
+# page index
+index_enseignant_titre_page: Teacher list
+index_enseignant_btn_creer: Add a teacher
+tooltip_enseignant_consulter: Show prenom nom
+tooltip_enseignant_modifier: Edit prenom nom
+tooltip_enseignant_supprimer: Delete prenom nom
+#modifier mon profil / modifier le profil de xx
+modifier_profil_enseignant_connecte: Edit my profile
+modifier_profil_autre_enseignant: Edit prenom nom
+modifier_mdp_enseignant_connecte: Edit my password
+modifier_mdp_autre_enseignant: Edit prenom nom's password
+# page consulter
+elements: elements
+tous_les_elements: All elements
+# page modifier profil
+modifier_enseignant_label_preference: Preference of number of elements displayed in tables
+# page créer
+creer_enseignant_titre_page: Add teacher
+creer_enseignant_creer_enseignant: Add teacher
+####### EVALUATIONS
+# modales
+modale_evaluation_supprimer: 'Do you really want to delete this evaluation?<br>All associated marks will be deleted.'
+modale_evaluation_supprimer_confirmer: Delete evaluation
+modale_creer_partie_titre: Create part
+modale_modifier_partie_titre: Edit part
+modale_pas_de_partie_choisie_titre: Actions over parts
+modale_pas_de_partie_choisie_sous_titre: You did not select a part
+modale_pas_de_partie_choisie_contenu: '<li>To add a new part to the evaluation, please select a part in the below table for which you wish to create a new sub part</li><li>To edit a part, please select the part you wish to edit</li><li>To delete a part, please select the part you wish to delete</li>'
+modale_une_seule_partie_cree_titre: The evaluation only has one sub part
+modale_pas_de_partie_cree_titre: You did not create parts for the evaluation
+modale_une_seule_partie_cree_contenu: Once confirmed, you will not be able to edit the evaluation's parts anymore.
+# formulaires
+form_evaluation_nom: Evaluation name
+form_evaluation_groupe: Evaluated group
+form_evaluation_createur: Creator
+form_evaluation_csv: Download evaluation in a CSV file
+form_evaluation_date: Date
+form_evaluation_pdf: PDF file
+form_evaluation_notes_modifier: Edit marks
+form_evaluation_notes_consulter: Marks
+# page index
+index_evaluation_titre_page_mes_evals: My evaluations
+index_evaluation_titre_page_autres_evals: Other evaluations
+index_evaluation_btn_creer_simple: Create an evaluation
+index_evaluation_btn_creer_partie: Create an evaluation divided into parts
+tooltip_evaluation_consulter: Show marks of nom
+tooltip_evaluation_modifier: Edit nom
+tooltip_evaluation_supprimer: Delete nom
+index_evaluation_pas_evals_mes_evals: You currently have no evaluations
+index_evaluation_pas_evals_autres_evals: The other teachers currently have no evaluations
+# page choisir groupe à évaluer
+choix_groupe_evaluation_titre_page: Chose a group to evaluate
+choix_groupe_evaluation_btn_valider: Create evaluation for this group
+# page mail previsualisation
+previsualisation_mail_titre_page: Send statistics to students
+previsualisation_mail_titre_apercu: Mail preview
+previsualisation_mail_titre_pdf: Attach a PDF file (optional)
+previsualisation_mail_btn_valider: Send mail to nombre students
+previsualisation_mail_pdf_erreur_taille: Chosen file is too big
+previsualisation_mail_pdf_erreur_type: Chosen file is not a pdf
+previsualisation_mail_pdf_placeholder: No files chosen
+# template de mail envoyé
+template_mail_envoye_bonjour: Hello prenom
+template_mail_infos_evals: Please find in this email the informations regarding the evaluation nomEval which happened on date over nomGroupe.
+template_mail_votre_note: Your mark
+template_mail_votre_rang: Your rank
+template_mail_effectif_groupe: (nb students)
+template_mail_effectif_repartition: nb student(s)
+template_mail_mentions_legales: 'Your last name, first name and your grades have been collected in order to produce statistics over the student success rate. The “Informatique et Liberté” law allows you to request the deletion of your personal data appearing in a database through the right of opposition (article 38 of law n ° 78-17 on 6/01/1978) and the right of rectification (article 40 of law n ° 78-17 on 6/01/1978). To exercise these rights, please inform the administrator: <a href="mailto:mailAdmin">mailAdmin</a><br>If your informations are deleted, you will no longer receive statistics regarding your success rate over evaluations.'
+# page consulter
+consulter_evaluation_btn_stats: Generate statistics over nom
+# page modifier
+modifier_evaluation_titre_page: Edit nom
+modifier_evaluation_message_info_absent: Si un étudiant était absent à l'évaluation, saisissez -1. Sa note ne sera pas prise en compte pour les statistiques
+# page créer simple
+creer_eval_simple_titre_page: Create evaluation
+creer_eval_simple_btn_valider: Save marks
+# page créer parties (saisie infos)
+creer_eval_parties_saisie_info_titre_page: Create evaluation divided into parts
+# page créer parties (saisie arborescence)
+creer_eval_parties_saisie_arbo_titre_page: Creates parts for nom
+creer_eval_parties_saisie_arbo_sous_titre_page: Select a part to add a sub part, edit a part or delete a part
+tooltip_partie_ajouter: Create a sub part for the selected part
+tooltip_partie_modifier: Edit selected part
+tooltip_partie_supprimer: Delete selected part
+form_partie_intitule: Part title
+form_partie_bareme: Part scale
+####### PAGE CHOIX STATISTIQUE
+# Général
+consulter_type_stats: See this type of statistics
+repartition_notes_histo: Mark distribution (histogram)
+repartition_notes_bam: Mark distribution (box plot)
+moyenne_ecart_type: Mean and standard deviation (histogram)
+fiche_etudiant: Student card
+evolution_groupe: Evolution of the results of the students belonging to a group over several evaluations
+evolution_statut: Evolution of the results of the students having a given student status
+# Messages d'erreur
+page_stats_statistiques_indisponible: 'Statistic unavailable: '
+page_stats_pas_eval_simple: Create an evaluation
+page_stats_pas_eval_parties: Create an evaluation divided into parts
+page_stats_pas_groupes_admin_connecte: Create groups
+page_stats_pas_etudiants_admin_connecte: Create students
+page_stats_pas_statut: Create a status
+page_stats_pas_groupes_pas_admin_connecte: Ask the administrator to create groups
+page_stats_pas_etudiants_pas_admin_connecte: Ask the administrator to create students
+page_stats_puis: then
+page_stats_pas_eval: Create evaluations
+# Stats éval simple
+page_stats_eval_simple_titre_principal: Analysis of a simple evaluation
+page_stats_eval_simple_sous_titre_principal: Obtain statistics over a specific evaluation for which the teacher entered a mark out of 20 for each student
+page_stats_eval_simple_histo_description: 'Obtain, for given groups (practical work groups for example) and/or given statuses (scholarship holders, repeaters, etc.), the marks distribution in the form of an <b>histogram</b>.'
+page_stats_eval_simple_bam_description: 'Obtain, for given groups (practical work groups for example) and/or given statuses (scholarship holders, repeaters, etc.), the mark distribution in the form of a <b>box plot</b>.'
+page_stats_eval_simple_moyenne_ecart_type_description: 'Obtain, for given groups (practical work groups for example) and/or given statuses (scholarship holders, repeaters, etc.), the mean and the standard deviation in the form of an <b>histogram</b>.'
+# Stats éval parties
+page_stats_eval_parties_titre_principal: Analysis of an evaluation divided into several parts
+page_stats_eval_parties_sous_titre_principal: Obtain statistics over a specific evaluation for which the teacher entered for each student a mark on the different parts of his evaluations (Course questions, exercise 1, exercise 2 for example).
+page_stats_eval_parties_histo_description: 'Obtain, for given groups (practical work groups for example) and/or given statuses (scholarship holders, repeaters, etc.), and for each part of the evaluation, the marks distribution in the form of an <b>histogram</b>.'
+page_stats_eval_parties_bam_description: 'Obtain, for given groups (practical work groups for example) and/or given statuses (scholarship holders, repeaters, etc.), and for each part of the evaluation, the mark distribution in the form of a <b>box plot</b>.'
+page_stats_eval_parties_moyenne_ecart_type_description: 'Obtain, for given groups (practical work groups for example) and/or given statuses (scholarship holders, repeaters, etc.), and for each part of the evaluation, the mean and the standard deviation in the form of an <b>histogram</b>.'
+# Stats plusieurs evals groupes
+page_stats_plusieurs_evals_groupes_titre_principal: Analysis of the results of group(s) of student(s) over several evaluations
+page_stats_plusieurs_evals_groupes_sous_titre_principal: See the results of one or more groups of students (practical work groups for example) over several evaluations.
+page_stats_plusieurs_evals_groupes_histo_description: 'Select several evaluations (all English evaluations for example) and get, in the form of an <b>histogram</b>, the global mark distribution of several groups (practical work groups for example).'
+page_stats_plusieurs_evals_groupes_bam_description: 'Select several evaluations (all English evaluations for example) and get, in the form of a <b>box plot</b>, the global mark distribution of several groups (practical work groups for example).'
+page_stats_plusieurs_evals_groupes_moyenne_ecart_type_description: 'Select several evaluations (all English evaluations for example) and get, in the form of a <b>box plot</b>, the global mean and standard deviation of several groups (practical work groups for example).'
+# Stats plusieurs evals statut
+page_stats_plusieurs_evals_statut_titre_principal: Analysis of the results of a student status over several evaluations
+page_stats_plusieurs_evals_statut_sous_titre_principal: See the results of a group of students having a particular status (scholarship holders, repeaters for example) over several assessments.
+page_stats_plusieurs_evals_statut_histo_description: 'Select several evaluations (all English evaluations for example) and get, in the form of an <b>histogram</b>, the global mark distribution of a given status (scholarship holders, repeaters, etc.).'
+page_stats_plusieurs_evals_statut_bam_description: 'Select several evaluations (all English evaluations for example) and get, in the form of a <b>box plot</b>, the global mark distribution of a given status (scholarship holders, repeaters, etc.).'
+page_stats_plusieurs_evals_statut_moyenne_ecart_type_description: 'Select several evaluations (all English evaluations for example) and get, in the form of an <b>histogram</b>, the global mean and standard deviation of a given status (scholarship holders, repeaters, etc.).'
+# Stats evolution
+page_stats_evolution_titre_principal: Chronological evolution of the results of a student or a group of students
+page_stats_evolution_sous_titre_principal: 'See, over several evaluations, the chronological evolution of the marks: <ul> <li> of a student </li> <li> of students belonging to one or more groups</li><li>students having a given status (scholarship holders, repeaters ...)</li></ul>'
+page_stats_evolution_fiche_etudiant_description: 'Sélectionnez un étudiant et obtenez une page récapitulative de ses résultats sur toutes les évaluations auxquelles il a participé sous forme de <b>courbes d''évolution</b> chronologiques, <b>d''histogrammes</b>, et de <b>classements</b> parmis les groupes ou statuts d''étudiants auxquels il appartient.'
+page_stats_evolution_groupe_description: 'Sélectionnez un groupe d''étudiants, une suite d''évaluations et obtenez, pour chaque étudiant, une courbe détaillant l''évolution des résultats des l''étudiant aux évaluations choisies, de manière chronologique.'
+page_stats_evolution_statut_description: 'Sélectionnez un groupe d''étudiants ayant un statut particulier, une suite d''évaluations et obtenez, pour chaque étudiant, une courbe détaillant l''évolution des résultats des l''étudiant aux évaluations choisies, de manière chronologique.'
+# Stats comparaison
+page_stats_comparaison_titre_principal: Comparison of the results of a specific evaluation to a set of evaluations
+page_stats_comparaison_sous_titre_principal: 'Compare the results obtained on an evaluation against a set of evaluations (for example: compare the results obtained by students on an algorithmic assessment against all computer assessments). The comparison can relate to specific groups (practical work groups for example) and / or students having a particular status (scholarship holders, repeaters, etc.).'
+
 ####### REINITIALISATION APPLICATION
-app_reset_texte: 'Resetting the app will remove: <ul><li>all groups</li><li>all student status</li><li>all assessments</li><li>all students</li></ul>Teacher profiles will not be deleted, but you will not be able to generate statistics anymore.'
+app_reset_texte: 'Resetting the app will remove: <ul><li>all groups</li><li>all student status</li><li>all evaluations</li><li>all students</li></ul>Teacher profiles will not be deleted, but you will not be able to generate statistics anymore.'
 ####### TUTORIELS
 tuto_titre_page: Watch the tutorials (french)
-tuto_titre_creer_eval_parties: Create an assessment divided into several parts
-tuto_texte_creer_eval_parties: Find out how to create assessments divided into several parts, to obtain greater precision in the statistics.
-tuto_titre_eval_simple: Analysis of a simple assessment
-tuto_texte_eval_simple: Find out how to get statistics on a specific assessment for which the teacher entered a mark out of 20 for each student.
-tuto_titre_eval_parties: Analysis of an assessment divided into several parts
-tuto_texte_eval_parties: Find out how to get statistics on a specific assessment for which the teacher entered a mark for each student over the different parts of their assessment.
-tuto_titre_plusieurs_evals_groupes: Analysis of the results of group(s) of student(s) over several assessments
-tuto_texte_plusieurs_evals_groupes: Find out how to get the results of one or more groups of students over multiple assessments.
-tuto_titre_plusieurs_evals_statut: Analysis of the results of a student status over several assessments
-tuto_texte_plusieurs_evals_statut: Find out how to get the results of a group of a student status over multiple assessments.
-tuto_titre_comparaison: Comparison of the results of a specific assessment to a set of assessments
-tuto_texte_comparaison: Find out how to compare the results of an assessment to a set of assessments.
+tuto_titre_creer_eval_parties: Create an evaluation divided into several parts
+tuto_texte_creer_eval_parties: Find out how to create evaluations divided into several parts, to obtain greater precision in the statistics.
+tuto_titre_eval_simple: Analysis of a simple evaluation
+tuto_texte_eval_simple: Find out how to get statistics on a specific evaluation for which the teacher entered a mark out of 20 for each student.
+tuto_titre_eval_parties: Analysis of an evaluation divided into several parts
+tuto_texte_eval_parties: Find out how to get statistics on a specific evaluation for which the teacher entered a mark for each student over the different parts of their evaluation.
+tuto_titre_plusieurs_evals_groupes: Analysis of the results of group(s) of student(s) over several evaluations
+tuto_texte_plusieurs_evals_groupes: Find out how to get the results of one or more groups of students over multiple evaluations.
+tuto_titre_plusieurs_evals_statut: Analysis of the results of a student status over several evaluations
+tuto_texte_plusieurs_evals_statut: Find out how to get the results of a group of a student status over multiple evaluations.
+tuto_titre_comparaison: Comparison of the results of a specific evaluation to a set of evaluations
+tuto_texte_comparaison: Find out how to compare the results of an evaluation to a set of evaluations.
 tuto_titre_fiche_etudiant: Chronological evolution of a student's results
-tuto_texte_fiche_etudiant: Find out how to observe the evolution of a student's grades over time over multiple assessments.
-tuto_titre_evolution_groupe: Evolution of the results of the students belonging to a group over several assessments
-tuto_texte_evolution_groupe: Find out how to obtain, for each student of a group, a curve detailing the chronological evolution of the student's results over the chosen assessments.
+tuto_texte_fiche_etudiant: Find out how to get the evolution of a student's grades over time over multiple evaluations.
+tuto_titre_evolution_groupe: Evolution of the results of the students belonging to a group over several evaluations
+tuto_texte_evolution_groupe: Find out how to obtain, for each student of a group, a curve detailing the chronological evolution of the student's results over the chosen evaluations.
 tuto_titre_evolution_statut: Evolution of the results of the students having a given student status
-tuto_texte_evolution_statut: Find out how to obtain, for each student having a given student status, a curve detailing the chronological evolution of the student's results over the chosen assessments.
-
+tuto_texte_evolution_statut: Find out how to obtain, for each student having a given student status, a curve detailing the chronological evolution of the student's results over the chosen evaluations.
 ####### TRADUCTIONS DATATABLES
 afficher_x_elements: Display _MENU_ elements
 rechercher: Search...
@@ -95,4 +337,4 @@ traitement: Processing...
 chargement: Loading...
 table_vide: No data available
 aucune_correspondance: No elements to display
-
+tout_elements: 'All'
