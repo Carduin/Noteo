@@ -372,6 +372,11 @@ tooltip_stats_pdf_paysage: Exporter les statistiques au format PDF (paysage)
 tooltip_stats_mail: Envoyer les statistiques aux étudiants
 # page stats eval simple et par parties
 page_eval_simple_parties_titre: Statistiques pour nom
+# page stats plusieurs évals
+page_plusieurs_evals: Consulter les statistiques sur nombre évaluation(s)
+page_plusieurs_evals_groupes: Groupes sélectionnés
+page_plusieurs_evals_evals: Évaluations sélectionnées
+page_plusieurs_evals_afficher_autres_evals: Afficher les nombre autres évaluations
 ####### REINITIALISATION APPLICATION
 app_reset_texte: 'Réinitialiser l''application aura pour effet de supprimer de l''application: <ul><li>Tous les groupes</li><li>Tous les groupes d''étudiants ayant un statut particulier</li><li>Toutes les évaluations</li><li>Tous les étudiants</li></ul>Les profils des enseignants ne seront pas supprimés et les statistiques ne seront plus consultables.'
 ####### TUTORIELS

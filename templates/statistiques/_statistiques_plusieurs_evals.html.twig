@@ -1,0 +1,938 @@
+{% block contenu %}
+    <div class="table-responsive">
+        <table align="center" class="table">
+            <tbody>
+            <tr>
+                <th>{% trans %}page_plusieurs_evals_evals{% endtrans %}</th>
+                <td>
+                    <ul>
+                        {% if evaluations|length <=10 %}
+                            {% for evaluation in evaluations %}
+                                <li>{{ evaluation.nom }} ({{ evaluation.date|date("d/m/Y") }})</li>
+                            {% endfor %}
+                        {% else %}
+                            {# Si il y a plus de 10 évaluations on va afficher seulement les dix premières et les suivantes seront cachées dans un collapse#}
+                            {% for i in 0..9 %}
+                                <li>{{ evaluations[i].nom }} ({{ evaluations[i].date|date("d/m/Y") }})</li>
+                            {% endfor %}
+                            <li>
+                                <a data-toggle="collapse" href="#collapseExample" role="button"
+                                   aria-expanded="false" aria-controls="collapseExample">
+                                    {% trans with {'nombre':evaluations|length-10 } %}page_plusieurs_evals_afficher_autres_evals{% endtrans %}
+                                </a>
+                            </li>
+                            <div class="collapse" id="collapseExample">
+                                {% for i in 10..evaluations|length-1 %}
+                                    <li>{{ evaluations[i].nom }} ({{ evaluations[i].date|date("d/m/Y") }})</li>
+                                {% endfor %}
+                            </div>
+                        {% endif %}
+                    </ul>
+                </td>
+            </tr>
+            <tr>
+                <th>{% trans %}page_plusieurs_evals_groupes{% endtrans %}</th>
+                <td>
+                    <ul>
+                        {% for groupe in parties[0].stats %}
+                            <li>{{ groupe.nom }}</li>
+                        {% endfor %}
+                    </ul>
+                </td>
+            </tr>
+            <tr>
+                <th class="intitule"><label>{% trans %}actions{% endtrans %}</label></th>
+                <td>
+                    <span style="font-size:15px"><i class="icon-attention-circled"></i>{% trans %}message_info_temps_chargement{% endtrans %}</span><br>
+                    <a href="#"><i style="font-size: 25px;" data-toggle='tooltip'
+                                   title="{% trans %}tooltip_stats_pdf_portrait{% endtrans %}" class="icon-file-pdf"
+                                   onclick="genPDF(onChartReady, true)"></i></a>
+                    <a href="#"><i style="font-size: 25px;" data-toggle='tooltip'
+                                   title="{% trans %}tooltip_stats_pdf_paysage{% endtrans %}"
+                                   class="fas icon-file-pdf fa-rotate-270"
+                                   onclick="genPDF(onChartReady, false)"></i></a>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    {% for message in app.flashes('info') %}
+        <div class="alert alert-success" role="alert">
+            {{ message }}
+        </div>
+    {% endfor %}
+    <div class='bouton' align=center>
+        <span style="font-size:15px" class="badge badge-pill badge-primary"><i class="icon-attention-circled"></i> {% trans %}message_info_absents{% endtrans %}</span>
+    </div>
+    {% for partie in parties %}
+        <div class="card">
+            <ul class="list-group list-group-flush">
+                <li class="list-group-item text-white" style="background-color:#bdc3c7;">
+                    {{ partie.nom }} (/{{ partie.bareme }})
+                </li>
+                <li class="list-group-item">
+                    <ul class="nav nav-tabs">
+                        <li class="nav-item"><a
+                                    class="nav-link {% if app.session.get('typeGraphique') =="histogramme" %}active{% endif %}"
+                                    data-toggle="tab"
+                                    href="#Repartition_Histogramme_{{ partie.nom | replace({' ': '_'}) }}">{% trans %}repartition_notes_histo{% endtrans %}</a></li>
+                        <li class="nav-item"><a
+                                    class="nav-link {% if app.session.get('typeGraphique') =="boite-moustache" %}active{% endif %}"
+                                    data-toggle="tab"
+                                    href="#Repartition_Boites_{{ partie.nom | replace({' ': '_'}) }}">{% trans %}repartition_notes_bam{% endtrans %}</a></li>
+                        <li class="nav-item"><a
+                                    class="nav-link {% if app.session.get('typeGraphique') =="moyenne" %}active{% endif %}"
+                                    data-toggle="tab"
+                                    href="#Moyenne_ecart_{{ partie.nom | replace({' ': '_'}) }}">{% trans %}moyenne_ecart_type{% endtrans %}</a></li>
+                    </ul>
+                    <div class="tab-content">
+                        <!-- Répartition (Histogramme) -->
+                        <div id="Repartition_Histogramme_{{ partie.nom | replace({' ': '_'}) }}"
+                             class="tab-pane {% if app.session.get('typeGraphique') =="histogramme" %}active{% else %}fade{% endif %}">
+                            <div class="container-fluid">
+                                <br>
+                                <div class="card-md-auto">
+                                    <div class="card-header" style="background-color: transparent">
+                                        {% trans %}groupes{% endtrans %}
+                                    </div>
+                                    <div class="card-body">
+                                        {% set tabCounter = 0 %}
+                                        {% for groupe in parties[0].stats %}
+                                            <div class="form-check form-check-inline">
+                                                <input class="form-check-input" type="checkbox"
+                                                       id="{{ groupe.nom }}" checked
+                                                       onChange="changement(this.id, this.checked, '{{ loop.parent.loop.index -1 }}', 'histo')">
+                                                <label class="form-check-label" for="inlineCheckbox1"
+                                                       name="label_{{ groupe.nom }}_histo">{{ groupe.nom }}</label>
+                                            </div>
+                                            {% set tabCounter = tabCounter + 1 %}
+                                        {% endfor %}
+                                    </div>
+                                </div>
+                            </div>
+                            <br>
+                            <div class="container-fluid">
+                                <span style="font-size:15px"><i class="icon-attention-circled"></i>{% trans %}message_info_survol_graphiques{% endtrans %}</span>
+                                <canvas align=center id="graphHisto_{{ loop.index -1 }}"></canvas>
+                            </div>
+                        </div>
+                        <!-- fin Répartition (Histogramme) -->
+                        <!-- Répartition (Boîte à moustache) -->
+                        <div id="Repartition_Boites_{{ partie.nom | replace({' ': '_'}) }}"
+                             class="tab-pane {% if app.session.get('typeGraphique') =="boite-moustache" %}active{% else %}fade{% endif %}">
+                            <div class="container-fluid">
+                                <br>
+                                <div class="card-md-auto">
+                                    <div class="card-header" style="background-color: transparent">
+                                        Groupes
+                                    </div>
+                                    <div class="card-body">
+                                        {% set tabCounter = 0 %}
+                                        {% for groupe in parties[0].stats %}
+                                            <div class="form-check form-check-inline">
+                                                <input class="form-check-input" type="checkbox"
+                                                       id="{{ groupe.nom }}" checked
+                                                       onChange="changement(this.id, this.checked, '{{ loop.parent.loop.index -1 }}', 'bam')">
+                                                <label class="form-check-label" for="inlineCheckbox1"
+                                                       name="label_{{ groupe.nom }}_bam">{{ groupe.nom }}</label>
+                                            </div>
+                                            {% set tabCounter = tabCounter + 1 %}
+                                        {% endfor %}
+                                    </div>
+                                </div>
+                            </div>
+                            <br>
+                            <div class="container-fluid">
+                                <span style="font-size:15px"><i class="icon-attention-circled"></i>Survolez le graphique pour plus d'informations, cliquez sur un label de la légende pour afficher / masquer les données</span>
+                                <canvas align=center id="graphBoites_{{ loop.index -1 }}"></canvas>
+                            </div>
+                        </div>
+                        <!-- fin Répartition (Boîtes à moustache) -->
+                        <!-- Moyenne & Ecart-type -->
+                        <div id="Moyenne_ecart_{{ partie.nom | replace({' ': '_'}) }}"
+                             class="tab-pane {% if app.session.get('typeGraphique') =="moyenne" %}active{% else %}fade{% endif %}">
+                            <div class="container-fluid">
+                                <br>
+                                <div class="card-md-auto">
+                                    <div class="card-header" style="background-color: transparent">
+                                        Groupes
+                                    </div>
+                                    <div class="card-body">
+                                        {% set tabCounter = 0 %}
+                                        {% for groupe in parties[0].stats %}
+                                            <div class="form-check form-check-inline">
+                                                <input class="form-check-input" type="checkbox"
+                                                       id="{{ groupe.nom }}" checked
+                                                       onChange="changement(this.id, this.checked, '{{ loop.parent.loop.index -1 }}', 'moy')">
+                                                <label class="form-check-label" for="inlineCheckbox1"
+                                                       name="label_{{ groupe.nom }}_moy">{{ groupe.nom }}</label>
+                                            </div>
+                                            {% set tabCounter = tabCounter + 1 %}
+                                        {% endfor %}
+                                    </div>
+                                </div>
+                            </div>
+                            <br>
+                            <div class="container-fluid">
+                                <span style="font-size:15px"><i class="icon-attention-circled"></i>Survolez le graphique pour plus d'informations, cliquez sur un label de la légende pour afficher / masquer les données</span>
+                                <canvas align=center id="grapheMoyenne_{{ loop.index -1 }}"></canvas>
+                            </div>
+                        </div>
+                        <!-- fin Moyenne & Ecart-type -->
+                    </div>
+                </li>
+            </ul>
+        </div>
+        <br>
+    {% endfor %}
+{% endblock %}
+
+{% block javascripts %}
+
+    <!-- Chart JS -->
+    <script src="{{ asset("vendor/chart.js/Chart.min.js") }}"></script>
+    <!-- PDFMake -->
+    <script type="text/javascript" src="{{ asset("js/pdfmake.min.js") }}"></script>
+    <script type="text/javascript" src="{{ asset("js/vfs_fonts.js") }}"></script>
+
+    <!-- Script pour les graphiques de type 'Boîte à moustache' -->
+    <script type="text/javascript" src="{{ asset("js/boxplot.js") }}"></script>
+
+    <!-- Script pour la génération des graphiques -->
+    <script type="text/javascript">
+
+        // ----- VARIABLES GLOBALES ---------
+        var nomEvaluation = "Synthèse des {{ evaluations.count }} évaluation(s)";
+
+        // Taille de la police du graphique affiché
+        var fontSize = 16;
+
+        var wait_for_chart_ready = false; // Faux, si le graphique est en cours de création -> Vrai une fois que le graphique est prêt à être exporté en Image pour le pdf
+
+        // Liste de couleurs communes
+        var noir = "#000000", jaune = "#FFFF00", bleu = "#0000FF", rouge = "#FF0000", vert = "#00FF00",
+            violet = "#EE82EE", blanc = "#FFFFFF", gris = "#808080";
+
+        // Pallette de couleurs (valeurs rgb)
+        var couleurs = [
+            [192, 57, 43], [155, 89, 182], [41, 128, 185], [22, 160, 133], [46, 204, 113], [243, 156, 18], [211, 84, 0], [189, 195, 199], [127, 140, 141],
+            [44, 62, 80], [231, 76, 60], [142, 68, 173], [26, 188, 156], [39, 174, 96], [241, 196, 15], [230, 126, 34], [236, 240, 241], [149, 165, 166],
+            [52, 73, 94],
+        ];
+
+        // passage de la liste des parties de twig à js
+        var parties = "{{ parties|json_encode() }}";
+        parties = parties.replace(/&quot;/g, "\""); // remplacement de toutes les itérations de ' &quot; ' par ' " '
+        parties = JSON.parse(parties);
+
+        // Récupération de la liste des groupes de twig à js (on récupère la liste des groupes de la premiere partie car ce sont tous les memes pour chacune)
+        {% if parties is not empty %}
+        var groupes = "{{ parties[0].stats|json_encode() }}";
+        groupes = groupes.replace(/&quot;/g, "\""); // remplacement de toutes les itérations de ' &quot; ' par ' " '
+        groupes = JSON.parse(groupes);
+        {% else %}
+        var groupes = {};
+        {% endif %}
+
+        // Groupes sélectionés (avec les cases à cocher) par graphique
+        var groupesChecked = [];
+        {% for partie in parties %}
+        groupesCheckedParPartie = [];
+        groupesCheckedParPartie['histo'] = [];
+        groupesCheckedParPartie['bam'] = [];
+        groupesCheckedParPartie['moy'] = [];
+        groupesChecked.push(groupesCheckedParPartie);
+        {% endfor %}
+
+        // Objet données du graphique
+        const chartDATA = {
+            labels: [],
+            datasets: undefined,
+        };
+
+        // Taille de police d'écriture pour les graphiques exportés dans le fichier PDF
+        const pdfChartFontSize = 24;
+
+        // Liste des images des graphiques pour le fichier PDF.
+        var images = undefined;
+
+        //Contiendra les variables des graphiques pour les mettre à jour
+        var graphiques = [];
+
+        // Objet options du graphique
+        var options = {
+            scales: {
+                xAxes: [{
+                    gridLines: {
+                        display: false
+                    },
+                    ticks: {
+                        fontSize: fontSize,
+                    },
+                    maxBarThickness: 100,
+                    stacked: false,
+                }],
+                yAxes: [{
+                    labelString: 'Intervalle de note',
+                    ticks: {
+                        beginAtZero: true,
+                        max: 10,
+                        min: 0,
+                        fontSize: fontSize,
+                    },
+                    stacked: false,
+                }],
+            },
+            legend: {
+                position: 'top',
+                labels: {
+                    fontSize: fontSize,
+                },
+            },
+            aspectRatio: 3,
+            maintainAspectRatio: true,
+            responsive: true,
+            tooltips: {
+                intersect: false,
+                titleMarginBottom: 10,
+                titleFontColor: '#6e707e',
+                titleFontSize: fontSize,
+                backgroundColor: blanc,
+                bodyFontColor: "#858796",
+                borderColor: '#dddfeb',
+                borderWidth: 1,
+                xPadding: 15,
+                yPadding: 15,
+                displayColors: true,
+                caretPadding: 10
+            },
+            plugins: {
+                labels: {
+                    render: 'value'
+                }
+            }
+        }
+
+        // --------- CODE ------------
+
+        // Création des graphiques au chargement de la fenètre
+        window.onload = function () {
+            {% for partie in parties %}
+            var graphiquesPartieCourante = [];
+
+            var chartBar = new Chart(document.getElementById("graphHisto_{{ loop.index -1 }}").getContext('2d'), {
+                type: 'bar',
+                data: chartDATA,
+                options: options
+            });
+            graphiquesPartieCourante.push(chartBar);
+
+            var chartBoite = new Chart(document.getElementById("graphBoites_{{ loop.index -1 }}").getContext('2d'), {
+                type: 'boxplot',
+                data: chartDATA,
+                options: options,
+            });
+            graphiquesPartieCourante.push(chartBoite);
+
+            var chartMoy = new Chart(document.getElementById("grapheMoyenne_{{ loop.index -1 }}").getContext('2d'), {
+                type: 'bar',
+                data: chartDATA,
+                options: options,
+            });
+            graphiquesPartieCourante.push(chartMoy)
+            graphiques.push(graphiquesPartieCourante)
+            {% endfor %}
+
+            {# Pour que toutes les cases soient cochées par défaut #}
+            {% for partie in parties %}
+            {% for groupe in partie.stats %}
+            changement("{{ groupe.nom }}", true, {{ loop.parent.loop.index -1 }}, "histo")
+            changement("{{ groupe.nom }}", true, {{ loop.parent.loop.index -1 }}, "bam")
+            changement("{{ groupe.nom }}", true, {{ loop.parent.loop.index -1 }}, "moy")
+            {% endfor %}
+            {% endfor %}
+            // Mise en forme du texte des cases à cocher
+            formatageCasesACocher();
+        }
+
+        //------ FONCTIONS -----
+
+        // Coloration du texte des cases à cocher avec les bonnes couleurs + réajustement de la taille de la police
+        // Chaque label de case à cocher à comme id : label_nomGroupe_nomGraphe
+        function formatageCasesACocher() {
+            // Création de couleurs si la liste couleurs n'as pas assez d'éléments
+            if (groupes.length > couleurs.length) {
+                var gap = groupes.length - couleurs.length;
+                for (var i = 0; i < gap; i++) {
+                    var coul = couleurs[i];
+                    couleurs.push([(coul[0] + 60) % 255, (coul[1] - 60) % 255, coul[2]]);
+                }
+            }
+            for (var i = 0; i < groupes.length; i++) {
+                labelsHistogramme = document.getElementsByName("label_" + groupes[i].nom + "_histo");
+                for (var j = 0; j < labelsHistogramme.length; j++) {
+                    var rgb = "rgb(" + couleurs[i][0] + "," + couleurs[i][1] + "," + couleurs[i][2] + ")";
+                    labelsHistogramme[j].style.color = rgb;
+                    labelsHistogramme[j].style.fontSize = (fontSize + "px");
+                }
+
+                labelsBAM = document.getElementsByName("label_" + groupes[i].nom + "_bam");
+                for (var j = 0; j < labelsBAM.length; j++) {
+                    var rgb = "rgb(" + couleurs[i][0] + "," + couleurs[i][1] + "," + couleurs[i][2] + ")";
+                    labelsBAM[j].style.color = rgb;
+                    labelsBAM[j].style.fontSize = (fontSize + "px");
+                }
+            }
+        }
+
+        // Met à jour le graphique en fonction des cases qui sont cochées
+        function changement(nom, value, partieConcernee, typeStat) {
+            // Gère l'addition et la suppression des groupes à afficher dans le graphe
+            if (value) { // la case à été cochée
+                groupesChecked[partieConcernee][typeStat].push(nom); // Ajout dans la liste cochée
+            } else { // la case à été décochée
+                var index = contains(groupesChecked[partieConcernee][typeStat], nom); // index au quel se trouve le groupe dans le tableau groupes s'il existe
+                if (index != -1) {
+                    groupesChecked[partieConcernee][typeStat].splice(index, 1); // Suppression de la liste cochée
+                }
+            }
+
+            var chartOptions = options; // Récupération de la template des options
+            var chartDonnees = {};
+            // Récupération de la template des données du graphique
+            // Génération des labels & cacul du max
+            switch (typeStat) {
+                case 'histo':
+                    // Changement des labels + de l'échelle de l'axe Y
+                    chartDonnees.labels = getLabels(parties[partieConcernee].bareme);
+                    chartOptions.scales.yAxes[0].ticks.min = 0;
+                    chartOptions.scales.yAxes[0].ticks.max = undefined;
+                    break;
+                case 'bam': // Boîte à moustache
+                    // Changement des labels + de l'échelle de l'axe Y
+                    chartDonnees.labels = [(nomEvaluation + " - " + parties[partieConcernee].nom)];
+                    chartOptions.scales.yAxes[0].ticks.min = 0;
+                    chartOptions.scales.yAxes[0].ticks.max = parties[partieConcernee].bareme;
+                    break;
+                case 'moy':
+                    chartDonnees.labels = groupesChecked[partieConcernee][typeStat];
+                    chartOptions.scales.yAxes[0].ticks.min = undefined;
+                    chartOptions.scales.yAxes[0].ticks.max = undefined;
+                    break;
+                default:
+                    break;
+            }
+
+            // Génération des datasets des groupes sélectionés pour chartJS en fonction du graphique sélectioné
+            // Remplacement des données du graphe par les nouvelles données générées
+            switch (typeStat) {
+                case 'histo':
+                case 'bam':
+                    chartDonnees.datasets = genDataRepartition(typeStat, partieConcernee);
+                    break;
+                case 'moy':
+                    chartDonnees.datasets = genDataMoyenneEcart(partieConcernee);
+                    break;
+            }
+
+            //  MaJ du graphique + MaJ des options
+            switch (typeStat) {
+                case 'histo':
+                    graphiques[partieConcernee][0].options = chartOptions;
+                    graphiques[partieConcernee][0].data = chartDonnees;
+                    graphiques[partieConcernee][0].update();
+                    break;
+                case 'bam': // Boîte à moustaches
+                    graphiques[partieConcernee][1].options = chartOptions;
+                    graphiques[partieConcernee][1].data = chartDonnees;
+                    graphiques[partieConcernee][1].update();
+                    break;
+                case 'moy' : // Moyenne & écart-type
+                    graphiques[partieConcernee][2].options = chartOptions;
+                    graphiques[partieConcernee][2].data = chartDonnees;
+                    graphiques[partieConcernee][2].update();
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        function genDataRepartition(type, partieConcernee) {
+            var data = [];
+            for (var j = 0; j < groupesChecked[partieConcernee][type].length; j++) {
+                var set = {};
+                var indexGroupe = -1;
+                for (var l = 0; l < parties[partieConcernee].stats.length; l++) {
+                    if (groupes[l].nom == groupesChecked[partieConcernee][type][j]) {
+                        indexGroupe = l;
+                    }
+                }
+                if (indexGroupe != -1) {
+                    set.label = groupes[indexGroupe].nom;
+                    switch (type) {
+                        case 'histo': // Histogramme
+                            set.data = (parties[partieConcernee].bareme == 20 ? parties[partieConcernee].stats[indexGroupe].repartition : getRepartition(parties[partieConcernee].stats[indexGroupe].listeNotes, parties[partieConcernee].bareme));
+                            set.borderColor = gris;
+                            break;
+                        case 'bam': // Boîte à moustaches
+                            set.data = [parties[partieConcernee].stats[indexGroupe].listeNotes];
+                            set.borderColor = noir;
+                            break;
+                        default:
+                            break;
+                    }
+                    var rgb = "rgb(" + couleurs[indexGroupe][0] + "," + couleurs[indexGroupe][1] + "," + couleurs[indexGroupe][2] + ")";
+                    set.backgroundColor = rgb;
+                    set.hoverBackgroundColor = rgb;
+                    data.push(set);
+                }
+            }
+            return data;
+        }
+
+        // Génère les données requises par Chart.js pour le graphique 'Moyenne & écart-type'
+        function genDataMoyenneEcart(partieConcernee) {
+            var liste = getGroupesData(groupesChecked[partieConcernee]['moy'], partieConcernee); // Récupération des données
+            var moyenne = [];
+            var ecartType = [];
+            for (var i = 0; i < liste.length; i++) { // Choix des informations requises
+                moyenne.push(liste[i].moyenne);
+                ecartType.push(liste[i].ecartType);
+            }
+            var couleurMoyenne = couleurs[0];
+            var couleurEcartType = couleurs[1];
+            data = [ // Création des objets datasets de Chart.js avec nos données
+                {
+                    label: 'Moyenne',
+                    backgroundColor: "rgb(" + couleurMoyenne[0] + "," + couleurMoyenne[1] + "," + couleurMoyenne[2] + ")",
+                    hoverBackgroundColor: "rgb(" + couleurMoyenne[0] + "," + couleurMoyenne[1] + "," + couleurMoyenne[2] + ")",
+                    borderColor: gris,
+                    data: moyenne
+                },
+                {
+                    label: 'Écart-type',
+                    backgroundColor: "rgb(" + couleurEcartType[0] + "," + couleurEcartType[1] + "," + couleurEcartType[2] + ")",
+                    hoverBackgroundColor: "rgb(" + couleurEcartType[0] + "," + couleurEcartType[1] + "," + couleurEcartType[2] + ")",
+                    borderColor: gris,
+                    data: ecartType
+                }
+            ];
+            return data;
+        }
+
+        // Retourne un tableau d'objets groupe avec leurs données en fonction d'une liste de noms de groupes
+        function getGroupesData(listeGroupes, partieConcernee) {
+            groupesAvecDonnees = [];
+            for (var i = 0; i < listeGroupes.length; i++) {
+                for (var j = 0; j < parties[partieConcernee].stats.length; j++) {
+                    if (parties[partieConcernee].stats[j].nom == listeGroupes[i]) {
+                        groupesAvecDonnees.push(parties[partieConcernee].stats[j]);
+                    }
+                }
+            }
+            return groupesAvecDonnees;
+        }
+
+        // Génère des données de répartition en fonction d'une liste de note et d'un bareme
+        function getRepartition(listeNotes, bareme) {
+            var repartition = [0, 0, 0, 0, 0];
+            var diff = bareme / 5;
+            for (var i = 0; i < listeNotes.length; i++) { // test repartition [listeNotes[i] / diff]
+                if (listeNotes[i] >= 0 && listeNotes[i] <= diff) {
+                    repartition[0]++;
+                } else if (listeNotes[i] >= diff && listeNotes[i] < diff * 2) {
+                    repartition[1]++;
+                } else if (listeNotes[i] >= diff * 2 && listeNotes[i] < diff * 3) {
+                    repartition[2]++;
+                } else if (listeNotes[i] >= diff * 3 && listeNotes[i] < diff * 4) {
+                    repartition[3]++;
+                } else if (listeNotes[i] >= diff * 4 && listeNotes[i] <= bareme) {
+                    repartition[4]++;
+                }
+            }
+            return repartition;
+        }
+
+        // Génère les pour le graphique de Répartion (Histogramme) ex : '[0;4[', '[4;8[', '[8;12[', '[12;16[', '[16;20]'
+        function getLabels(bareme) {
+            var labels = [];
+            if (bareme != 0) {
+                var interval = bareme / 5;
+                var liste = [0, interval, interval * 2, interval * 3, interval * 4, bareme];
+                liste = liste.map(x => Math.round(x * 100) / 100); // Arrondi à 2 chiffres après la virgule
+                for (var i = 0; i < 5; i++) {
+                    labels[i] = ("[" + liste[i] + ";" + liste[i + 1] + (i == 4 ? "]" : "["));
+                }
+                return labels;
+            }
+        }
+
+        // génère des codes couleurs rgb aléatoires
+        function genRandomColor() {
+            return "rgb(" + Math.floor(Math.random() * Math.floor(255)) + ","
+                + Math.floor(Math.random() * Math.floor(255)) + ","
+                + Math.floor(Math.random() * Math.floor(255)) + ")";
+        }
+
+        // retourne l'index au quel se trouve l'élément dans array, s'il n'y est pas renvoie -1
+        function contains(array, element) {
+            for (var i = 0; i < array.length; i++) {
+                if (array[i] == element) {
+                    return i;
+                }
+            }
+            return -1;
+        }
+
+        //----------------- PARTIE GENERATION DE PDF -------------
+
+        function getImages(largeur, longueur, callback) {
+
+            // options du graphique pour la génération de graphiques pour le pdf.
+            const pdfChartOptions = {
+                animation: {
+                    onComplete: callback,
+                    duration: false,
+                },
+                scales: {
+                    xAxes: [{
+                        gridLines: {display: !1},
+                        ticks: {fontSize: pdfChartFontSize,},
+                        maxBarThickness: 100,
+                        stacked: !1,
+                    }],
+                    yAxes: [{
+                        ticks: {beginAtZero: !0, max: undefined, min: 0, fontSize: pdfChartFontSize},
+                        stacked: !1,
+                    }],
+                },
+                legend: {position: 'top', labels: {fontSize: pdfChartFontSize,},},
+                aspectRatio: 3,
+                maintainAspectRatio: !0,
+                responsive: !1,
+                tooltips: {
+                    intersect: !1,
+                    titleMarginBottom: 10,
+                    titleFontColor: '#6e707e',
+                    titleFontSize: fontSize,
+                    backgroundColor: "#FFFFFF",
+                    bodyFontColor: "#858796",
+                    borderColor: '#dddfeb',
+                    borderWidth: 1,
+                    xPadding: 15,
+                    yPadding: 15,
+                    displayColors: !0,
+                    caretPadding: 10,
+                },
+                plugins: {labels: {render: 'value'}}
+            };
+
+            images = [];
+
+            for (var indexPartie = 0; indexPartie < groupesChecked.length; indexPartie++) {
+                for (var clef in groupesChecked[indexPartie]) {
+                    // Création du canvas caché
+                    var canvas = document.createElement("canvas");
+                    canvas.setAttribute('id', 'hiddenGraph');
+                    canvas.style.display = 'none'; // N'affiche pas l'élément
+                    canvas.style.width = largeur + 'px';
+                    canvas.style.height = longueur + 'px';
+                    document.body.appendChild(canvas);
+
+                    var chartDonnees = {};
+                    var options = pdfChartOptions;
+                    switch (clef) {
+                        case 'histo':
+                            chartDonnees.labels = getLabels(parties[indexPartie].bareme);
+                            options.scales.yAxes[0].ticks.min = 0;
+                            options.scales.yAxes[0].ticks.max = undefined;
+                            break;
+                        case 'bam': // Boîte à moustache
+                            chartDonnees.labels = [(nomEvaluation + " - " + parties[indexPartie].nom)];
+                            options.scales.yAxes[0].ticks.min = 0;
+                            options.scales.yAxes[0].ticks.max = parties[indexPartie].bareme; // Maximum du graphique étant la note max de la partie
+                            break;
+                        case 'moy':
+                            chartDonnees.labels = groupesChecked[indexPartie][clef];
+                            options.scales.yAxes[0].ticks.min = 0;
+                            options.scales.yAxes[0].ticks.max = undefined;
+                            break;
+                        default:
+                            break;
+                    }
+
+                    // Génération des données nécessaires à la bonne creation du graphique
+                    chartDonnees.datasets = (clef == 'moy' ? genDataMoyenneEcart(indexPartie) : genDataRepartition(clef, indexPartie));
+
+                    // Création du chart dans le canvas caché
+                    window.hiddenGraph = new Chart(document.getElementById("hiddenGraph").getContext('2d'), {
+                        type: (clef == 'bam' ? 'boxplot' : 'bar'),
+                        data: chartDonnees,
+                        options: options,
+                    });
+
+                    // Attente de la génération du graphique, le booléen change d'état dans la fonction callback
+                    while (!wait_for_chart_ready) {
+                    }
+                    ;
+                    wait_for_chart_ready = !wait_for_chart_ready;
+                    // Ajout de l'image à l'array
+                    images.push(window.hiddenGraph.toBase64Image());
+
+                    // Supression de l'instance du graphique
+                    window.hiddenGraph.destroy();
+
+                    // Suppression du canvas caché de l'arborescence de la page
+                    document.body.removeChild(canvas);
+                }
+            }
+        }
+
+        // Fonction appelée par une fois le graphique généré, permet au programme de savoir quand demander la valeur PNG du graphique
+        function onChartReady() {
+            wait_for_chart_ready = true;
+        }
+
+        function genPDF(callback, portrait) {
+
+            // CONSTANTES
+            const imageWidthPortrait = 500
+            const imageWidthPaysage = 780;
+            const largeurCanvas = 1500;
+            const longueurCanvas = 650;
+
+            // Génération des images des graphiques pour le pdf
+            getImages(largeurCanvas, longueurCanvas, callback);
+
+            // Contenu du pdf à générer
+            var docDefinition = {
+                compress: false,
+                footer: function (currentPage, pageCount) {
+                    return {
+                        columns: [
+                            {text: 'Document généré par l\'application Noteo', alignment: 'center', italics: true},
+                            {text: (currentPage.toString() + " "), alignment: 'right', margin: [0, 0, 35, 25]},
+                        ]
+                    };
+                },
+                pageOrientation: (portrait ? 'portrait' : 'landscape'),
+                info: {
+                    title: nomEvaluation,
+                    author: 'Noteo',
+                },
+                content: [
+                    { // BANNIERE NOTEO
+                        image: 'noteo',
+                        width: (portrait ? imageWidthPortrait : imageWidthPaysage),
+                    },
+                    { // PAGE DE GARDE
+                        text: nomEvaluation,
+                        style: 'header',
+                    },
+                    {
+                        ul: [
+                            {% for evaluation in evaluations %}
+                            '{{ evaluation.nom|e('js')|raw }} ({{ evaluation.date|date("d/m/Y") }})',
+                            {% endfor %}
+                        ],
+                        style: (portrait ? 'liste_evals' : 'liste_evals_paysage'),
+                        pageBreak: (portrait ? '' : 'after'),
+                    },
+                    { // TABLES DES MATIERES
+                        toc: {
+                            id: 'tabMatieres',
+                            title: {
+                                text: 'Table des matières',
+                                style: 'header',
+                            },
+                        },
+                        pageBreak: 'after',
+                    },
+                ],
+                images: {
+                    noteo: 'data:image/jpeg;base64,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bD0iQWRvYmUgUGhvdG9zaG9wIENTNiAoMTMuMDIwMTExMDEyLm0uMjU4IDIwMTEvMTAvMTI6MjE6MDA6MDApICAoV2luZG93cykiIHhtcDpDcmVhdGVEYXRlPSIyMDIwLTAzLTA0VDAxOjE1OjA3KzAxOjAwIiB4bXA6TWV0YWRhdGFEYXRlPSIyMDIwLTAzLTA0VDAxOjE1OjQzKzAxOjAwIiB4bXA6TW9kaWZ5RGF0ZT0iMjAyMC0wMy0wNFQwMToxNTo0MyswMTowMCIgZGM6Zm9ybWF0PSJpbWFnZS9qcGVnIiB4bXBNTTpJbnN0YW5jZUlEPSJ4bXAuaWlkOjlCMDU0OTM0QUQ1REVBMTFCNzA0ODIxRjUwMkMwMDJFIiB4bXBNTTpEb2N1bWVudElEPSJ4bXAuZGlkOjk5MDU0OTM0QUQ1REVBMTFCNzA0ODIxRjUwMkMwMDJFIiB4bXBNTTpPcmlnaW5hbERvY3VtZW50SUQ9InhtcC5kaWQ6OTkwNTQ5MzRBRDVERUExMUI3MDQ4MjFGNTAyQzAwMkUiIHBob3Rvc2hvcDpDb2xvck1vZGU9IjMiPiA8eG1wTU06SGlzdG9yeT4gPHJkZjpTZXE+IDxyZGY6bGkgc3RFdnQ6YWN0aW9uPSJjcmVhdGVkIiBzdEV2dDppbnN0YW5jZUlEPSJ4bXAuaWlkOjk5MDU0OTM0QUQ1REVBMTFCNzA0ODIxRjUwMkMwMDJFIiBzdEV2dDp3aGVuPSIyMDIwLTAzLTA0VDAxOjE1OjA3KzAxOjAwIiBzdEV2dDpzb2Z0d2FyZUFnZW50PSJBZG9iZSBQaG90b3Nob3AgQ1M2ICgxMy4wMjAxMTEwMTIubS4yNTggMjAxMS8xMC8xMjoyMTowMDowMCkgIChXaW5kb3dzKSIvPiA8cmRmOmxpIHN0RXZ0OmFjdGlvbj0ic2F2ZWQiIHN0RXZ0Omluc3RhbmNlSUQ9InhtcC5paWQ6OUEwNTQ5MzRBRDVERUExMUI3MDQ4MjFGNTAyQzAwMkUiIHN0RXZ0OndoZW49IjIwMjAtMDMtMDRUMDE6MTU6NDMrMDE6MDAiIHN0RXZ0OnNvZnR3YXJlQWdlbnQ9IkFkb2JlIFBob3Rvc2hvcCBDUzYgKDEzLjAyMDExMTAxMi5tLjI1OCAyMDExLzEwLzEyOjIxOjAwOjAwKSAgKFdpbmRvd3MpIiBzdEV2dDpjaGFuZ2VkPSIvIi8+IDxyZGY6bGkgc3RFdnQ6YWN0aW9uPSJjb252ZXJ0ZWQiIHN0RXZ0OnBhcmFtZXRlcnM9ImZyb20gYXBwbGljYXRpb24vdm5kLmFkb2JlLnBob3Rvc2hvcCB0byBpbWFnZS9qcGVnIi8+IDxyZGY6bGkgc3RFdnQ6YWN0aW9uPSJkZXJpdmVkIiBzdEV2dDpwYXJhbWV0ZXJzPSJjb252ZXJ0ZWQgZnJvbSBhcHBsaWNhdGlvbi92bmQuYWRvYmUucGhvdG9zaG9wIHRvIGltYWdlL2pwZWciLz4gPHJkZjpsaSBzdEV2dDphY3Rpb249InNhdmVkIiBzdEV2dDppbnN0YW5jZUlEPSJ4bXAuaWlkOjlCMDU0OTM0QUQ1REVBMTFCNzA0ODIxRjUwMkMwMDJFIiBzdEV2dDp3aGVuPSIyMDIwLTAzLTA0VDAxOjE1OjQzKzAxOjAwIiBzdEV2dDpzb2Z0d2FyZUFnZW50PSJBZG9iZSBQaG90b3Nob3AgQ1M2ICgxMy4wMjAxMTEwMTIubS4yNTggMjAxMS8xMC8xMjoyMTowMDowMCkgIChXaW5kb3dzKSIgc3RFdnQ6Y2hhbmdlZD0iLyIvPiA8L3JkZjpTZXE+IDwveG1wTU06SGlzdG9yeT4gPHhtcE1NOkRlcml2ZWRGcm9tIHN0UmVmOmluc3RhbmNlSUQ9InhtcC5paWQ6OUEwNTQ5MzRBRDVERUExMUI3MDQ4MjFGNTAyQzAwMkUiIHN0UmVmOmRvY3VtZW50SUQ9InhtcC5kaWQ6OTkwNTQ5MzRBRDVERUExMUI3MDQ4MjFGNTAyQzAwMkUiIHN0UmVmOm9yaWdpbmFsRG9jdW1lbnRJRD0ieG1wLmRpZDo5OTA1NDkzNEFENURFQTExQjcwNDgyMUY1MDJDMDAyRSIvPiA8L3JkZjpEZXNjcmlwdGlvbj4gPC9yZGY6UkRGPiA8L3g6eG1wbWV0YT4gICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAg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AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAH/2Q==',
+                },
+                styles: {
+                    header: {
+                        fontSize: 18,
+                        bold: true,
+                        alignment: 'center',
+                        margin: [5, 30],
+                    },
+                    subheader: {
+                        fontSize: 18,
+                        margin: 15,
+                    },
+                    subheader_paysage: {
+                        fontSize: 22,
+                        margin: 25,
+                    },
+                    titre: {
+                        fontSize: 18,
+                        margin: 15,
+                    },
+                    un_peu_plus_grand: {
+                        fontSize: 14,
+                        margin: 15,
+                    },
+                    tableau: {
+                        margin: 15,
+                        alignment: 'center',
+                    },
+                    texte_header_tableau_portrait: {
+                        margin: 5,
+                    },
+                    texte_header_tableau_paysage: {
+                        margin: 10,
+                    },
+                    liste_evals: {
+                        margin: [30, 5],
+                        fontSize: 14,
+                    },
+                    liste_evals_paysage: {
+                        margin: [65, 5],
+                        fontSize: 14,
+                    },
+                }
+            };
+
+            // Génération des pages
+            for (var indexPartie = 0; indexPartie < groupesChecked.length; indexPartie++) {
+                var nomPartie = parties[indexPartie].nom + " (/" + parties[indexPartie].bareme + ")";
+                var compteurTypeGraph = 0;
+                var fin_compteur = Object.keys(groupesChecked[indexPartie]).length;
+                for (clef in groupesChecked[indexPartie]) {
+                    compteurTypeGraph++;
+                    var contenu = [
+                        {
+                            text: (clef == 'moy' ? 'Moyenne et écart-type' : (clef == 'bam' ? 'Répartition des notes (Boîte à moustaches)' : 'Répartition des notes (Histogramme)')) + (groupesChecked.length > 1 ? " - Partie : " + nomPartie : ''),
+                            style: (portrait ? 'subheader' : 'subheader_paysage'),
+                            tocItem: 'tabMatieres',
+                        },
+                        {
+                            image: images[indexPartie * 3 + compteurTypeGraph - 1],
+                            width: (portrait ? imageWidthPortrait : imageWidthPaysage),
+                            pageBreak: (portrait ? '' : 'after'),
+                        },
+                        {
+                            text: (clef == 'moy' ? 'Moyenne et écart-type' : 'Répartition des notes') + " (Données chiffrées)",
+                            style: 'subheader',
+                        },
+                        {
+                            style: 'tableau',
+                            table: {
+                                headerRows: 1,
+                                body: getDataForPdfTable(clef, indexPartie, portrait),
+                            },
+                            layout: { // Colore une ligne sur 2 (pour l'effet zèbré sur le tableau)
+                                fillColor: function (rowIndex, node, columnIndex) {
+                                    return (rowIndex % 2 === 0) ? '#CCCCCC' : null;
+                                }
+                            },
+                            // Saut de page s'il reste encore des graphiques à ajouter au pdf
+                            pageBreak: (compteurTypeGraph == fin_compteur && indexPartie == groupesChecked.length - 1 ? '' : 'after'),
+                        },
+                    ];
+                    docDefinition.content.push(contenu);
+                }
+            }
+
+            // Génération du pdf en fonction de docDefinition et téléchargement de ce dernier
+            pdfMake.createPdf(docDefinition).download(nomEvaluation);
+        }
+
+        // Génère les tableaux de données déstinés au fichier pdf
+        function getDataForPdfTable(clef, partieConcernee, portrait) {
+            var donnees = []; // Données du tableau
+            var groupesData = getGroupesData(groupesChecked[partieConcernee][clef], partieConcernee);
+            switch (clef) {
+                case 'histo':
+                    var header = [];
+                    header.push({
+                        text: 'Groupe',
+                        style: (portrait ? 'texte_header_tableau_portrait' : 'texte_header_tableau_paysage')
+                    });
+                    // Création du header du tableau en fonction des labels du graphique
+                    // graphiques[partieConcernee][0] est le graphique de Répartion (Histogramme) de la partie partieConcernée
+                    for (var i = 0; i < graphiques[partieConcernee][0].data.labels.length; i++) {
+                        header.push({
+                            text: graphiques[partieConcernee][0].data.labels[i],
+                            style: (portrait ? 'texte_header_tableau_portrait' : 'texte_header_tableau_paysage')
+                        });
+                    }
+                    donnees.push(header);
+                    for (var i = 0; i < groupesChecked[partieConcernee][clef].length; i++) {
+                        var temp_row = [];
+                        var repartition = getRepartition(groupesData[i].listeNotes, parties[partieConcernee].bareme);
+                        temp_row.push(groupesChecked[partieConcernee][clef][i]);
+                        for (var j = 0; j < 5; j++) {
+                            temp_row.push(repartition[j]);
+                        }
+                        donnees.push(temp_row);
+                    }
+                    break;
+                case 'moy':
+                    donnees.push([{
+                        text: "Groupe",
+                        style: (portrait ? 'texte_header_tableau_portrait' : 'texte_header_tableau_paysage')
+                    }, {
+                        text: "Moyenne",
+                        style: (portrait ? 'texte_header_tableau_portrait' : 'texte_header_tableau_paysage')
+                    }, {
+                        text: "Ecart-type",
+                        style: (portrait ? 'texte_header_tableau_portrait' : 'texte_header_tableau_paysage')
+                    }, {
+                        text: "Effectif",
+                        style: (portrait ? 'texte_header_tableau_portrait' : 'texte_header_tableau_paysage')
+                    }]); // header du tableau
+                    for (var i = 0; i < groupesChecked[partieConcernee][clef].length; i++) {
+                        var temp_row = [];
+                        temp_row.push(groupesChecked[partieConcernee][clef][i]);
+                        temp_row.push(groupesData[i].moyenne);
+                        temp_row.push(groupesData[i].ecartType);
+                        temp_row.push(groupesData[i].listeNotes.length);
+                        donnees.push(temp_row);
+                    }
+                    break;
+                case 'bam':
+                    donnees.push([{
+                        text: "Groupe",
+                        style: (portrait ? 'texte_header_tableau_portrait' : 'texte_header_tableau_paysage')
+                    }, {
+                        text: "Moyenne",
+                        style: (portrait ? 'texte_header_tableau_portrait' : 'texte_header_tableau_paysage')
+                    }, {
+                        text: "Ecart-type",
+                        style: (portrait ? 'texte_header_tableau_portrait' : 'texte_header_tableau_paysage')
+                    }, {
+                        text: "Minimum",
+                        style: (portrait ? 'texte_header_tableau_portrait' : 'texte_header_tableau_paysage')
+                    }, {
+                        text: "Médiane",
+                        style: (portrait ? 'texte_header_tableau_portrait' : 'texte_header_tableau_paysage')
+                    }, {
+                        text: "Maximum",
+                        style: (portrait ? 'texte_header_tableau_portrait' : 'texte_header_tableau_paysage')
+                    }, {
+                        text: "Effectif",
+                        style: (portrait ? 'texte_header_tableau_portrait' : 'texte_header_tableau_paysage')
+                    }]); // header du tableau
+                    // Création des lignes du tableau (1 ligne par groupe)
+                    for (var i = 0; i < groupesChecked[partieConcernee][clef].length; i++) {
+                        var temp_row = [];
+                        temp_row.push(groupesChecked[partieConcernee][clef][i]);
+                        temp_row.push(groupesData[i].moyenne);
+                        temp_row.push(groupesData[i].ecartType);
+                        temp_row.push(groupesData[i].minimum);
+                        temp_row.push(groupesData[i].mediane);
+                        temp_row.push(groupesData[i].maximum);
+                        temp_row.push(groupesData[i].listeNotes.length);
+                        donnees.push(temp_row);
+                    }
+                    break;
+            }
+            return donnees;
+        }
+    </script>
+
+{% endblock %}

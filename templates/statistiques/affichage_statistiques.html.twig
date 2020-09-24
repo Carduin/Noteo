@@ -18,12 +18,12 @@
     {% if typeStatistique == "simple_parties" %}
         {{ include('statistiques/_statistiques_evalutations_simples_et_parties.html.twig') }}
     {% elseif  typeStatistique == "plusieurs_evals" %}
-        {{ include('statistiques/_statistiques_evalutations_simples_et_parties.html.twig') }}
+        {{ include('statistiques/_statistiques_plusieurs_evals.html.twig') }}
     {% elseif  typeStatistique == "fiche_etudiant" %}
-        {{ include('statistiques/_statistiques_evalutations_simples_et_parties.html.twig') }}
+        {{ include('statistiques/_statistiques_fiche_etudiant.html.twig') }}
     {% elseif  typeStatistique == "evolution" %}
-        {{ include('statistiques/_statistiques_evalutations_simples_et_parties.html.twig') }}
+        {{ include('statistiques/_statistiques_evolution.html.twig') }}
     {% elseif  typeStatistique == "comparaison" %}
-        {{ include('statistiques/_statistiques_evalutations_simples_et_parties.html.twig') }}
+        {{ include('statistiques/_statistiques_comparaison.html.twig') }}
     {% endif %}
 {% endblock %}

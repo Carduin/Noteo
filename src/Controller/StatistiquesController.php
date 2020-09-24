@@ -438,12 +438,12 @@ class StatistiquesController extends AbstractController
             foreach ($request->getSession()->get('sousGroupes') as $sousGroupe) {
                 array_push($lesGroupes, $sousGroupe);
             }
-            return $this->render('statistiques/affichage_stats_classiques.html.twig', [
+            return $this->render('statistiques/affichage_statistiques.html.twig', [
                 'parties' => $statsManager->calculerStatsPlusieursEvals('groupes', $lesGroupes, $evaluations),
                 'evaluations' => $evaluations,
                 'groupes' => $lesGroupes,
-                'titrePage' => 'Consulter les statistiques sur ' . count($evaluations) . ' évaluation(s)',
-                'plusieursEvals' => true
+                'titrePage' => $this->translator->trans('page_plusieurs_evals', ['nombre'=>count($evaluations) ]),
+                'typeStatistique' => "plusieurs_evals"
                 ]);
         }
         return $this->render('statistiques/formulaire_parametrage_statistiques.html.twig', [
@@ -530,12 +530,12 @@ class StatistiquesController extends AbstractController
             if (count($form->get('evaluations')->getData()) > 0) {
                 $evaluations = $form->get('evaluations')->getData();
             }
-            return $this->render('statistiques/affichage_stats_classiques.html.twig', [
+            return $this->render('statistiques/affichage_statistiques.html.twig', [
                 'parties' => $statsManager->calculerStatsPlusieursEvals('statuts', [$statut], $evaluations),
                 'evaluations' => $evaluations,
                 'groupes' => $statut,
-                'titrePage' => 'Consulter les statistiques sur ' . count($evaluations) . ' évaluation(s)',
-                'plusieursEvals' => true,
+                'titrePage' => $this->translator->trans('page_plusieurs_evals', ['nombre'=>count($evaluations) ]),
+                'typeStatistique' => "plusieurs_evals"
             ]);
         }
         return $this->render('statistiques/formulaire_parametrage_statistiques.html.twig', [
