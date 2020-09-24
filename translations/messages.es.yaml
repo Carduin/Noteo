@@ -1,0 +1,399 @@
+####### TRADUCTIONS GENERALES
+#pages erreurs
+aie: Ay
+erreur: Un error se ha producido
+401: Usuario no registrado
+403: Acceso restringido
+404: Página no encontrada
+500: Error del servidor
+503: Error del servidor
+504: Sin respuesta del servidor
+# login
+placeholder_mail: Correo electrónico
+placeholder_mdp: Contraseña
+remember_me: Recordarme en este equipo
+log_in: Conectarse
+acceder_noteo: Acceder a Noteo
+connecte_en_tant_que: Está conectado(a) como
+# Barre de menu
+groupes: Grupos
+statuts_etudiants: Estado de los etudiants
+etudiants: Estudiantes
+enseignants: Profesores
+evaluations: Exámenes
+mes_evaluations: Mis exámenes
+autres_evaluations: Otros exámenes
+statistiques: Estadistícas
+tutoriels: Tutoriales
+reset_app: Reiniciar la aplicación
+# menu déroulant profil
+consulter_profil: Consultar mi perfil
+modifier_mdp : Modificar mi contraseña
+logout: Desconectar
+# titres de colonnes tableaux
+nom: Apellido
+nom_famille: Apellido
+prenom: Nombre
+mail: Correo electrónico
+effectif: Efectivo
+description: Descripción
+createur: Creador
+evaluable: Evaluable
+statuts: Estado(s)
+administrateur: Administrador
+note_sur_20: Nota (/20)
+evaluation: Exámen
+date: Fecha
+groupe: Grupo
+effectif_statut: Efectivo del estado
+intitule: Intitulado
+bareme: Escala
+#statistiques
+moyenne: Media
+ecart_type: Desviación estándar
+minimum: Mínimo
+maximum: Máximo
+mediane: Médiana
+repartition_notes: División de las notas
+# divers
+avertissement: Advertencia
+aide: Ayuda
+oui: Si
+non: No
+enregistrer: Guardar
+valider: Confirmar
+####### GROUPES ETUDIANTS
+# modales
+modale_groupe_evaluable: Este atributo de un grupo determina si podrá o no crear exámenes para él.
+modale_groupe_supprimer: '¿Está seguro de que desea eliminar el grupo? <br>Esta acción eliminará :<ul><li>Todos sus subgrupos</li><li>Todos los exámenes asociados</li></ul>'
+modale_groupe_supprimer_confirmer: Eliminar el grupo
+# formulaires
+form_groupe_nom: Nombre del grupo
+form_groupe_description: Descripción del grupo
+form_groupe_ajouter_etudiants: Añadir estudiantes al grupo
+form_groupe_retirer_etudiants: Eliminar estudiantes del grupo
+# Page index
+index_groupe_titre_page: Lista de los grupos
+index_label_btn_ordre_hierarchique : Mostrar los grupos de manera jerárquica
+tooltip_groupe_consulter: Mostrar nom
+tooltip_groupe_eval: Crear un exámen para nom
+tooltip_groupe_eval_parties: Crear un exámen con partes para nom
+tooltip_groupe_creer: Crear un subgrupo desde nom
+tooltip_groupe_modifier: Modificar nom
+tooltip_groupe_supprimer: Eliminar nom
+pas_de_groupes: No hay ningún grupo de estudiantes
+importer_groupe: Importar un grupo de estudiantes
+# Page modifier
+modifier_groupe_titre_page: Modificar nom
+# Page nouveau sous groupe
+nouveau_sous_groupe_titre_page: Crear un subgrupo para nom
+groupe_creer_sous_groupe: Crear el subgrupo
+# Page import groupe
+groupe_creer_groupe: Crear el grupo
+form_groupe_fichier_csv: Archivo CSV (separador ;)
+form_groupe_telecharger_modele: Descargar un modelo
+pas_fichier_choisi: Ningún archivo seleccionado
+fichier_trop_volumineux: El archivo seleccionado ocupa demasiado
+# page consulter
+consulter_groupe_etudiants: Lista de los estudiantes del grupo
+####### STATUTS estudiantes
+# messages globaux
+message_alternatif_pas_de_statut: 'Es posible obtener estadísticas sobre grupos de estudiantes con un estado particular (becarios, repetidores, etc.). Puede crear dichos grupos <a href="url">ici</a>.'
+# modales
+modale_statut_supprimer: '¿Está seguro de que desea eliminar el estado del estudiante? <br> Ya no podrá ver las estadísticas de este grupo de estudiantes.'
+modale_statut_supprimer_confirmer: Eliminar el estado
+# formulaires
+form_statut_nom: Nombre del grupo
+form_statut_description: Descripción del grupo
+form_statut_ajouter_etudiants: Añadir estudiantes al grupo
+form_statut_retirer_etudiants: Eliminar estudiantes del grupo
+# page index
+index_statut_titre_page: Lista de los grupos de estudiantes con un estado particular
+index_statut_btn_creer: Crear un grupo
+tooltip_statut_consulter: Consultar nom
+tooltip_statut_modifier: Modificar nom
+tooltip_statut_supprimer: Eliminar nom
+pas_de_statut: Ningún grupo de estudiantes con un estado particular
+# page consulter
+consulter_statut_etudiants: Lista de los estudiantes del grupo
+# page modifier
+modifier_statut_titre_page: Modificar nom
+# page créer
+creer_statut_titre_page: Crear un grupo de estudiantes con un estado particular
+statut_creer_statut: Crear el grupo
+####### ETUDIANTS
+# modales
+modale_etudiant_supprimer: '¿Está seguro de que desea eliminar al estudiante? <br>Esta acción:<ul><li>Eliminará al estudiante de todos los grupos</li><li>Eliminará su nota para todas las exámenes en las que haya participado</li></ul>'
+modale_etudiant_supprimer_confirmer: Eliminar estudiante
+# formulaires
+form_etudiant_nom: Apellido
+form_etudiant_prenom: Nombre
+form_etudiant_mail: Correo electrónico
+form_etudiant_demissionaire: Renunciar
+form_etudiant_statuts: Estado
+# page index
+index_etudiant_titre_page: Lista de los estudiantes
+index_etudiant_btn_creer: Añadir un estudiante
+tooltip_etudiant_consulter: Mostrar prenom nom
+tooltip_etudiant_modifier: Modificar prenom nom
+tooltip_etudiant_supprimer: Eliminar prenom nom
+pas_d_etudiants: No tiene ningún estudiante
+# page consulter
+consulter_etudiant_liste_groupes: Grupo(s) al(los) que pertenece el estudiante
+# page modifier
+modifier_etudiant_titre_page: Modificar nom prenom
+modifier_etudiant_message_creer_groupe: 'Para modificar los grupos a los que pertenece este estudiante, ir <a href="url">aquí</a>. '
+modifier_etudiant_message_creer_statut: 'Si desea agregar o eliminar a este estudiante de un grupo de estudiantes con un estado especial, ir <a href="url">aquí</a>.'
+# page créer
+creer_etudiant_titre_page: Añadir un estudiante
+creer_etudiant_ajouter_groupe: Añadir un estudiante a un grupo de estudiantes con un estado particular (opcional)
+etudiant_creer_etudiant: Añadir al estudiante
+####### ENSEIGNANTS
+# modales
+modale_enseignant_supprimer: '¿Está seguro de que desea eliminar al profesor? <br>Esta acción eliminará:<ul><li> Los grupos que ha creado</li><li> Los estados que ha creado</li><li> Los exámenes que ha creado</li></ul>'
+modale_enseignant_supprimer_confirmer: Eliminar profesor
+# formulaires
+form_enseignant_nom: Apellido
+form_enseignant_prenom: Nombre
+form_enseignant_mail: Correo electrónico
+form_enseignant_administrateur: Administrador
+form_enseignant_preference_tableau: Preferencia del nombre de los elementos mostrados en tablas
+form_enseignant_mdp: Contraseña
+form_enseignant_message_info_droits: Si va a eliminar sus derechos de administrador, asegúrese de que alguien más los tenga.
+form_enseignant_mdp_invalide: Las contraseñas ingresadas no coinciden
+form_enseignant_placeholder_mpd_1: Introducir contraseña
+form_enseignant_placeholder_mpd_2: Confirmar
+# page index
+index_enseignant_titre_page: Lista de los profesores
+index_enseignant_btn_creer: Añadir un profesor
+tooltip_enseignant_consulter: Mostrar prenom nom
+tooltip_enseignant_modifier: Modificar prenom nom
+tooltip_enseignant_supprimer: Eliminar prenom nom
+#modifier mon profil / modifier le profil de xx
+modifier_profil_enseignant_connecte: Modificar mi perfil
+modifier_profil_autre_enseignant: Modificar prenom nom
+modifier_mdp_enseignant_connecte: Modificar contraseña
+modifier_mdp_autre_enseignant: Modificar contraseña de prenom nom
+# page consulter
+elements: éléments
+tous_les_elements: Todos los elementos
+# page modifier profil
+modifier_enseignant_label_preference: Preferencia de ordenación de las tablas
+# page créer
+creer_enseignant_titre_page: Añadir un profesor
+creer_enseignant_creer_enseignant: Añadir al profesor
+####### EVALUATIONS
+# modales
+modale_evaluation_supprimer: '¿Seguro que desea eliminar este exámen?<br>Se eliminarán todas las notas asociadas.'
+modale_evaluation_supprimer_confirmer: Eliminar exámen
+modale_creer_partie_titre: Crear parte
+modale_modifier_partie_titre: Modificar una parte
+modale_pas_de_partie_choisie_titre: Acciones sobre las partes
+modale_pas_de_partie_choisie_sous_titre: No ha seleccionado ninguna parte
+modale_pas_de_partie_choisie_contenu: '<li>Para agregar una nueva parte, haga clic en una parte de la tabla a la que desea agregar una subparte</li><li>Para modificar una parte, haga clic en la parte que desee modificar.</li><li>Para eliminar una parte, haga clic en la parte que desea eliminar</li>'
+modale_une_seule_partie_cree_titre: El exámen solo tiene una parte
+modale_pas_de_partie_cree_titre: No ha creado ninguna parte para el exámen.
+modale_une_seule_partie_cree_contenu: Una vez validado, ya no podrá modificar las partes de este exámen.
+# formulaires
+form_evaluation_nom: Nombre del exámen
+form_evaluation_groupe: Grupo examinado
+form_evaluation_createur: Creador
+form_evaluation_csv: Descargar el exámen en formato CSV
+form_evaluation_date: Fecha del exámen
+form_evaluation_pdf: Archivo PDF
+form_evaluation_notes_modifier: Modificar las notas de los estudiantes
+form_evaluation_notes_consulter: Notas de los estudiantes
+# page index
+index_evaluation_titre_page_mes_evals: Mis exámenes
+index_evaluation_titre_page_autres_evals: Otros exámenes
+index_evaluation_btn_creer_simple: Crear un exámen
+index_evaluation_btn_creer_partie: Crear un exámen con partes
+tooltip_evaluation_consulter: Mostrar notas de nom
+tooltip_evaluation_modifier: Modificar nom
+tooltip_evaluation_supprimer: Eliminar nom
+index_evaluation_pas_evals_mes_evals: No hay exámenes
+index_evaluation_pas_evals_autres_evals: Los otros profesores no tienen exámenes
+# page choisir groupe à évaluer
+choix_groupe_evaluation_titre_page: Elegir el grupo a examinar
+choix_groupe_evaluation_btn_valider: Crear exámen para este grupo
+# page mail previsualisation
+previsualisation_mail_titre_page: Enviar las estadísticas a los estudiantes
+previsualisation_mail_titre_apercu: Vista previa del correo electrónico
+previsualisation_mail_titre_pdf: Adjuntar un archivo PDF al correo electrónico (opcional)
+previsualisation_mail_btn_valider: Enivar el correo electrónico a los nombre estudiantes
+previsualisation_mail_pdf_erreur_taille: El archivo seleccionado ocupa demasiado
+previsualisation_mail_pdf_erreur_type: El archivo seleccionado no es un PDF
+previsualisation_mail_pdf_placeholder: Ningún archivo seleccionado
+# template de mail envoyé
+template_mail_envoye_bonjour: Hola prenom nom
+template_mail_infos_evals: Encuentre en este correo electrónico la información sobre el exámen nomEval el date del grupo nomGroupe.
+template_mail_votre_note: Vuestra nota
+template_mail_votre_rang: Vuestro rango
+template_mail_effectif_groupe: (num estudiantes)
+template_mail_effectif_repartition: num estudiante(s)
+template_mail_mentions_legales: 'Se han recopilado su apellido, nombre y notas para producir estadísticas sobre la tasa de éxito de los estudiantes. La ley "Informatique et Libertés" le permite solicitar la supresión de sus datos personales que aparecen en una base de datos mediante el derecho de oposición (artículo 38 de la ley n° 78-17 del 6/01/1978) y del derecho de rectificación (artículo 40 de la ley n° 78-17 del 6/01/1978). Para ejercer estos derechos, informe al administrador: <a href="mailto:mailAdmin">mailAdmin</a><br>Si se elimina su información, ya no recibirá estadísticas sobre su tasa de éxito en los distintos exámenes.'
+# page consulter
+consulter_evaluation_btn_stats: Mostrar las estadísticas de nom
+# page modifier
+modifier_evaluation_titre_page: Modificar nom
+modifier_evaluation_message_info_absent: Si un estudiante estuvo ausente para el exámen, ingrese -1. Su puntuación no se tendrá en cuenta para las estadísticas.
+# page créer simple
+creer_eval_simple_titre_page: Crear un exámen
+creer_eval_simple_btn_valider: Guardar notas
+# page créer parties (saisie infos)
+creer_eval_parties_saisie_info_titre_page: Crear un exámen con partes
+# page créer parties (saisie arborescence)
+creer_eval_parties_saisie_arbo_titre_page: Crear partes para nom
+creer_eval_parties_saisie_arbo_sous_titre_page: Seleccionar una parte para añadir una subparte, modificar una parte o eliminar una parte
+tooltip_partie_ajouter: Crear una subparte para la parte seleccionada
+tooltip_partie_modifier: Modificar la parte seleccionada
+tooltip_partie_supprimer: Eliminar la parte seleccionada
+form_partie_intitule: Intitulado de la parte
+form_partie_bareme:  Escala de la parte
+####### PAGE CHOIX STATISTIQUE
+# Général
+consulter_type_stats: Consultar este tipo de estadísticas
+repartition_notes_histo: Distribución de las notas (histograma)
+repartition_notes_bam: Distribución de las notas (Diagrama de caja)
+moyenne_ecart_type: Desviación estándar y media (histograma)
+fiche_etudiant: Ficha estudiante
+evolution_groupe: Evolución de los resultados de los estudiantes de un grupo a lo largo de varios exámenes
+evolution_statut: Evolución de los resultados de los estudiantes de un estado a lo largo de varios exámenes
+# Messages d'erreur
+page_stats_statistiques_indisponible: 'Estadísticas no disponibles : '
+page_stats_pas_eval_simple: Crear exámenes simples
+page_stats_pas_eval_parties: Crear exámenes por partes
+page_stats_pas_groupes_admin_connecte: Crear grupos
+page_stats_pas_etudiants_admin_connecte: Crear estudiantes
+page_stats_pas_statut: Crear estado
+page_stats_pas_groupes_pas_admin_connecte: Pedir al administrador que cree grupos
+page_stats_pas_etudiants_pas_admin_connecte: Pedir al administrador que cree estudiantes
+page_stats_puis: y
+page_stats_pas_eval: Crear exámenes
+# Stats éval simple
+page_stats_eval_simple_titre_principal: Análisis de un exámen simple
+page_stats_eval_simple_sous_titre_principal: Obtener estadísticas sobre un exámen específico en el que el profesor ingresó una calificación de 20 para cada estudiante.
+page_stats_eval_simple_histo_description: 'Obtener, para determinados grupos (grupos de tutorías / trabajos prácticos por ejemplo) y / o perfiles determinados (estudiantes en situación de beca, repetidores, etc.), la distribución de notas en forma de <b>histograma</b>.'
+page_stats_eval_simple_bam_description: 'Obtener, para determinados grupos (grupos de tutorías / trabajos prácticos por ejemplo) y / o perfiles determinados (estudiantes en situación de beca, repetidores, etc.), la distribución de notas en forma de <b>diagrama de caja</b>.'
+page_stats_eval_simple_moyenne_ecart_type_description: 'Obtener, para determinados grupos (grupos de tutorías / trabajos prácticos por ejemplo) y / o perfiles determinados (estudiantes en situación de beca, repetidores, etc.), la media y la desviación estándar en la forma de <b>histograma</b>.'
+# Stats éval parties
+page_stats_eval_parties_titre_principal: Análisis de un exámen por partes
+page_stats_eval_parties_sous_titre_principal: Obtener estadísticas sobre un exámen concreto en el que el profesor haya introducido para cada estudiante una nota sobre las diferentes partes de su exámen (pregunta del curso, ejercicio 1, ejercicio 2 por ejemplo).
+page_stats_eval_parties_histo_description: 'Obtener, para determinados grupos (grupos de tutorías / trabajos prácticos por ejemplo) y / o perfiles determinados (estudiantes en situación de beca, repetidores, etc.), la distribución de notas en forma de <b>histograma</b>.'
+page_stats_eval_parties_bam_description: 'Obtener, para determinados grupos (grupos de tutorías / trabajos prácticos por ejemplo) y / o perfiles determinados (estudiantes en situación de beca, repetidores, etc.), la distribución de notas en forma de <b>diagrama de caja</b>.'
+page_stats_eval_parties_moyenne_ecart_type_description: 'Obtener, para determinados grupos (grupos de tutorías / trabajos prácticos por ejemplo) y / o perfiles determinados (estudiantes en situación de beca, repetidores, etc.), la media y la desviación estándar en la forma de <b>histograma</b>.'
+# Stats plusieurs evals groupes
+page_stats_plusieurs_evals_groupes_titre_principal: Análisis de los resultados del(los) grupo(s) de estudiantes en varios exámenes
+page_stats_plusieurs_evals_groupes_sous_titre_principal: Observar los resultados de uno o más grupos de estudiantes (grupos de tutorías / trabajos prácticos por ejemplo) en varios exámenes.
+page_stats_plusieurs_evals_groupes_histo_description: 'Seleccione varios exámenes (por ejemplo, todos los exámenes en inglés) y obtenga, en forma de un <b>histograma</b>, la distribución global de las notas para uno o más grupos de estudiantes (grupos de tutorías / trabajos prácticos por ejemplo).'
+page_stats_plusieurs_evals_groupes_bam_description: 'Seleccione varios exámenes (por ejemplo, todos los exámenes en inglés) y obtenga, en forma de un <b>diagrama de caja</b>, la distribución global de las notas para uno o más grupos de estudiantes (grupos de tutorías / trabajos prácticos por ejemplo).'
+page_stats_plusieurs_evals_groupes_moyenne_ecart_type_description: 'Seleccione varios exámenes (por ejemplo, todos los exámenes en inglés) y obtenga, en forma de un <b>histograma</b>, la la media y la desviación estándar para uno o más grupos de estudiantes (grupos de tutorías / trabajos prácticos por ejemplo).'
+# Stats plusieurs evals statut
+page_stats_plusieurs_evals_statut_titre_principal: Análisis de los resultados del estado de un estudiante en varios exámenes.
+page_stats_plusieurs_evals_statut_sous_titre_principal: Observar los resultados de un grupo de estudiantes con un estado particular (becarios, repetidores... por ejemplo) en varios exámenes.
+page_stats_plusieurs_evals_statut_histo_description: 'Seleccione varios exámenes (por ejemplo, todos los exámenes de matemáticas) y obtenga, en forma de un <b>histograma</b>, la distribución global de las notas para una o más categorías de estudiantes (becarios, repetidores... por ejemplo).'
+page_stats_plusieurs_evals_statut_bam_description: 'Seleccione varios exámenes (por ejemplo, todos los exámenes en matemáticas) y obtenga, en forma de un <b>diagrama de caja</b>, la distribución global de las notas para una o más categorías de estudiantes (becarios, repetidores ... por ejemplo).'
+page_stats_plusieurs_evals_statut_moyenne_ecart_type_description: 'Seleccione varios exámenes(por ejemplo, todos los exámenes de matemáticas) y obtenga, en forma de un <b>histograma</b>, la media y la desviación estándar de uno o más perfiles de estudiantes (becarios, repetidores. .. por ejemplo).'
+# Stats evolution
+page_stats_evolution_titre_principal: Evolución cronológica de los resultados de un estudiante o grupo de estudiantes
+page_stats_evolution_sous_titre_principal: 'Observar, a partir de varios exámenes, la evolución cronológica de las notas: <ul> <li> de un estudiante </li> <li> estudiantes pertenecientes a uno o más grupos (grupos de tutorías / trabajos prácticos) </ li > <li> estudiantes con un perfil determinado (becarios, repetidores ...) </li> </ul>'
+page_stats_evolution_fiche_etudiant_description: 'Seleccione un alumno y obtenga una página resumen de sus resultados sobre todos los exámenes en las que participó en forma de <b> curvas evolutivas </b> cronológicas, <b> histogramas </b> y <b> rankings </b> entre los grupos o estados de los estudiantes a los que pertenece.'
+page_stats_evolution_groupe_description: 'Seleccionar un grupo de estudiantes, una serie de exámenes y obtener, para cada estudiante, una curva que detalle la evolución de los resultados del estudiante para los exámenes elegidos, en orden cronológico.'
+page_stats_evolution_statut_description: 'Seleccionar un grupo de estudiantes con un estado particular, una serie de exámenes y obtener, para cada estudiante, una curva que detalla la evolución de los resultados del estudiante para los exámenes seleccionados, en orden cronológico.'
+# Stats comparaison
+page_stats_comparaison_titre_principal: Comparación de los resultados de un exámen específico con un conjunto de exámenes
+page_stats_comparaison_sous_titre_principal: 'Comparar los resultados de un exámen con un conjunto de exámenes (por ejemplo: compare los resultados obtenidos por los estudiantes con un exámen de algorítmica con todos los exámenes en informática). La comparativa puede referirse a grupos concretos (grupos de tutorías / trabajos prácticos por ejemplo) y / o alumnos con un estado particular (becarios, repetidores ...).'
+####### FORMULAIRES STATISTIQUES
+# Stats éval simple
+formulaire_stats_eval_simple_titre_choix_eval: Análisis de un exámen simple
+formulaire_stats_eval_simple_sous_titre_choix_eval: Elija el exámen que desea para consultar las estadísticas
+formulaire_stats_eval_simple_titre_choix_groupes: Análisis de un exámen simple (nom)
+formulaire_stats_eval_simple_sous_titre_groupes_choix_groupes: Seleccione los grupos para los que desea ver estadísticas
+formulaire_stats_eval_simple_sous_titre_statuts_choix_groupes: Seleccione los grupos de estudiantes con un estado particular para los que desea consultar las estadísticas
+# Stats éval simple
+formulaire_stats_eval_parties_titre_choix_eval: Análisis de un exámen con partes
+formulaire_stats_eval_parties_sous_titre_choix_eval: Elija el grupo para el que desea consultar las estadísticas
+formulaire_stats_eval_parties_titre_choix_groupes: Análisis de un exámen con partes (nom)
+formulaire_stats_eval_parties_sous_titre_groupes_choix_groupes: Seleccione los grupos para los que desea ver estadísticas
+formulaire_stats_eval_parties_sous_titre_statuts_choix_groupes: Seleccione los grupos de estudiantes con un estado particular para los que desea consultar las estadísticas
+formulaire_stats_eval_parties_sous_titre_parties_choix_groupes: Seleccione al menos una parte del exámen para la que desea ver las estadísticas
+# Stats plusieurs evals groupes
+formulaire_stats_plusieurs_evals_groupes_titre_choix_groupe: Análisis de los resultados del (los) grupo(s) de estudiantes en varios exámenes
+formulaire_stats_plusieurs_evals_groupes_sous_titre_choix_groupe: Elija el grupo que desea para consultar las estadísticas
+formulaire_stats_plusieurs_evals_groupes_titre_choix_sous_groupes: Análisis de los resultados del (los) grupo(s) de estudiantes en varios exámenes
+formulaire_stats_plusieurs_evals_groupes_sous_titre_choix_sous_groupes: Seleccione los subgrupos de nom para los que desea ver estadísticas
+formulaire_stats_plusieurs_evals_groupes_titre_choix_evals: Análisis de los resultados del (los) grupo(s) de estudiantes en varios exámenes
+formulaire_stats_plusieurs_evals_groupes_sous_titre_choix_evals: Seleccione los exámenes para los que desea ver las estadísticas para los grupos seleccionados previamente
+# Stats plusieurs evals statut
+formulaire_stats_plusieurs_evals_statut_titre_choix_statut: Análisis de los resultados del estado de un estudiante en varios exámenes.
+formulaire_stats_plusieurs_evals_statut_sous_titre_choix_statut: Seleccione el grupo de estudiantes con un estado particular para el que desea ver estadísticas
+formulaire_stats_plusieurs_evals_statut_titre_choix_evals: Análisis de los resultados del estado de un estudiante en varios exámenes. (nom)
+formulaire_stats_plusieurs_evals_statut_sous_titre_choix_evals: Seleccione los exámenes para el que desea ver estadísticas
+# Stats fiche étudiant
+formulaire_stats_fiche_etudiant_titre: Evolución cronológica de los resultados de un estudiante
+formulaire_stats_fiche_etudiant_sous_titre: Seleccionar un estudiante para consultar su ficha
+# Stats comparaison
+formulaire_stats_comparaison_titre_choix_eval_reference: Comparación de los resultados de un exámen específico con un conjunto de exámenes
+formulaire_stats_comparaison_sous_titre_choix_eval_reference: Elija el exámen de referencia que se comparará con un conjunto de exámenes
+formulaire_stats_comparaison_titre_choix_autres_evals: Comparación de los resultados de un exámen específico con un conjunto de exámenes
+formulaire_stats_comparaison_sous_titre_choix_autres_evals: Seleccione el conjunto de exámenes cuyo promedio general se comparará con el promedio del exámen de referencia nom
+formulaire_stats_comparaison_message_alternatif_autres_evals: '<p> Ningún exámen se compara con el exámen nom. Puede crear exámenes <a href="url">aquí</a> o seleccionar otro exámen comparativo en el paso anterior.</p>'
+formulaire_stats_comparaison_titre_choix_groupes: Comparación de los resultados de un exámen específico con un conjunto de exámenes
+formulaire_stats_comparaison_sous_titre_groupes_choix_groupes: Seleccione los grupos para los que desea ver estadísticas
+formulaire_stats_comparaison_sous_titre_statuts_choix_groupes: Seleccione los grupos de estudiantes con un estado particular para los que desea consultar las estadísticas
+# Stats evolution groupe
+formulaire_stats_evolution_groupe_titre_choix_groupe: Evolución cronológica de los resultados de un conjunto de estudiantes
+formulaire_stats_evolution_groupe_sous_titre_choix_groupe: Seleccione el grupo para el que desea ver las estadísticas
+formulaire_stats_evolution_groupe_warning_choix_groupe: El color del tamaño de un grupo indica la facilidad de lectura del gráfico que se generará para ese grupo.
+formulaire_stats_evolution_groupe_titre_choix_sous_groupes: Evolución cronológica de los resultados de un conjunto de estudiantes
+formulaire_stats_evolution_groupe_sous_titre_choix_sous_groupes: Seleccione los subgrupos de nombres para los que desea ver estadísticas
+formulaire_stats_evolution_groupe_warning_choix_sous_groupes: El color del tamaño de un grupo indica la facilidad de lectura del gráfico que se generará para ese grupo.
+formulaire_stats_evolution_groupe_titre_choix_evals: Evolución cronológica de los resultados de un conjunto de estudiantes
+formulaire_stats_evolution_groupe_sous_titre_choix_evals: Seleccione los exámenes para los que desea ver las estadísticas para los grupos seleccionados previamente
+
+# Stats evolution statut
+formulaire_stats_evolution_statut_titre_choix_statut: Evolución cronológica de los resultados de un conjunto de estudiantes pertenecientes a un estado
+formulaire_stats_evolution_statut_sous_titre_choix_statut: Seleccione el grupo de estudiantes con un estado particular para el que desea ver las estadísticas
+formulaire_stats_evolution_statut_warning_choix_statut: El color del tamaño de un grupo indica la facilidad de lectura del gráfico que se generará para ese grupo.
+formulaire_stats_evolution_statut_titre_choix_groupe: Evolución cronológica de los resultados de un conjunto de estudiantes pertenecientes a un estado
+formulaire_stats_evolution_statut_sous_titre_choix_groupe: Seleccione el grupo para el que desea ver estadísticas para el estado seleccionado anteriormente
+formulaire_stats_evolution_statut_warning_choix_groupe: El color del tamaño de un grupo indica la facilidad de lectura del gráfico que se generará para ese grupo.
+formulaire_stats_evolution_statut_titre_choix_sous_groupes: Evolución cronológica de los resultados de un conjunto de estudiantes pertenecientes a un estado
+formulaire_stats_evolution_statut_sous_titre_choix_sous_groupes: Seleccione los subgrupos de nomGroupe que comprende estudiantes con estado 'nomStatut' para los que desea ver las estadísticas
+formulaire_stats_evolution_statut_warning_choix_sous_groupes: El color del tamaño de un grupo indica la facilidad de lectura del gráfico que se generará para ese grupo.
+formulaire_stats_evolution_statut_titre_choix_evals: Evolución cronológica de los resultados de un conjunto de estudiantes pertenecientes a un estado
+formulaire_stats_evolution_statut_sous_titre_choix_evals: Seleccione los exámenes para los que desea ver las estadísticas para los grupos seleccionados previamente
+####### REINITIALISATION APPLICATION
+app_reset_texte: 'Reiniciar la aplicación eliminará: <ul> <li> Todos los grupos </li> <li> Todos los grupos de estudiantes con un estado particular</li> <li> Todas los exámenes</li> <li> Todos los estudiantes </li> </ul> Los perfiles de los profesores no se eliminarán y las estadísticas ya no serán visibles.'
+####### TUTORIELS
+tuto_titre_page: Ver los tutoriales de la aplicación
+tuto_titre_creer_eval_parties: Crear un exámen por partes
+tuto_texte_creer_eval_parties: Descubrir cómo crear exámenes por partes, para poder obtener una mayor precisión en las estadísticas.
+tuto_titre_eval_simple: Análisis de un exámen simple
+tuto_texte_eval_simple: Descubrir cómo obtener las estadísticas sobre un exámen específico en el que el profesor ingresó una nota de 20 para cada estudiante.
+tuto_titre_eval_parties: Análisis de un exámen por partes
+tuto_texte_eval_parties: Descubrir cómo obtener las estadísticas sobre un exámen específico en el que el profesor ingresó una puntuación para cada estudiante en las diferentes partes de su exámen.
+tuto_titre_plusieurs_evals_groupes: Análisis de los resultados de grupo(s) de estudiante s) en varios exámenes
+tuto_texte_plusieurs_evals_groupes: Descubrir cómo observar los resultados de uno o más grupos de estudiantes en múltiples exámenes.
+tuto_titre_plusieurs_evals_statut: Análisis de los resultados del estado de un estudiante en varios exámenes.
+tuto_texte_plusieurs_evals_statut: Descubrir cómo observar los resultados de un grupo de estudiantes de estado particular en múltiples exámenes.
+tuto_titre_comparaison: Comparación de los resultados de un exámen específico con un conjunto de exámenes
+tuto_texte_comparaison: Descubrir cómo comparar los resultados de un exámen con un conjunto de exámenes.
+tuto_titre_fiche_etudiant: Evolución cronológica de los resultados de un estudiante
+tuto_texte_fiche_etudiant: Descubrir cómo observar la evolución de las notas de un estudiante a lo largo del tiempo a partir de múltiples exámenes.
+tuto_titre_evolution_groupe: Evolución de los resultados de los estudiantes de un grupo en varios exámenes
+tuto_texte_evolution_groupe: Descubrir cómo obtener, para cada estudiante de un grupo, un gráfico que detalle la evolución cronológica de los resultados de los estudiantes en los exámenes seleccionados.
+tuto_titre_evolution_statut: Evolución de los resultados de estudiantes de un estado particular en varios exámenes
+tuto_texte_evolution_statut: Descubrir cómo obtener, para cada estudiante de un estado particular, una curva que detalle la evolución cronológica de los resultados de los estudiantes en los exámenes elegidos.
+####### TRADUCTIONS DATATABLES
+afficher_x_elements: Mostrar _MENU_ elementos
+rechercher: Buscar...
+suivant: Próximo
+precedent: Anterior
+premier: Primero
+dernier: Último
+traitement: Tratamiento en curso...
+chargement: Cargando...
+table_vide: Datos no disponibles
+aucune_correspondance: No hay elementos para mostrar
+tout_elements: 'Todos'
