@@ -1195,9 +1195,9 @@ class StatistiquesController extends AbstractController
                 'info',
                 'L\'envoi des mails a été effectué avec succès.'
             );
-            return $this->render('statistiques/affichage_stats_classiques.html.twig', [
-                'titrePage' => 'Consulter les statistiques pour ' . $evaluation->getNom(),
-                'plusieursEvals' => false,
+            return $this->render('statistiques/affichage_statistiques.html.twig', [
+                'titrePage' => $this->translator->trans('page_eval_simple_parties_titre', ['nom'=> $evaluation->getNom()]),
+                'typeStatistique' => 'simple_parties',
                 'parties' => $stats,
                 'evaluation' => $evaluation
             ]);
