@@ -31,7 +31,7 @@ use Symfony\Component\Filesystem\Filesystem;
 /**
  * @Route("{_locale}/statistiques")
  */
-class StatsController extends AbstractController
+class StatistiquesController extends AbstractController
 {
     private  $translator;
 
