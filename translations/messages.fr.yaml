@@ -93,6 +93,8 @@ form_groupe_fichier_csv: Fichier CSV (séparateur ;)
 form_groupe_telecharger_modele: Télécharger un modèle
 pas_fichier_choisi: Aucun fichier choisi
 fichier_trop_volumineux: Le fichier ajouté est trop volumineux
+# page consulter
+consulter_groupe_etudiants: Liste des étudiants du groupe
 ####### STATUTS ETUDIANTS
 # messages globaux
 message_alternatif_pas_de_statut: 'Il est possible d''obtenir des statistiques sur des groupes d''étudiants ayant un statut particulier (boursiers, redoublants, ...). Vous pouvez créer de tels groupes <a href="url">ici</a>.'
