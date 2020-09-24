@@ -1087,13 +1087,13 @@ class StatistiquesController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $groupes = $form->get('groupes')->getData();
             $statuts = $form->get('statuts')->getData();
-            return $this->render('statistiques/affichage_stats_comparaison.html.twig', [
+            return $this->render('statistiques/affichage_statistiques.html.twig', [
                 'evaluations' => $evaluationsChoisies,
                 'evaluationConcernee' => $evaluation,
                 'groupes' => $groupes,
                 "parties" => $statsManager->calculerStatsComparaison($evaluation, $groupes, $statuts, $evaluationsChoisies),
-                'titre' => "Comparer " . $evaluation->getNom() . " à " . (count($evaluationsChoisies)) . ' évaluation(s)',
-                'plusieursEvals' => true,
+                'titrePage' => $this->translator->trans('page_comparaison_titre', ['nom' => $evaluation->getNom(), 'nombre'=> count($evaluationsChoisies)]),
+                'typeStatistique' => "comparaison",
             ]);
         }
         return $this->render('statistiques/formulaire_parametrage_statistiques.html.twig', [
