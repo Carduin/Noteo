@@ -17,7 +17,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 /**
- * @Route("/groupe")
+ * @Route("{_locale}/groupe")
  */
 class GroupeEtudiantController extends AbstractController
 {

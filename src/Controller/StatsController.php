@@ -29,7 +29,7 @@ use Symfony\Component\Validator\Constraints\NotNull;
 use Symfony\Component\Filesystem\Filesystem;
 
 /**
- * @Route("/statistiques")
+ * @Route("{_locale}/statistiques")
  */
 class StatsController extends AbstractController
 {

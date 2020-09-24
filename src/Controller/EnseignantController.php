@@ -16,7 +16,7 @@ use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 /**
- * @Route("/enseignant")
+ * @Route("{_locale}/enseignant")
  */
 class EnseignantController extends AbstractController
 {

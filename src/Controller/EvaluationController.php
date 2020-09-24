@@ -31,7 +31,7 @@ use Symfony\Component\Validator\Constraints\Length;
 
 
 /**
- * @Route("/evaluation")
+ * @Route("{_locale}/evaluation")
  */
 class EvaluationController extends AbstractController
 {
