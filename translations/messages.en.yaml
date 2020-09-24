@@ -305,64 +305,63 @@ page_stats_comparaison_titre_principal: Comparison of the results of a specific 
 page_stats_comparaison_sous_titre_principal: 'Compare the results obtained on an evaluation against a set of evaluations (for example: compare the results obtained by students on an algorithmic assessment against all computer assessments). The comparison can relate to specific groups (practical work groups for example) and / or students having a particular status (scholarship holders, repeaters, etc.).'
 ####### FORMULAIRES STATISTIQUES
 # Stats éval simple
-formulaire_stats_eval_simple_titre_choix_eval: Analyse d’une évaluation simple
-formulaire_stats_eval_simple_sous_titre_choix_eval: Choisir l'évaluation pour laquelle vous désirez consulter les statistiques
-formulaire_stats_eval_simple_titre_choix_groupes: Analyse d'une évaluation simple (nom)
-formulaire_stats_eval_simple_sous_titre_groupes_choix_groupes: Sélectionner les groupes pour lesquels vous souhaitez consulter les statistiques
-formulaire_stats_eval_simple_sous_titre_statuts_choix_groupes: Sélectionner les groupes d'étudiants ayant un statut particulier pour lesquels vous souhaitez consulter les statistiques
+formulaire_stats_eval_simple_titre_choix_eval: Analysis of a simple evaluation
+formulaire_stats_eval_simple_sous_titre_choix_eval: Select the evaluation for which you wish to generate statistics
+formulaire_stats_eval_simple_titre_choix_groupes: Analysis of a simple evaluation (nom)
+formulaire_stats_eval_simple_sous_titre_groupes_choix_groupes: Select the groups for which you wish to generate statistics
+formulaire_stats_eval_simple_sous_titre_statuts_choix_groupes: Select the groups of students having a particular status for which you wish to generate statistics
 # Stats éval simple
-formulaire_stats_eval_parties_titre_choix_eval: Analyse d’une évaluation avec parties
-formulaire_stats_eval_parties_sous_titre_choix_eval: Choisir l'évaluation pour laquelle vous désirez consulter les statistiques
-formulaire_stats_eval_parties_titre_choix_groupes: Analyse d'une évaluation avec parties (nom)
-formulaire_stats_eval_parties_sous_titre_groupes_choix_groupes: Sélectionner les groupes pour lesquels vous souhaitez consulter les statistiques
-formulaire_stats_eval_parties_sous_titre_statuts_choix_groupes: Sélectionner les groupes d'étudiants ayant un statut particulier pour lesquels vous souhaitez consulter les statistiques
-formulaire_stats_eval_parties_sous_titre_parties_choix_groupes: Sélectionner au moins une partie de l'évaluation pour laquelle vous souhaitez consulter les statistiques
+formulaire_stats_eval_parties_titre_choix_eval: Analysis of an evaluation divided into several parts
+formulaire_stats_eval_parties_sous_titre_choix_eval: Select the evaluation for which you wish to generate statistics
+formulaire_stats_eval_parties_titre_choix_groupes: Analysis of an evaluation divided into several parts  (nom)
+formulaire_stats_eval_parties_sous_titre_groupes_choix_groupes: Select the groups for which you wish to generate statistics
+formulaire_stats_eval_parties_sous_titre_statuts_choix_groupes: Select the groups of students having a particular status for which you wish to generate statistics
+formulaire_stats_eval_parties_sous_titre_parties_choix_groupes: Select at least one part of the evaluation for which you wish to generate statistics
 # Stats plusieurs evals groupes
-formulaire_stats_plusieurs_evals_groupes_titre_choix_groupe: Analyse des résultats de groupe(s) d’étudiant(s) sur plusieurs évaluations
-formulaire_stats_plusieurs_evals_groupes_sous_titre_choix_groupe: Sélectionner le groupe pour lequel vous souhaitez voir des statistiques
-formulaire_stats_plusieurs_evals_groupes_titre_choix_sous_groupes: Analyse des résultats de groupe(s) d’étudiant(s) sur plusieurs évaluations
-formulaire_stats_plusieurs_evals_groupes_sous_titre_choix_sous_groupes: Sélectionner les sous groupes de nom pour lesquels vous souhaitez voir des statistiques
-formulaire_stats_plusieurs_evals_groupes_titre_choix_evals: Analyse des résultats de groupe(s) d’étudiant(s) sur plusieurs évaluations
-formulaire_stats_plusieurs_evals_groupes_sous_titre_choix_evals: Sélectionner les évaluations pour lesquelles vous souhaitez voir des statistiques pour les groupes précédemment sélectionnés
+formulaire_stats_plusieurs_evals_groupes_titre_choix_groupe: Analysis of the results of group(s) of student(s) over several evaluations
+formulaire_stats_plusieurs_evals_groupes_sous_titre_choix_groupe: Select the group for which you wish to generate statistics
+formulaire_stats_plusieurs_evals_groupes_titre_choix_sous_groupes: Analysis of the results of group(s) of student(s) over several evaluations
+formulaire_stats_plusieurs_evals_groupes_sous_titre_choix_sous_groupes: Select the sub groups of nom for which you wish to generate statistics
+formulaire_stats_plusieurs_evals_groupes_titre_choix_evals: Analysis of the results of group(s) of student(s) over several evaluations
+formulaire_stats_plusieurs_evals_groupes_sous_titre_choix_evals: Select the evaluations for which you wish to generate statistics regarding the previously selected groups
 # Stats plusieurs evals statut
-formulaire_stats_plusieurs_evals_statut_titre_choix_statut: Analyse des résultats d’un statut d’étudiants sur plusieurs évaluations
-formulaire_stats_plusieurs_evals_statut_sous_titre_choix_statut: Sélectionner le groupe d'étudiants ayant un statut particulier pour lequel vous souhaitez voir des statistiques
-formulaire_stats_plusieurs_evals_statut_titre_choix_evals: Analyse des résultats d’un statut d’étudiants sur plusieurs évaluations (nom)
-formulaire_stats_plusieurs_evals_statut_sous_titre_choix_evals: Sélectionner les évaluations pour lesquelles vous souhaitez voir des statistiques
+formulaire_stats_plusieurs_evals_statut_titre_choix_statut: Analysis of the results of a student status over several evaluations
+formulaire_stats_plusieurs_evals_statut_sous_titre_choix_statut: Select the group of students having a particular status for which you wish to generate statistics
+formulaire_stats_plusieurs_evals_statut_titre_choix_evals: Analysis of the results of a student status over several evaluations (nom)
+formulaire_stats_plusieurs_evals_statut_sous_titre_choix_evals: Select the evaluations for which you wish to generate statistics
 # Stats fiche étudiant
-formulaire_stats_fiche_etudiant_titre: Évolution chronologique des résultats d’un étudiant
-formulaire_stats_fiche_etudiant_sous_titre: Sélectionner l'étudiant pour consulter sa fiche
+formulaire_stats_fiche_etudiant_titre: Chronological evolution of the results of a student
+formulaire_stats_fiche_etudiant_sous_titre: Select the student whose card you whish to see
 # Stats comparaison
-formulaire_stats_comparaison_titre_choix_eval_reference: Comparaison des résultats d’une évaluation spécifique à un ensemble d’évaluations
-formulaire_stats_comparaison_sous_titre_choix_eval_reference: Choisir l'évaluation de référence qui sera comparée à un ensemble d’évaluations
-formulaire_stats_comparaison_titre_choix_autres_evals: Comparaison des résultats d’une évaluation spécifique à un ensemble d’évaluations
-formulaire_stats_comparaison_sous_titre_choix_autres_evals: Sélectionner l'ensemble des évaluations dont la moyenne globale sera comparée à la moyenne de l'évaluation de référence nom
-formulaire_stats_comparaison_message_alternatif_autres_evals: '<p> Aucune évaluation n''est comparable avec l''évaluation nom. Vous pouvez créer des évaluations <a href="url">ici</a> où bien sélectionner une autre évaluation de référence à l''étape précédente.</p>'
-formulaire_stats_comparaison_titre_choix_groupes: Comparaison des résultats d’une évaluation spécifique à un ensemble d’évaluations
-formulaire_stats_comparaison_sous_titre_groupes_choix_groupes: Sélectionner les groupes pour lesquels vous souhaitez consulter les statistiques
-formulaire_stats_comparaison_sous_titre_statuts_choix_groupes: Sélectionner les groupes d'étudiants ayant un statut particulier pour lesquels vous souhaitez consulter les statistiques
+formulaire_stats_comparaison_titre_choix_eval_reference: Comparison of the results of a specific evaluation to a set of evaluations
+formulaire_stats_comparaison_sous_titre_choix_eval_reference: Select the baseline evaluation that will be compared to a set of evaluations
+formulaire_stats_comparaison_titre_choix_autres_evals: Comparison of the results of a specific evaluation to a set of evaluations
+formulaire_stats_comparaison_sous_titre_choix_autres_evals: Select the set of evaluations whose overall average will be compared to the average of the baseline evaluation nom
+formulaire_stats_comparaison_message_alternatif_autres_evals: '<p> No evaluation is comparable to nom. You can create evaluations <a href="url">here</a> or select another baseline at the previous step.</p>'
+formulaire_stats_comparaison_titre_choix_groupes: Comparison of the results of a specific evaluation to a set of evaluations
+formulaire_stats_comparaison_sous_titre_groupes_choix_groupes: Select the groups for which you wish to generate statistics
+formulaire_stats_comparaison_sous_titre_statuts_choix_groupes: Select the groups of students having a particular status for which you wish to generate statistics
 # Stats evolution groupe
-formulaire_stats_evolution_groupe_titre_choix_groupe: Évolution chronologique des résultats d’un ensemble d’étudiants
-formulaire_stats_evolution_groupe_sous_titre_choix_groupe: Sélectionner le groupe pour lequel vous souhaitez voir des statistiques
-formulaire_stats_evolution_groupe_warning_choix_groupe: La couleur de l'effectif d'un groupe indique la facilité de lecture du graphique qui sera généré pour ce groupe.
-formulaire_stats_evolution_groupe_titre_choix_sous_groupes: Évolution chronologique des résultats d’un ensemble d’étudiants
-formulaire_stats_evolution_groupe_sous_titre_choix_sous_groupes: Sélectionner les sous groupes de nom pour lesquels vous souhaitez voir des statistiques
-formulaire_stats_evolution_groupe_warning_choix_sous_groupes: La couleur de l'effectif d'un groupe indique la facilité de lecture du graphique qui sera généré pour ce groupe.
-formulaire_stats_evolution_groupe_titre_choix_evals: Évolution chronologique des résultats d’un ensemble d’étudiants
-formulaire_stats_evolution_groupe_sous_titre_choix_evals: Sélectionner les évaluations pour lesquelles vous souhaitez voir des statistiques pour les groupes précédemment sélectionnés
+formulaire_stats_evolution_groupe_titre_choix_groupe: Chronological evolution of the results of a group of students
+formulaire_stats_evolution_groupe_sous_titre_choix_groupe: Select the group for which you wish to generate statistics
+formulaire_stats_evolution_groupe_warning_choix_groupe: The color of a group's headcount indicates the ease of reading of the generated graphics.
+formulaire_stats_evolution_groupe_titre_choix_sous_groupes: Chronological evolution of the results of a group of students
+formulaire_stats_evolution_groupe_sous_titre_choix_sous_groupes: Select the sub groups of nom for which you wish to generate statistics
+formulaire_stats_evolution_groupe_warning_choix_sous_groupes: The color of a group's headcount indicates the ease of reading of the generated graphics.
+formulaire_stats_evolution_groupe_titre_choix_evals: Chronological evolution of the results of a group of students
+formulaire_stats_evolution_groupe_sous_titre_choix_evals: Select the evaluations for which you wish to generate statistics regarding the previously selected groups
 # Stats evolution statut
-formulaire_stats_evolution_statut_titre_choix_statut: Évolution chronologique des résultats d’un ensemble d’étudiants appartenant à un statut
-formulaire_stats_evolution_statut_sous_titre_choix_statut: Sélectionner le groupe d'étudiants ayant un statut particulier pour lequel vous souhaitez voir des statistiques
-formulaire_stats_evolution_statut_warning_choix_statut: La couleur de l'effectif d'un groupe indique la facilité de lecture du graphique qui sera généré pour ce groupe.
-formulaire_stats_evolution_statut_titre_choix_groupe: Évolution chronologique des résultats d’un ensemble d’étudiants appartenant à un statut
-formulaire_stats_evolution_statut_sous_titre_choix_groupe: Sélectionner le groupe pour lequel vous souhaitez voir des statistiques pour le statut précédemment sélectionné
-formulaire_stats_evolution_statut_warning_choix_groupe: La couleur de l'effectif d'un groupe indique la facilité de lecture du graphique qui sera généré pour ce groupe.
-formulaire_stats_evolution_statut_titre_choix_sous_groupes: Évolution chronologique des résultats d’un ensemble d’étudiants appartenant à un statut
-formulaire_stats_evolution_statut_sous_titre_choix_sous_groupes: Sélectionner les sous groupes de nomGroupe comportant des étudiants du statut 'nomStatut' pour lesquels vous souhaitez voir des statistiques
-formulaire_stats_evolution_statut_warning_choix_sous_groupes: La couleur de l'effectif d'un groupe indique la facilité de lecture du graphique qui sera généré pour ce groupe.
-formulaire_stats_evolution_statut_titre_choix_evals: Évolution chronologique des résultats d’un ensemble d’étudiants appartenant à un statut
-formulaire_stats_evolution_statut_sous_titre_choix_evals: Sélectionner les évaluations pour lesquelles vous souhaitez voir des statistiques pour les groupes précédemment sélectionnés
-
+formulaire_stats_evolution_statut_titre_choix_statut: Chronological evolution of the results of a group of students having a particular status
+formulaire_stats_evolution_statut_sous_titre_choix_statut: Select the group of students having a particular status for which you wish to generate statistics
+formulaire_stats_evolution_statut_warning_choix_statut: The color of a group's headcount indicates the ease of reading of the generated graphics.
+formulaire_stats_evolution_statut_titre_choix_groupe: Chronological evolution of the results of a group of students having a particular status
+formulaire_stats_evolution_statut_sous_titre_choix_groupe: Select the group for which you wish to generate statistics regarding the previously selected status
+formulaire_stats_evolution_statut_warning_choix_groupe: The color of a group's headcount indicates the ease of reading of the generated graphics.
+formulaire_stats_evolution_statut_titre_choix_sous_groupes: Chronological evolution of the results of a group of students having a particular status
+formulaire_stats_evolution_statut_sous_titre_choix_sous_groupes: Select the sub groups of nomGroupe including students having the status 'nomStatut' for which you wish to generate statistics
+formulaire_stats_evolution_statut_warning_choix_sous_groupes: The color of a group's headcount indicates the ease of reading of the generated graphics.
+formulaire_stats_evolution_statut_titre_choix_evals: Chronological evolution of the results of a group of students having a particular status
+formulaire_stats_evolution_statut_sous_titre_choix_evals: Select the evaluations for which you wish to generate statistics regarding the previously selected groups
 ####### REINITIALISATION APPLICATION
 app_reset_texte: 'Resetting the app will remove: <ul><li>all groups</li><li>all student status</li><li>all evaluations</li><li>all students</li></ul>Teacher profiles will not be deleted, but you will not be able to generate statistics anymore.'
 ####### TUTORIELS
