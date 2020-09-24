@@ -7,11 +7,10 @@
 {% block contenu %}
     <div class='bouton' align=center>
         <a class="d-sm-inline-block btn btn-sm btn-primary shadow-sm"
-           href="{{ path('enseignant_edit', {'id': enseignant.id}) }}">Modifier {% if enseignant == app.user %}mon profil{% else %}{{ enseignant.prenom }} {{ enseignant.nom }}{% endif %}</a>
+           href="{{ path('enseignant_edit', {'id': enseignant.id}) }}">{% if enseignant == app.user %}{% trans %}modifier_profil_enseignant_connecte{% endtrans %}{% else %}{% trans with {'nom' : enseignant.nom, 'prenom' : enseignant.prenom} %}modifier_profil_autre_enseignant{% endtrans %}{% endif %}</a>
         {% if enseignant != app.user %}
             <a class="d-sm-inline-block btn btn-sm btn-primary shadow-sm"
-               href="{{ path('enseignant_edit_password', {'id': enseignant.id}) }}">Modifier le mot de passe
-                de {{ enseignant.prenom }} {{ enseignant.nom }}</a>
+               href="{{ path('enseignant_edit_password', {'id': enseignant.id}) }}">{% trans with {'nom' : enseignant.nom, 'prenom' : enseignant.prenom} %}modifier_mdp_autre_enseignant{% endtrans %}</a>
         {% endif %}
     </div>
     <div class="table-responsive">
