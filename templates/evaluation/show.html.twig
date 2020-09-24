@@ -49,7 +49,7 @@
     <div class="table-responsive table-hover">
         <table data-cols-width="25,25, 10" class="table" id="etud">
             <thead>
-            <th>{% trans %}nom{% endtrans %}</th>
+            <th>{% trans %}nom_famille{% endtrans %}</th>
             <th>{% trans %}prenom{% endtrans %}</th>
             {% if evaluation.parties|length != 1 %}
                 {% for partie in evaluation.parties %}
@@ -121,7 +121,7 @@
             columns: {{ tableauColonnes | json_encode | raw }},
             lengthMenu: [
                 [15, 30, 45, -1],
-                [15, 30, 45, "Tout"]
+                [15, 30, 45, "{% trans %}tout_elements{% endtrans %}"]
             ],
             pageLength: {{ app.user.preferenceNbElementsTableaux }}, <!-- Pour que le nombre d'éléments affichés par défaut soit celui de la préference de l'utilisateur -->
             info: false,

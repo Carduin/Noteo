@@ -93,6 +93,8 @@ form_groupe_fichier_csv: Fichier CSV (séparateur ;)
 form_groupe_telecharger_modele: Télécharger un modèle
 pas_fichier_choisi: Aucun fichier choisi
 fichier_trop_volumineux: Le fichier ajouté est trop volumineux
+# page consulter
+consulter_groupe_etudiants: Liste des étudiants du groupe
 ####### STATUTS ETUDIANTS
 # messages globaux
 message_alternatif_pas_de_statut: 'Il est possible d''obtenir des statistiques sur des groupes d''étudiants ayant un statut particulier (boursiers, redoublants, ...). Vous pouvez créer de tels groupes <a href="url">ici</a>.'
@@ -362,6 +364,7 @@ formulaire_stats_evolution_statut_sous_titre_choix_evals: Sélectionner les éva
 ####### REINITIALISATION APPLICATION
 app_reset_texte: 'Réinitialiser l''application aura pour effet de supprimer de l''application: <ul><li>Tous les groupes</li><li>Tous les groupes d''étudiants ayant un statut particulier</li><li>Toutes les évaluations</li><li>Tous les étudiants</li></ul>Les profils des enseignants ne seront pas supprimés et les statistiques ne seront plus consultables.'
 ####### TUTORIELS
+tuto_titre_page: Visionner les tutoriels de l'application
 tuto_titre_creer_eval_parties: Créer une évaluation par parties
 tuto_texte_creer_eval_parties: Découvrez comment créer des évaluations par parties, pour pouvoir obtenir une plus grande précision sur les statistiques.
 tuto_titre_eval_simple: Analyse d’une évaluation simple
@@ -377,9 +380,9 @@ tuto_texte_comparaison: Découvrez comment comparer les résultats obtenus à un
 tuto_titre_fiche_etudiant: Évolution chronologique des résultats d’un étudiant
 tuto_texte_fiche_etudiant: Découvrez comment observer, à partir de plusieurs évaluations, l’évolution chronologique des notes d’un étudiant.
 tuto_titre_evolution_groupe: Évolution des résultats des étudiants d'un groupe sur plusieurs évaluations
-tuto_texte_evolution_groupe: Découvrez comment obtenir, pour chaque étudiant d'un groupe, une courbe détaillant l'évolution chronologique des résultats des l'étudiant aux évaluations choisies.
+tuto_texte_evolution_groupe: Découvrez comment obtenir, pour chaque étudiant d'un groupe, une courbe détaillant l'évolution chronologique des résultats des étudiants aux évaluations choisies.
 tuto_titre_evolution_statut: Évolution des résultats des étudiants d'un statut sur plusieurs évaluations
-tuto_texte_evolution_statut: Découvrez comment obtenir, pour chaque étudiant d'un statut, une courbe détaillant l'évolution chronologique des résultats des l'étudiant aux évaluations choisies.
+tuto_texte_evolution_statut: Découvrez comment obtenir, pour chaque étudiant d'un statut, une courbe détaillant l'évolution chronologique des résultats des étudiants aux évaluations choisies.
 ####### TRADUCTIONS DATATABLES
 afficher_x_elements: Afficher _MENU_ éléments
 rechercher: Rechercher...
@@ -391,3 +394,4 @@ traitement: Traitement en cours...
 chargement: Chargement en cours...
 table_vide: Aucune donnée disponible
 aucune_correspondance: Aucun élément à afficher
+tout_elements: 'Tout'

@@ -152,8 +152,7 @@
                                 {% trans %}consulter_profil{% endtrans %}
                             </a>
                             <a class="dropdown-item" href="{{ path('enseignant_edit_password', {'id': app.user.id}) }}">
-                                <i class="icon-key-1 mr-2 text-gray-400"></i>
-                                {% trans %}modifier_mdp{% endtrans %}
+                                <i class="icon-key-1 mr-2 text-gray-400"></i>{% trans %}modifier_mdp{% endtrans %}
                             </a>
                             <div class="dropdown-divider"></div>
                             <a class="dropdown-item" href="{{ path('app_logout') }}">
@@ -206,7 +205,7 @@
                 {% trans %}app_reset_texte{% endtrans %}
             </div>
             <div class="modal-footer">
-                <a class="d-sm-inline-block btn btn-sm btn-primary shadow-sm" href="{{ path('app_reset') }}">Valider</a>
+                <a class="d-sm-inline-block btn btn-sm btn-primary shadow-sm" href="{{ path('app_reset') }}">{% trans %}valider{% endtrans %}</a>
             </div>
         </div>
     </div>

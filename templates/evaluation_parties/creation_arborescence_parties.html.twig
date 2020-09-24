@@ -183,7 +183,7 @@
             var partieSelectionnee = $('#arbre_boot').treeview('getSelected');
             if (partieSelectionnee.length != 0) {
                 $("#formPartie").unbind();
-                $('#titreModaleFormulaire').html("Créer une partie")
+                $('#titreModaleFormulaire').html("{% trans %}modale_creer_partie_titre{% endtrans %}")
                 $('#champIntitule').val('');
                 $('#champBareme').val('');
                 $('#modalePartie').modal('show');
@@ -214,7 +214,7 @@
             if (partieSelectionnee.length != 0) {
                 if (partieSelectionnee[0].id != 1) {
                     $("#formPartie").unbind();
-                    $('#titreModaleFormulaire').html("Modifier une partie")
+                    $('#titreModaleFormulaire').html("{% trans %}modale_modifier_partie_titre{% endtrans %}")
                     $('#champIntitule').val(partieSelectionnee[0].nom);
                     $('#champBareme').val(partieSelectionnee[0].bareme);
                     $('#modalePartie').modal('show');

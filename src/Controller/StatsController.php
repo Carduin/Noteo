@@ -955,10 +955,10 @@ class StatsController extends AbstractController
         return $this->render('statistiques/formulaire_parametrage_statistiques.html.twig', [
             'form' => $form->createView(),
             'nbForm' => 1,
-            'titrePage' => 'Évolution chronologique des résultats d’un ensemble d’étudiants',
+            'titrePage' => $this->translator->trans('formulaire_stats_evolution_statut_titre_choix_evals'),
             'activerToutSelectionner' => true,
             'typeForm1' => 'evaluations',
-            'sousTitreForm1' => 'Sélectionner les évaluations pour lesquelles vous souhaitez voir des statistiques pour les groupes précédemment sélectionnés',
+            'sousTitreForm1' => $this->translator->trans('formulaire_stats_evolution_statut_sous_titre_choix_evals'),
             'conditionAffichageForm1' => true,
             'casBoutonValider' => 4
         ]);

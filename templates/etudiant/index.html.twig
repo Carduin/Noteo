@@ -15,7 +15,7 @@
             <table class="table" id="table">
                 <thead>
                 <tr>
-                    <th>{% trans %}nom{% endtrans %}</th>
+                    <th>{% trans %}nom_famille{% endtrans %}</th>
                     <th>{% trans %}prenom{% endtrans %}</th>
                     <th>{% trans %}statuts{% endtrans %}</th>
                     <th>{% trans %}mail{% endtrans %}</th>
@@ -109,7 +109,7 @@
                 columns: [null, null, null, {"orderable": false}, {"orderable": false}],
                 lengthMenu: [
                     [15, 30, 45, -1],
-                    [15, 30, 45, "Tout"]
+                    [15, 30, 45, "{% trans %}tout_elements{% endtrans %}"]
                 ],
                 pageLength: {{ app.user.preferenceNbElementsTableaux }}, <!-- Pour que le nombre d'éléments affichés par défaut soit celui de la préference de l'utilisateur -->
                 info: false,
