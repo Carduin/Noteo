@@ -1,38 +1,22 @@
-{% extends 'base.html.twig' %}
-
-{% block titrePage %}{{ titre }}{% endblock %}
-
-{% block statistiques %}active{% endblock %}
-
-{% block stylesheets %}
-    <style>
-        .card:hover {
-            -webkit-box-shadow: -1px 9px 40px -12px rgba(0, 0, 0, 0.75);
-            -moz-box-shadow: -1px 9px 40px -12px rgba(0, 0, 0, 0.75);
-            box-shadow: -1px 9px 40px -12px rgba(0, 0, 0, 0.75);
-        }
-    </style>
-{% endblock %}
-
 {% block contenu %}
     <div class="table-responsive">
         <table align="center" class="table">
             <tbody>
             <tr>
-                <th>Nom</th>
+                <th>{% trans %}nom_famille{% endtrans %}</th>
                 <td>{{ etudiant.nom }}</td>
             </tr>
             <tr>
-                <th>Prénom</th>
+                <th>{% trans %}prenom{% endtrans %}</th>
                 <td>{{ etudiant.prenom }}</td>
             </tr>
             <tr>
-                <th>Mail</th>
+                <th>{% trans %}mail{% endtrans %}</th>
                 <td>{{ etudiant.mail }}</td>
             </tr>
             {% if etudiant.groupes is not empty %}
                 <tr>
-                    <th>Groupes</th>
+                    <th>{% trans %}groupes{% endtrans %}</th>
                     <td>
                         <ul>
                             {% for groupe in etudiant.groupes if groupe.estEvaluable %}
@@ -44,7 +28,7 @@
             {% endif %}
             {% if etudiant.statuts is not empty %}
                 <tr>
-                    <th>Statuts</th>
+                    <th>{% trans %}statuts{% endtrans %}</th>
                     <td>
                         <ul>
                             {% for statut in etudiant.statuts %}
@@ -56,14 +40,14 @@
             {% endif %}
             {% if evaluations|length >= 1 %}
                 <tr>
-                    <th class="intitule"><label>Actions</label></th>
+                    <th class="intitule"><label>{% trans %}actions{% endtrans %}</label></th>
                     <td>
-                        <span style="font-size:15px"><i class="icon-attention-circled"></i>Des temps de chargement longs peuvent survenir si la quantité de données est élevée</span><br>
+                        <span style="font-size:15px"><i class="icon-attention-circled"></i>{% trans %}message_info_temps_chargement{% endtrans %}</span><br>
                         <a href="#"><i style="font-size: 25px;" data-toggle='tooltip'
-                                       title="Exporter les statistiques au format PDF (Portrait)" class="icon-file-pdf"
+                                       title="{% trans %}tooltip_stats_pdf_portrait{% endtrans %}" class="icon-file-pdf"
                                        onclick="genPDF(onChartReady, true)"></i></a>
                         <a href="#"><i style="font-size: 25px;" data-toggle='tooltip'
-                                       title="Exporter les statistiques au format PDF (Paysage)"
+                                       title="{% trans %}tooltip_stats_pdf_paysage{% endtrans %}"
                                        class="fas icon-file-pdf fa-rotate-270"
                                        onclick="genPDF(onChartReady, false)"></i></a>
                     </td>
@@ -74,13 +58,13 @@
     </div>
     {% if evaluations|length >= 1 %}
         <div class='bouton' align=center>
-            <span style="font-size:15px" class="badge badge-pill badge-primary"><i class="icon-attention-circled"></i> Les statistiques ne prennent pas en compte les évaluations auxquelles l'étudiant était absent et excusé</span>
+            <span style="font-size:15px" class="badge badge-pill badge-primary"><i class="icon-attention-circled"></i>{% trans %}message_info_absents_fiche_etudiant{% endtrans%}</span>
         </div>
     {% endif %}
     {% if evaluations|length > 1 %}
         <h1 class="h4 mb-0 text-gray-800">Historique des notes</h1><br>
         <div class="container-fluid">
-            <span style="font-size:15px"><i class="icon-attention-circled"></i>Survolez le graphique pour plus d'informations, cliquez sur un point du graphique pour afficher plus de détail</span>
+            <span style="font-size:15px"><i class="icon-attention-circled"></i>{% trans %}message_info_survol_graphiques{% endtrans %}</span>
             <canvas align=center id="graphLine"></canvas>
         </div>
     {% endif %}
@@ -121,7 +105,7 @@
                                     </div>
                                 </div>
                                 <div class="container-fluid">
-                                    <br><span style="font-size:15px"><i class="icon-attention-circled"></i>Survolez le graphique pour plus d'informations</span><br>
+                                    <br><span style="font-size:15px"><i class="icon-attention-circled"></i>{% trans %}message_info_survol_graphiques{% endtrans %}</span><br>
                                     <canvas align=center id="graphBar_{{ evaluation.id }}_{{ groupe.nom }}"
                                             aria-label="Hello ARIA World" role="img"></canvas>
                                 </div>
@@ -144,7 +128,7 @@
                                 </div>
                             </div>
                             <div class="container-fluid">
-                                <br><span style="font-size:15px"><i class="icon-attention-circled"></i>Survolez le graphique pour plus d'informations</span><br>
+                                <br><span style="font-size:15px"><i class="icon-attention-circled"></i>{% trans %}message_info_survol_graphiques{% endtrans %}</span><br>
                                 <canvas align=center id="graphBar_{{ evaluation.id }}_{{ groupe.nom }}"
                                         aria-label="Hello ARIA World" role="img"></canvas>
                             </div>
@@ -160,7 +144,7 @@
         {% endif %}
     {% else %}
         <div class="info">
-            <h1 class="h4 mb-0 text-gray-800">L'étudiant n'a participé à aucune évaluation</h1>
+            <h1 class="h4 mb-0 text-gray-800">{% trans %}page_fiche_etudiant_pas_eval{% endtrans %}</h1>
         </div>
     {% endfor %}
     <br>
@@ -735,3 +719,4 @@
         }
     </script>
 {% endblock %}
+
