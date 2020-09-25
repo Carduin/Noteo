@@ -388,12 +388,12 @@ page_comparaison_autres_eval:  Évaluations comparées à l'évaluation de réf�
 page_fiche_etudiant_titre: Fiche de l'étudiant prenom nom
 page_fiche_etudiant_historique_notes: Historique des notes
 page_fiche_etudiant_classement_titre: Classement par rapport aux groupes/statuts
-page_fiche_etudiant_classement: 'Classement :'
-page_fiche_etudiant_moyenne: 'Moyenne du groupe :'
-page_fiche_etudiant_note: 'Note de l''étudiant :'
+page_fiche_etudiant_classement: 'Classement : '
+page_fiche_etudiant_moyenne: 'Moyenne du groupe : '
+page_fiche_etudiant_note: 'Note de l''étudiant : '
 page_fiche_etudiant_notes: Notes de l'étudiant
 page_fiche_etudiant_donnees_evals: Données sur l'évaluation
-page_fiche_etudiant_eval: 'Données sur l''évaluation :'
+page_fiche_etudiant_eval: 'Données sur l''évaluation : '
 page_fiche_etudiant_pas_eval: L'étudiant n'a participé à aucune évaluation
 ####### REINITIALISATION APPLICATION
 app_reset_texte: 'Réinitialiser l''application aura pour effet de supprimer de l''application: <ul><li>Tous les groupes</li><li>Tous les groupes d''étudiants ayant un statut particulier</li><li>Toutes les évaluations</li><li>Tous les étudiants</li></ul>Les profils des enseignants ne seront pas supprimés et les statistiques ne seront plus consultables.'

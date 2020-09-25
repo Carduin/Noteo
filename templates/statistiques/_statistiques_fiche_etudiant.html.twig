@@ -62,14 +62,14 @@
         </div>
     {% endif %}
     {% if evaluations|length > 1 %}
-        <h1 class="h4 mb-0 text-gray-800">Historique des notes</h1><br>
+        <h1 class="h4 mb-0 text-gray-800">{% trans %}page_fiche_etudiant_historique_notes{% endtrans %}</h1><br>
         <div class="container-fluid">
             <span style="font-size:15px"><i class="icon-attention-circled"></i>{% trans %}message_info_survol_graphiques{% endtrans %}</span>
             <canvas align=center id="graphLine"></canvas>
         </div>
     {% endif %}
     {% if evaluations|length >= 1 %}
-        <br><h1 class="h4 mb-0 text-gray-800">Classement par rapport aux groupes/statuts</h1><br>
+        <br><h1 class="h4 mb-0 text-gray-800">{% trans %}page_fiche_etudiant_classement_titre{% endtrans %}</h1><br>
     {% endif %}
     {% set nbCard = 0 %}
     {% for evaluation in evaluations %}
@@ -95,11 +95,9 @@
                                         <p class="card-text">
                                         <ul>
                                             <li{% if loop.first %} id="{{ loop.parent.loop.index }}" {% endif %}>
-                                                Classement : {{ stats[nbCard]['position'] }}</li>
-                                            <li id="moyGpe_{{ evaluation.nom }}_{{ groupe.nom }}">Moyenne du groupe
-                                                : {{ stats[nbCard]['moyenneGroupe'] }}</li>
-                                            <li id="noteEtu_{{ evaluation.nom }}_{{ groupe.nom }}">Note de l'étudiant
-                                                : {{ stats[nbCard]['noteEtudiant'] }}</li>
+                                                {% trans %}page_fiche_etudiant_classement{% endtrans %}{{ stats[nbCard]['position'] }}</li>
+                                            <li id="moyGpe_{{ evaluation.nom }}_{{ groupe.nom }}">{% trans %}page_fiche_etudiant_moyenne{% endtrans %}{{ stats[nbCard]['moyenneGroupe'] }}</li>
+                                            <li id="noteEtu_{{ evaluation.nom }}_{{ groupe.nom }}">{% trans %}page_fiche_etudiant_note{% endtrans %}{{ stats[nbCard]['noteEtudiant'] }}</li>
                                         </ul>
                                         </p>
                                     </div>
@@ -117,12 +115,9 @@
                                     <h5 class="card-title">{{ groupe.nom }}</h5>
                                     <p class="card-text">
                                     <ul>
-                                        <li{% if loop.first %} id="{{ loop.parent.loop.index }}" {% endif %}>Classement
-                                            : {{ stats[nbCard]['position'] }}</li>
-                                        <li id="moyGpe_{{ evaluation.nom }}_{{ groupe.nom }}">Moyenne du groupe
-                                            : {{ stats[nbCard]['moyenneGroupe'] }}</li>
-                                        <li id="noteEtu_{{ evaluation.nom }}_{{ groupe.nom }}">Note de l'étudiant
-                                            : {{ stats[nbCard]['noteEtudiant'] }}</li>
+                                        <li{% if loop.first %} id="{{ loop.parent.loop.index }}" {% endif %}>{% trans %}page_fiche_etudiant_classement{% endtrans %}{{ stats[nbCard]['position'] }}</li>
+                                        <li id="moyGpe_{{ evaluation.nom }}_{{ groupe.nom }}">{% trans %}page_fiche_etudiant_moyenne{% endtrans %}{{ stats[nbCard]['moyenneGroupe'] }}</li>
+                                        <li id="noteEtu_{{ evaluation.nom }}_{{ groupe.nom }}">{% trans %}page_fiche_etudiant_note{% endtrans %}{{ stats[nbCard]['noteEtudiant'] }}</li>
                                     </ul>
                                     </p>
                                 </div>
