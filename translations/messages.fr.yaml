@@ -251,6 +251,7 @@ form_partie_intitule: Intitulé de la partie
 form_partie_bareme:  Barème de la partie
 ####### PAGE CHOIX STATISTIQUE
 # Général
+page_stats_titre_page: Choisir les statistiques que vous désirez consulter
 consulter_type_stats: Consulter ce type de statistiques
 repartition_notes_histo: Répartition des notes (histogramme)
 repartition_notes_bam: Répartition des notes (boîte à moustache)

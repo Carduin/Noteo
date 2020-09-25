@@ -252,6 +252,7 @@ form_partie_intitule: Part title
 form_partie_bareme: Part scale
 ####### PAGE CHOIX STATISTIQUE
 # Général
+page_stats_titre_page: Choose the statistics you wish to see
 consulter_type_stats: See this type of statistics
 repartition_notes_histo: Mark distribution (histogram)
 repartition_notes_bam: Mark distribution (box plot)

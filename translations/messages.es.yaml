@@ -252,6 +252,7 @@ form_partie_intitule: Intitulado de la parte
 form_partie_bareme:  Escala de la parte
 ####### PAGE CHOIX STATISTIQUE
 # Général
+page_stats_titre_page: Elija las estadísticas que desea consultar
 consulter_type_stats: Consultar este tipo de estadísticas
 repartition_notes_histo: Distribución de las notas (histograma)
 repartition_notes_bam: Distribución de las notas (Diagrama de caja)
