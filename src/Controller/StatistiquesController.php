@@ -745,10 +745,11 @@ class StatistiquesController extends AbstractController
                 }
                 return ($a->getdate() < $b->getdate()) ? -1 : 1;
             });
-            return $this->render('statistiques/affichage_stats_evolution.html.twig', [
+            return $this->render('statistiques/affichage_statistiques.html.twig', [
                 'evaluations' => $tabEvaluations,
                 'groupes' => $lesGroupes,
-                'titre' => 'Évolution chronologique des résultats d’un ensemble d’étudiants',
+                'typeStatistique' => 'evolution',
+                'titrePage' => $this->translator->trans('page_evolution_titre'),
                 'stats' => $statsManager->calculerStatsEvolution('groupe', $lesGroupes, $tabEvaluations)
             ]);
         }
@@ -946,10 +947,11 @@ class StatistiquesController extends AbstractController
                 }
                 return ($a->getdate() < $b->getdate()) ? -1 : 1;
             });
-            return $this->render('statistiques/affichage_stats_evolution.html.twig', [
+            return $this->render('statistiques/affichage_statistiques.html.twig', [
                 'evaluations' => $tabEvaluations,
                 'groupes' => $lesGroupes,
-                'titre' => 'Évolution chronologique des résultats d’un ensemble d’étudiants',
+                'typeStatistique' => 'evolution',
+                'titrePage' => $this->translator->trans('page_evolution_titre'),
                 'stats' => $statsManager->calculerStatsEvolution('statut', $lesGroupes, $tabEvaluations, $statut)
             ]);
         }

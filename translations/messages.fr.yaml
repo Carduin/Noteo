@@ -369,6 +369,8 @@ message_info_temps_chargement: Des temps de chargement longs peuvent survenir si
 message_info_absents: Les statistiques ne prennent pas en compte les étudiants démissionaires et les absents excusés
 message_info_absents_fiche_etudiant: Les statistiques ne prennent pas en compte les évaluations auxquelles l'étudiant était absent et excusé
 message_info_survol_graphiques: Survolez le graphique pour plus d'informations, cliquez sur un label de la légende pour afficher / masquer les données
+mesage_info_courbe_evolution_representation_un_etudiant: Un étudiant présent à une seule des évaluations est réprésenté par un point sur le graphique
+mesage_info_courbe_evolution_etudiant_absent: Un étudiant absent à toutes les évaluations se traduit par l'absence de courbe
 tooltip_stats_pdf_portrait: Exporter les statistiques au format PDF (portrait)
 tooltip_stats_pdf_paysage: Exporter les statistiques au format PDF (paysage)
 tooltip_stats_mail: Envoyer les statistiques aux étudiants
@@ -399,6 +401,13 @@ page_fiche_etudiant_eval_donnees: 'Données sur l''évaluation : '
 page_fiche_etudiant_eval_date: 'Date de l''évaluation : '
 page_fiche_etudiant_intervalle_note: Intervalle de note
 page_fiche_etudiant_pas_eval: L'étudiant n'a participé à aucune évaluation
+# Stats evolution
+page_evolution_titre: Évolution chronologique des résultats d’un ensemble d’étudiants
+page_evolution_groupes: Groupes sélectionnés
+page_evolution_statut: Groupe d'étudiants ayant un statut particulier observé
+page_evolution_evals: Évaluations concernées
+page_evolution_titre_carte_groupe: Étudiant(s) du groupe nomGroupe
+page_evolution_titre_carte_statut:  Étudiant(s) du groupe nomGroupe ayant le statut "nomStatut"
 ####### REINITIALISATION APPLICATION
 app_reset_texte: 'Réinitialiser l''application aura pour effet de supprimer de l''application: <ul><li>Tous les groupes</li><li>Tous les groupes d''étudiants ayant un statut particulier</li><li>Toutes les évaluations</li><li>Tous les étudiants</li></ul>Les profils des enseignants ne seront pas supprimés et les statistiques ne seront plus consultables.'
 ####### TUTORIELS

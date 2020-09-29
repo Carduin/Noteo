@@ -1,25 +1,9 @@
-{% extends 'base.html.twig' %}
-
-{% block titrePage %}{{ titre }}{% endblock %}
-
-{% block statistiques %}active{% endblock %}
-
-{% block stylesheets %}
-    <style>
-        .card:hover {
-            -webkit-box-shadow: -1px 9px 40px -12px rgba(0, 0, 0, 0.75);
-            -moz-box-shadow: -1px 9px 40px -12px rgba(0, 0, 0, 0.75);
-            box-shadow: -1px 9px 40px -12px rgba(0, 0, 0, 0.75);
-        }
-    </style>
-{% endblock %}
-
 {% block contenu %}
     <div class="table-responsive">
         <table align="center" class="table">
             <tbody>
             <tr>
-                <th>Évaluations Concernées</th>
+                <th>{% trans %}page_evolution_evals{% endtrans %}</th>
                 <td>
                     <ul>
                         {% if evaluations|length <=10 %}
@@ -34,7 +18,7 @@
                             <li>
                                 <a data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false"
                                    aria-controls="collapseExample">
-                                    Voir les {{ evaluations|length-10 }} autres évaluations sélectionnées
+                                    {% trans with {'nombre':evaluations|length-10 } %}afficher_autres_evals{% endtrans %}
                                 </a>
                             </li>
                             <div class="collapse" id="collapseExample">
@@ -48,7 +32,7 @@
             </tr>
             <tr>
                 {% if stats.typeGroupe["type"] == "groupe" %}
-                    <th>Groupes sélectionnés</th>
+                    <th>{% trans %}page_evolution_groupes{% endtrans %}</th>
                     <td>
                         <ul>
                             {% for groupe in groupes %}
@@ -57,21 +41,21 @@
                         </ul>
                     </td>
                 {% else %}
-                    <th>Groupe d'étudiants ayant un statut particulier observé </th>
+                    <th>{% trans %}page_evolution_statut{% endtrans %}</th>
                     <td>
                         {{ groupes[0].nom }}
                     </td>
                 {% endif %}
             </tr>
             <tr>
-                <th class="intitule"><label>Actions</label></th>
+                <th class="intitule"><label>{% trans %}actions{% endtrans %}</label></th>
                 <td>
-                    <span style="font-size:15px"><i class="icon-attention-circled"></i>Des temps de chargement longs peuvent survenir si la quantité de données est élevée</span><br>
+                    <span style="font-size:15px"><i class="icon-attention-circled"></i>{% trans %}message_info_temps_chargement{% endtrans %}</span><br>
                     <a href="#"><i style="font-size: 25px;" data-toggle='tooltip'
-                                   title="Exporter les statistiques au format PDF (Portrait)" class="icon-file-pdf"
+                                   title="{% trans %}tooltip_stats_pdf_portrait{% endtrans %}" class="icon-file-pdf"
                                    onclick="genPDF(onChartReady, true)"></i></a>
                     <a href="#"><i style="font-size: 25px;" data-toggle='tooltip'
-                                   title="Exporter les statistiques au format PDF (Paysage)"
+                                   title="{% trans %}tooltip_stats_pdf_paysage{% endtrans %}"
                                    class="fas icon-file-pdf fa-rotate-270"
                                    onclick="genPDF(onChartReady, false)"></i></a>
                 </td>
@@ -81,8 +65,8 @@
     </div>
 
     <div class='bouton' align=center>
-<span style="font-size:15px" class="badge badge-primary"><i class="icon-attention-circled"></i>Un étudiant présent à une seule des évaluations est réprésenté par un point sur le graphique</br></br>
-    <i class="icon-attention-circled">Un étudiant absent à toutes les évaluations se traduit par l'absence de courbe </i></span>
+<span style="font-size:15px" class="badge badge-primary"><i class="icon-attention-circled"></i>{% trans %}mesage_info_courbe_evolution_representation_un_etudiant{% endtrans %}</br></br>
+    <i class="icon-attention-circled">{% trans %}mesage_info_courbe_evolution_etudiant_absent{% endtrans %}</i></span>
     </div>
 
     {% for i in 0..stats|length - 3 %}
@@ -93,14 +77,17 @@
         <div class="card">
             <ul class="list-group list-group-flush">
                 <li class="list-group-item text-white" style="background-color:#bdc3c7;">
-                    Étudiant(s) du
-                    groupe {{ stats[i].nom }} {% if stats.typeGroupe["type"] == "statut" %}ayant le statut "{{ stats.typeGroupe[0].nom }}"{% endif %}
+                    {% if stats.typeGroupe["type"] == "statut" %}
+                        {% trans with {'nomGroupe':stats[i].nom, 'nomStatut':stats.typeGroupe[0].nom} %}page_evolution_titre_carte_statut{% endtrans %}
+                    {% else %}
+                        {% trans with {'nomGroupe':stats[i].nom} %}page_evolution_titre_carte_groupe{% endtrans %}
+                    {% endif %}
                 </li>
                 <li class="list-group-item">
                     <div>
                         <br>
                         <div class="container-fluid">
-                            <span style="font-size:15px"><i class="icon-attention-circled"></i>Survolez le graphique pour plus d'informations, cliquez sur un label de la légende pour afficher / masquer les données</span>
+                            <span style="font-size:15px"><i class="icon-attention-circled"></i>{% trans %}message_info_survol_graphiques{% endtrans %}</span>
                             <br/>
                             <br/>
                             <canvas id="{{ idGraph }}"></canvas>
@@ -376,7 +363,7 @@
                         width: (portrait ? imageWidthPortrait : imageWidthPaysage),
                     },
                     { // PAGE DE GARDE
-                        text: "{{ titre }}",
+                        text: "{{ titrePage }}",
                         style: 'header',
                     },
                     {
@@ -482,7 +469,7 @@
             }
 
             // Génération du pdf en fonction de docDefinition et téléchargement de ce dernier
-            pdfMake.createPdf(docDefinition).download("{{ titre }}");
+            pdfMake.createPdf(docDefinition).download("{{ titrePage }}");
         }
 
         function getDataForPdfTable(indexGraph, portrait) {
@@ -534,3 +521,4 @@
     </script>
 
 {% endblock %}
+
