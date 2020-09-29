@@ -99,7 +99,7 @@
                                 <br>
                                 <div class="card-md-auto">
                                     <div class="card-header" style="background-color: transparent">
-                                        Groupes
+                                        {% trans %}groupes{% endtrans %}
                                     </div>
                                     <div class="card-body">
                                         {% set tabCounter = 0 %}
@@ -130,7 +130,7 @@
                                 <br>
                                 <div class="card-md-auto">
                                     <div class="card-header" style="background-color: transparent">
-                                        Groupes
+                                        {% trans %}groupes{% endtrans %}
                                     </div>
                                     <div class="card-body">
                                         {% set tabCounter = 0 %}
@@ -478,14 +478,14 @@
             var couleurEcartType = couleurs[1];
             data = [ // Création des objets datasets de Chart.js avec nos données
                 {
-                    label: 'Moyenne',
+                    label: '{% trans %}moyenne{% endtrans %}',
                     backgroundColor: "rgb(" + couleurMoyenne[0] + "," + couleurMoyenne[1] + "," + couleurMoyenne[2] + ")",
                     hoverBackgroundColor: "rgb(" + couleurMoyenne[0] + "," + couleurMoyenne[1] + "," + couleurMoyenne[2] + ")",
                     borderColor: gris,
                     data: moyenne
                 },
                 {
-                    label: 'Écart-type',
+                    label: '{% trans %}ecart_type{% endtrans %}',
                     backgroundColor: "rgb(" + couleurEcartType[0] + "," + couleurEcartType[1] + "," + couleurEcartType[2] + ")",
                     hoverBackgroundColor: "rgb(" + couleurEcartType[0] + "," + couleurEcartType[1] + "," + couleurEcartType[2] + ")",
                     borderColor: gris,

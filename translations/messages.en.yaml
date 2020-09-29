@@ -1,5 +1,5 @@
 ####### TRADUCTIONS GENERALES
-#pages erreurs
+# pages erreurs
 aie: Ouch
 erreur: An erreur has occured
 401: Unauthenticated user
@@ -362,6 +362,52 @@ formulaire_stats_evolution_statut_sous_titre_choix_sous_groupes: Select the sub 
 formulaire_stats_evolution_statut_warning_choix_sous_groupes: The color of a group's headcount indicates the ease of reading of the generated graphics.
 formulaire_stats_evolution_statut_titre_choix_evals: Chronological evolution of the results of a group of students having a particular status
 formulaire_stats_evolution_statut_sous_titre_choix_evals: Select the evaluations for which you wish to generate statistics regarding the previously selected groups
+####### PAGES D'AFFICHAGE DES STATISTIQUES
+# general
+actions: Actions
+message_info_temps_chargement: High loading times can occur if the amount of data is high
+message_info_absents: Statistics do not take into account resigning students and excused absentees
+message_info_absents_fiche_etudiant: Statistics do not take into account evaluations for which the student was absent and excused
+message_info_survol_graphiques: Hover over the chart for additional informations, click on a legend label to show/hide data
+mesage_info_courbe_evolution_representation_un_etudiant: A student present at only one of the evaluations is represented by a single point on the graph
+mesage_info_courbe_evolution_etudiant_absent: A student absent from all evaluations results in no curve
+tooltip_stats_pdf_portrait: Export statistics in PDF format (portrait view)
+tooltip_stats_pdf_paysage: Export statistics in PDF format (landscape view)
+tooltip_stats_mail: Send statistics to the students
+afficher_autres_evals: Display the nombre other evaluations
+# page stats eval simple et par parties
+page_eval_simple_parties_titre: Statistics for nom
+# page stats plusieurs évals
+page_plusieurs_evals: See statistics over nombre evaluation(s)
+page_plusieurs_evals_groupes: Selected groups
+page_plusieurs_evals_evals: Selected evaluations
+# page stats comparaison
+page_comparaison_titre: Compare nom to nombre evaluation(s)
+page_comparaison_groupes: Selected groups
+page_comparaison_eval_ref: Baseline evaluation
+page_comparaison_autres_eval:  Evaluations compared to the baseline evaluation
+# Stats fiche étudiant
+page_fiche_etudiant_titre: prenom nom's card
+page_fiche_etudiant_historique_notes: Mark history
+page_fiche_etudiant_classement_titre: Ranking in relation to groups/statuses
+page_fiche_etudiant_classement: 'Ranking: '
+page_fiche_etudiant_moyenne: 'Group average: '
+page_fiche_etudiant_moyenne_sans_ponctuation: Group average
+page_fiche_etudiant_note: 'Student''s mark: '
+page_fiche_etudiant_note_sans_ponctuation: Student's mark
+page_fiche_etudiant_notes: 'Student''s marks'
+page_fiche_etudiant_eval_donnees_sans_ponctation: Evaluation data
+page_fiche_etudiant_eval_donnees: 'Evaluation data: '
+page_fiche_etudiant_eval_date: 'Evaluation date: '
+page_fiche_etudiant_intervalle_note: Mark interval
+page_fiche_etudiant_pas_eval: The student has not yet participated to an evaluation
+# Stats evolution
+page_evolution_titre: Chronological evolution of the results of a set of students
+page_evolution_groupes: Selected groups
+page_evolution_statut: Group of students having a particular status chosen
+page_evolution_evals: Evaluation related to the groups
+page_evolution_titre_carte_groupe: Student(s) of nomGroupe
+page_evolution_titre_carte_statut:  Student(s) of nomGroupe having the "nomStatut" status
 ####### REINITIALISATION APPLICATION
 app_reset_texte: 'Resetting the app will remove: <ul><li>all groups</li><li>all student status</li><li>all evaluations</li><li>all students</li></ul>Teacher profiles will not be deleted, but you will not be able to generate statistics anymore.'
 ####### TUTORIELS
