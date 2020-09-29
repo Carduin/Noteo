@@ -583,6 +583,7 @@ class StatistiquesController extends AbstractController
             $statuts = array();
             foreach ($etudiant->getGroupes() as $groupe) {
                 if ($groupe->getEstEvaluable() == true) {
+                    array_push($groupesEtStatuts, $groupe);
                     array_push($groupes, $groupe);
                 }
             }
@@ -591,12 +592,13 @@ class StatistiquesController extends AbstractController
                 array_push($statuts, $statut);
             }
 
-            return $this->render('statistiques/affichage_stats_fiche_etudiant.html.twig', [
+            return $this->render('statistiques/affichage_statistiques.html.twig', [
                 'etudiant' => $etudiant,
                 'evaluations' => $evaluations,
                 'groupesEtStatuts' => $groupesEtStatuts,
+                'typeStatistique' => 'fiche_etudiant',
                 'stats' => $statsManager->calculerStatsFicheEtudiant($etudiant, $evaluations, $groupes, $statuts),
-                'titre' => 'Fiche de l\'étudiant ' . $etudiant->getPrenom() . ' ' . $etudiant->getNom()
+                'titrePage' => $this->translator->trans('page_fiche_etudiant_titre', ['nom'=> $etudiant->getNom(), 'prenom'=>$etudiant->getPrenom()])
             ]);
         }
         return $this->render('statistiques/formulaire_parametrage_statistiques.html.twig', [

@@ -32,6 +32,7 @@ modifier_mdp : Modifier mon mot de passe
 logout: Déconnexion
 # titres de colonnes tableaux
 nom: Nom
+nom_famille: Nom
 prenom: Prénom
 mail: Mail
 effectif: Effectif
@@ -361,11 +362,12 @@ formulaire_stats_evolution_statut_sous_titre_choix_sous_groupes: Sélectionner l
 formulaire_stats_evolution_statut_warning_choix_sous_groupes: La couleur de l'effectif d'un groupe indique la facilité de lecture du graphique qui sera généré pour ce groupe.
 formulaire_stats_evolution_statut_titre_choix_evals: Évolution chronologique des résultats d’un ensemble d’étudiants appartenant à un statut
 formulaire_stats_evolution_statut_sous_titre_choix_evals: Sélectionner les évaluations pour lesquelles vous souhaitez voir des statistiques pour les groupes précédemment sélectionnés
-####### PAGES AFFICHAGE STATS
+####### PAGES D'AFFICHAGE DES STATISTIQUES
 # general
 actions: Actions
 message_info_temps_chargement: Des temps de chargement longs peuvent survenir si la quantité de données est élevée
 message_info_absents: Les statistiques ne prennent pas en compte les étudiants démissionaires et les absents excusés
+message_info_absents_fiche_etudiant: Les statistiques ne prennent pas en compte les évaluations auxquelles l'étudiant était absent et excusé
 message_info_survol_graphiques: Survolez le graphique pour plus d'informations, cliquez sur un label de la légende pour afficher / masquer les données
 tooltip_stats_pdf_portrait: Exporter les statistiques au format PDF (portrait)
 tooltip_stats_pdf_paysage: Exporter les statistiques au format PDF (paysage)
@@ -382,6 +384,21 @@ page_comparaison_titre: Comparer l'évaluation nom à nombre évaluation(s)
 page_comparaison_groupes: Groupes observés
 page_comparaison_eval_ref: Évaluation de référence
 page_comparaison_autres_eval:  Évaluations comparées à l'évaluation de référence
+# Stats fiche étudiant
+page_fiche_etudiant_titre: Fiche de l'étudiant prenom nom
+page_fiche_etudiant_historique_notes: Historique des notes
+page_fiche_etudiant_classement_titre: Classement par rapport aux groupes/statuts
+page_fiche_etudiant_classement: 'Classement : '
+page_fiche_etudiant_moyenne: 'Moyenne du groupe : '
+page_fiche_etudiant_moyenne_sans_ponctuation: Moyenne du groupe
+page_fiche_etudiant_note: 'Note de l''étudiant : '
+page_fiche_etudiant_note_sans_ponctuation: Note de l'étudiant
+page_fiche_etudiant_notes: 'Notes de l''étudiant'
+page_fiche_etudiant_eval_donnees_sans_ponctation: Données sur l'évaluation
+page_fiche_etudiant_eval_donnees: 'Données sur l''évaluation : '
+page_fiche_etudiant_eval_date: 'Date de l''évaluation : '
+page_fiche_etudiant_intervalle_note: Intervalle de note
+page_fiche_etudiant_pas_eval: L'étudiant n'a participé à aucune évaluation
 ####### REINITIALISATION APPLICATION
 app_reset_texte: 'Réinitialiser l''application aura pour effet de supprimer de l''application: <ul><li>Tous les groupes</li><li>Tous les groupes d''étudiants ayant un statut particulier</li><li>Toutes les évaluations</li><li>Tous les étudiants</li></ul>Les profils des enseignants ne seront pas supprimés et les statistiques ne seront plus consultables.'
 ####### TUTORIELS
