@@ -94,8 +94,7 @@
                                         <h5 class="card-title">{{ groupe.nom }}</h5>
                                         <p class="card-text">
                                         <ul>
-                                            <li{% if loop.first %} id="{{ loop.parent.loop.index }}" {% endif %}>
-                                                {% trans %}page_fiche_etudiant_classement{% endtrans %}{{ stats[nbCard]['position'] }}</li>
+                                            <li{% if loop.first %} id="{{ loop.parent.loop.index }}" {% endif %}>{% trans %}page_fiche_etudiant_classement{% endtrans %}{{ stats[nbCard]['position'] }}</li>
                                             <li id="moyGpe_{{ evaluation.nom }}_{{ groupe.nom }}">{% trans %}page_fiche_etudiant_moyenne{% endtrans %}{{ stats[nbCard]['moyenneGroupe'] }}</li>
                                             <li id="noteEtu_{{ evaluation.nom }}_{{ groupe.nom }}">{% trans %}page_fiche_etudiant_note{% endtrans %}{{ stats[nbCard]['noteEtudiant'] }}</li>
                                         </ul>
@@ -205,7 +204,7 @@
                     stacked: false,
                 }],
                 yAxes: [{
-                    labelString: 'Intervalle de note',
+                    labelString: '{% trans %}page_fiche_etudiant_intervalle_note{% endtrans %}',
                     ticks: {
                         beginAtZero: true,
                         max: 20,
@@ -270,7 +269,7 @@
                 labels: nomEvals,
                 datasets: [{
                     data: notesEtu,
-                    label: 'Notes de l\'étudiant',
+                    label: "{% trans %}page_fiche_etudiant_notes{% endtrans %}",
                     lineTension: 0,
                     borderColor: "#4e73df",
                     fill: false
@@ -291,11 +290,11 @@
                 mode: 'single',
                 callbacks: {
                     label: function (tooltipItems, data) { // Tooltip custom pour avoir la note, le classement et la date de l'évaluation
-                        var multistringText = ['Note de l\'etudiant : ' + tooltipItems.yLabel]; // Note de l'étudiant
+                        var multistringText = ["{% trans %}page_fiche_etudiant_note{% endtrans %}" + tooltipItems.yLabel]; // Note de l'étudiant
                         var index = tooltipItems.index + 1;
                         multistringText.push(document.getElementById(index).innerHTML); // Classement
                         var str = document.getElementById("date_" + index).innerHTML
-                        multistringText.push("Date de l\'évaluaton : " + str.substring(str.lastIndexOf("(") + 1, str.lastIndexOf(")"))); // Date de l'évaluation
+                        multistringText.push("{% trans %}page_fiche_etudiant_eval_date{% endtrans %}" + str.substring(str.lastIndexOf("(") + 1, str.lastIndexOf(")"))); // Date de l'évaluation
                         return multistringText;
                     }
                 }
@@ -323,9 +322,9 @@
         var chartBar = new Chart(document.getElementById("graphBar_{{ evaluation.id }}_{{ groupe.nom }}").getContext('2d'), {
             type: 'bar',
             data: {
-                labels: ['Note de l\'étudiant', 'Moyenne du groupe'],
+                labels: ["{% trans %}page_fiche_etudiant_note_sans_ponctuation{% endtrans %}", "{% trans %}page_fiche_etudiant_moyenne_sans_ponctuation{% endtrans %}"],
                 datasets: [{
-                    label: 'Données sur l\'évaluation',
+                    label: "{% trans %}page_fiche_etudiant_eval_donnees_sans_ponctation{% endtrans %}",
                     backgroundColor: "#4e73df",
                     data: notes,
                 }]
@@ -344,11 +343,11 @@
         var chartBar = new Chart(document.getElementById("graphBar_{{ evaluation.id }}_{{ groupe.nom }}").getContext('2d'), {
             type: 'bar',
             data: {
-                labels: ['Note de l\'étudiant', 'Moyenne du groupe'],
+                labels: ["{% trans %}page_fiche_etudiant_note_sans_ponctuation{% endtrans %}", "{% trans %}page_fiche_etudiant_moyenne_sans_ponctuation{% endtrans %}"],
                 datasets: [{
-                    label: 'Données sur l\'évaluation',
+                    label: "{% trans %}page_fiche_etudiant_eval_donnees_sans_ponctation{% endtrans %}",
                     backgroundColor: "#4e73df",
-                    data: notes
+                    data: notes,
                 }]
             },
             options: options,
