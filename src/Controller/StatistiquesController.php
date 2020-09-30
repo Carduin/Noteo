@@ -173,9 +173,9 @@ class StatistiquesController extends AbstractController
             $request->getSession()->set('stats', $statistiquesCalculees);
             //Pour ne pas continuer si les conditions ne sont pas remplies (au moins un groupe ou statut)
             if (count($groupesChoisis) > 0 || count($statutsChoisis) > 0) {
-                return $this->render('statistiques/affichage_stats_classiques.html.twig', [
-                    'titrePage' => 'Statistiques pour ' . $evaluation->getNom(),
-                    'plusieursEvals' => false,
+                return $this->render('statistiques/affichage_statistiques.html.twig', [
+                    'titrePage' => $this->translator->trans('page_eval_simple_parties_titre', ['nom'=> $evaluation->getNom()]),
+                    'typeStatistique' => 'simple_parties',
                     'evaluation' => $evaluation,
                     'parties' => $statistiquesCalculees
                 ]);
@@ -289,9 +289,9 @@ class StatistiquesController extends AbstractController
             $request->getSession()->set('stats', $statistiquesCalculees);
             //Pour ne pas continuer si les conditions ne sont pas remplies (au moins un groupe ou statut)
             if ((count($groupesChoisis) > 0 || count($statutsChoisis) > 0) && count($partiesChoisies) > 0) {
-                return $this->render('statistiques/affichage_stats_classiques.html.twig', [
-                    'titrePage' => 'Statistiques pour ' . $evaluation->getNom(),
-                    'plusieursEvals' => false,
+                return $this->render('statistiques/affichage_statistiques.html.twig', [
+                    'titrePage' => $this->translator->trans('page_eval_simple_parties_titre', ['nom'=> $evaluation->getNom()]),
+                    'typeStatistique' => 'simple_parties',
                     'evaluation' => $evaluation,
                     'parties' => $statistiquesCalculees
                 ]);
@@ -438,12 +438,12 @@ class StatistiquesController extends AbstractController
             foreach ($request->getSession()->get('sousGroupes') as $sousGroupe) {
                 array_push($lesGroupes, $sousGroupe);
             }
-            return $this->render('statistiques/affichage_stats_classiques.html.twig', [
+            return $this->render('statistiques/affichage_statistiques.html.twig', [
                 'parties' => $statsManager->calculerStatsPlusieursEvals('groupes', $lesGroupes, $evaluations),
                 'evaluations' => $evaluations,
                 'groupes' => $lesGroupes,
-                'titrePage' => 'Consulter les statistiques sur ' . count($evaluations) . ' évaluation(s)',
-                'plusieursEvals' => true
+                'titrePage' => $this->translator->trans('page_plusieurs_evals', ['nombre'=>count($evaluations) ]),
+                'typeStatistique' => "plusieurs_evals"
                 ]);
         }
         return $this->render('statistiques/formulaire_parametrage_statistiques.html.twig', [
@@ -530,12 +530,12 @@ class StatistiquesController extends AbstractController
             if (count($form->get('evaluations')->getData()) > 0) {
                 $evaluations = $form->get('evaluations')->getData();
             }
-            return $this->render('statistiques/affichage_stats_classiques.html.twig', [
+            return $this->render('statistiques/affichage_statistiques.html.twig', [
                 'parties' => $statsManager->calculerStatsPlusieursEvals('statuts', [$statut], $evaluations),
                 'evaluations' => $evaluations,
                 'groupes' => $statut,
-                'titrePage' => 'Consulter les statistiques sur ' . count($evaluations) . ' évaluation(s)',
-                'plusieursEvals' => true,
+                'titrePage' => $this->translator->trans('page_plusieurs_evals', ['nombre'=>count($evaluations) ]),
+                'typeStatistique' => "plusieurs_evals"
             ]);
         }
         return $this->render('statistiques/formulaire_parametrage_statistiques.html.twig', [
@@ -583,6 +583,7 @@ class StatistiquesController extends AbstractController
             $statuts = array();
             foreach ($etudiant->getGroupes() as $groupe) {
                 if ($groupe->getEstEvaluable() == true) {
+                    array_push($groupesEtStatuts, $groupe);
                     array_push($groupes, $groupe);
                 }
             }
@@ -591,12 +592,13 @@ class StatistiquesController extends AbstractController
                 array_push($statuts, $statut);
             }
 
-            return $this->render('statistiques/affichage_stats_fiche_etudiant.html.twig', [
+            return $this->render('statistiques/affichage_statistiques.html.twig', [
                 'etudiant' => $etudiant,
                 'evaluations' => $evaluations,
                 'groupesEtStatuts' => $groupesEtStatuts,
+                'typeStatistique' => 'fiche_etudiant',
                 'stats' => $statsManager->calculerStatsFicheEtudiant($etudiant, $evaluations, $groupes, $statuts),
-                'titre' => 'Fiche de l\'étudiant ' . $etudiant->getPrenom() . ' ' . $etudiant->getNom()
+                'titrePage' => $this->translator->trans('page_fiche_etudiant_titre', ['nom'=> $etudiant->getNom(), 'prenom'=>$etudiant->getPrenom()])
             ]);
         }
         return $this->render('statistiques/formulaire_parametrage_statistiques.html.twig', [
@@ -728,7 +730,6 @@ class StatistiquesController extends AbstractController
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $evaluations = $form->get('evaluations')->getData();
-            $evaluations = $session->get('evaluations'); // récupération des évaluations passées en session
             $tabEvaluations = array();
             foreach ($evaluations as $evaluation) {
                 array_push($tabEvaluations, $repoEval->find($evaluation->getId()));
@@ -744,10 +745,11 @@ class StatistiquesController extends AbstractController
                 }
                 return ($a->getdate() < $b->getdate()) ? -1 : 1;
             });
-            return $this->render('statistiques/affichage_stats_evolution.html.twig', [
+            return $this->render('statistiques/affichage_statistiques.html.twig', [
                 'evaluations' => $tabEvaluations,
                 'groupes' => $lesGroupes,
-                'titre' => 'Évolution chronologique des résultats d’un ensemble d’étudiants',
+                'typeStatistique' => 'evolution',
+                'titrePage' => $this->translator->trans('page_evolution_titre'),
                 'stats' => $statsManager->calculerStatsEvolution('groupe', $lesGroupes, $tabEvaluations)
             ]);
         }
@@ -945,10 +947,11 @@ class StatistiquesController extends AbstractController
                 }
                 return ($a->getdate() < $b->getdate()) ? -1 : 1;
             });
-            return $this->render('statistiques/affichage_stats_evolution.html.twig', [
+            return $this->render('statistiques/affichage_statistiques.html.twig', [
                 'evaluations' => $tabEvaluations,
                 'groupes' => $lesGroupes,
-                'titre' => 'Évolution chronologique des résultats d’un ensemble d’étudiants',
+                'typeStatistique' => 'evolution',
+                'titrePage' => $this->translator->trans('page_evolution_titre'),
                 'stats' => $statsManager->calculerStatsEvolution('statut', $lesGroupes, $tabEvaluations, $statut)
             ]);
         }
@@ -1088,13 +1091,13 @@ class StatistiquesController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $groupes = $form->get('groupes')->getData();
             $statuts = $form->get('statuts')->getData();
-            return $this->render('statistiques/affichage_stats_comparaison.html.twig', [
+            return $this->render('statistiques/affichage_statistiques.html.twig', [
                 'evaluations' => $evaluationsChoisies,
                 'evaluationConcernee' => $evaluation,
                 'groupes' => $groupes,
                 "parties" => $statsManager->calculerStatsComparaison($evaluation, $groupes, $statuts, $evaluationsChoisies),
-                'titre' => "Comparer " . $evaluation->getNom() . " à " . (count($evaluationsChoisies)) . ' évaluation(s)',
-                'plusieursEvals' => true,
+                'titrePage' => $this->translator->trans('page_comparaison_titre', ['nom' => $evaluation->getNom(), 'nombre'=> count($evaluationsChoisies)]),
+                'typeStatistique' => "comparaison",
             ]);
         }
         return $this->render('statistiques/formulaire_parametrage_statistiques.html.twig', [
@@ -1180,7 +1183,7 @@ class StatistiquesController extends AbstractController
                     ->setFrom($_ENV['UTILISATEUR_SMTP'])
                     ->setTo($notesEtudiants[$i]->getEtudiant()->getMail())
                     ->setBody(
-                        $this->renderView('evaluation/mailEnvoye.html.twig', [
+                        $this->renderView('mail/mailEnvoye.html.twig', [
                             'etudiantsEtNotes' => $notesEtudiants[$i],
                             'stats' => $stats,
                             'position' => $position,
@@ -1196,15 +1199,15 @@ class StatistiquesController extends AbstractController
                 'info',
                 'L\'envoi des mails a été effectué avec succès.'
             );
-            return $this->render('statistiques/affichage_stats_classiques.html.twig', [
-                'titrePage' => 'Consulter les statistiques pour ' . $evaluation->getNom(),
-                'plusieursEvals' => false,
+            return $this->render('statistiques/affichage_statistiques.html.twig', [
+                'titrePage' => $this->translator->trans('page_eval_simple_parties_titre', ['nom'=> $evaluation->getNom()]),
+                'typeStatistique' => 'simple_parties',
                 'parties' => $stats,
                 'evaluation' => $evaluation
             ]);
 
         }
-        return $this->render('statistiques/previsualisationMail.html.twig', [
+        return $this->render('mail/previsualisationMail.html.twig', [
             'evaluation' => $evaluation,
             'nbEtudiants' => $nbEtudiants,
             'nomGroupe' => $nomGroupe,
@@ -1232,7 +1235,7 @@ class StatistiquesController extends AbstractController
         $noteEtudiant = $notesEtudiants[0]->getValeur();
         $position = array_search($noteEtudiant, $copieTabRang) + 1;
         $mailAdmin = $_ENV['MAIL_ADMINISTRATEUR'];
-        return $this->render('statistiques/mailEnvoye.html.twig', [
+        return $this->render('mail/mailEnvoye.html.twig', [
             'etudiantsEtNotes' => $notesEtudiants[0],
             'stats' => $stats,
             'position' => $position,

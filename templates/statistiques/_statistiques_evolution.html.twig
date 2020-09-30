@@ -1,103 +1,63 @@
-{% extends 'base.html.twig' %}
-
-{% block titrePage %}{{ titre }}{% endblock %}
-
-{% block statistiques %}active{% endblock %}
-
-{% block stylesheets %}
-    <style>
-        .card:hover {
-            -webkit-box-shadow: -1px 9px 40px -12px rgba(0, 0, 0, 0.75);
-            -moz-box-shadow: -1px 9px 40px -12px rgba(0, 0, 0, 0.75);
-            box-shadow: -1px 9px 40px -12px rgba(0, 0, 0, 0.75);
-        }
-
-        span.notBold {
-            font-weight: normal;
-        }
-
-        span.bold {
-            font-weight: bold;
-        }
-    </style>
-{% endblock %}
-
 {% block contenu %}
     <div class="table-responsive">
         <table align="center" class="table">
             <tbody>
-            {% if plusieursEvals %}
-                <tr>
-                    <th><p>Évaluation de référence</p>
-                        <p>
-                            <span class="notBold"> {{ evaluationConcernee.nom }} ({{ evaluationConcernee.date|date("d/m/Y") }})</span>
-                        </p>
-                    </th>
-                    <td>
-                        <ul>
-                            <p><span class="bold"> Évaluations comparées à l'évaluation de référence</span></p>
-                            {% if evaluations|length <=10 %}
-                                {% for evaluation in evaluations %}
-                                    <li>{{ evaluation.nom }} ({{ evaluation.date|date("d/m/Y") }})</li>
-                                {% endfor %}
-                            {% else %}
-                                {# Si il y a plus de 10 évaluations on va afficher seulement les dix premières et les suivantes seront cachées dans un collapse#}
-                                {% for i in 0..9 %}
+            <tr>
+                <th>{% trans %}page_evolution_evals{% endtrans %}</th>
+                <td>
+                    <ul>
+                        {% if evaluations|length <=10 %}
+                            {% for evaluation in evaluations %}
+                                <li>{{ evaluation.nom }} ({{ evaluation.date|date("d/m/Y") }})</li>
+                            {% endfor %}
+                        {% else %}
+                            {# Si il y a plus de 10 évaluations on va afficher seulement les dix premières et les suivantes seront cachées dans un collapse#}
+                            {% for i in 0..9 %}
+                                <li>{{ evaluations[i].nom }} ({{ evaluations[i].date|date("d/m/Y") }})</li>
+                            {% endfor %}
+                            <li>
+                                <a data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false"
+                                   aria-controls="collapseExample">
+                                    {% trans with {'nombre':evaluations|length-10 } %}afficher_autres_evals{% endtrans %}
+                                </a>
+                            </li>
+                            <div class="collapse" id="collapseExample">
+                                {% for i in 10..evaluations|length-1 %}
                                     <li>{{ evaluations[i].nom }} ({{ evaluations[i].date|date("d/m/Y") }})</li>
                                 {% endfor %}
-                                <li>
-                                    <a data-toggle="collapse" href="#collapseExample" role="button"
-                                       aria-expanded="false" aria-controls="collapseExample">
-                                        Voir les {{ evaluations|length-10 }} autres évaluations sélectionnées
-                                    </a>
-                                </li>
-                                <div class="collapse" id="collapseExample">
-                                    {% for i in 10..evaluations|length-1 %}
-                                        <li>{{ evaluations[i].nom }} ({{ evaluations[i].date|date("d/m/Y") }})</li>
-                                    {% endfor %}
-                                </div>
-                            {% endif %}
-                        </ul>
-                    </td>
-                </tr>
-                <tr>
-                    <th>Groupes observés</th>
+                            </div>
+                        {% endif %}
+                    </ul>
+                </td>
+            </tr>
+            <tr>
+                {% if stats.typeGroupe["type"] == "groupe" %}
+                    <th>{% trans %}page_evolution_groupes{% endtrans %}</th>
                     <td>
                         <ul>
-                            {% for groupe in parties[0].stats %}
+                            {% for groupe in groupes %}
                                 <li>{{ groupe.nom }}</li>
                             {% endfor %}
                         </ul>
                     </td>
-                </tr>
-            {% else %}
-                <tr>
-                    <th class="intitule"><label for="evaluation_groupe">Groupe évalué</label></th>
-                    <td>{{ evaluation.groupe.nom }}</td>
-                </tr>
-                <tr>
-                    <th class="intitule"><label for="evaluation_date">Date de l'évaluation</label></th>
-                    <td>{{ evaluation.date | date("d/m/Y") }}</td>
-                </tr>
-            {% endif %}
+                {% else %}
+                    <th>{% trans %}page_evolution_statut{% endtrans %}</th>
+                    <td>
+                        {{ groupes[0].nom }}
+                    </td>
+                {% endif %}
+            </tr>
             <tr>
-                <th class="intitule"><label>Actions</label></th>
+                <th class="intitule"><label>{% trans %}actions{% endtrans %}</label></th>
                 <td>
-                    <span style="font-size:15px"><i class="icon-attention-circled"></i>Des temps de chargement longs peuvent survenir si la quantité de données est élevée</span><br>
+                    <span style="font-size:15px"><i class="icon-attention-circled"></i>{% trans %}message_info_temps_chargement{% endtrans %}</span><br>
                     <a href="#"><i style="font-size: 25px;" data-toggle='tooltip'
-                                   title="Exporter les statistiques au format PDF (Portrait)" class="icon-file-pdf"
+                                   title="{% trans %}tooltip_stats_pdf_portrait{% endtrans %}" class="icon-file-pdf"
                                    onclick="genPDF(onChartReady, true)"></i></a>
                     <a href="#"><i style="font-size: 25px;" data-toggle='tooltip'
-                                   title="Exporter les statistiques au format PDF (Paysage)"
+                                   title="{% trans %}tooltip_stats_pdf_paysage{% endtrans %}"
                                    class="fas icon-file-pdf fa-rotate-270"
                                    onclick="genPDF(onChartReady, false)"></i></a>
-                    {% if not plusieursEvals %}
-                        {% if (evaluation.enseignant.id == app.user.id or is_granted('ROLE_ADMIN')) %}
-                            <a href="{{ path("previsualisation_mail", {slug:evaluation.slug}) }}"><i
-                                        style="font-size: 25px;" data-toggle='tooltip'
-                                        title="Envoyer les statistiques aux étudiants" class="icon-mail"></i></a>
-                        {% endif %}
-                    {% endif %}
                 </td>
             </tr>
             </tbody>
@@ -105,296 +65,174 @@
     </div>
 
     <div class='bouton' align=center>
-        <span style="font-size:15px" class="badge badge-pill badge-primary"><i class="icon-attention-circled"></i> Les statistiques ne prennent pas en compte les étudiants démissionaires et les absents excusés</span>
+<span style="font-size:15px" class="badge badge-primary"><i class="icon-attention-circled"></i>{% trans %}mesage_info_courbe_evolution_representation_un_etudiant{% endtrans %}</br></br>
+    <i class="icon-attention-circled">{% trans %}mesage_info_courbe_evolution_etudiant_absent{% endtrans %}</i></span>
     </div>
-    {% if parties is not empty %}
-        {% for partie in parties %}
-            <div class="card">
-                <ul class="list-group list-group-flush">
-                    <li class="list-group-item text-white" style="background-color:#bdc3c7;">
-                        {{ partie.nom }}
-                    </li>
-                    <li class="list-group-item">
-                        <div id="Moyenne_ecart_{{ partie.nom | replace({' ': '_'}) }}">
-                            <div class="container-fluid">
-                                <div class="card-md-auto">
-                                    <div class="card-header" style="background-color: transparent">
-                                        Groupes
-                                    </div>
-                                    <div class="card-body">
-                                        {% set tabCounter = 0 %}
-                                        {% for groupe in parties[0].stats %}
-                                            <div class="form-check form-check-inline">
-                                                <input class="form-check-input" type="checkbox" id="{{ groupe.nom }}"
-                                                       checked
-                                                       onChange="changement(this.id, this.checked, '{{ loop.parent.loop.index -1 }}', 'moy')">
-                                                <label class="form-check-label" for="inlineCheckbox1"
-                                                       name="label_{{ groupe.nom }}_moy">{{ groupe.nom }}</label>
-                                            </div>
-                                            {% set tabCounter = tabCounter + 1 %}
-                                        {% endfor %}
-                                    </div>
-                                </div>
-                            </div>
-                            <br>
-                            <div class="container-fluid">
-                                <span style="font-size:15px"><i class="icon-attention-circled"></i>Survolez le graphique pour plus d'informations, cliquez sur un label de la légende pour afficher / masquer les données</span>
-                                <canvas align=center id="comparaisonMoyennes"></canvas>
-                            </div>
+
+    {% for i in 0..stats|length - 3 %}
+
+        {% set idGraph = "diagrammeEvolutionResultat" ~ stats[i].nom %}
+
+
+        <div class="card">
+            <ul class="list-group list-group-flush">
+                <li class="list-group-item text-white" style="background-color:#bdc3c7;">
+                    {% if stats.typeGroupe["type"] == "statut" %}
+                        {% trans with {'nomGroupe':stats[i].nom, 'nomStatut':stats.typeGroupe[0].nom} %}page_evolution_titre_carte_statut{% endtrans %}
+                    {% else %}
+                        {% trans with {'nomGroupe':stats[i].nom} %}page_evolution_titre_carte_groupe{% endtrans %}
+                    {% endif %}
+                </li>
+                <li class="list-group-item">
+                    <div>
+                        <br>
+                        <div class="container-fluid">
+                            <span style="font-size:15px"><i class="icon-attention-circled"></i>{% trans %}message_info_survol_graphiques{% endtrans %}</span>
+                            <br/>
+                            <br/>
+                            <canvas id="{{ idGraph }}"></canvas>
                         </div>
-                    </li>
-                </ul>
-            </div>
-            <br>
-        {% endfor %}
-    {% else %}
-        <div class="info">
-            <h2 class="h4 mb-0 text-gray-800">Veuillez sélectionner des parties de l'évaluations sur lesquelles voir des
-                statistiques </h2>
+                    </div>
+                </li>
+            </ul>
         </div>
-    {% endif %}
+        <br>
+    {% endfor %}
+
 {% endblock %}
 
 {% block javascripts %}
+
     <!-- Chart JS -->
     <script src="{{ asset("vendor/chart.js/Chart.min.js") }}"></script>
     <!-- PDFMake -->
     <script type="text/javascript" src="{{ asset("js/pdfmake.min.js") }}"></script>
     <script type="text/javascript" src="{{ asset("js/vfs_fonts.js") }}"></script>
-    <script type="text/javascript" src="{{ asset("js/boxplot.js") }}"></script>
-    <!-- Script pour la génération des graphiques -->
-    <script type="text/javascript">
 
-        // ----- VARIABLES GLOBALES ---------
-        {% if plusieursEvals %}
-        var nomEvaluation = "Synthèse des {{ evaluations.count }} evaluation(s)"
-        {% else %}
-        var nomEvaluation = "{{ evaluation.nom }}";
-        {% endif %}
-        var fontSize = 16;
+    <script type="text/javascript">
         // Liste de couleurs communes
         var noir = "#000000", jaune = "#FFFF00", bleu = "#0000FF", rouge = "#FF0000", vert = "#00FF00",
-            violet = "#EE82EE",
-            blanc = "#FFFFFF", gris = "#808080";
+            violet = "#EE82EE", blanc = "#FFFFFF", gris = "#808080";
         // Pallette de couleurs (valeurs rgb)
         var couleurs = [
-            [192, 57, 43],
-            [155, 89, 182],
-            [41, 128, 185],
-            [22, 160, 133],
-            [46, 204, 113],
-            [243, 156, 18],
-            [211, 84, 0],
-            [189, 195, 199],
-            [127, 140, 141],
-            [44, 62, 80],
-            [231, 76, 60],
-            [142, 68, 173],
-            [26, 188, 156],
-            [39, 174, 96],
-            [241, 196, 15],
-            [230, 126, 34],
-            [236, 240, 241],
-            [149, 165, 166],
+            [192, 57, 43], [155, 89, 182], [41, 128, 185], [22, 160, 133], [46, 204, 113], [243, 156, 18], [211, 84, 0], [189, 195, 199], [127, 140, 141],
+            [44, 62, 80], [231, 76, 60], [142, 68, 173], [26, 188, 156], [39, 174, 96], [241, 196, 15], [230, 126, 34], [236, 240, 241], [149, 165, 166],
             [52, 73, 94],
         ];
-        var groupes = "{{ parties[0].stats|json_encode() }}";
-        groupes = groupes.replace(/&quot;/g, "\""); // remplacement de toutes les itérations de ' &quot; ' par ' " '
-        groupes = JSON.parse(groupes);
 
-        // Groupes sélectionés (avec les cases à cocher) par graphique
-        var groupesChecked = [];
-        groupesChecked['moy'] = [];
-
-        // Objet données du graphique
-        var chartDATA = {
-            labels: [],
-            datasets: undefined,
-        };
-        //Contiendra les variables des graphiques pour les mettre à jour
-        var graphiques = [];
-        // Objet options du graphique
-        var options = {
+        var optionsGraph = {
             scales: {
                 xAxes: [{
-                    gridLines: {
-                        display: false
-                    },
                     ticks: {
-                        fontSize: fontSize,
+                        {% if evaluations|length <= 5 %}
+                        display: true
+                        {% else %}
+                        display: false
+                        {% endif %}
                     },
-                    maxBarThickness: 100,
-                    stacked: false,
+                    display: true,
+                    scaleLabel: {
+                        display: true
+                    }
                 }],
                 yAxes: [{
-                    labelString: 'Intervalle de note',
-                    ticks: {
-                        beginAtZero: true,
-                        max: 10,
-                        min: 0,
-                        fontSize: fontSize,
+                    display: true,
+                    scaleLabel: {
+                        display: false,
+                        labelString: 'Value'
                     },
-                    stacked: false,
-                }],
+                    ticks: {
+                        suggestedMin: 0,
+                        suggestedMax: 20
+                    }
+                }]
             },
             legend: {
-                position: 'top',
-                labels: {
-                    fontSize: fontSize,
-                },
+                display: true
             },
-            aspectRatio: 3,
-            maintainAspectRatio: true,
-            responsive: true,
-            tooltips: {
-                intersect: false,
-                titleMarginBottom: 10,
-                titleFontColor: '#6e707e',
-                titleFontSize: fontSize,
-                backgroundColor: blanc,
-                bodyFontColor: "#858796",
-                borderColor: '#dddfeb',
-                borderWidth: 1,
-                xPadding: 15,
-                yPadding: 15,
-                displayColors: true,
-                caretPadding: 10
+            spanGaps: true
+        };
+
+        var graphiques = [];
+
+        {% for i in 0..stats|length - 3 %}
+        {% for graphCourant in  1..stats[i] %}
+        {% set idGraph = "diagrammeEvolutionResultat" ~ stats[i].nom %}
+        {% set nbEtudiantsGroupeCourant = stats[i]["etudiants"]|length %}
+
+
+        fillTabOfColors({{ nbEtudiantsGroupeCourant }});
+
+        var diagrammeEvolutionResultat = document.getElementById("{{ idGraph }}").getContext('2d');
+        graphiques[{{ i }}] = new Chart(diagrammeEvolutionResultat, {
+            type: 'line',
+            data: {
+                labels: [{% for evaluation in evaluations %} '{{ evaluation.nom|e('js')|raw }}', {% endfor %}],
+                datasets: [
+                    {% for etudiant in stats[i]["etudiants"] %}
+                    {
+                        label: '{{ etudiant.nomPrenom }}',
+                        data: [{% for note in etudiant.notes %} {{ note }}, {% endfor %}],
+                        borderColor: "rgb(" + couleurs[{{ loop.index }}][0] + "," + couleurs[{{ loop.index }}][1] + "," + couleurs[{{ loop.index }}][2] + ")",
+                        backgroundColor: "rgb(" + couleurs[{{ loop.index }}][0] + "," + couleurs[{{ loop.index }}][1] + "," + couleurs[{{ loop.index }}][2] + ")",
+                        fill: false,
+                        lineTension: 0
+                    },
+                    {% endfor %}
+                ]
             },
-            plugins: {
-                labels: {
-                    render: 'value'
+            options: optionsGraph,
+        });
+
+        function fillTabOfColors(nbLoop) {
+            if (nbLoop > couleurs.length) {
+                var gap = nbLoop - couleurs.length;
+                for (var i = 0; i <= gap; i++) {
+                    var coul = couleurs[i];
+                    couleurs.push([(coul[0] + 60) % 255, (coul[1] - 60) % 255, coul[2]]);
                 }
             }
         }
-        // --------- CODE ------------
-        // Création des graphiques au chargement de la fenètre
-        window.onload = function () {
 
-            window.chartMoy = new Chart(document.getElementById("comparaisonMoyennes").getContext('2d'), {
-                type: 'bar',
-                data: chartDATA,
-                options: options,
-            });
-            //Pour que tout soit coché par défaut
-            {% for groupe in parties[0].stats %}
-            changement("{{ groupe.nom }}", true, 0, 'moy')
-            {% endfor %}
-
-        }
-
-        //------ FONCTIONS -----
-
-        // Met à jour le graphique en fonction des cases qui sont cochées
-        function changement(nom, value, partieConcernee, typeStat) {
-            // Gère l'addition et la suppression des groupes à afficher dans le graphe
-            if (value) { // la case à été cochée
-                groupesChecked[typeStat].push(nom); // Ajout dans la liste cochée
-            } else { // la case à été décochée
-                var index = contains(groupesChecked[typeStat], nom); // index au quel se trouve le groupe dans le tableau groupes s'il existe
-                if (index != -1) {
-                    groupesChecked[typeStat].splice(index, 1); // Suppression de la liste cochée
-                }
-            }
-            var chartOptions = options; // Récupération de la template des options
-            var chartDonnees = {};
-            // Récupération de la template des données du graphique
-            // Génération des labels & cacul du max
-            switch (typeStat) {
-                case 'moy':
-                    chartDonnees.labels = groupesChecked[typeStat];
-                    chartOptions.scales.yAxes[0].ticks.min = undefined;
-                    chartOptions.scales.yAxes[0].ticks.max = undefined;
-                    break;
-                default:
-                    break;
-            }
-            // Génération des datasets des groupes sélectionés pour chartJS en fonction du graphique sélectioné
-            // Remplacement des données du graphe par les nouvelles données générées
-            switch (typeStat) {
-                case 'moy':
-                    chartDonnees.datasets = genDataMoyenneEcart(partieConcernee);
-                    break;
-            }
-
-            //  MaJ du graphique + MaJ des options
-            switch (typeStat) {
-                case 'moy' : // Moyenne & écart-type
-                    chartMoy.options = chartOptions;
-                    chartMoy.data = chartDonnees;
-                    chartMoy.update();
-                    break;
-                default:
-                    break;
-            }
-        }
-
-        // Génère les données requises par Chart.js pour le graphique 'Moyenne & écart-type'
-        function genDataMoyenneEcart(partieConcernee) {
-            var liste = getGroupesData(groupesChecked['moy'], partieConcernee); // Récupération des données
-            var moyenneControleCourant = [];
-            var moyenneAnciensControles = [];
-            for (var i = 0; i < liste.length; i++) { // Choix des informations requises
-                moyenneControleCourant.push(liste[i].moyenneControleCourant);
-                moyenneAnciensControles.push(liste[i].moyenneAutresControles);
-            }
-            var couleurMoyenne = couleurs[0];
-            var couleurEcartType = couleurs[1];
-            data = [ // Création des objets datasets de Chart.js avec nos données
-                {
-                    label: 'Moyenne à {{ evaluationConcernee.nom }}',
-                    backgroundColor: "rgb(" + couleurMoyenne[0] + "," + couleurMoyenne[1] + "," + couleurMoyenne[2] + ")",
-                    hoverBackgroundColor: "rgb(" + couleurMoyenne[0] + "," + couleurMoyenne[1] + "," + couleurMoyenne[2] + ")",
-                    borderColor: gris,
-                    data: moyenneControleCourant
-                },
-                {
-                    label: 'Moyenne aux autres évaluations choisies',
-                    backgroundColor: "rgb(" + couleurEcartType[0] + "," + couleurEcartType[1] + "," + couleurEcartType[2] + ")",
-                    hoverBackgroundColor: "rgb(" + couleurEcartType[0] + "," + couleurEcartType[1] + "," + couleurEcartType[2] + ")",
-                    borderColor: gris,
-                    data: moyenneAnciensControles
-                }
-            ];
-            return data;
-        }
-
-        // Retourne un tableau d'objets groupe avec leurs données en fonction d'une liste de noms de groupes
-        function getGroupesData(listeGroupes, partieConcernee) {
-            groupesAvecDonnees = [];
-            for (var i = 0; i < listeGroupes.length; i++) {
-                for (var j = 0; j < groupes.length; j++) {
-                    if (groupes[j].nom == listeGroupes[i]) {
-                        groupesAvecDonnees.push(groupes[j])
-                    }
-                }
-            }
-            return groupesAvecDonnees;
-        }
-
-        // génère des codes couleurs rgb aléatoires
-        function genRandomColor() {
-            return "rgb(" + Math.floor(Math.random() * Math.floor(255)) + ","
-                + Math.floor(Math.random() * Math.floor(255)) + ","
-                + Math.floor(Math.random() * Math.floor(255)) + ")";
-        }
-
-        // retourne l'index au quel se trouve l'élément dans array, s'il n'y est pas renvoie -1
-        function contains(array, element) {
-            for (var i = 0; i < array.length; i++) {
-                if (array[i] == element) {
-                    return i;
-                }
-            }
-            return -1;
-        }
+        {% endfor %}
+        {% endfor %}
 
         // -----------------------------------------------------------------------------
         // -----------------------  PARTIE GENERATION DE PDF ---------------------------
         // -----------------------------------------------------------------------------
 
-        function getImage(largeur, longueur, callback) {
-            // Image du graphique
-            var image;
+        // passage de la liste des groupes de twig à js
+        {% set tabGroupes = [] %}
+        {% for groupe in groupes %}
+        {% set tabGroupes = tabGroupes|merge({(loop.index): groupe.nom}) %}
+        {% endfor %}
+        var nomGroupes = "{{ tabGroupes|json_encode }}";
+        nomGroupes = nomGroupes.replace(/&quot;/g, "\""); // remplacement de toutes les itérations de ' &quot; ' par ' " '
+        nomGroupes = JSON.parse(nomGroupes);
+
+        // passage de la liste des groupes de twig à js
+
+        var stats = "{{ stats|json_encode }}";
+        stats = stats.replace(/&quot;/g, "\""); // remplacement de toutes les itérations de ' &quot; ' par ' " '
+        stats = JSON.parse(stats);
+
+
+        var nomEvaluations = [];
+
+        // Contien les image de tous les graphiques regénérés à la bonne taille
+        var images = [];
+        // Nombre d'étudiant (effectif) présent sur les graphiques
+        var donneesGraphique = [];
+        // Faux, si le graphique est en cours de création -> Vrai une fois que le graphique est prêt à être exporté en Image pour le pdf
+        var wait_for_chart_ready = false;
+
+        // Fonction appelée par une fois le graphique généré, permet au programme de savoir quand demander la valeur PNG du graphique
+        function onChartReady() {
+            wait_for_chart_ready = true;
+        }
+
+        function getImages(largeur, longueur, callback) {
+
             // Taille de police d'écriture pour les graphiques exportés dans le fichier PDF
             const pdfChartFontSize = 24;
             // options du graphique pour la génération de graphiques pour le pdf.
@@ -403,12 +241,17 @@
                     onComplete: callback,
                     duration: false,
                 },
+                spanGaps: true,
                 scales: {
                     xAxes: [{
-                        gridLines: {display: !1},
-                        ticks: {fontSize: pdfChartFontSize,},
-                        maxBarThickness: 100,
-                        stacked: !1,
+                        gridLines: {display: !1}, ticks: {
+                            fontSize: pdfChartFontSize,
+                            {% if evaluations|length <= 5 %}
+                            display: true
+                            {% else %}
+                            display: false
+                            {% endif %}
+                        }, maxBarThickness: 100, stacked: !1,
                     }],
                     yAxes: [{
                         ticks: {beginAtZero: !0, max: undefined, min: 0, fontSize: pdfChartFontSize},
@@ -436,55 +279,69 @@
                 plugins: {labels: {render: 'value'}}
             };
 
+            // Pour chaque graphique présent sur la page
+            for (var i = 0; i < graphiques.length; i++) {
+                //récupération des données du graphique
+                var donnees = graphiques[i].config.data.datasets;
+                var donneesFiltrees = []; // Données sans les personnes décochées
+                var notes = [];
+                for (var j = 0; j < donnees.length; j++) {
+                    if (!graphiques[i].legend.legendItems[j].hidden) { // Si la personne n'as pas été décochée
+                        donneesFiltrees.push(donnees[j]);
+                        notes.push({nom: donnees[j].label, notes: donnees[j].data}); // nom et notes de l'étudiant
+                    }
+                }
+                donneesGraphique[i] = {surGraphe: donneesFiltrees.length, total: donnees.length, notes: notes};
+                // Génération du graphique avec les données épurées
+                // Création du canvas caché
+                var canvas = document.createElement("canvas");
+                canvas.setAttribute('id', 'hiddenGraph');
+                canvas.style.display = 'none'; // N'affiche pas l'élément
+                canvas.style.width = largeur + 'px';
+                canvas.style.height = longueur + 'px';
+                document.body.appendChild(canvas);
 
-            // Création du canvas caché
-            var canvas = document.createElement("canvas");
-            canvas.setAttribute('id', 'hiddenGraph');
-            canvas.style.display = 'none'; // N'affiche pas l'élément
-            canvas.style.width = largeur + 'px';
-            canvas.style.height = longueur + 'px';
-            document.body.appendChild(canvas);
+                var chartDonnees = {datasets: donneesFiltrees, labels: graphiques[i].config.data.labels};
+                var options = pdfChartOptions;
 
-            var chartDonnees = window.chartMoy.config.data;
+                // Création du chart dans le canvas caché
+                window.hiddenGraph = new Chart(document.getElementById("hiddenGraph").getContext('2d'), {
+                    type: 'line',
+                    data: chartDonnees,
+                    options: options,
+                });
 
-            // Création du chart dans le canvas caché
-            window.hiddenGraph = new Chart(document.getElementById("hiddenGraph").getContext('2d'), {
-                type: 'bar',
-                data: chartDonnees,
-                options: pdfChartOptions,
-            });
-            // Attente de la génération du graphique, le booléen change d'état dans la fonction callback
-            while (!wait_for_chart_ready) {
+                // Attente de la génération du graphique, le booléen change d'état dans la fonction callback
+                while (!wait_for_chart_ready) {
+                }
+                ;
+                wait_for_chart_ready = !wait_for_chart_ready;
+
+                // Ajout de l'image à l'array
+                images.push(window.hiddenGraph.toBase64Image());
+
+                // Supression de l'instance du graphique
+                window.hiddenGraph.destroy();
+
+                // Suppression du canvas caché de l'arborescence de la page
+                document.body.removeChild(canvas);
             }
-            ;
-            wait_for_chart_ready = !wait_for_chart_ready;
-
-            // Ajout de l'image à l'array
-            image = window.hiddenGraph.toBase64Image();
-
-            // Supression de l'instance du graphique
-            window.hiddenGraph.destroy();
-
-            // Suppression du canvas caché de l'arborescence de la page
-            document.body.removeChild(canvas);
-
-            return image;
         }
 
         function genPDF(callback, portrait) {
+
             // CONSTANTES
             const imageWidthPortrait = 500
             const imageWidthPaysage = 780;
             const largeurCanvas = 1500;
             const longueurCanvas = 650;
 
-            // Génération de l'image pour le pdf
-            var image = getImage(largeurCanvas, longueurCanvas, callback);
+            nomEvaluations = graphiques[0].config.data.labels;
 
-            var titre = "Comparaison de " + nomEvaluation + " comparée à {{ evaluations|length }} " + ({{ evaluations|length }} > 1 ? "évaluations" : "évaluation"
-        )
-            ;
+            // Génération des images des graphiques pour le pdf
+            getImages(largeurCanvas, longueurCanvas, callback);
 
+            // Contenu du pdf à générer
             var docDefinition = {
                 compress: false,
                 footer: function (currentPage, pageCount) {
@@ -497,7 +354,7 @@
                 },
                 pageOrientation: (portrait ? 'portrait' : 'landscape'),
                 info: {
-                    title: "Comparaison d'évaluations",
+                    title: "Évolution de résultats",
                     author: 'Noteo',
                 },
                 content: [
@@ -506,12 +363,8 @@
                         width: (portrait ? imageWidthPortrait : imageWidthPaysage),
                     },
                     { // PAGE DE GARDE
-                        text: titre,
+                        text: "{{ titrePage }}",
                         style: 'header',
-                    },
-                    {
-                        text: "Evaluations",
-                        style: (portrait ? 'liste_evals' : 'liste_evals_paysage'),
                     },
                     {
                         ul: [
@@ -520,28 +373,17 @@
                             {% endfor %}
                         ],
                         style: (portrait ? 'liste_evals' : 'liste_evals_paysage'),
-                        pageBreak: 'after',
-                    },
-                    {
-                        image: image,
-                        width: (portrait ? imageWidthPortrait : imageWidthPaysage),
                         pageBreak: (portrait ? '' : 'after'),
                     },
-                    {
-                        text: "Données chiffrées",
-                        style: 'subheader',
-                    },
-                    {
-                        style: 'tableau',
-                        table: {
-                            headerRows: 1,
-                            body: getDataForPdfTable(portrait),
+                    { // TABLES DES MATIERES
+                        toc: {
+                            id: 'tabMatieres',
+                            title: {
+                                text: 'Table des matières',
+                                style: 'header',
+                            },
                         },
-                        layout: { // Colore une ligne sur 2 (pour l'effet zèbré sur le tableau)
-                            fillColor: function (rowIndex, node, columnIndex) {
-                                return (rowIndex % 2 === 0) ? '#CCCCCC' : null;
-                            }
-                        },
+                        pageBreak: 'after',
                     },
                 ],
                 images: {
@@ -591,37 +433,87 @@
                 }
             };
 
+            // Génération des pages
+            for (var indexGraph = 0; indexGraph < graphiques.length; indexGraph++) {
+                var contenu = [
+                    {
+                        text: stats[indexGraph].nom + " (" + donneesGraphique[indexGraph].surGraphe + " étudiants sur un total de " + donneesGraphique[indexGraph].total + " étudiants)",
+                        style: (portrait ? 'subheader' : 'subheader_paysage'),
+                        tocItem: 'tabMatieres',
+                    },
+                    {
+                        image: images[indexGraph],
+                        width: (portrait ? imageWidthPortrait : imageWidthPaysage),
+                        pageBreak: (portrait ? '' : 'after'),
+                    },
+                    {
+                        text: stats[indexGraph].nom + " (Données chiffrées)",
+                        style: 'subheader',
+                    },
+                    {
+                        style: 'tableau',
+                        table: {
+                            headerRows: 1,
+                            body: getDataForPdfTable(indexGraph, portrait),
+                        },
+                        layout: { // Colore une ligne sur 2 (pour l'effet zèbré sur le tableau)
+                            fillColor: function (rowIndex, node, columnIndex) {
+                                return (rowIndex % 2 === 0) ? '#CCCCCC' : null;
+                            }
+                        },
+                        // Saut de page s'il reste encore des graphiques à ajouter au pdf
+                        pageBreak: (indexGraph == (graphiques.length - 1) ? '' : 'after'),
+                    },
+                ];
+                docDefinition.content.push(contenu);
+            }
+
             // Génération du pdf en fonction de docDefinition et téléchargement de ce dernier
-            pdfMake.createPdf(docDefinition).download(titre);
+            pdfMake.createPdf(docDefinition).download("{{ titrePage }}");
         }
 
-        // Fonction appelée par une fois le graphique généré, permet au programme de savoir quand demander la valeur PNG du graphique
-        function onChartReady() {
-            wait_for_chart_ready = true;
-        }
-
-        function getDataForPdfTable(portrait) {
+        function getDataForPdfTable(indexGraph, portrait) {
             var donnees = []; // Données du tableau
+            var source = donneesGraphique[indexGraph];
+            var nbEvalsPerRow = (portrait ? 10 : 15);
+            var nbRows = Math.floor(nomEvaluations.length / nbEvalsPerRow) + 1;
+            var totalCpt = 0;
             var header = [];
             header.push({
-                text: 'Groupes',
+                text: 'Etudiant',
                 style: (portrait ? 'texte_header_tableau_portrait' : 'texte_header_tableau_paysage')
             });
             header.push({
-                text: ('Moyenne à ' + nomEvaluation),
-                style: (portrait ? 'texte_header_tableau_portrait' : 'texte_header_tableau_paysage')
-            });
-            header.push({
-                text: 'Moyenne aux autres évaluations',
+                text: 'Notes',
                 style: (portrait ? 'texte_header_tableau_portrait' : 'texte_header_tableau_paysage')
             });
             donnees.push(header);
-            for (var i = 0; i < groupes.length; i++) {
-                var temp_data = [];
-                temp_data.push(groupes[i].nom);
-                temp_data.push(groupes[i].moyenneControleCourant);
-                temp_data.push(groupes[i].moyenneAutresControles);
-                donnees.push(temp_data);
+            for (var etudiantIndex = 0; etudiantIndex < source.notes.length; etudiantIndex++) {
+                var noteCpt = 0;
+                var temp_row = [];
+                temp_row.push({text: source.notes[etudiantIndex].nom});
+                // tableau intérieur avec les notes
+                var body = [];
+                for (var rowIndex = 0; rowIndex < nbRows; rowIndex++) {
+                    body[rowIndex] = [];
+                    for (var i = 0; i < nbEvalsPerRow; i++) {
+                        if (noteCpt < source.notes[etudiantIndex].notes.length) {
+                            //Si l'étudiant était absent on l'indique sinon on met sa note
+                            if(isNaN(source.notes[etudiantIndex].notes[noteCpt])) {
+                                body[rowIndex][i] = "Absent";
+                            }
+                            else {
+                                body[rowIndex][i] = source.notes[etudiantIndex].notes[noteCpt];
+                            }
+
+                        } else {
+                            body[rowIndex][i] = "";
+                        }
+                        noteCpt++;
+                    }
+                }
+                temp_row.push({table: {body: body}});
+                donnees.push(temp_row);
             }
             return donnees;
         }
@@ -629,3 +521,4 @@
     </script>
 
 {% endblock %}
+

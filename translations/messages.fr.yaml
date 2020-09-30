@@ -32,6 +32,7 @@ modifier_mdp : Modifier mon mot de passe
 logout: Déconnexion
 # titres de colonnes tableaux
 nom: Nom
+nom_famille: Nom
 prenom: Prénom
 mail: Mail
 effectif: Effectif
@@ -362,6 +363,54 @@ formulaire_stats_evolution_statut_sous_titre_choix_sous_groupes: Sélectionner l
 formulaire_stats_evolution_statut_warning_choix_sous_groupes: La couleur de l'effectif d'un groupe indique la facilité de lecture du graphique qui sera généré pour ce groupe.
 formulaire_stats_evolution_statut_titre_choix_evals: Évolution chronologique des résultats d’un ensemble d’étudiants appartenant à un statut
 formulaire_stats_evolution_statut_sous_titre_choix_evals: Sélectionner les évaluations pour lesquelles vous souhaitez voir des statistiques pour les groupes précédemment sélectionnés
+####### PAGES D'AFFICHAGE DES STATISTIQUES
+# general
+actions: Actions
+message_info_temps_chargement: Des temps de chargement longs peuvent survenir si la quantité de données est élevée
+message_info_absents: Les statistiques ne prennent pas en compte les étudiants démissionaires et les absents excusés
+message_info_absents_fiche_etudiant: Les statistiques ne prennent pas en compte les évaluations auxquelles l'étudiant était absent et excusé
+message_info_survol_graphiques: Survolez le graphique pour plus d'informations, cliquez sur un label de la légende pour afficher / masquer les données
+mesage_info_courbe_evolution_representation_un_etudiant: Un étudiant présent à une seule des évaluations est réprésenté par un point sur le graphique
+mesage_info_courbe_evolution_etudiant_absent: Un étudiant absent à toutes les évaluations se traduit par l'absence de courbe
+tooltip_stats_pdf_portrait: Exporter les statistiques au format PDF (portrait)
+tooltip_stats_pdf_paysage: Exporter les statistiques au format PDF (paysage)
+tooltip_stats_mail: Envoyer les statistiques aux étudiants
+afficher_autres_evals: Afficher les nombre autres évaluations
+# page stats eval simple et par parties
+page_eval_simple_parties_titre: Statistiques pour nom
+# page stats plusieurs évals
+page_plusieurs_evals: Consulter les statistiques sur nombre évaluation(s)
+page_plusieurs_evals_groupes: Groupes sélectionnés
+page_plusieurs_evals_evals: Évaluations sélectionnées
+# page stats comparaison
+page_comparaison_titre: Comparer l'évaluation nom à nombre évaluation(s)
+page_comparaison_groupes: Groupes observés
+page_comparaison_eval_ref: Évaluation de référence
+page_comparaison_autres_eval:  Évaluations comparées à l'évaluation de référence
+page_comparaison_moyenne_eval: Moyenne à nom
+page_comparaison_moyenne_autres_evals: Moyennes aux autres évaluations choisies
+# Stats fiche étudiant
+page_fiche_etudiant_titre: Fiche de l'étudiant prenom nom
+page_fiche_etudiant_historique_notes: Historique des notes
+page_fiche_etudiant_classement_titre: Classement par rapport aux groupes/statuts
+page_fiche_etudiant_classement: 'Classement : '
+page_fiche_etudiant_moyenne: 'Moyenne du groupe : '
+page_fiche_etudiant_moyenne_sans_ponctuation: Moyenne du groupe
+page_fiche_etudiant_note: 'Note de l''étudiant : '
+page_fiche_etudiant_note_sans_ponctuation: Note de l'étudiant
+page_fiche_etudiant_notes: 'Notes de l''étudiant'
+page_fiche_etudiant_eval_donnees_sans_ponctation: Données sur l'évaluation
+page_fiche_etudiant_eval_donnees: 'Données sur l''évaluation : '
+page_fiche_etudiant_eval_date: 'Date de l''évaluation : '
+page_fiche_etudiant_intervalle_note: Intervalle de note
+page_fiche_etudiant_pas_eval: L'étudiant n'a participé à aucune évaluation
+# Stats evolution
+page_evolution_titre: Évolution chronologique des résultats d’un ensemble d’étudiants
+page_evolution_groupes: Groupes sélectionnés
+page_evolution_statut: Groupe d'étudiants ayant un statut particulier observé
+page_evolution_evals: Évaluations concernées
+page_evolution_titre_carte_groupe: Étudiant(s) du groupe nomGroupe
+page_evolution_titre_carte_statut:  Étudiant(s) du groupe nomGroupe ayant le statut "nomStatut"
 ####### REINITIALISATION APPLICATION
 app_reset_texte: 'Réinitialiser l''application aura pour effet de supprimer de l''application: <ul><li>Tous les groupes</li><li>Tous les groupes d''étudiants ayant un statut particulier</li><li>Toutes les évaluations</li><li>Tous les étudiants</li></ul>Les profils des enseignants ne seront pas supprimés et les statistiques ne seront plus consultables.'
 ####### TUTORIELS

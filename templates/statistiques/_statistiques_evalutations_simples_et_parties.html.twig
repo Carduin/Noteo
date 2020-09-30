@@ -1,89 +1,31 @@
-{% extends 'base.html.twig' %}
-
-{% block titrePage %}{{ titrePage }}{% endblock %}
-
-{% block statistiques %}active{% endblock %}
-
-{% block stylesheets %}
-    <style>
-        .card:hover {
-            -webkit-box-shadow: -1px 9px 40px -12px rgba(0, 0, 0, 0.75);
-            -moz-box-shadow: -1px 9px 40px -12px rgba(0, 0, 0, 0.75);
-            box-shadow: -1px 9px 40px -12px rgba(0, 0, 0, 0.75);
-        }
-    </style>
-{% endblock %}
 {% block contenu %}
     <div class="table-responsive">
         <table align="center" class="table">
             <tbody>
-            {% if plusieursEvals %}
                 <tr>
-                    <th>Évaluations sélectionnées</th>
-                    <td>
-                        <ul>
-                            {% if evaluations|length <=10 %}
-                                {% for evaluation in evaluations %}
-                                    <li>{{ evaluation.nom }} ({{ evaluation.date|date("d/m/Y") }})</li>
-                                {% endfor %}
-                            {% else %}
-                                {# Si il y a plus de 10 évaluations on va afficher seulement les dix premières et les suivantes seront cachées dans un collapse#}
-                                {% for i in 0..9 %}
-                                    <li>{{ evaluations[i].nom }} ({{ evaluations[i].date|date("d/m/Y") }})</li>
-                                {% endfor %}
-                                <li>
-                                    <a data-toggle="collapse" href="#collapseExample" role="button"
-                                       aria-expanded="false" aria-controls="collapseExample">
-                                        Voir les {{ evaluations|length-10 }} autres évaluations sélectionnées
-                                    </a>
-                                </li>
-                                <div class="collapse" id="collapseExample">
-                                    {% for i in 10..evaluations|length-1 %}
-                                        <li>{{ evaluations[i].nom }} ({{ evaluations[i].date|date("d/m/Y") }})</li>
-                                    {% endfor %}
-                                </div>
-                            {% endif %}
-                        </ul>
-                    </td>
-                </tr>
-                <tr>
-                    <th>Groupes sélectionnés</th>
-                    <td>
-                        <ul>
-                            {% for groupe in parties[0].stats %}
-                                <li>{{ groupe.nom }}</li>
-                            {% endfor %}
-                        </ul>
-                    </td>
-                </tr>
-            {% else %}
-                <tr>
-                    <th class="intitule"><label for="evaluation_groupe">Groupe évalué</label></th>
+                    <th class="intitule"><label for="evaluation_groupe">{% trans %}form_evaluation_groupe{% endtrans %}</label></th>
                     <td>{{ evaluation.groupe.nom }}</td>
                 </tr>
                 <tr>
-                    <th class="intitule"><label for="evaluation_date">Date de l'évaluation</label></th>
+                    <th class="intitule"><label for="evaluation_date">{% trans %}form_evaluation_date{% endtrans %}</label></th>
                     <td>{{ evaluation.date | date("d/m/Y") }}</td>
                 </tr>
-            {% endif %}
             <tr>
-                <th class="intitule"><label>Actions</label></th>
+                <th class="intitule"><label>{% trans %}actions{% endtrans %}</label></th>
                 <td>
-                    <span style="font-size:15px"><i class="icon-attention-circled"></i>Des temps de chargement longs peuvent survenir si la quantité de données est élevée</span><br>
+                    <span style="font-size:15px"><i class="icon-attention-circled"></i>{% trans %}message_info_temps_chargement{% endtrans %}</span><br>
                     <a href="#"><i style="font-size: 25px;" data-toggle='tooltip'
-                                   title="Exporter les statistiques au format PDF (Portrait)" class="icon-file-pdf"
+                                   title="{% trans %}tooltip_stats_pdf_portrait{% endtrans %}" class="icon-file-pdf"
                                    onclick="genPDF(onChartReady, true)"></i></a>
                     <a href="#"><i style="font-size: 25px;" data-toggle='tooltip'
-                                   title="Exporter les statistiques au format PDF (Paysage)"
+                                   title="{% trans %}tooltip_stats_pdf_paysage{% endtrans %}"
                                    class="fas icon-file-pdf fa-rotate-270"
                                    onclick="genPDF(onChartReady, false)"></i></a>
-                    {% if not plusieursEvals %}
                         {% if (evaluation.enseignant.id == app.user.id or is_granted('ROLE_ADMIN')) %}
                             <a href="{{ path("previsualisation_mail", {slug:evaluation.slug}) }}"><i
                                         style="font-size: 25px;" data-toggle='tooltip'
-                                        title="Envoyer les statistiques aux étudiants" class="icon-mail"></i></a>
+                                        title="{% trans %}tooltip_stats_mail{% endtrans %}" class="icon-mail"></i></a>
                         {% endif %}
-                    {% endif %}
                 </td>
             </tr>
             </tbody>
@@ -95,139 +37,129 @@
         </div>
     {% endfor %}
     <div class='bouton' align=center>
-        <span style="font-size:15px" class="badge badge-pill badge-primary"><i class="icon-attention-circled"></i> Les statistiques ne prennent pas en compte les étudiants démissionaires et les absents excusés</span>
+        <span style="font-size:15px" class="badge badge-pill badge-primary"><i class="icon-attention-circled"></i> {% trans %}message_info_absents{% endtrans %}</span>
     </div>
-    {% if parties is not empty %}
-        {% for partie in parties %}
-            <div class="card">
-                <ul class="list-group list-group-flush">
-                    <li class="list-group-item text-white" style="background-color:#bdc3c7;">
-                        {{ partie.nom }} (/{{ partie.bareme }})
-                    </li>
-                    <li class="list-group-item">
-                        <ul class="nav nav-tabs">
-                            <li class="nav-item"><a
-                                        class="nav-link {% if app.session.get('typeGraphique') =="histogramme" %}active{% endif %}"
-                                        data-toggle="tab"
-                                        href="#Repartition_Histogramme_{{ partie.nom | replace({' ': '_'}) }}">Répartition
-                                    (Histogramme)</a></li>
-                            <li class="nav-item"><a
-                                        class="nav-link {% if app.session.get('typeGraphique') =="boite-moustache" %}active{% endif %}"
-                                        data-toggle="tab"
-                                        href="#Repartition_Boites_{{ partie.nom | replace({' ': '_'}) }}">Répartition
-                                    (Boîte à moustaches)</a></li>
-                            <li class="nav-item"><a
-                                        class="nav-link {% if app.session.get('typeGraphique') =="moyenne" %}active{% endif %}"
-                                        data-toggle="tab"
-                                        href="#Moyenne_ecart_{{ partie.nom | replace({' ': '_'}) }}">Moyenne
-                                    & Écart-type</a></li>
-                        </ul>
-                        <div class="tab-content">
-                            <!-- Répartition (Histogramme) -->
-                            <div id="Repartition_Histogramme_{{ partie.nom | replace({' ': '_'}) }}"
-                                 class="tab-pane {% if app.session.get('typeGraphique') =="histogramme" %}active{% else %}fade{% endif %}">
-                                <div class="container-fluid">
-                                    <br>
-                                    <div class="card-md-auto">
-                                        <div class="card-header" style="background-color: transparent">
-                                            Groupes
-                                        </div>
-                                        <div class="card-body">
-                                            {% set tabCounter = 0 %}
-                                            {% for groupe in parties[0].stats %}
-                                                <div class="form-check form-check-inline">
-                                                    <input class="form-check-input" type="checkbox"
-                                                           id="{{ groupe.nom }}" checked
-                                                           onChange="changement(this.id, this.checked, '{{ loop.parent.loop.index -1 }}', 'histo')">
-                                                    <label class="form-check-label" for="inlineCheckbox1"
-                                                           name="label_{{ groupe.nom }}_histo">{{ groupe.nom }}</label>
-                                                </div>
-                                                {% set tabCounter = tabCounter + 1 %}
-                                            {% endfor %}
-                                        </div>
+    {% for partie in parties %}
+        <div class="card">
+            <ul class="list-group list-group-flush">
+                <li class="list-group-item text-white" style="background-color:#bdc3c7;">
+                    {{ partie.nom }} (/{{ partie.bareme }})
+                </li>
+                <li class="list-group-item">
+                    <ul class="nav nav-tabs">
+                        <li class="nav-item"><a
+                                    class="nav-link {% if app.session.get('typeGraphique') =="histogramme" %}active{% endif %}"
+                                    data-toggle="tab"
+                                    href="#Repartition_Histogramme_{{ partie.nom | replace({' ': '_'}) }}">{% trans %}repartition_notes_histo{% endtrans %}</a></li>
+                        <li class="nav-item"><a
+                                    class="nav-link {% if app.session.get('typeGraphique') =="boite-moustache" %}active{% endif %}"
+                                    data-toggle="tab"
+                                    href="#Repartition_Boites_{{ partie.nom | replace({' ': '_'}) }}">{% trans %}repartition_notes_bam{% endtrans %}</a></li>
+                        <li class="nav-item"><a
+                                    class="nav-link {% if app.session.get('typeGraphique') =="moyenne" %}active{% endif %}"
+                                    data-toggle="tab"
+                                    href="#Moyenne_ecart_{{ partie.nom | replace({' ': '_'}) }}">{% trans %}moyenne_ecart_type{% endtrans %}</a></li>
+                    </ul>
+                    <div class="tab-content">
+                        <!-- Répartition (Histogramme) -->
+                        <div id="Repartition_Histogramme_{{ partie.nom | replace({' ': '_'}) }}"
+                             class="tab-pane {% if app.session.get('typeGraphique') =="histogramme" %}active{% else %}fade{% endif %}">
+                            <div class="container-fluid">
+                                <br>
+                                <div class="card-md-auto">
+                                    <div class="card-header" style="background-color: transparent">
+                                        {% trans %}groupes{% endtrans %}
+                                    </div>
+                                    <div class="card-body">
+                                        {% set tabCounter = 0 %}
+                                        {% for groupe in parties[0].stats %}
+                                            <div class="form-check form-check-inline">
+                                                <input class="form-check-input" type="checkbox"
+                                                       id="{{ groupe.nom }}" checked
+                                                       onChange="changement(this.id, this.checked, '{{ loop.parent.loop.index -1 }}', 'histo')">
+                                                <label class="form-check-label" for="inlineCheckbox1"
+                                                       name="label_{{ groupe.nom }}_histo">{{ groupe.nom }}</label>
+                                            </div>
+                                            {% set tabCounter = tabCounter + 1 %}
+                                        {% endfor %}
                                     </div>
                                 </div>
-                                <br>
-                                <div class="container-fluid">
-                                    <span style="font-size:15px"><i class="icon-attention-circled"></i>Survolez le graphique pour plus d'informations, cliquez sur un label de la légende pour afficher / masquer les données</span>
-                                    <canvas align=center id="graphHisto_{{ loop.index -1 }}"></canvas>
-                                </div>
                             </div>
-                            <!-- fin Répartition (Histogramme) -->
-                            <!-- Répartition (Boîte à moustache) -->
-                            <div id="Repartition_Boites_{{ partie.nom | replace({' ': '_'}) }}"
-                                 class="tab-pane {% if app.session.get('typeGraphique') =="boite-moustache" %}active{% else %}fade{% endif %}">
-                                <div class="container-fluid">
-                                    <br>
-                                    <div class="card-md-auto">
-                                        <div class="card-header" style="background-color: transparent">
-                                            Groupes
-                                        </div>
-                                        <div class="card-body">
-                                            {% set tabCounter = 0 %}
-                                            {% for groupe in parties[0].stats %}
-                                                <div class="form-check form-check-inline">
-                                                    <input class="form-check-input" type="checkbox"
-                                                           id="{{ groupe.nom }}" checked
-                                                           onChange="changement(this.id, this.checked, '{{ loop.parent.loop.index -1 }}', 'bam')">
-                                                    <label class="form-check-label" for="inlineCheckbox1"
-                                                           name="label_{{ groupe.nom }}_bam">{{ groupe.nom }}</label>
-                                                </div>
-                                                {% set tabCounter = tabCounter + 1 %}
-                                            {% endfor %}
-                                        </div>
-                                    </div>
-                                </div>
-                                <br>
-                                <div class="container-fluid">
-                                    <span style="font-size:15px"><i class="icon-attention-circled"></i>Survolez le graphique pour plus d'informations, cliquez sur un label de la légende pour afficher / masquer les données</span>
-                                    <canvas align=center id="graphBoites_{{ loop.index -1 }}"></canvas>
-                                </div>
+                            <br>
+                            <div class="container-fluid">
+                                <span style="font-size:15px"><i class="icon-attention-circled"></i>{% trans %}message_info_survol_graphiques{% endtrans %}</span>
+                                <canvas align=center id="graphHisto_{{ loop.index -1 }}"></canvas>
                             </div>
-                            <!-- fin Répartition (Boîtes à moustache) -->
-                            <!-- Moyenne & Ecart-type -->
-                            <div id="Moyenne_ecart_{{ partie.nom | replace({' ': '_'}) }}"
-                                 class="tab-pane {% if app.session.get('typeGraphique') =="moyenne" %}active{% else %}fade{% endif %}">
-                                <div class="container-fluid">
-                                    <br>
-                                    <div class="card-md-auto">
-                                        <div class="card-header" style="background-color: transparent">
-                                            Groupes
-                                        </div>
-                                        <div class="card-body">
-                                            {% set tabCounter = 0 %}
-                                            {% for groupe in parties[0].stats %}
-                                                <div class="form-check form-check-inline">
-                                                    <input class="form-check-input" type="checkbox"
-                                                           id="{{ groupe.nom }}" checked
-                                                           onChange="changement(this.id, this.checked, '{{ loop.parent.loop.index -1 }}', 'moy')">
-                                                    <label class="form-check-label" for="inlineCheckbox1"
-                                                           name="label_{{ groupe.nom }}_moy">{{ groupe.nom }}</label>
-                                                </div>
-                                                {% set tabCounter = tabCounter + 1 %}
-                                            {% endfor %}
-                                        </div>
-                                    </div>
-                                </div>
-                                <br>
-                                <div class="container-fluid">
-                                    <span style="font-size:15px"><i class="icon-attention-circled"></i>Survolez le graphique pour plus d'informations, cliquez sur un label de la légende pour afficher / masquer les données</span>
-                                    <canvas align=center id="grapheMoyenne_{{ loop.index -1 }}"></canvas>
-                                </div>
-                            </div>
-                            <!-- fin Moyenne & Ecart-type -->
                         </div>
-                    </li>
-                </ul>
-            </div>
-            <br>
-        {% endfor %}
-    {% else %}
-        <div class="info">
-            <h2 class="h4 mb-0 text-gray-800">Veuillez sélectionner des parties de l'évaluations sur lesquelles voir des
-                statistiques </h2>
+                        <!-- fin Répartition (Histogramme) -->
+                        <!-- Répartition (Boîte à moustache) -->
+                        <div id="Repartition_Boites_{{ partie.nom | replace({' ': '_'}) }}"
+                             class="tab-pane {% if app.session.get('typeGraphique') =="boite-moustache" %}active{% else %}fade{% endif %}">
+                            <div class="container-fluid">
+                                <br>
+                                <div class="card-md-auto">
+                                    <div class="card-header" style="background-color: transparent">
+                                        {% trans %}groupes{% endtrans %}
+                                    </div>
+                                    <div class="card-body">
+                                        {% set tabCounter = 0 %}
+                                        {% for groupe in parties[0].stats %}
+                                            <div class="form-check form-check-inline">
+                                                <input class="form-check-input" type="checkbox"
+                                                       id="{{ groupe.nom }}" checked
+                                                       onChange="changement(this.id, this.checked, '{{ loop.parent.loop.index -1 }}', 'bam')">
+                                                <label class="form-check-label" for="inlineCheckbox1"
+                                                       name="label_{{ groupe.nom }}_bam">{{ groupe.nom }}</label>
+                                            </div>
+                                            {% set tabCounter = tabCounter + 1 %}
+                                        {% endfor %}
+                                    </div>
+                                </div>
+                            </div>
+                            <br>
+                            <div class="container-fluid">
+                                <span style="font-size:15px"><i class="icon-attention-circled"></i>{% trans %}message_info_survol_graphiques{% endtrans %}</span>
+                                <canvas align=center id="graphBoites_{{ loop.index -1 }}"></canvas>
+                            </div>
+                        </div>
+                        <!-- fin Répartition (Boîtes à moustache) -->
+                        <!-- Moyenne & Ecart-type -->
+                        <div id="Moyenne_ecart_{{ partie.nom | replace({' ': '_'}) }}"
+                             class="tab-pane {% if app.session.get('typeGraphique') =="moyenne" %}active{% else %}fade{% endif %}">
+                            <div class="container-fluid">
+                                <br>
+                                <div class="card-md-auto">
+                                    <div class="card-header" style="background-color: transparent">
+                                        {% trans %}groupes{% endtrans %}
+                                    </div>
+                                    <div class="card-body">
+                                        {% set tabCounter = 0 %}
+                                        {% for groupe in parties[0].stats %}
+                                            <div class="form-check form-check-inline">
+                                                <input class="form-check-input" type="checkbox"
+                                                       id="{{ groupe.nom }}" checked
+                                                       onChange="changement(this.id, this.checked, '{{ loop.parent.loop.index -1 }}', 'moy')">
+                                                <label class="form-check-label" for="inlineCheckbox1"
+                                                       name="label_{{ groupe.nom }}_moy">{{ groupe.nom }}</label>
+                                            </div>
+                                            {% set tabCounter = tabCounter + 1 %}
+                                        {% endfor %}
+                                    </div>
+                                </div>
+                            </div>
+                            <br>
+                            <div class="container-fluid">
+                                <span style="font-size:15px"><i class="icon-attention-circled"></i>{% trans %}message_info_survol_graphiques{% endtrans %}</span>
+                                <canvas align=center id="grapheMoyenne_{{ loop.index -1 }}"></canvas>
+                            </div>
+                        </div>
+                        <!-- fin Moyenne & Ecart-type -->
+                    </div>
+                </li>
+            </ul>
         </div>
-    {% endif %}
+        <br>
+    {% endfor %}
 {% endblock %}
 
 {% block javascripts %}
@@ -245,11 +177,7 @@
     <script type="text/javascript">
 
         // ----- VARIABLES GLOBALES ---------
-        {% if plusieursEvals %}
-        var nomEvaluation = "Synthèse des {{ evaluations.count }} évaluation(s)";
-        {% else %}
         var nomEvaluation = "{{ evaluation.nom|e('js')|raw }}";
-        {% endif %}
 
         // Taille de la police du graphique affiché
         var fontSize = 16;
@@ -550,14 +478,14 @@
             var couleurEcartType = couleurs[1];
             data = [ // Création des objets datasets de Chart.js avec nos données
                 {
-                    label: 'Moyenne',
+                    label: '{% trans %}moyenne{% endtrans %}',
                     backgroundColor: "rgb(" + couleurMoyenne[0] + "," + couleurMoyenne[1] + "," + couleurMoyenne[2] + ")",
                     hoverBackgroundColor: "rgb(" + couleurMoyenne[0] + "," + couleurMoyenne[1] + "," + couleurMoyenne[2] + ")",
                     borderColor: gris,
                     data: moyenne
                 },
                 {
-                    label: 'Écart-type',
+                    label: '{% trans %}ecart_type{% endtrans %}',
                     backgroundColor: "rgb(" + couleurEcartType[0] + "," + couleurEcartType[1] + "," + couleurEcartType[2] + ")",
                     hoverBackgroundColor: "rgb(" + couleurEcartType[0] + "," + couleurEcartType[1] + "," + couleurEcartType[2] + ")",
                     borderColor: gris,
@@ -773,23 +701,9 @@
                         width: (portrait ? imageWidthPortrait : imageWidthPaysage),
                     },
                     { // PAGE DE GARDE
-                        {% if plusieursEvals %}
-                        text: nomEvaluation,
-                        style: 'header',
-                    },
-                    {
-                        ul: [
-                            {% for evaluation in evaluations %}
-                            '{{ evaluation.nom|e('js')|raw }} ({{ evaluation.date|date("d/m/Y") }})',
-                            {% endfor %}
-                        ],
-                        style: (portrait ? 'liste_evals' : 'liste_evals_paysage'),
-                        pageBreak: (portrait ? '' : 'after'),
-                        {% else %}
                         text: (nomEvaluation + '\n({{ evaluation.date|date("d/m/Y") }})\n'),
                         style: 'header',
                         pageBreak: (portrait ? '' : 'after'),
-                        {% endif %}
                     },
                     { // TABLES DES MATIERES
                         toc: {
