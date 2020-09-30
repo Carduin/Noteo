@@ -351,7 +351,6 @@ formulaire_stats_evolution_groupe_sous_titre_choix_sous_groupes: Seleccione los 
 formulaire_stats_evolution_groupe_warning_choix_sous_groupes: El color del tamaño de un grupo indica la facilidad de lectura del gráfico que se generará para ese grupo.
 formulaire_stats_evolution_groupe_titre_choix_evals: Evolución cronológica de los resultados de un conjunto de estudiantes
 formulaire_stats_evolution_groupe_sous_titre_choix_evals: Seleccione los exámenes para los que desea ver las estadísticas para los grupos seleccionados previamente
-
 # Stats evolution statut
 formulaire_stats_evolution_statut_titre_choix_statut: Evolución cronológica de los resultados de un conjunto de estudiantes pertenecientes a un estado
 formulaire_stats_evolution_statut_sous_titre_choix_statut: Seleccione el grupo de estudiantes con un estado particular para el que desea ver las estadísticas
@@ -364,6 +363,54 @@ formulaire_stats_evolution_statut_sous_titre_choix_sous_groupes: Seleccione los 
 formulaire_stats_evolution_statut_warning_choix_sous_groupes: El color del tamaño de un grupo indica la facilidad de lectura del gráfico que se generará para ese grupo.
 formulaire_stats_evolution_statut_titre_choix_evals: Evolución cronológica de los resultados de un conjunto de estudiantes pertenecientes a un estado
 formulaire_stats_evolution_statut_sous_titre_choix_evals: Seleccione los exámenes para los que desea ver las estadísticas para los grupos seleccionados previamente
+####### PAGES D'AFFICHAGE DES STATISTIQUES
+# general
+actions: Acciónes
+message_info_temps_chargement: Pueden producirse tiempos de carga largos si la cantidad de datos es alta
+message_info_absents: Las estadísticas no tienen en cuenta a los estudiantes dimisionarios y ausentes excusados
+message_info_absents_fiche_etudiant: Las estadísticas no tienen en cuenta las evaluaciones en las que el estudiante estaba ausente y excusado
+message_info_survol_graphiques: Pase sobre el gráfico para obtener más información, haga clic en una etiqueta de la leyenda para mostrar/ ocultar los datos
+mesage_info_courbe_evolution_representation_un_etudiant: Un estudiante presente en una sola de las evaluaciones está representado por un punto en el gráfico
+mesage_info_courbe_evolution_etudiant_absent: Un estudiante ausente en todas las evaluaciones se traduce en la ausencia de curva
+tooltip_stats_pdf_portrait: Exportar estadísticas en formato PDF (retrato)
+tooltip_stats_pdf_paysage: Exportar estadísticas en formato PDF (paisaje)
+tooltip_stats_mail: Enviar estadísticas a los estudiantes
+afficher_autres_evals: Mostrar las otras nombre evaluaciones
+# page stats eval simple et par parties
+page_eval_simple_parties_titre: Estadísticas para nom
+# page stats plusieurs évals
+page_plusieurs_evals: Consultar las estadísticas de nombre evaluaciónes
+page_plusieurs_evals_groupes: Grupos seleccionados
+page_plusieurs_evals_evals: Exámenes seleccionados
+# page stats comparaison
+page_comparaison_titre: Comparar la evaluación nom con nombre evaluaciónes
+page_comparaison_groupes: Grupos seleccionados
+page_comparaison_eval_ref: Evaluación de referencia
+page_comparaison_autres_eval:  Evaluaciones comparadas con la evaluación de referencia
+page_comparaison_moyenne_eval: Media de nom
+page_comparaison_moyenne_autres_evals: Medias de otras evaluaciones seleccionadas
+# Stats fiche étudiant
+page_fiche_etudiant_titre: Ficha del estudiante prenom nom
+page_fiche_etudiant_historique_notes: Historial de notas
+page_fiche_etudiant_classement_titre: Clasificación ante los grupos/estatutos
+page_fiche_etudiant_classement: 'Clasificación : '
+page_fiche_etudiant_moyenne: 'Media del grupo : '
+page_fiche_etudiant_moyenne_sans_ponctuation: Media del grupo
+page_fiche_etudiant_note: 'Nota del estudiante : '
+page_fiche_etudiant_note_sans_ponctuation: Nota del estudiante
+page_fiche_etudiant_notes: 'Notas del estudiante'
+page_fiche_etudiant_eval_donnees_sans_ponctation: Datos sobre la evaluación
+page_fiche_etudiant_eval_donnees: 'Datos sobre la evaluación : '
+page_fiche_etudiant_eval_date: 'Fecha de la evaluación : '
+page_fiche_etudiant_intervalle_note: Intervalo de notas
+page_fiche_etudiant_pas_eval: El estudiante no participó en ninguna evaluación
+# Stats evolution
+page_evolution_titre: Evolución cronológica de los resultados de un conjunto de estudiantes
+page_evolution_groupes: Grupos seleccionados
+page_evolution_statut: Grupo de estudiantes con un estado particular observado
+page_evolution_evals: Evaluaciones afectadas
+page_evolution_titre_carte_groupe: Estudiantes del grupo nomGroupe
+page_evolution_titre_carte_statut:  Estudiantes del grupo nomGroupe que se tienen el estado "nomStatut"
 ####### REINITIALISATION APPLICATION
 app_reset_texte: 'Reiniciar la aplicación eliminará: <ul> <li> Todos los grupos </li> <li> Todos los grupos de estudiantes con un estado particular</li> <li> Todas los exámenes</li> <li> Todos los estudiantes </li> </ul> Los perfiles de los profesores no se eliminarán y las estadísticas ya no serán visibles.'
 ####### TUTORIELS
