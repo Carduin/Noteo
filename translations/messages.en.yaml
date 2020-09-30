@@ -369,7 +369,7 @@ message_info_temps_chargement: High loading times can occur if the amount of dat
 message_info_absents: Statistics do not take into account resigning students and excused absentees
 message_info_absents_fiche_etudiant: Statistics do not take into account evaluations for which the student was absent and excused
 message_info_survol_graphiques: Hover over the chart for additional informations, click on a legend label to show/hide data
-mesage_info_courbe_evolution_representation_un_etudiant: A student present at only one of the evaluations is represented by a single point on the graph
+mesage_info_courbe_evolution_representation_un_etudiant: A student present at only one of the evaluations is represented by a single dot on the graph
 mesage_info_courbe_evolution_etudiant_absent: A student absent from all evaluations results in no curve
 tooltip_stats_pdf_portrait: Export statistics in PDF format (portrait view)
 tooltip_stats_pdf_paysage: Export statistics in PDF format (landscape view)
@@ -407,7 +407,7 @@ page_fiche_etudiant_pas_eval: The student has not yet participated to an evaluat
 page_evolution_titre: Chronological evolution of the results of a set of students
 page_evolution_groupes: Selected groups
 page_evolution_statut: Group of students having a particular status chosen
-page_evolution_evals: Evaluation related to the groups
+page_evolution_evals: Evaluations related to the groups
 page_evolution_titre_carte_groupe: Student(s) of nomGroupe
 page_evolution_titre_carte_statut:  Student(s) of nomGroupe having the "nomStatut" status
 ####### REINITIALISATION APPLICATION
