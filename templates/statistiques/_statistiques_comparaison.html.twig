@@ -5,12 +5,12 @@
                 <tr>
                     <th><p>{% trans %}page_comparaison_eval_ref{% endtrans %}</p>
                         <p>
-                            <span class="notBold"> {{ evaluationConcernee.nom }} ({{ evaluationConcernee.date|date("d/m/Y") }})</span>
+                            {{ evaluationConcernee.nom }} ({{ evaluationConcernee.date|date("d/m/Y") }})
                         </p>
                     </th>
                     <td>
                         <ul>
-                            <p><span class="bold">{% trans %}page_comparaison_autres_eval{% endtrans %}</span></p>
+                            <p><b>{% trans %}page_comparaison_autres_eval{% endtrans %}</b></p>
                             {% if evaluations|length <=10 %}
                                 {% for evaluation in evaluations %}
                                     <li>{{ evaluation.nom }} ({{ evaluation.date|date("d/m/Y") }})</li>
@@ -288,14 +288,14 @@
             var couleurEcartType = couleurs[1];
             data = [ // Création des objets datasets de Chart.js avec nos données
                 {
-                    label: 'Moyenne à {{ evaluationConcernee.nom }}',
+                    label: "{% trans with {'nom':evaluationConcernee.nom} %}page_comparaison_moyenne_eval{% endtrans %}",
                     backgroundColor: "rgb(" + couleurMoyenne[0] + "," + couleurMoyenne[1] + "," + couleurMoyenne[2] + ")",
                     hoverBackgroundColor: "rgb(" + couleurMoyenne[0] + "," + couleurMoyenne[1] + "," + couleurMoyenne[2] + ")",
                     borderColor: gris,
                     data: moyenneControleCourant
                 },
                 {
-                    label: 'Moyenne aux autres évaluations choisies',
+                    label: "{% trans %}page_comparaison_moyenne_autres_evals{% endtrans %}",
                     backgroundColor: "rgb(" + couleurEcartType[0] + "," + couleurEcartType[1] + "," + couleurEcartType[2] + ")",
                     hoverBackgroundColor: "rgb(" + couleurEcartType[0] + "," + couleurEcartType[1] + "," + couleurEcartType[2] + ")",
                     borderColor: gris,

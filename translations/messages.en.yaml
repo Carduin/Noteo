@@ -9,7 +9,7 @@ erreur: An erreur has occured
 503: Server error
 504: The server did not respond
 # login
-placeholder_mail: e-mail
+placeholder_mail: E-mail
 placeholder_mdp: Password
 remember_me: Remember me
 log_in: Log in
@@ -34,7 +34,7 @@ logout: Log out
 nom: Name
 nom_famille: Last name
 prenom: First name
-mail: e-mail
+mail: E-mail
 effectif: Headcount
 description: Description
 createur: Creator
@@ -128,7 +128,7 @@ modale_etudiant_supprimer_confirmer: Delete student
 # formulaires
 form_etudiant_nom: Last name
 form_etudiant_prenom: First name
-form_etudiant_mail: e-mail
+form_etudiant_mail: E-mail
 form_etudiant_demissionaire: Resigning
 form_etudiant_statuts: Status
 # page index
@@ -155,7 +155,7 @@ modale_enseignant_supprimer_confirmer: Delete teacher
 # formulaires
 form_enseignant_nom: Last name
 form_enseignant_prenom: First name
-form_enseignant_mail: e-mail
+form_enseignant_mail: E-mail
 form_enseignant_administrateur: Administrator
 form_enseignant_preference_tableau: Preference of number of elements displayed in tables
 form_enseignant_mdp: Password
@@ -218,7 +218,7 @@ choix_groupe_evaluation_titre_page: Chose a group to evaluate
 choix_groupe_evaluation_btn_valider: Create evaluation for this group
 # page mail previsualisation
 previsualisation_mail_titre_page: Send statistics to students
-previsualisation_mail_titre_apercu: e-mail preview
+previsualisation_mail_titre_apercu: E-mail preview
 previsualisation_mail_titre_pdf: Attach a PDF file (optional)
 previsualisation_mail_btn_valider: Send e-mail to nombre students
 previsualisation_mail_pdf_erreur_taille: Chosen file is too big
@@ -256,7 +256,7 @@ consulter_type_stats: See this type of statistics
 repartition_notes_histo: Mark distribution (histogram)
 repartition_notes_bam: Mark distribution (box plot)
 moyenne_ecart_type: Mean and standard deviation (histogram)
-fiche_etudiant: Student card
+fiche_etudiant: Student record
 evolution_groupe: Evolution of the results of the students belonging to a group over several evaluations
 evolution_statut: Evolution of the results of the students having a given student status
 # Messages d'erreur
@@ -331,7 +331,7 @@ formulaire_stats_plusieurs_evals_statut_titre_choix_evals: Analysis of the resul
 formulaire_stats_plusieurs_evals_statut_sous_titre_choix_evals: Select the evaluations for which you wish to generate statistics
 # Stats fiche étudiant
 formulaire_stats_fiche_etudiant_titre: Chronological evolution of the results of a student
-formulaire_stats_fiche_etudiant_sous_titre: Select the student whose card you whish to see
+formulaire_stats_fiche_etudiant_sous_titre: Select the student whose record you whish to see
 # Stats comparaison
 formulaire_stats_comparaison_titre_choix_eval_reference: Comparison of the results of a specific evaluation to a set of evaluations
 formulaire_stats_comparaison_sous_titre_choix_eval_reference: Select the baseline evaluation that will be compared to a set of evaluations
@@ -386,8 +386,10 @@ page_comparaison_titre: Compare nom to nombre evaluation(s)
 page_comparaison_groupes: Selected groups
 page_comparaison_eval_ref: Baseline evaluation
 page_comparaison_autres_eval:  Evaluations compared to the baseline evaluation
+page_comparaison_moyenne_eval: Average for nom
+page_comparaison_moyenne_autres_evals: Average for the other evaluations
 # Stats fiche étudiant
-page_fiche_etudiant_titre: prenom nom's card
+page_fiche_etudiant_titre: prenom nom's record
 page_fiche_etudiant_historique_notes: Mark history
 page_fiche_etudiant_classement_titre: Ranking in relation to groups/statuses
 page_fiche_etudiant_classement: 'Ranking: '

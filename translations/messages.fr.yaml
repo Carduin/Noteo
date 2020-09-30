@@ -386,6 +386,8 @@ page_comparaison_titre: Comparer l'évaluation nom à nombre évaluation(s)
 page_comparaison_groupes: Groupes observés
 page_comparaison_eval_ref: Évaluation de référence
 page_comparaison_autres_eval:  Évaluations comparées à l'évaluation de référence
+page_comparaison_moyenne_eval: Moyenne à nom
+page_comparaison_moyenne_autres_evals: Moyennes aux autres évaluations choisies
 # Stats fiche étudiant
 page_fiche_etudiant_titre: Fiche de l'étudiant prenom nom
 page_fiche_etudiant_historique_notes: Historique des notes
