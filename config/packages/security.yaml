@@ -6,7 +6,8 @@ security:
 
     # https://symfony.com/doc/current/security.html#where-do-users-come-from-user-providers
     providers:
-        # used to reload user from session & other features (e.g. switch_user)
+        #api_key_user_provider:
+        #    id: App\Security\ApiKeyUserProvider
         app_user_provider:
             entity:
                 class: App\Entity\Enseignant
@@ -15,7 +16,13 @@ security:
         dev:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
             security: false
+        #api:
+        #    stateless: true
+        #    simple_preauth:
+        #        authenticator: App\Security\ApiAuthenticator
+        #    provider: api_key_user_provider
         main:
+            provider: app_user_provider
             anonymous: true
             guard:
                 authenticators:
