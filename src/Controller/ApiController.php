@@ -9,6 +9,21 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Serializer\SerializerInterface;
 
+/*
+ * Format erreurs :
+ * [
+ *   'type' : 'Bad parameter' || 'Not Allowed to use'
+ *   'target' : 'Classe entité'
+ * ]
+ *
+ * Codes fonctionnement :
+ * 
+ * 0 : Initialisation
+ * 1 : Success
+ * 2 : Success with errors
+ * 3 : Aborted
+ */
+
 /**
  * @Route("/api")
  */
