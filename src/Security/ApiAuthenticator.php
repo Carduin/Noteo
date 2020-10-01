@@ -18,7 +18,6 @@ class ApiAuthenticator implements SimplePreAuthenticatorInterface
     {
         // look for an apikey query parameter
         $apiKey = $request->query->get('token');
-        $apiKey = 'xxxxxxx';
 
         // or if you want to use an "apikey" header, then do something like this:
         // $apiKey = $request->headers->get('apikey');

@@ -1,6 +1,7 @@
 <?php
 namespace App\Security;
 
+use App\Repository\EnseignantRepository;
 use Symfony\Component\Security\Core\User\UserProviderInterface;
 use Symfony\Component\Security\Core\User\User;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -8,13 +9,18 @@ use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
 
 class ApiKeyUserProvider implements UserProviderInterface
 {
+    private $enseignantRepo;
+
+    public function __construct(EnseignantRepository $repo)
+    {
+        $this->enseignantRepo = $repo;
+    }
+
     public function getUsernameForApiKey($apiKey)
     {
-        // Look up the username based on the token in the database, via
-        // an API call, or do something entirely different
-        $username = "patrick.etcheverry@iutbayonne.univ-pau.fr";
+        $enseignant = $this->enseignantRepo->findOneByToken($apiKey);
 
-        return null;
+        return $enseignant->getEmail();
     }
 
     public function loadUserByUsername($username)
