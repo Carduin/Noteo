@@ -40,6 +40,7 @@ class ApiController extends AbstractController
     private $statutRepository;
     private $partiesRepository;
     private $squeletteTableauRetour;
+    private $tableauRetourCourant;
 
     public function __construct(SerializerInterface $serializer, StatisticsManager $statisticsManager, GroupeEtudiantRepository $groupeEtudiantRepository, EvaluationRepository $evaluationRepository, StatutRepository $statutRepository, PartieRepository $partieRepository) {
         $this->serializer = $serializer;
@@ -54,6 +55,7 @@ class ApiController extends AbstractController
             'type' => '',
             'statisticsData' => []
         ];
+        $this->tableauRetourCourant = $this->squeletteTableauRetour;
     }
 
     /**
@@ -61,36 +63,99 @@ class ApiController extends AbstractController
      */
     public function getStatistiquesSimples(Request $request)
     {
-        //Preparation du tableau renvoyé
-        $returnArray = $this->squeletteTableauRetour;
-        $returnArray['type'] = 'evaluationSimple';
+        // Reinitialisation des dernières données calculées
+        $this->tableauRetourCourant = $this->squeletteTableauRetour;
+        $this->tableauRetourCourant['type'] = 'evaluationSimple';
 
-        //Récupération et vérification des paramètres
-        //evaluation
-        $evaluation = $request->get('evaluation');
-        $objetEvaluation = $this->evaluationRepository->findOneById($evaluation);
+        // Récupération des paramètres
+        $objetEvaluation = $this->fetchUneEvaluation($request->get('evaluation'));
         if(!$objetEvaluation) {
-            $returnArray['errors'][] = [
+            $this->tableauRetourCourant['code'] = 3; // Si pas d'éval : impossible de continuer
+        }
+        $objetsParties = $this->fetchParties($request->get('parties'), $objetEvaluation);
+        $objetsGroupes = $this->fetchGroupes($request->get('groupes'));
+        $objetsStatuts = $this->fetchStatuts($request->get('statuts'));
+        if(empty($objetsGroupes) && empty($objetsStatuts)) {
+            $this->tableauRetourCourant['code'] = 3; // Impossible de continuer sans groupes ni statut
+        }
+        if ($this->tableauRetourCourant['code'] != 3 ) {
+            $this->tableauRetourCourant['statisticsData'] = $this->statisticsManager->calculerStatsClassiques($objetEvaluation, $objetsGroupes, $objetsStatuts, $objetsParties);
+        }
+        return new Response($this->serializer->serialize($this->tableauRetourCourant, 'json'));
+    }
+
+    public function fetchStatuts($statutsGETParameter) {
+        $objetsStatuts = [];
+        if($statutsGETParameter) {
+            foreach ($statutsGETParameter as $statut) {
+                $objetsStatut = $this->statutRepository->findOneById($statut);
+                if ($objetsStatut) {
+                    $objetsStatuts[] = $objetsStatut;
+                }
+                else {
+                    $this->tableauRetourCourant['errors'][] = [
+                        'type' => 'Bad Parameter' ,
+                        'target' => 'Statut'
+                    ];
+                    $this->tableauRetourCourant['code'] = 2; // Erreur survenue
+                }
+
+            }
+        }
+        return $objetsStatuts;
+    }
+
+    public function fetchGroupes($groupesGETParameter) {
+        $objetsGroupes = [];
+        if($groupesGETParameter) {
+            foreach ($groupesGETParameter as $groupe) {
+                $objetsGroupe = $this->groupeEtudiantRepository->findOneById($groupe);
+                if ($objetsGroupe) {
+                    $objetsGroupes[] = $objetsGroupe;
+                }
+                else {
+                    $this->tableauRetourCourant['errors'][] = [
+                        'type' => 'Bad Parameter' ,
+                        'target' => 'Groupe'
+                    ];
+                    $this->tableauRetourCourant['code'] = 2; // Erreur survenue
+                }
+            }
+        }
+        return $objetsGroupes;
+    }
+
+    public function fetchUneEvaluation($evaluationGETParameter) {
+        $objetEvaluation = $this->evaluationRepository->findOneById($evaluationGETParameter);
+        if(!$objetEvaluation) {
+            $this->tableauRetourCourant['errors'][] = [
                 'type' => 'Bad Parameter' ,
                 'target' => 'Evaluation'
             ];
-            $returnArray['code'] = 3; //Impossible de continuer sans évaluation
+            $this->tableauRetourCourant['code'] = 2; // Erreur survenue
         }
-        //parties
-        $parties = $request->get('parties');
+        return $objetEvaluation;
+    }
+
+
+    public function fetchPlusieursEvaluations($evaluationsGETParameter) {
+
+    }
+
+    public function fetchParties($partiesGETParameter, $objetEvaluation) {
         $objetsParties = [];
-        if ($parties) {
-            foreach ($parties as $partie) {
+        if ($partiesGETParameter) {
+            foreach ($partiesGETParameter as $partie) {
                 $objetPartie = $this->partiesRepository->findOneById($partie);
                 if($objetsParties && $objetPartie->getEvaluation()->getId() == $objetEvaluation->getId()) {
                     $objetsParties[] = $objetsParties;
                 }
-                else {
-                    $returnArray['errors'][] = [
+                else { // Si la partie ne correspond pas à l'évaluation choisie
+                    $this->tableauRetourCourant['errors'][] = [
                         'type' => 'Bad Parameter' ,
                         'target' => 'Partie'
                     ];
-                    $returnArray['code'] = 2; // Erreur survenue
+                    $this->tableauRetourCourant['code'] = 2; // Erreur survenue
                 }
 
             }
@@ -98,53 +163,6 @@ class ApiController extends AbstractController
         else {
             $objetsParties[] = $objetEvaluation->getParties()[0];
         }
-        //groupes
-        $groupes = $request->get('groupes');
-        $objetsGroupes = [];
-        if($groupes) {
-            foreach ($groupes as $groupe) {
-                $objetsGroupe = $this->groupeEtudiantRepository->findOneById($groupe);
-                if ($objetsGroupe) {
-                    $objetsGroupes[] = $objetsGroupe;
-                }
-                else {
-                    $returnArray['errors'][] = [
-                        'type' => 'Bad Parameter' ,
-                        'target' => 'Groupe'
-                    ];
-                    $returnArray['code'] = 2; // Erreur survenue
-                }
-            }
-        }
-
-        //statuts
-        $statuts = $request->get('statuts');
-        $objetsStatuts = [];
-        if($statuts) {
-            foreach ($statuts as $statut) {
-                $objetsStatut = $this->statutRepository->findOneById($statut);
-                if ($objetsStatut) {
-                    $objetsStatuts[] = $objetsStatut;
-                }
-                else {
-                    $returnArray['errors'][] = [
-                        'type' => 'Bad Parameter' ,
-                        'target' => 'Statut'
-                    ];
-                    $returnArray['code'] = 2; // Erreur survenue
-                }
-
-            }
-        }
-
-        if(empty($objetsGroupes) && empty($objetsStatuts)) {
-            $returnArray['code'] = 3; // Impossible de continuer sans groupes ni statut
-        }
-
-        if ($returnArray['code'] != 3 ) {
-            $returnArray['statisticsData'] = $this->statisticsManager->calculerStatsClassiques($objetEvaluation, $objetsGroupes, $objetsStatuts, $objetsParties);
-        }
-        //Renvoi des statistiques
-        return new Response($this->serializer->serialize($returnArray, 'json'));
+        return $objetsParties;
     }
 }
