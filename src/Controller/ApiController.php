@@ -17,7 +17,7 @@ use Symfony\Component\Serializer\SerializerInterface;
 /*
  * Format erreurs :
  * [
- *   'type' : 'Bad parameter' || 'Not Allowed to use'
+ *   'type' : 'Bad parameter'
  *   'target' : 'Classe entité'
  * ]
  *
@@ -66,13 +66,15 @@ class ApiController extends AbstractController
         // Reinitialisation des dernières données calculées
         $this->tableauRetourCourant = $this->squeletteTableauRetour;
         $this->tableauRetourCourant['type'] = 'evaluationSimple';
-
         // Récupération des paramètres
         $objetEvaluation = $this->fetchUneEvaluation($request->get('evaluation'));
         if(!$objetEvaluation) {
             $this->tableauRetourCourant['code'] = 3; // Si pas d'éval : impossible de continuer
         }
         $objetsParties = $this->fetchParties($request->get('parties'), $objetEvaluation);
+        if(empty($objetsParties)) {
+            $this->tableauRetourCourant['code'] = 3; // Si pas de parties : impossible de continuer
+        }
         $objetsGroupes = $this->fetchGroupes($request->get('groupes'));
         $objetsStatuts = $this->fetchStatuts($request->get('statuts'));
         if(empty($objetsGroupes) && empty($objetsStatuts)) {
@@ -97,7 +99,9 @@ class ApiController extends AbstractController
                         'type' => 'Bad Parameter' ,
                         'target' => 'Statut'
                     ];
-                    $this->tableauRetourCourant['code'] = 2; // Erreur survenue
+                    if ($this->tableauRetourCourant['code'] != 3) { // Ne pas override le code 3
+                        $this->tableauRetourCourant['code'] = 2; // Erreur survenue
+                    }
                 }
 
             }
@@ -118,7 +122,9 @@ class ApiController extends AbstractController
                         'type' => 'Bad Parameter' ,
                         'target' => 'Groupe'
                     ];
-                    $this->tableauRetourCourant['code'] = 2; // Erreur survenue
+                    if ($this->tableauRetourCourant['code'] != 3) { // Ne pas override le code 3
+                        $this->tableauRetourCourant['code'] = 2; // Erreur survenue
+                    }
                 }
             }
         }
@@ -132,7 +138,9 @@ class ApiController extends AbstractController
                 'type' => 'Bad Parameter' ,
                 'target' => 'Evaluation'
             ];
-            $this->tableauRetourCourant['code'] = 2; // Erreur survenue
+            if ($this->tableauRetourCourant['code'] != 3) { // Ne pas override le code 3
+                $this->tableauRetourCourant['code'] = 2; // Erreur survenue
+            }
         }
         return $objetEvaluation;
     }
@@ -147,17 +155,18 @@ class ApiController extends AbstractController
         if ($partiesGETParameter) {
             foreach ($partiesGETParameter as $partie) {
                 $objetPartie = $this->partiesRepository->findOneById($partie);
-                if($objetsParties && $objetPartie->getEvaluation()->getId() == $objetEvaluation->getId()) {
-                    $objetsParties[] = $objetsParties;
+                if($objetPartie && $objetPartie->getEvaluation()->getId() == $objetEvaluation->getId()) {
+                    $objetsParties[] = $objetPartie;
                 }
                 else { // Si la partie ne correspond pas à l'évaluation choisie
                     $this->tableauRetourCourant['errors'][] = [
                         'type' => 'Bad Parameter' ,
                         'target' => 'Partie'
                     ];
-                    $this->tableauRetourCourant['code'] = 2; // Erreur survenue
+                    if ($this->tableauRetourCourant['code'] != 3) { // Ne pas override le code 3
+                        $this->tableauRetourCourant['code'] = 2; // Erreur survenue
+                    }
                 }
-
             }
         }
         else {
