@@ -94,11 +94,22 @@
         </li>
         <!-- Divider -->
         <hr class="sidebar-divider my-0">
-        <!-- Nav Item - Enseignants -->
+        <!-- Nav Item - Pages Collapse Menu -->
         <li class="nav-item {% block statistiques %}{% endblock %}">
-            <a class="nav-link" href="{{ path('statistiques') }}">
+            <a class="nav-link {% block collapsedStatistiques %}collapsed{% endblock %}" href="#" data-toggle="collapse"
+               data-target="#collapseThree" aria-expanded="true" aria-controls="collapseTwo">
                 <i class="icon-logo-noteo"></i>
-                <span>{% trans %}statistiques{% endtrans %}</span></a>
+                <span>{% trans %}statistiques{% endtrans %}</span>
+            </a>
+            <div id="collapseThree" class="collapse {% block showStatistiques %}{% endblock %}" aria-labelledby="headingTwo"
+                 data-parent="#accordionSidebar">
+                <div class="bg-white py-2 collapse-inner rounded">
+                    <a class="collapse-item {% block statistiquesGraphiques %}{% endblock %}"
+                       href="{{ path('statistiques') }}">Graphiques</a>
+                    <a class="collapse-item {% block statistiquesAPI %}{% endblock %}"
+                       href="{{ path('evaluation_autres') }}">API</a>
+                </div>
+            </div>
         </li>
         <!-- Divider -->
         <hr class="sidebar-divider my-0">
