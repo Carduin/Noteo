@@ -78,11 +78,11 @@
         <!-- Nav Item - Pages Collapse Menu -->
         <li class="nav-item {% block evaluations %}{% endblock %}">
             <a class="nav-link {% block collapsed %}collapsed{% endblock %}" href="#" data-toggle="collapse"
-               data-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
+               data-target="#collapseEvaluation" aria-expanded="true" aria-controls="collapseEvaluation">
                 <i class="icon-evaluation"></i>
                 <span>{% trans %}evaluations{% endtrans %}</span>
             </a>
-            <div id="collapseTwo" class="collapse {% block show %}{% endblock %}" aria-labelledby="headingTwo"
+            <div id="collapseEvaluation" class="collapse {% block show %}{% endblock %}" aria-labelledby="headingTwo"
                  data-parent="#accordionSidebar">
                 <div class="bg-white py-2 collapse-inner rounded">
                     <a class="collapse-item {% block mesEvaluations %}{% endblock %}"
@@ -97,11 +97,11 @@
         <!-- Nav Item - Pages Collapse Menu -->
         <li class="nav-item {% block statistiques %}{% endblock %}">
             <a class="nav-link {% block collapsedStatistiques %}collapsed{% endblock %}" href="#" data-toggle="collapse"
-               data-target="#collapseThree" aria-expanded="true" aria-controls="collapseTwo">
+               data-target="#collapseStats" aria-expanded="true" aria-controls="collapseStats">
                 <i class="icon-logo-noteo"></i>
                 <span>{% trans %}statistiques{% endtrans %}</span>
             </a>
-            <div id="collapseThree" class="collapse {% block showStatistiques %}{% endblock %}" aria-labelledby="headingTwo"
+            <div id="collapseStats" class="collapse {% block showStatistiques %}{% endblock %}" aria-labelledby="headingTwo"
                  data-parent="#accordionSidebar">
                 <div class="bg-white py-2 collapse-inner rounded">
                     <a class="collapse-item {% block statistiquesGraphiques %}{% endblock %}"
