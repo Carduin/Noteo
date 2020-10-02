@@ -51,10 +51,8 @@ class ApiController extends AbstractController
         $this->squeletteTableauRetour = [
             'code' => 1,
             'errors' => [],
-            'data' => [
-                'type' => '',
-                'statisticsData' => []
-            ]
+            'type' => '',
+            'statisticsData' => []
         ];
     }
 
@@ -65,13 +63,13 @@ class ApiController extends AbstractController
     {
         //Preparation du tableau renvoyé
         $returnArray = $this->squeletteTableauRetour;
-        $returnArray['data']['type'] = 'evaluationSimple';
+        $returnArray['type'] = 'evaluationSimple';
 
         //Récupération et vérification des paramètres
         //evaluation
         $evaluation = $request->get('evaluation');
-        $evaluationObject = $this->evaluationRepository->findOneByNom($evaluation);
-        if(!$evaluationObject) {
+        $objetEvaluation = $this->evaluationRepository->findOneById($evaluation);
+        if(!$objetEvaluation) {
             $returnArray['errors'][] = [
                 'type' => 'Bad Parameter' ,
                 'target' => 'Evaluation'
@@ -80,25 +78,71 @@ class ApiController extends AbstractController
         }
         //parties
         $parties = $request->get('parties');
+        $objetsParties = [];
         if ($parties) {
-            foreach ($evaluationObject->getParties() as $partieEvaluation) {
-                for ($i=0 ; $i < count($parties)-1 ; $i++) {
-                    if (strcmp($partieEvaluation->getIntitule(), $parties[$i]) == 0) {
-                        $objetsParties[] = $partieEvaluation;
-                        unset($parties[$i]);
-                    }
+            foreach ($parties as $partie) {
+                $objetPartie = $this->partiesRepository->findOneById($partie);
+                if($objetsParties && $objetPartie->getEvaluation()->getId() == $objetEvaluation->getId()) {
+                    $objetsParties[] = $objetsParties;
                 }
-            }
-            if (!empty($parties)) {
-                var_dump($parties);
+                else {
+                    $returnArray['errors'][] = [
+                        'type' => 'Bad Parameter' ,
+                        'target' => 'Partie'
+                    ];
+                    $returnArray['code'] = 2; // Erreur survenue
+                }
+
             }
         }
         else {
-            $objetsParties[] = $evaluationObject->getParties();
+            $objetsParties[] = $objetEvaluation->getParties()[0];
+        }
+        //groupes
+        $groupes = $request->get('groupes');
+        $objetsGroupes = [];
+        if($groupes) {
+            foreach ($groupes as $groupe) {
+                $objetsGroupe = $this->groupeEtudiantRepository->findOneById($groupe);
+                if ($objetsGroupe) {
+                    $objetsGroupes[] = $objetsGroupe;
+                }
+                else {
+                    $returnArray['errors'][] = [
+                        'type' => 'Bad Parameter' ,
+                        'target' => 'Groupe'
+                    ];
+                    $returnArray['code'] = 2; // Erreur survenue
+                }
+            }
+        }
+
+        //statuts
+        $statuts = $request->get('statuts');
+        $objetsStatuts = [];
+        if($statuts) {
+            foreach ($statuts as $statut) {
+                $objetsStatut = $this->statutRepository->findOneById($statut);
+                if ($objetsStatut) {
+                    $objetsStatuts[] = $objetsStatut;
+                }
+                else {
+                    $returnArray['errors'][] = [
+                        'type' => 'Bad Parameter' ,
+                        'target' => 'Statut'
+                    ];
+                    $returnArray['code'] = 2; // Erreur survenue
+                }
+
+            }
+        }
+
+        if(empty($objetsGroupes) && empty($objetsStatuts)) {
+            $returnArray['code'] = 3; // Impossible de continuer sans groupes ni statut
         }
 
         if ($returnArray['code'] != 3 ) {
-            //$returnArray['data']['statisticsData'] = $this->statisticsManager->calculerStatsClassiques($evaluationObject, $groupes, $statuts, $objetsParties);
+            $returnArray['statisticsData'] = $this->statisticsManager->calculerStatsClassiques($objetEvaluation, $objetsGroupes, $objetsStatuts, $objetsParties);
         }
         //Renvoi des statistiques
         return new Response($this->serializer->serialize($returnArray, 'json'));
