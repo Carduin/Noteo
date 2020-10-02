@@ -105,9 +105,9 @@
                  data-parent="#accordionSidebar">
                 <div class="bg-white py-2 collapse-inner rounded">
                     <a class="collapse-item {% block statistiquesGraphiques %}{% endblock %}"
-                       href="{{ path('statistiques') }}">Graphiques</a>
+                       href="{{ path('statistiques') }}">{% trans %}statistiques_graphiques{% endtrans %}</a>
                     <a class="collapse-item {% block statistiquesAPI %}{% endblock %}"
-                       href="{{ path('evaluation_autres') }}">API</a>
+                       href="{{ path('evaluation_autres') }}">{% trans %}statistiques_API{% endtrans %}</a>
                 </div>
             </div>
         </li>

@@ -24,6 +24,8 @@ evaluations: Exámenes
 mes_evaluations: Mis exámenes
 autres_evaluations: Otros exámenes
 statistiques: Estadistícas
+statistiques_graphiques: Estadísticas gráficas
+statistiques_API: API de estadísticas
 tutoriels: Tutoriales
 reset_app: Reiniciar la aplicación
 # menu déroulant profil

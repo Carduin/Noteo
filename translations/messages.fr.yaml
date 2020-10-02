@@ -24,6 +24,8 @@ evaluations: Évaluations
 mes_evaluations: Mes évaluations
 autres_evaluations: Autres évaluations
 statistiques: Statistiques
+statistiques_graphiques: Statistiques graphiques
+statistiques_API: API Statistiques
 tutoriels: Tutoriels
 reset_app: Réinitialiser l'application
 # menu déroulant profil
