@@ -1247,4 +1247,19 @@ class StatistiquesController extends AbstractController
     ///////////////////////
     /////FIN ENVOI MAIL////
     ///////////////////////
+
+    ///////////////////////
+    ////API STATISTIQUES///
+    ///////////////////////
+
+    /**
+     * @Route("/api", name="parametrage_api", methods={"GET"})
+     */
+    public function pageApi() {
+        return $this->render('statistiques/api_statistiques.html.twig');
+    }
+
+    ///////////////////////
+    //FIN API STATISTIQUES/
+    ///////////////////////
 }
