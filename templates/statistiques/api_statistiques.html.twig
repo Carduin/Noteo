@@ -82,7 +82,7 @@
     <br/>
     <div class="input-group mb-3">
         <div class="input-group-prepend">
-            <button class="btn btn-secondary" id="btnCopy" onclick="copyUrl()" >Copier url</button>
+            <button class="btn btn-secondary" onclick="copyUrl()" data-container="body" data-toggle="popover" data-placement="top" data-content="Lien copié !">Copier le lien</button>
         </div>
         <input type="text" class="form-control" id="urlGeneree" aria-describedby="basic-addon3">
     </div>
@@ -93,6 +93,7 @@
         const selectTypeStats = $('#typeStat');
         const inputURL = $("#urlGeneree");
         $(document).ready(function (){
+            $('[data-toggle="popover"]').popover(); // Initialisation de la popover (message 'lien copié !')
             selectTypeStats.prop('selectedIndex',0); //Réinitialisation select
             inputURL.val("{{ app.request.getSchemeAndHttpHost() }}/api/statistiques/"); //Réinitialisation URL
         })
