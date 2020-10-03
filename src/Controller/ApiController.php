@@ -59,7 +59,7 @@ class ApiController extends AbstractController
     }
 
     /**
-     * @Route("/statistiques/evaluationSimple", name="api_get_stats_eval_simple", methods={"GET", "POST"})
+     * @Route("/statistiques/classique", name="api_get_stats_eval_simple", methods={"GET", "POST"})
      */
     public function getStatistiquesSimples(Request $request)
     {
