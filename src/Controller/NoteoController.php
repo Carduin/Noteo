@@ -19,7 +19,7 @@ class NoteoController extends AbstractController
     }
 
     /**
-     * @Route("/tutoriels", name="tutoriels")
+     * @Route("{_locale}/tutoriels", name="tutoriels")
      */
     public function tutoriels()
     {
