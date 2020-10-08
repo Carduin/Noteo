@@ -25,7 +25,6 @@ mes_evaluations: Mis exámenes
 autres_evaluations: Otros exámenes
 statistiques: Estadistícas
 statistiques_graphiques: Estadísticas gráficas
-statistiques_API: API de estadísticas
 tutoriels: Tutoriales
 reset_app: Reiniciar la aplicación
 # menu déroulant profil
@@ -378,6 +377,11 @@ tooltip_stats_pdf_portrait: Exportar estadísticas en formato PDF (retrato)
 tooltip_stats_pdf_paysage: Exportar estadísticas en formato PDF (paisaje)
 tooltip_stats_mail: Enviar estadísticas a los estudiantes
 afficher_autres_evals: Mostrar las otras nombre evaluaciones
+tooltip_api: Obtengar las estadísticas en formato JSON
+modale_api_contenu: Esta funcionalidad le permite obtener las estadísticas en formato JSON utilizando una solicitud GET en el siguiente enlace. Si no está seguro de lo que está haciendo, le recomendamos que no lo utilice.
+modale_api_titre: Obtengar las estadísticas en formato JSON
+modale_api_copier_lien: Copiar enlace
+modale_api_lien_copie: ¡Enlace copiado!
 # page stats eval simple et par parties
 page_eval_simple_parties_titre: Estadísticas para nom
 # page stats plusieurs évals

@@ -1,4 +1,7 @@
+{% extends 'statistiques/affichage_statistiques.html.twig' %}
+
 {% block contenu %}
+    {{ parent() }}
     <div class="table-responsive">
         <table align="center" class="table">
             <tbody>
@@ -58,6 +61,7 @@
                                    title="{% trans %}tooltip_stats_pdf_paysage{% endtrans %}"
                                    class="fas icon-file-pdf fa-rotate-270"
                                    onclick="genPDF(onChartReady, false)"></i></a>
+                    <a href="#" data-toggle='tooltip' title="{% trans %}tooltip_api{% endtrans %}" onclick="modaleAPI()"><i class="fas fa-link"></i></a>
                 </td>
             </tr>
             </tbody>
@@ -102,7 +106,7 @@
 {% endblock %}
 
 {% block javascripts %}
-
+    {{ parent() }}
     <!-- Chart JS -->
     <script src="{{ asset("vendor/chart.js/Chart.min.js") }}"></script>
     <!-- PDFMake -->

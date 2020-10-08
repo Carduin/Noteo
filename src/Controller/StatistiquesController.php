@@ -173,9 +173,8 @@ class StatistiquesController extends AbstractController
             $request->getSession()->set('stats', $statistiquesCalculees);
             //Pour ne pas continuer si les conditions ne sont pas remplies (au moins un groupe ou statut)
             if (count($groupesChoisis) > 0 || count($statutsChoisis) > 0) {
-                return $this->render('statistiques/affichage_statistiques.html.twig', [
+                return $this->render('statistiques/_statistiques_evalutations_simples_et_parties.html.twig', [
                     'titrePage' => $this->translator->trans('page_eval_simple_parties_titre', ['nom'=> $evaluation->getNom()]),
-                    'typeStatistique' => 'simple_parties',
                     'evaluation' => $evaluation,
                     'parties' => $statistiquesCalculees
                 ]);
@@ -289,9 +288,8 @@ class StatistiquesController extends AbstractController
             $request->getSession()->set('stats', $statistiquesCalculees);
             //Pour ne pas continuer si les conditions ne sont pas remplies (au moins un groupe ou statut)
             if ((count($groupesChoisis) > 0 || count($statutsChoisis) > 0) && count($partiesChoisies) > 0) {
-                return $this->render('statistiques/affichage_statistiques.html.twig', [
+                return $this->render('statistiques/_statistiques_evalutations_simples_et_parties.html.twig', [
                     'titrePage' => $this->translator->trans('page_eval_simple_parties_titre', ['nom'=> $evaluation->getNom()]),
-                    'typeStatistique' => 'simple_parties',
                     'evaluation' => $evaluation,
                     'parties' => $statistiquesCalculees
                 ]);
@@ -438,12 +436,11 @@ class StatistiquesController extends AbstractController
             foreach ($request->getSession()->get('sousGroupes') as $sousGroupe) {
                 array_push($lesGroupes, $sousGroupe);
             }
-            return $this->render('statistiques/affichage_statistiques.html.twig', [
+            return $this->render('statistiques/_statistiques_plusieurs_evals.html.twig', [
                 'parties' => $statsManager->calculerStatsPlusieursEvals('groupes', $lesGroupes, $evaluations),
                 'evaluations' => $evaluations,
                 'groupes' => $lesGroupes,
                 'titrePage' => $this->translator->trans('page_plusieurs_evals', ['nombre'=>count($evaluations) ]),
-                'typeStatistique' => "plusieurs_evals"
                 ]);
         }
         return $this->render('statistiques/formulaire_parametrage_statistiques.html.twig', [
@@ -530,12 +527,11 @@ class StatistiquesController extends AbstractController
             if (count($form->get('evaluations')->getData()) > 0) {
                 $evaluations = $form->get('evaluations')->getData();
             }
-            return $this->render('statistiques/affichage_statistiques.html.twig', [
+            return $this->render('statistiques/_statistiques_plusieurs_evals.html.twig', [
                 'parties' => $statsManager->calculerStatsPlusieursEvals('statuts', [$statut], $evaluations),
                 'evaluations' => $evaluations,
                 'groupes' => $statut,
                 'titrePage' => $this->translator->trans('page_plusieurs_evals', ['nombre'=>count($evaluations) ]),
-                'typeStatistique' => "plusieurs_evals"
             ]);
         }
         return $this->render('statistiques/formulaire_parametrage_statistiques.html.twig', [
@@ -592,11 +588,10 @@ class StatistiquesController extends AbstractController
                 array_push($statuts, $statut);
             }
 
-            return $this->render('statistiques/affichage_statistiques.html.twig', [
+            return $this->render('statistiques/_statistiques_fiche_etudiant.html.twig', [
                 'etudiant' => $etudiant,
                 'evaluations' => $evaluations,
                 'groupesEtStatuts' => $groupesEtStatuts,
-                'typeStatistique' => 'fiche_etudiant',
                 'stats' => $statsManager->calculerStatsFicheEtudiant($etudiant, $evaluations, $groupes, $statuts),
                 'titrePage' => $this->translator->trans('page_fiche_etudiant_titre', ['nom'=> $etudiant->getNom(), 'prenom'=>$etudiant->getPrenom()])
             ]);
@@ -745,10 +740,9 @@ class StatistiquesController extends AbstractController
                 }
                 return ($a->getdate() < $b->getdate()) ? -1 : 1;
             });
-            return $this->render('statistiques/affichage_statistiques.html.twig', [
+            return $this->render('statistiques/_statistiques_evolution.html.twig', [
                 'evaluations' => $tabEvaluations,
                 'groupes' => $lesGroupes,
-                'typeStatistique' => 'evolution',
                 'titrePage' => $this->translator->trans('page_evolution_titre'),
                 'stats' => $statsManager->calculerStatsEvolution('groupe', $lesGroupes, $tabEvaluations)
             ]);
@@ -947,10 +941,9 @@ class StatistiquesController extends AbstractController
                 }
                 return ($a->getdate() < $b->getdate()) ? -1 : 1;
             });
-            return $this->render('statistiques/affichage_statistiques.html.twig', [
+            return $this->render('statistiques/_statistiques_evolution.html.twig', [
                 'evaluations' => $tabEvaluations,
                 'groupes' => $lesGroupes,
-                'typeStatistique' => 'evolution',
                 'titrePage' => $this->translator->trans('page_evolution_titre'),
                 'stats' => $statsManager->calculerStatsEvolution('statut', $lesGroupes, $tabEvaluations, $statut)
             ]);
@@ -1091,13 +1084,12 @@ class StatistiquesController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $groupes = $form->get('groupes')->getData();
             $statuts = $form->get('statuts')->getData();
-            return $this->render('statistiques/affichage_statistiques.html.twig', [
+            return $this->render('statistiques/_statistiques_comparaison.html.twig', [
                 'evaluations' => $evaluationsChoisies,
                 'evaluationConcernee' => $evaluation,
                 'groupes' => $groupes,
                 "parties" => $statsManager->calculerStatsComparaison($evaluation, $groupes, $statuts, $evaluationsChoisies),
                 'titrePage' => $this->translator->trans('page_comparaison_titre', ['nom' => $evaluation->getNom(), 'nombre'=> count($evaluationsChoisies)]),
-                'typeStatistique' => "comparaison",
             ]);
         }
         return $this->render('statistiques/formulaire_parametrage_statistiques.html.twig', [

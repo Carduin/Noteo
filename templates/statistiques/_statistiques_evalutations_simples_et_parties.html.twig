@@ -1,4 +1,7 @@
+{% extends 'statistiques/affichage_statistiques.html.twig' %}
+
 {% block contenu %}
+    {{ parent() }}
     <div class="table-responsive">
         <table align="center" class="table">
             <tbody>
@@ -26,6 +29,7 @@
                                         style="font-size: 25px;" data-toggle='tooltip'
                                         title="{% trans %}tooltip_stats_mail{% endtrans %}" class="icon-mail"></i></a>
                         {% endif %}
+                    <a href="#" data-toggle='tooltip' title="{% trans %}tooltip_api{% endtrans %}" onclick="modaleAPI()"><i class="fas fa-link"></i></a>
                 </td>
             </tr>
             </tbody>
@@ -163,7 +167,7 @@
 {% endblock %}
 
 {% block javascripts %}
-
+    {{ parent() }}
     <!-- Chart JS -->
     <script src="{{ asset("vendor/chart.js/Chart.min.js") }}"></script>
     <!-- PDFMake -->
