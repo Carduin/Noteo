@@ -17,7 +17,7 @@ use Symfony\Component\Serializer\SerializerInterface;
 /*
  * Format erreurs :
  * [
- *   'type' : 'Bad parameter'
+ *   'type' : 'Bad parameter' | Bad critical parameter
  *   'target' : 'Classe entité'
  * ]
  *
@@ -70,6 +70,10 @@ class ApiController extends AbstractController
         $objetEvaluation = $this->fetchUneEvaluation($request->get('evaluation'));
         if(!$objetEvaluation) {
             $this->tableauRetourCourant['code'] = 3; // Si pas d'éval : impossible de continuer
+            $this->tableauRetourCourant['errors'][] = [
+                'type' => 'Bad critical parameter' ,
+                'target' => 'Evaluation'
+            ];
         }
         $objetsParties = $this->fetchParties($request->get('parties'), $objetEvaluation);
         if(empty($objetsParties)) {
@@ -79,6 +83,14 @@ class ApiController extends AbstractController
         $objetsStatuts = $this->fetchStatuts($request->get('statuts'));
         if(empty($objetsGroupes) && empty($objetsStatuts)) {
             $this->tableauRetourCourant['code'] = 3; // Impossible de continuer sans groupes ni statut
+            $this->tableauRetourCourant['errors'][] = [
+                'type' => 'Bad critical parameter' ,
+                'target' => 'Groupe'
+            ];
+            $this->tableauRetourCourant['errors'][] = [
+                'type' => 'Bad critical parameter' ,
+                'target' => 'Statut'
+            ];
         }
         if ($this->tableauRetourCourant['code'] != 3 ) {
             $this->tableauRetourCourant['statisticsData'] = $this->statisticsManager->calculerStatsClassiques($objetEvaluation, $objetsGroupes, $objetsStatuts, $objetsParties);
