@@ -152,25 +152,27 @@ class ApiController extends AbstractController
 
     public function fetchParties($partiesGETParameter, $objetEvaluation) {
         $objetsParties = [];
-        if ($partiesGETParameter) {
-            foreach ($partiesGETParameter as $partie) {
-                $objetPartie = $this->partiesRepository->findOneById($partie);
-                if($objetPartie && $objetPartie->getEvaluation()->getId() == $objetEvaluation->getId()) {
-                    $objetsParties[] = $objetPartie;
-                }
-                else { // Si la partie ne correspond pas à l'évaluation choisie
-                    $this->tableauRetourCourant['errors'][] = [
-                        'type' => 'Bad Parameter' ,
-                        'target' => 'Partie'
-                    ];
-                    if ($this->tableauRetourCourant['code'] != 3) { // Ne pas override le code 3
-                        $this->tableauRetourCourant['code'] = 2; // Erreur survenue
+        if ($objetEvaluation) {
+            if ($partiesGETParameter) {
+                foreach ($partiesGETParameter as $partie) {
+                    $objetPartie = $this->partiesRepository->findOneById($partie);
+                    if($objetPartie && $objetPartie->getEvaluation()->getId() == $objetEvaluation->getId()) {
+                        $objetsParties[] = $objetPartie;
+                    }
+                    else { // Si la partie ne correspond pas à l'évaluation choisie
+                        $this->tableauRetourCourant['errors'][] = [
+                            'type' => 'Bad Parameter' ,
+                            'target' => 'Partie'
+                        ];
+                        if ($this->tableauRetourCourant['code'] != 3) { // Ne pas override le code 3
+                            $this->tableauRetourCourant['code'] = 2; // Erreur survenue
+                        }
                     }
                 }
             }
-        }
-        else {
-            $objetsParties[] = $objetEvaluation->getParties()[0];
+            else {
+                $objetsParties[] = $objetEvaluation->getParties()[0];
+            }
         }
         return $objetsParties;
     }

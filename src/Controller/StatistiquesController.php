@@ -173,9 +173,20 @@ class StatistiquesController extends AbstractController
             $request->getSession()->set('stats', $statistiquesCalculees);
             //Pour ne pas continuer si les conditions ne sont pas remplies (au moins un groupe ou statut)
             if (count($groupesChoisis) > 0 || count($statutsChoisis) > 0) {
+                //Génération du lien pour l'API
+                $url = $request->getScheme() . '://' . $request->getHttpHost() . $request->getBasePath() . $this->generateUrl('api_get_stats_eval_simple'); //Base de l'url
+                $url = $url . '?token=' . $this->getUser()->getToken(); //Token de sécurité de l'user
+                $url = $url . '&evaluation=' . $evaluation->getId(); //Evaluation choisie
+                foreach ($groupesChoisis as $key => $groupe) { // Groupes
+                    $url = $url . '&groupes[' . $key . ']=' . $groupe->getId();
+                }
+                foreach($statutsChoisis as $key => $statut) { // Statuts
+                    $url = $url . '&statuts[' . $key . ']=' . $statut->getId();
+                }
                 return $this->render('statistiques/_statistiques_evalutations_simples_et_parties.html.twig', [
                     'titrePage' => $this->translator->trans('page_eval_simple_parties_titre', ['nom'=> $evaluation->getNom()]),
                     'evaluation' => $evaluation,
+                    'urlAPI' => $url,
                     'parties' => $statistiquesCalculees
                 ]);
             }
@@ -288,9 +299,23 @@ class StatistiquesController extends AbstractController
             $request->getSession()->set('stats', $statistiquesCalculees);
             //Pour ne pas continuer si les conditions ne sont pas remplies (au moins un groupe ou statut)
             if ((count($groupesChoisis) > 0 || count($statutsChoisis) > 0) && count($partiesChoisies) > 0) {
+                //Génération du lien pour l'API
+                $url = $request->getScheme() . '://' . $request->getHttpHost() . $request->getBasePath() . $this->generateUrl('api_get_stats_eval_simple'); //Base de l'url
+                $url = $url . '?token=' . $this->getUser()->getToken(); //Token de sécurité de l'user
+                $url = $url . '&evaluation=' . $evaluation->getId(); //Evaluation choisie
+                foreach ($partiesChoisies as $key => $partie) {
+                    $url = $url . '&parties[' . $key . ']=' . $partie->getId();
+                }
+                foreach ($groupesChoisis as $key => $groupe) { // Groupes
+                    $url = $url . '&groupes[' . $key . ']=' . $groupe->getId();
+                }
+                foreach($statutsChoisis as $key => $statut) { // Statuts
+                    $url = $url . '&statuts[' . $key . ']=' . $statut->getId();
+                }
                 return $this->render('statistiques/_statistiques_evalutations_simples_et_parties.html.twig', [
                     'titrePage' => $this->translator->trans('page_eval_simple_parties_titre', ['nom'=> $evaluation->getNom()]),
                     'evaluation' => $evaluation,
+                    'urlAPI' => $url,
                     'parties' => $statistiquesCalculees
                 ]);
             }
