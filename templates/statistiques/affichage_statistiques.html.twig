@@ -53,10 +53,10 @@
 
         function copyUrl() {
             const inputURL = $("#urlGeneree");
-            inputURL.select();
-            document.execCommand('copy');
-            document.getSelection().empty();
-            inputURL.blur();
+            navigator.clipboard.writeText(inputURL.val()).then(function() {
+                document.getSelection().empty();
+                inputURL.blur();
+            });
         }
 
         function modaleAPI() {
