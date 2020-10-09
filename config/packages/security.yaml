@@ -4,10 +4,9 @@ security:
             algorithm: bcrypt
             cost: 14
 
-    # https://symfony.com/doc/current/security.html#where-do-users-come-from-user-providers
     providers:
-        #api_key_user_provider:
-        #    id: App\Security\ApiKeyUserProvider
+        api_key_user_provider:
+            id: App\Security\ApiKeyUserProvider
         app_user_provider:
             entity:
                 class: App\Entity\Enseignant
@@ -16,12 +15,14 @@ security:
         dev:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
             security: false
-        #api:
-        #    stateless: true
-        #    simple_preauth:
-        #        authenticator: App\Security\ApiAuthenticator
-        #    provider: api_key_user_provider
+        api:
+            pattern: ^/api
+            stateless: true
+            simple_preauth:
+                authenticator: App\Security\ApiAuthenticator
+            provider: api_key_user_provider
         main:
+            pattern: ^(?!/api) # every route but /api
             provider: app_user_provider
             anonymous: true
             guard:
@@ -29,21 +30,13 @@ security:
                     - App\Security\EnseignantAuthenticator
             logout:
                 path: app_logout
-                # where to redirect after logout
                 # target: app_any_route
-
-            # activate different ways to authenticate
-            # https://symfony.com/doc/current/security.html#firewalls-authentication
-
-            # https://symfony.com/doc/current/security/impersonating_user.html
             # switch_user: true
-
-    # Easy way to control access for large sections of your site
-    # Note: Only the *first* access control that matches will be used
     access_control:
-         - { path: ^/etudiant, roles: ROLE_ADMIN }
-         - { path: ^/evaluation, roles: ROLE_USER }
-         - { path: ^/statut, roles: ROLE_USER }
-         - { path: ^/partie, roles: ROLE_USER }
-         - { path: ^/statistiques, roles: ROLE_USER }
-         - { path: ^/tutoriels, roles: ROLE_USER }
+         - { path: ^/(en|fr|es)/etudiant, roles: ROLE_ADMIN }
+         - { path: ^/(en|fr|es)/evaluation, roles: ROLE_USER }
+         - { path: ^/(en|fr|es)/statut, roles: ROLE_USER }
+         - { path: ^/(en|fr|es)/partie, roles: ROLE_USER }
+         - { path: ^/(en|fr|es)/statistiques, roles: ROLE_USER }
+         - { path: ^/(en|fr|es)/tutoriels, roles: ROLE_USER }
+         - { path: ^/api, roles: ROLE_USER }

@@ -19,19 +19,14 @@ class ApiKeyUserProvider implements UserProviderInterface
     public function getUsernameForApiKey($apiKey)
     {
         $enseignant = $this->enseignantRepo->findOneByToken($apiKey);
-
-        return $enseignant->getEmail();
+        return $enseignant ? $enseignant->getEmail() : $enseignant;
     }
 
     public function loadUserByUsername($username)
     {
-        return new User(
-            $username,
-            null,
-            // the roles for the user - you may choose to determine
-            // these dynamically somehow based on the user
-            array('ROLE_API')
-        );
+        $enseignant = $this->enseignantRepo->findOneByEmail($username);
+
+        return $enseignant;
     }
 
     public function refreshUser(UserInterface $user)

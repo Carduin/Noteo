@@ -24,7 +24,6 @@ class ApiAuthenticator implements SimplePreAuthenticatorInterface
 
         if (!$apiKey) {
             throw new BadCredentialsException();
-
             // or to just skip api key authentication
             // return null;
         }
@@ -62,14 +61,17 @@ class ApiAuthenticator implements SimplePreAuthenticatorInterface
                 sprintf('API Key "%s" does not exist.', $apiKey)
             );
         }
+        else {
+            $user = $userProvider->loadUserByUsername($username);
 
-        $user = $userProvider->loadUserByUsername($username);
+            return new PreAuthenticatedToken(
+                $user,
+                $apiKey,
+                $providerKey,
+                $user->getRoles()
+            );
+        }
 
-        return new PreAuthenticatedToken(
-            $user,
-            $apiKey,
-            $providerKey,
-            $user->getRoles()
-        );
+
     }
 }
