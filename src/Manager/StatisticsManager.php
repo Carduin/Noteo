@@ -16,7 +16,6 @@ class StatisticsManager {
     }
 
     public function calculerStatsPlusieursEvals($type= '', $groupes = [], $evaluations = []) {
-        $statistiques = [];
         foreach ($groupes as $groupe) // On récupère les notes du groupe principal et des sous groupes sur toutes les évaluations choisis
         {
             $tabPoints = array();
@@ -52,8 +51,7 @@ class StatisticsManager {
                 "mediane" => $this->mediane($copieTabPoints)
             );
         }
-        $statistiques = [["nom" => "Évaluations", "bareme" => 20, "stats" => $listeStatsParGroupe]];
-        return $statistiques;
+        return [["nom" => "Évaluations", "bareme" => 20, "stats" => $listeStatsParGroupe]];
     }
 
     public function calculerStatsEvolution($type = '', $groupes = [], $evaluations = [], $statut = []) {
@@ -172,7 +170,6 @@ class StatisticsManager {
     }
 
     public function calculerStatsComparaison($evaluation = [], $groupes = [], $statuts = [], $autresEvaluations=[] ) {
-        $statistiques = [];
         $tabStatsComparaison = array();
         foreach ($groupes as $groupe) {
             // déterminer la moyenne du groupe courant à l'évaluation de référence
@@ -378,7 +375,6 @@ class StatisticsManager {
 
     public function mediane($tabPoints)
     {
-        $mediane = 0;
         $nbValeurs = count($tabPoints);
         if (!empty($tabPoints)) {
             if ($nbValeurs % 2 == 1) //Si il y a un nombre impair de valeurs, la médiane vaut la valeur au milieu du tableau

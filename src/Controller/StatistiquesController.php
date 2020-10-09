@@ -395,8 +395,6 @@ class StatistiquesController extends AbstractController
      */
     public function plusieursEvaluationsGroupesChoisirSousGroupes(Request $request, GroupeEtudiant $groupe, GroupeEtudiantRepository $repoGroupe): Response
     {
-        $session = $request->getSession();
-        $typeGraph = $request->getSession()->get('typeGraphique');
         $sousGroupes = $repoGroupe->findAllOrderedFromNode($groupe);
         $form = $this->createFormBuilder()
             ->add('groupes', EntityType::class, [
@@ -439,10 +437,8 @@ class StatistiquesController extends AbstractController
     /**
      * @Route("/plusieurs-evaluations/groupes/{slug}/choisir-evaluations", name="plusieurs_evaluations_groupes_choisir_evaluations")
      */
-    public function plusieursEvaluationsGroupesChoisirEvals(Request $request, EvaluationRepository $repoEval, GroupeEtudiantRepository $repoGroupe, StatisticsManager $statsManager, GroupeEtudiant $groupe): Response
+    public function plusieursEvaluationsGroupesChoisirEvals(Request $request, StatisticsManager $statsManager, GroupeEtudiant $groupe): Response
     {
-        $session = $request->getSession();
-        $typeGraph = $session->get('typeGraphique');
         $form = $this->createFormBuilder()
             ->add('evaluations', EntityType::class, [
                 'class' => Evaluation::Class,
@@ -456,7 +452,6 @@ class StatistiquesController extends AbstractController
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $evaluations = $form->get('evaluations')->getData();
-            $listeStatsParGroupe = array(); // On initialise un tableau vide qui contiendra les statistiques des groupes choisis
             $lesGroupes = array(); // On regroupe le groupe principal et les sous groupes pour faciliter la requete
             foreach ($request->getSession()->get('sousGroupes') as $sousGroupe) {
                 array_push($lesGroupes, $sousGroupe);
@@ -503,7 +498,6 @@ class StatistiquesController extends AbstractController
      */
     public function plusieursEvaluationsStatutChoisirStatutsEvaluable(Request $request, StatutRepository $repoStatut, $typeGraphique): Response
     {
-        $session = $request->getSession();
         //On met en sesssion le type de graphique choisi par l'utilisateur pour afficher l'onglet correspondant lors de l'affichage des stats
         $request->getSession()->set('typeGraphique', $typeGraphique);
         $form = $this->createFormBuilder()
@@ -541,7 +535,7 @@ class StatistiquesController extends AbstractController
     /**
      * @Route("/plusieurs-eval/statuts/{slug}/choisir-evaluations", name="plusieurs_evaluations_statut_choisir_evaluations")
      */
-    public function plusieursEvaluationsStatutChoisirEvaluations(Request $request, StatisticsManager $statsManager, Statut $statut, EvaluationRepository $repoEval, PointsRepository $repoPoints): Response
+    public function plusieursEvaluationsStatutChoisirEvaluations(Request $request, StatisticsManager $statsManager, Statut $statut, EvaluationRepository $repoEval): Response
     {
         $form = $this->createFormBuilder()
             ->add('evaluations', EntityType::class, [
@@ -665,7 +659,6 @@ class StatistiquesController extends AbstractController
      */
     public function evolutionGroupesChoisirGroupe(Request $request, GroupeEtudiantRepository $repoGroupe): Response
     {
-        $session = $request->getSession();
         $choices = $repoGroupe->findHighestEvaluableWith1EvalOrMore();
         $form = $this->createFormBuilder()
             ->add('groupes', EntityType::class, [
@@ -706,8 +699,6 @@ class StatistiquesController extends AbstractController
      */
     public function evolutionGroupesChoisirSousGroupes(Request $request, GroupeEtudiant $groupe, GroupeEtudiantRepository $repoGroupe): Response
     {
-        $session = $request->getSession();
-        $typeGraph = $request->getSession()->get('typeGraphique');
         $sousGroupes = $repoGroupe->findAllOrderedFromNode($groupe);
         $form = $this->createFormBuilder()
             ->add('groupes', EntityType::class, [
@@ -753,8 +744,6 @@ class StatistiquesController extends AbstractController
      */
     public function evolutionGroupesChoisirEvals(Request $request, EvaluationRepository $repoEval, GroupeEtudiantRepository $repoGroupe, StatisticsManager $statsManager, GroupeEtudiant $groupe): Response
     {
-        $session = $request->getSession();
-        $typeGraph = $session->get('typeGraphique');
         $form = $this->createFormBuilder()
             ->add('evaluations', EntityType::class, [
                 'class' => Evaluation::Class,
@@ -1281,20 +1270,5 @@ class StatistiquesController extends AbstractController
 
     ///////////////////////
     /////FIN ENVOI MAIL////
-    ///////////////////////
-
-    ///////////////////////
-    ////API STATISTIQUES///
-    ///////////////////////
-
-    /**
-     * @Route("/api", name="parametrage_api", methods={"GET"})
-     */
-    public function pageApi() {
-        return $this->render('statistiques/api_statistiques.html.twig');
-    }
-
-    ///////////////////////
-    //FIN API STATISTIQUES/
     ///////////////////////
 }

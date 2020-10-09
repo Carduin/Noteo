@@ -2,7 +2,6 @@
 
 namespace App\Controller;
 
-use App\Entity\Partie;
 use App\Manager\StatisticsManager;
 use App\Repository\EvaluationRepository;
 use App\Repository\GroupeEtudiantRepository;
