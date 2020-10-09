@@ -420,7 +420,7 @@ page_evolution_titre_carte_statut:  Estudiantes del grupo nomGroupe que se tiene
 ####### REINITIALISATION APPLICATION
 app_reset_texte: 'Reiniciar la aplicación eliminará: <ul> <li> Todos los grupos </li> <li> Todos los grupos de estudiantes con un estado particular</li> <li> Todas los exámenes</li> <li> Todos los estudiantes </li> </ul> Los perfiles de los profesores no se eliminarán y las estadísticas ya no serán visibles.'
 ####### TUTORIELS
-tuto_titre_page: Ver los tutoriales de la aplicación
+tuto_titre_page: Ver los tutoriales de la aplicación (francés)
 tuto_titre_creer_eval_parties: Crear un exámen por partes
 tuto_texte_creer_eval_parties: Descubrir cómo crear exámenes por partes, para poder obtener una mayor precisión en las estadísticas.
 tuto_titre_eval_simple: Análisis de un exámen simple
