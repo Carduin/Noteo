@@ -17,15 +17,15 @@ use Symfony\Component\Serializer\SerializerInterface;
 /*
  * Format erreurs :
  * [
- *   'type' : 'Bad parameter' | Bad critical parameter
- *   'target' : 'Classe entité'
+ *   'type' : 'Bad parameter'
+ *   'target' : 'Entity name'
  * ]
  *
- * Codes fonctionnement :
+ * Codes de fonctionnement de l'API :
  *
  * 1 : Success
- * 2 : Success with errors
- * 3 : Aborted
+ * 2 : Success with non-critical errors
+ * 3 : Aborted - Critical errors
  */
 
 /**
@@ -63,17 +63,11 @@ class ApiController extends AbstractController
      */
     public function getStatistiquesSimples(Request $request)
     {
-        // Reinitialisation des dernières données calculées
         $this->tableauRetourCourant = $this->squeletteTableauRetour;
         $this->tableauRetourCourant['type'] = 'evaluationSimple';
-        // Récupération des paramètres
         $objetEvaluation = $this->fetchUneEvaluation($request->get('evaluation'));
         if(!$objetEvaluation) {
             $this->tableauRetourCourant['code'] = 3; // Si pas d'éval : impossible de continuer
-            $this->tableauRetourCourant['errors'][] = [
-                'type' => 'Bad critical parameter' ,
-                'target' => 'Evaluation'
-            ];
         }
         $objetsParties = $this->fetchParties($request->get('parties'), $objetEvaluation);
         if(empty($objetsParties)) {
@@ -83,17 +77,51 @@ class ApiController extends AbstractController
         $objetsStatuts = $this->fetchStatuts($request->get('statuts'));
         if(empty($objetsGroupes) && empty($objetsStatuts)) {
             $this->tableauRetourCourant['code'] = 3; // Impossible de continuer sans groupes ni statut
-            $this->tableauRetourCourant['errors'][] = [
-                'type' => 'Bad critical parameter' ,
-                'target' => 'Groupe'
-            ];
-            $this->tableauRetourCourant['errors'][] = [
-                'type' => 'Bad critical parameter' ,
-                'target' => 'Statut'
-            ];
         }
         if ($this->tableauRetourCourant['code'] != 3 ) {
             $this->tableauRetourCourant['statisticsData'] = $this->statisticsManager->calculerStatsClassiques($objetEvaluation, $objetsGroupes, $objetsStatuts, $objetsParties);
+        }
+        return new Response($this->serializer->serialize($this->tableauRetourCourant, 'json'));
+    }
+
+    /**
+     * @Route("/statistiques/plusieurs-evaluations/groupes", name="api_get_stats_plusieurs_evals_groupes", methods={"GET", "POST"})
+     */
+    public function getStatistiquesPlusieursEvalsGroupes(Request $request) {
+        $this->tableauRetourCourant = $this->squeletteTableauRetour;
+        $this->tableauRetourCourant['type'] = 'plusieurs-evaluations (groupes)';
+        $objetsGroupes = $this->fetchGroupes($request->get('groupes'));
+        $objetsEvaluations = $this->fetchPlusieursEvaluations($request->get('evaluations'));
+        if (empty($objetsGroupes) || empty($objetsEvaluations)) {
+            $this->tableauRetourCourant['code'] = 3; // Impossible de continuer sans groupes ou evaluations
+            $this->tableauRetourCourant['errors'][] = [
+                'type' => 'Missing critical parameter' ,
+                'target' => 'Evaluation or Groupe'
+            ];
+        }
+        if ($this->tableauRetourCourant['code'] != 3 ) {
+            $this->tableauRetourCourant['statisticsData'] = $this->statisticsManager->calculerStatsPlusieursEvals('groupes', $objetsGroupes, $objetsEvaluations);
+        }
+        return new Response($this->serializer->serialize($this->tableauRetourCourant, 'json'));
+    }
+
+    /**
+     * @Route("/statistiques/plusieurs-evaluations/statut", name="api_get_stats_plusieurs_evals_statut", methods={"GET", "POST"})
+     */
+    public function getStatistiquesPlusieursEvalsStatut(Request $request) {
+        $this->tableauRetourCourant = $this->squeletteTableauRetour;
+        $this->tableauRetourCourant['type'] = 'plusieurs-evaluations (statut)';
+        $objetsGroupes = $this->fetchStatuts($request->get('statuts'));
+        $objetsEvaluations = $this->fetchPlusieursEvaluations($request->get('evaluations'));
+        if (empty($objetsGroupes) || empty($objetsEvaluations)) {
+            $this->tableauRetourCourant['code'] = 3; // Impossible de continuer sans groupes ou evaluations
+            $this->tableauRetourCourant['errors'][] = [
+                'type' => 'Missing critical parameter' ,
+                'target' => 'Evaluation or Statut'
+            ];
+        }
+        if ($this->tableauRetourCourant['code'] != 3 ) {
+            $this->tableauRetourCourant['statisticsData'] = $this->statisticsManager->calculerStatsPlusieursEvals('statuts', $objetsGroupes, $objetsEvaluations);
         }
         return new Response($this->serializer->serialize($this->tableauRetourCourant, 'json'));
     }
@@ -159,7 +187,25 @@ class ApiController extends AbstractController
 
 
     public function fetchPlusieursEvaluations($evaluationsGETParameter) {
-
+        $objetsEvaluations = [];
+        if ($evaluationsGETParameter) {
+            foreach ($evaluationsGETParameter as $evaluation) {
+                $objetEvaluation = $this->evaluationRepository->findOneById($evaluation);
+                if ($objetEvaluation) {
+                    $objetsEvaluations[] = $objetEvaluation;
+                }
+                else {
+                    $this->tableauRetourCourant['errors'][] = [
+                        'type' => 'Bad Parameter' ,
+                        'target' => 'Evaluation'
+                    ];
+                    if ($this->tableauRetourCourant['code'] != 3) { // Ne pas override le code 3
+                        $this->tableauRetourCourant['code'] = 2; // Erreur survenue
+                    }
+                }
+            }
+        }
+        return $objetsEvaluations;
     }
 
     public function fetchParties($partiesGETParameter, $objetEvaluation) {

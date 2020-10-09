@@ -461,9 +461,19 @@ class StatistiquesController extends AbstractController
             foreach ($request->getSession()->get('sousGroupes') as $sousGroupe) {
                 array_push($lesGroupes, $sousGroupe);
             }
+            //Génération du lien pour l'API
+            $url = $request->getScheme() . '://' . $request->getHttpHost() . $request->getBasePath() . $this->generateUrl('api_get_stats_plusieurs_evals_groupes'); //Base de l'url
+            $url = $url . '?token=' . $this->getUser()->getToken(); //Token de sécurité de l'user
+            foreach ($lesGroupes as $key => $groupe) {
+                $url = $url . '&groupes[' . $key . ']=' . $groupe->getId();
+            }
+            foreach ($evaluations as $key => $evaluation) {
+                $url = $url . '&evaluations[' . $key . ']=' . $evaluation->getId();
+            }
             return $this->render('statistiques/_statistiques_plusieurs_evals.html.twig', [
                 'parties' => $statsManager->calculerStatsPlusieursEvals('groupes', $lesGroupes, $evaluations),
                 'evaluations' => $evaluations,
+                'urlAPI' => $url,
                 'groupes' => $lesGroupes,
                 'titrePage' => $this->translator->trans('page_plusieurs_evals', ['nombre'=>count($evaluations) ]),
                 ]);
@@ -552,9 +562,17 @@ class StatistiquesController extends AbstractController
             if (count($form->get('evaluations')->getData()) > 0) {
                 $evaluations = $form->get('evaluations')->getData();
             }
+            //Génération du lien pour l'API
+            $url = $request->getScheme() . '://' . $request->getHttpHost() . $request->getBasePath() . $this->generateUrl('api_get_stats_plusieurs_evals_statut'); //Base de l'url
+            $url = $url . '?token=' . $this->getUser()->getToken(); //Token de sécurité de l'user
+            $url = $url . '&statuts[0]=' . $statut->getId();
+            foreach ($evaluations as $key => $evaluation) {
+                $url = $url . '&evaluations[' . $key . ']=' . $evaluation->getId();
+            }
             return $this->render('statistiques/_statistiques_plusieurs_evals.html.twig', [
                 'parties' => $statsManager->calculerStatsPlusieursEvals('statuts', [$statut], $evaluations),
                 'evaluations' => $evaluations,
+                'urlAPI' => $url,
                 'groupes' => $statut,
                 'titrePage' => $this->translator->trans('page_plusieurs_evals', ['nombre'=>count($evaluations) ]),
             ]);
