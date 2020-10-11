@@ -102,17 +102,46 @@ class ApiController extends AbstractController
                     }
                     break;
                 case 'plusieurs-evaluations-statut':
-                    $objetsGroupes = $this->fetchStatuts($request->get('statuts'));
+                    $objetsStatut = $this->fetchStatuts($request->get('statuts'));
                     $objetsEvaluations = $this->fetchPlusieursEvaluations($request->get('evaluations'));
                     if (empty($objetsGroupes) || empty($objetsEvaluations)) {
-                        $this->tableauRetourCourant['code'] = 3; // Impossible de continuer sans groupes ou evaluations
+                        $this->tableauRetourCourant['code'] = 3; // Impossible de continuer sans evaluation ou statuts
                         $this->tableauRetourCourant['errors'][] = [
                             'type' => 'Missing critical parameter' ,
                             'target' => 'Evaluation or Statut'
                         ];
                     }
                     if ($this->tableauRetourCourant['code'] != 3 ) {
-                        $this->tableauRetourCourant['statisticsData'] = $this->statisticsManager->calculerStatsPlusieursEvals('statuts', $objetsGroupes, $objetsEvaluations);
+                        $this->tableauRetourCourant['statisticsData'] = $this->statisticsManager->calculerStatsPlusieursEvals('statuts', $objetsStatut, $objetsEvaluations);
+                    }
+                    break;
+                case 'evolution-groupe' :
+                    $objetsGroupes = $this->fetchGroupes($request->get('groupes'));
+                    $objetsEvaluations = $this->fetchPlusieursEvaluations($request->get('evaluations'));
+                    if(!$objetsEvaluations || !$objetsGroupes) {
+                        $this->tableauRetourCourant['code'] = 3; // Impossible de continuer sans groupes ou evaluations
+                        $this->tableauRetourCourant['errors'][] = [
+                            'type' => 'Missing critical parameter' ,
+                            'target' => 'Groupes or Evaluations'
+                        ];
+                    }
+                    if ($this->tableauRetourCourant['code'] != 3 ) {
+                        $this->tableauRetourCourant['statisticsData'] = $this->statisticsManager->calculerStatsEvolution('groupe', $objetsGroupes, $objetsEvaluations);
+                    }
+                    break;
+                case 'evolution-statut' :
+                    $objetsStatuts = $this->fetchStatuts($request->get('statuts'));
+                    $objetsGroupes = $this->fetchGroupes($request->get('groupes'));
+                    $objetsEvaluations = $this->fetchPlusieursEvaluations($request->get('evaluations'));
+                    if(!$objetsEvaluations || !$objetsGroupes || !$objetsStatuts) {
+                        $this->tableauRetourCourant['code'] = 3; // Impossible de continuer sans groupes ou evaluations
+                        $this->tableauRetourCourant['errors'][] = [
+                            'type' => 'Missing critical parameter' ,
+                            'target' => 'Groupes or Statut or Evaluations'
+                        ];
+                    }
+                    if ($this->tableauRetourCourant['code'] != 3 ) {
+                        $this->tableauRetourCourant['statisticsData'] = $this->statisticsManager->calculerStatsEvolution('statut', $objetsGroupes, $objetsEvaluations, $objetsStatuts[0]);
                     }
                     break;
                 case 'comparaison':
@@ -151,6 +180,11 @@ class ApiController extends AbstractController
                     }
                     break;
                 default:
+                    $this->tableauRetourCourant['code'] = 3;
+                    $this->tableauRetourCourant['errors'][] = [
+                        'type' => 'Bad critical parameter' ,
+                        'target' => 'Statistics type'
+                    ];
                     break;
             }
         }

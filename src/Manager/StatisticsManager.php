@@ -56,14 +56,6 @@ class StatisticsManager {
 
     public function calculerStatsEvolution($type = '', $groupes = [], $evaluations = [], $statut = []) {
         $statistiques = array();
-        $typeGroupe = array();
-        $typeGroupe["type"] = $type;
-        if ($type == "statut") {
-            array_push($typeGroupe, $statut);
-        }
-        $statistiques["typeGroupe"] = $typeGroupe;
-        $statistiques["evaluations"] = $evaluations;
-
         foreach ($groupes as $groupe) {
             $groupeEtudiant = array();
             $etudiants = array();

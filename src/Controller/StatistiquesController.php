@@ -778,9 +778,19 @@ class StatistiquesController extends AbstractController
                 }
                 return ($a->getdate() < $b->getdate()) ? -1 : 1;
             });
+            $url = $request->getScheme() . '://' . $request->getHttpHost() . $request->getBasePath() . $this->generateUrl('api_get_stats'); //Base de l'url
+            $url = $url . '?token=' . $this->getUser()->getToken(); //Token de sécurité de l'user
+            $url = $url . '&type=' . 'evolution-groupe';
+            foreach ($lesGroupes as $key => $groupe) {
+                $url = $url . '&groupes[' . $key . ']=' . $groupe->getId();
+            }
+            foreach ($evaluations as $key => $evaluation) {
+                $url = $url . '&evaluations[' . $key . ']=' . $evaluation->getId();
+            }
             return $this->render('statistiques/_statistiques_evolution.html.twig', [
                 'evaluations' => $tabEvaluations,
                 'groupes' => $lesGroupes,
+                'urlAPI' => $url,
                 'titrePage' => $this->translator->trans('page_evolution_titre'),
                 'stats' => $statsManager->calculerStatsEvolution('groupe', $lesGroupes, $tabEvaluations)
             ]);
@@ -979,9 +989,21 @@ class StatistiquesController extends AbstractController
                 }
                 return ($a->getdate() < $b->getdate()) ? -1 : 1;
             });
+            $url = $request->getScheme() . '://' . $request->getHttpHost() . $request->getBasePath() . $this->generateUrl('api_get_stats'); //Base de l'url
+            $url = $url . '?token=' . $this->getUser()->getToken(); //Token de sécurité de l'user
+            $url = $url . '&type=' . 'evolution-statut';
+            $url = $url . '&statuts[0]=' . $statut->getId();
+            foreach ($lesGroupes as $key => $groupe) {
+                $url = $url . '&groupes[' . $key . ']=' . $groupe->getId();
+            }
+            foreach ($evaluations as $key => $evaluation) {
+                $url = $url . '&evaluations[' . $key . ']=' . $evaluation->getId();
+            }
             return $this->render('statistiques/_statistiques_evolution.html.twig', [
                 'evaluations' => $tabEvaluations,
                 'groupes' => $lesGroupes,
+                'statut' => $statut,
+                'urlAPI' => $url,
                 'titrePage' => $this->translator->trans('page_evolution_titre'),
                 'stats' => $statsManager->calculerStatsEvolution('statut', $lesGroupes, $tabEvaluations, $statut)
             ]);

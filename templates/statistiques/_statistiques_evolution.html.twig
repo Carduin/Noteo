@@ -34,7 +34,7 @@
                 </td>
             </tr>
             <tr>
-                {% if stats.typeGroupe["type"] == "groupe" %}
+                {% if statut is not defined %}
                     <th>{% trans %}page_evolution_groupes{% endtrans %}</th>
                     <td>
                         <ul>
@@ -73,16 +73,13 @@
     <i class="icon-attention-circled">{% trans %}mesage_info_courbe_evolution_etudiant_absent{% endtrans %}</i></span>
     </div>
 
-    {% for i in 0..stats|length - 3 %}
-
+    {% for i in 0..stats|length - 1%}
         {% set idGraph = "diagrammeEvolutionResultat" ~ stats[i].nom %}
-
-
         <div class="card">
             <ul class="list-group list-group-flush">
                 <li class="list-group-item text-white" style="background-color:#bdc3c7;">
-                    {% if stats.typeGroupe["type"] == "statut" %}
-                        {% trans with {'nomGroupe':stats[i].nom, 'nomStatut':stats.typeGroupe[0].nom} %}page_evolution_titre_carte_statut{% endtrans %}
+                    {% if statut is defined %}
+                        {% trans with {'nomGroupe':stats[i].nom, 'nomStatut':statut.nom} %}page_evolution_titre_carte_statut{% endtrans %}
                     {% else %}
                         {% trans with {'nomGroupe':stats[i].nom} %}page_evolution_titre_carte_groupe{% endtrans %}
                     {% endif %}
@@ -159,7 +156,7 @@
 
         var graphiques = [];
 
-        {% for i in 0..stats|length - 3 %}
+        {% for i in 0..stats|length - 1 %}
         {% for graphCourant in  1..stats[i] %}
         {% set idGraph = "diagrammeEvolutionResultat" ~ stats[i].nom %}
         {% set nbEtudiantsGroupeCourant = stats[i]["etudiants"]|length %}
