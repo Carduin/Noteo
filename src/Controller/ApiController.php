@@ -58,69 +58,86 @@ class ApiController extends AbstractController
     }
 
     /**
-     * @Route("/statistiques/classique", name="api_get_stats_eval_simple", methods={"GET", "POST"})
+     * @Route("/statistiques", name="api_get_stats", methods={"GET", "POST"})
      */
-    public function getStatistiquesSimples(Request $request)
-    {
+    public function getStatistiques(Request $request) {
         $this->tableauRetourCourant = $this->squeletteTableauRetour;
-        $this->tableauRetourCourant['type'] = 'evaluationSimple';
-        $objetEvaluation = $this->fetchUneEvaluation($request->get('evaluation'));
-        if(!$objetEvaluation) {
-            $this->tableauRetourCourant['code'] = 3; // Si pas d'éval : impossible de continuer
+        $typeStatistiques = $request->get('type');
+        if($typeStatistiques) {
+            $this->tableauRetourCourant['type'] = $typeStatistiques;
+            switch ($typeStatistiques) {
+                case 'classique' :
+                    $objetEvaluation = $this->fetchUneEvaluation($request->get('evaluation'));
+                    if(!$objetEvaluation) {
+                        $this->tableauRetourCourant['code'] = 3; // Si pas d'éval : impossible de continuer
+                    }
+                    $objetsParties = $this->fetchParties($request->get('parties'), $objetEvaluation);
+                    if(empty($objetsParties)) {
+                        $this->tableauRetourCourant['code'] = 3; // Si pas de parties : impossible de continuer
+                    }
+                    $objetsGroupes = $this->fetchGroupes($request->get('groupes'));
+                    $objetsStatuts = $this->fetchStatuts($request->get('statuts'));
+                    if(empty($objetsGroupes) && empty($objetsStatuts)) {
+                        $this->tableauRetourCourant['code'] = 3; // Impossible de continuer sans groupes ni statut
+                    }
+                    if ($this->tableauRetourCourant['code'] != 3 ) {
+                        $this->tableauRetourCourant['statisticsData'] = $this->statisticsManager->calculerStatsClassiques($objetEvaluation, $objetsGroupes, $objetsStatuts, $objetsParties);
+                    }
+                    break;
+                case 'plusieurs-evaluations-groupes':
+                    $objetsGroupes = $this->fetchGroupes($request->get('groupes'));
+                    $objetsEvaluations = $this->fetchPlusieursEvaluations($request->get('evaluations'));
+                    if (empty($objetsGroupes) || empty($objetsEvaluations)) {
+                        $this->tableauRetourCourant['code'] = 3; // Impossible de continuer sans groupes ou evaluations
+                        $this->tableauRetourCourant['errors'][] = [
+                            'type' => 'Missing critical parameter' ,
+                            'target' => 'Evaluation or Groupe'
+                        ];
+                    }
+                    if ($this->tableauRetourCourant['code'] != 3 ) {
+                        $this->tableauRetourCourant['statisticsData'] = $this->statisticsManager->calculerStatsPlusieursEvals('groupes', $objetsGroupes, $objetsEvaluations);
+                    }
+                    break;
+                case 'plusieurs-evaluations-statut':
+                    $objetsGroupes = $this->fetchStatuts($request->get('statuts'));
+                    $objetsEvaluations = $this->fetchPlusieursEvaluations($request->get('evaluations'));
+                    if (empty($objetsGroupes) || empty($objetsEvaluations)) {
+                        $this->tableauRetourCourant['code'] = 3; // Impossible de continuer sans groupes ou evaluations
+                        $this->tableauRetourCourant['errors'][] = [
+                            'type' => 'Missing critical parameter' ,
+                            'target' => 'Evaluation or Statut'
+                        ];
+                    }
+                    if ($this->tableauRetourCourant['code'] != 3 ) {
+                        $this->tableauRetourCourant['statisticsData'] = $this->statisticsManager->calculerStatsPlusieursEvals('statuts', $objetsGroupes, $objetsEvaluations);
+                    }
+                    break;
+                case 'comparaison':
+                    $objetEvaluationReference = $this->fetchUneEvaluation($request->get('evaluationReference'));
+                    $objetsAutresEvaluations = $this->fetchPlusieursEvaluations($request->get('autresEvaluations'));
+                    $objetsGroupes = $this->fetchGroupes($request->get('groupes'));
+                    $objetsStatuts = $this->fetchStatuts($request->get('statuts'));
+                    if (!$objetEvaluationReference || !$objetsAutresEvaluations || (!$objetsGroupes && !$objetsStatuts)) { //Si pas d'évaluation de référence, pas d'autres évaluations à comparer ou pas de groupes et de statut choisi
+                        $this->tableauRetourCourant['code'] = 3;
+                        $this->tableauRetourCourant['errors'][] = [
+                            'type' => 'Missing critical parameters' ,
+                            'target' => 'Unknown'
+                        ];
+                    }
+                    if ($this->tableauRetourCourant['code'] != 3 ) {
+                        $this->tableauRetourCourant['statisticsData'] = $this->statisticsManager->calculerStatsComparaison($objetEvaluationReference, $objetsGroupes, $objetsStatuts, $objetsAutresEvaluations);
+                    }
+                    break;
+                default:
+                    break;
+            }
         }
-        $objetsParties = $this->fetchParties($request->get('parties'), $objetEvaluation);
-        if(empty($objetsParties)) {
-            $this->tableauRetourCourant['code'] = 3; // Si pas de parties : impossible de continuer
-        }
-        $objetsGroupes = $this->fetchGroupes($request->get('groupes'));
-        $objetsStatuts = $this->fetchStatuts($request->get('statuts'));
-        if(empty($objetsGroupes) && empty($objetsStatuts)) {
-            $this->tableauRetourCourant['code'] = 3; // Impossible de continuer sans groupes ni statut
-        }
-        if ($this->tableauRetourCourant['code'] != 3 ) {
-            $this->tableauRetourCourant['statisticsData'] = $this->statisticsManager->calculerStatsClassiques($objetEvaluation, $objetsGroupes, $objetsStatuts, $objetsParties);
-        }
-        return new Response($this->serializer->serialize($this->tableauRetourCourant, 'json'));
-    }
-
-    /**
-     * @Route("/statistiques/plusieurs-evaluations/groupes", name="api_get_stats_plusieurs_evals_groupes", methods={"GET", "POST"})
-     */
-    public function getStatistiquesPlusieursEvalsGroupes(Request $request) {
-        $this->tableauRetourCourant = $this->squeletteTableauRetour;
-        $this->tableauRetourCourant['type'] = 'plusieurs-evaluations (groupes)';
-        $objetsGroupes = $this->fetchGroupes($request->get('groupes'));
-        $objetsEvaluations = $this->fetchPlusieursEvaluations($request->get('evaluations'));
-        if (empty($objetsGroupes) || empty($objetsEvaluations)) {
-            $this->tableauRetourCourant['code'] = 3; // Impossible de continuer sans groupes ou evaluations
+        else {
+            $this->tableauRetourCourant['code'] = 3;
             $this->tableauRetourCourant['errors'][] = [
                 'type' => 'Missing critical parameter' ,
-                'target' => 'Evaluation or Groupe'
+                'target' => 'Statistics type'
             ];
-        }
-        if ($this->tableauRetourCourant['code'] != 3 ) {
-            $this->tableauRetourCourant['statisticsData'] = $this->statisticsManager->calculerStatsPlusieursEvals('groupes', $objetsGroupes, $objetsEvaluations);
-        }
-        return new Response($this->serializer->serialize($this->tableauRetourCourant, 'json'));
-    }
-
-    /**
-     * @Route("/statistiques/plusieurs-evaluations/statut", name="api_get_stats_plusieurs_evals_statut", methods={"GET", "POST"})
-     */
-    public function getStatistiquesPlusieursEvalsStatut(Request $request) {
-        $this->tableauRetourCourant = $this->squeletteTableauRetour;
-        $this->tableauRetourCourant['type'] = 'plusieurs-evaluations (statut)';
-        $objetsGroupes = $this->fetchStatuts($request->get('statuts'));
-        $objetsEvaluations = $this->fetchPlusieursEvaluations($request->get('evaluations'));
-        if (empty($objetsGroupes) || empty($objetsEvaluations)) {
-            $this->tableauRetourCourant['code'] = 3; // Impossible de continuer sans groupes ou evaluations
-            $this->tableauRetourCourant['errors'][] = [
-                'type' => 'Missing critical parameter' ,
-                'target' => 'Evaluation or Statut'
-            ];
-        }
-        if ($this->tableauRetourCourant['code'] != 3 ) {
-            $this->tableauRetourCourant['statisticsData'] = $this->statisticsManager->calculerStatsPlusieursEvals('statuts', $objetsGroupes, $objetsEvaluations);
         }
         return new Response($this->serializer->serialize($this->tableauRetourCourant, 'json'));
     }

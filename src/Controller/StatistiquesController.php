@@ -174,8 +174,9 @@ class StatistiquesController extends AbstractController
             //Pour ne pas continuer si les conditions ne sont pas remplies (au moins un groupe ou statut)
             if (count($groupesChoisis) > 0 || count($statutsChoisis) > 0) {
                 //Génération du lien pour l'API
-                $url = $request->getScheme() . '://' . $request->getHttpHost() . $request->getBasePath() . $this->generateUrl('api_get_stats_eval_simple'); //Base de l'url
+                $url = $request->getScheme() . '://' . $request->getHttpHost() . $request->getBasePath() . $this->generateUrl('api_get_stats'); //Base de l'url
                 $url = $url . '?token=' . $this->getUser()->getToken(); //Token de sécurité de l'user
+                $url = $url . '&type=' . 'classique';
                 $url = $url . '&evaluation=' . $evaluation->getId(); //Evaluation choisie
                 foreach ($groupesChoisis as $key => $groupe) { // Groupes
                     $url = $url . '&groupes[' . $key . ']=' . $groupe->getId();
@@ -300,8 +301,9 @@ class StatistiquesController extends AbstractController
             //Pour ne pas continuer si les conditions ne sont pas remplies (au moins un groupe ou statut)
             if ((count($groupesChoisis) > 0 || count($statutsChoisis) > 0) && count($partiesChoisies) > 0) {
                 //Génération du lien pour l'API
-                $url = $request->getScheme() . '://' . $request->getHttpHost() . $request->getBasePath() . $this->generateUrl('api_get_stats_eval_simple'); //Base de l'url
+                $url = $request->getScheme() . '://' . $request->getHttpHost() . $request->getBasePath() . $this->generateUrl('api_get_stats'); //Base de l'url
                 $url = $url . '?token=' . $this->getUser()->getToken(); //Token de sécurité de l'user
+                $url = $url . '&type=' . 'classique';
                 $url = $url . '&evaluation=' . $evaluation->getId(); //Evaluation choisie
                 foreach ($partiesChoisies as $key => $partie) {
                     $url = $url . '&parties[' . $key . ']=' . $partie->getId();
@@ -457,8 +459,9 @@ class StatistiquesController extends AbstractController
                 array_push($lesGroupes, $sousGroupe);
             }
             //Génération du lien pour l'API
-            $url = $request->getScheme() . '://' . $request->getHttpHost() . $request->getBasePath() . $this->generateUrl('api_get_stats_plusieurs_evals_groupes'); //Base de l'url
+            $url = $request->getScheme() . '://' . $request->getHttpHost() . $request->getBasePath() . $this->generateUrl('api_get_stats'); //Base de l'url
             $url = $url . '?token=' . $this->getUser()->getToken(); //Token de sécurité de l'user
+            $url = $url . '&type=' . 'plusieurs-evaluations-groupes';
             foreach ($lesGroupes as $key => $groupe) {
                 $url = $url . '&groupes[' . $key . ']=' . $groupe->getId();
             }
@@ -557,8 +560,9 @@ class StatistiquesController extends AbstractController
                 $evaluations = $form->get('evaluations')->getData();
             }
             //Génération du lien pour l'API
-            $url = $request->getScheme() . '://' . $request->getHttpHost() . $request->getBasePath() . $this->generateUrl('api_get_stats_plusieurs_evals_statut'); //Base de l'url
+            $url = $request->getScheme() . '://' . $request->getHttpHost() . $request->getBasePath() . $this->generateUrl('api_get_stats'); //Base de l'url
             $url = $url . '?token=' . $this->getUser()->getToken(); //Token de sécurité de l'user
+            $url = $url . '&type=' . 'plusieurs-evaluations-statut';
             $url = $url . '&statuts[0]=' . $statut->getId();
             foreach ($evaluations as $key => $evaluation) {
                 $url = $url . '&evaluations[' . $key . ']=' . $evaluation->getId();
@@ -1092,6 +1096,7 @@ class StatistiquesController extends AbstractController
         //On récupère la liste de tous les enfants (directs et indirects) du groupe concerné pour choisir ceux sur lesquels on veut des statistiques
         $choixGroupe = $repoGroupe->findAllOrderedFromNode($groupeConcerne);
         $choixStatuts = $repoStatut->findByEvaluation($evaluation->getId()); // On choisira parmis les statuts qui possède au moins 1 étudiant ayant participé à l'évaluation
+
         $form = $this->createFormBuilder()
             ->add('groupes', EntityType::class, [
                 'class' => GroupeEtudiant::Class,
@@ -1116,11 +1121,26 @@ class StatistiquesController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $groupes = $form->get('groupes')->getData();
             $statuts = $form->get('statuts')->getData();
+            //Génération du lien pour l'API
+            $url = $request->getScheme() . '://' . $request->getHttpHost() . $request->getBasePath() . $this->generateUrl('api_get_stats'); //Base de l'url
+            $url = $url . '?token=' . $this->getUser()->getToken(); //Token de sécurité de l'user
+            $url = $url . '&type=' . 'comparaison';
+            $url = $url . '&evaluationReference=' . $evaluation->getId();
+            foreach ($evaluationsChoisies as $key => $evaluationChoisie) {
+                $url = $url . '&autresEvaluations[' . $key . ']=' . $evaluationChoisie->getId();
+            }
+            foreach ($groupes as $key => $groupe) { // Groupes
+                $url = $url . '&groupes[' . $key . ']=' . $groupe->getId();
+            }
+            foreach($statuts as $key => $statut) { // Statuts
+                $url = $url . '&statuts[' . $key . ']=' . $statut->getId();
+            }
             return $this->render('statistiques/_statistiques_comparaison.html.twig', [
                 'evaluations' => $evaluationsChoisies,
                 'evaluationConcernee' => $evaluation,
                 'groupes' => $groupes,
-                "parties" => $statsManager->calculerStatsComparaison($evaluation, $groupes, $statuts, $evaluationsChoisies),
+                'urlAPI' => $url,
+                'parties' => $statsManager->calculerStatsComparaison($evaluation, $groupes, $statuts, $evaluationsChoisies),
                 'titrePage' => $this->translator->trans('page_comparaison_titre', ['nom' => $evaluation->getNom(), 'nombre'=> count($evaluationsChoisies)]),
             ]);
         }
