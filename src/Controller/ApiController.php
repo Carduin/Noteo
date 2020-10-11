@@ -57,6 +57,7 @@ class ApiController extends AbstractController
             'code' => 1,
             'errors' => [],
             'type' => '',
+            'evaluations' => [],
             'statisticsData' => []
         ];
         $this->tableauRetourCourant = $this->squeletteTableauRetour;
@@ -265,6 +266,9 @@ class ApiController extends AbstractController
                 $this->tableauRetourCourant['code'] = 2;
             }
         }
+        else {
+            $this->tableauRetourCourant['evaluations'][] = $objetEvaluation->getNom();
+        }
         return $objetEvaluation;
     }
 
@@ -290,6 +294,7 @@ class ApiController extends AbstractController
                 $objetEvaluation = $this->evaluationRepository->findOneById($evaluation);
                 if ($objetEvaluation) {
                     $objetsEvaluations[] = $objetEvaluation;
+                    $this->tableauRetourCourant['evaluations'][] = $objetEvaluation->getNom();
                 }
                 else {
                     $this->tableauRetourCourant['errors'][] = [

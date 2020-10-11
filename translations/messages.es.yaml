@@ -380,7 +380,7 @@ tooltip_stats_pdf_paysage: Exportar estadísticas en formato PDF (paisaje)
 tooltip_stats_mail: Enviar estadísticas a los estudiantes
 afficher_autres_evals: Mostrar las otras nombre evaluaciones
 tooltip_api: Obtengar las estadísticas en formato JSON
-modale_api_contenu: Esta funcionalidad le permite obtener las estadísticas en formato JSON utilizando una solicitud GET en el siguiente enlace. Si no está seguro de lo que está haciendo, le recomendamos que no lo utilice.
+modale_api_contenu: Esta funcionalidad le permite obtener las estadísticas previamente producidas en formato JSON utilizando una solicitud GET en el siguiente enlace. Si no está seguro de lo que está haciendo, le recomendamos que no lo utilice.
 modale_api_titre: Obtengar las estadísticas en formato JSON
 modale_api_copier_lien: Copiar enlace
 modale_api_lien_copie: ¡Enlace copiado!
@@ -421,6 +421,7 @@ page_evolution_titre_carte_groupe: Estudiantes del grupo nomGroupe
 page_evolution_titre_carte_statut:  Estudiantes del grupo nomGroupe que se tienen el estado "nomStatut"
 ####### HISTORIQUE API
 historique_api_titre_page: Historial de acceso a la API de Noteo
+historique_api_btn_supprimer: Borrar historial
 ####### REINITIALISATION APPLICATION
 app_reset_texte: 'Reiniciar la aplicación eliminará: <ul> <li> Todos los grupos </li> <li> Todos los grupos de estudiantes con un estado particular</li> <li> Todas los exámenes</li> <li> Todos los estudiantes </li> </ul> Los perfiles de los profesores no se eliminarán y las estadísticas ya no serán visibles.'
 ####### TUTORIELS

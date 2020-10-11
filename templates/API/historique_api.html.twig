@@ -5,6 +5,9 @@
 {% block api %}active{% endblock %}
 
 {% block contenu %}
+    <div align="center">
+        <a class="d-none d-sm-inline-block btn btn-sm btn-danger shadow-sm" href="{{ path('empty_historique_api') }}"><i class="icon-trash"></i> {% trans %}historique_api_btn_supprimer{% endtrans %}</a>
+    </div>
     <table class="table" id="table">
         <thead>
             <th>{% trans %}date{% endtrans %}</th>
