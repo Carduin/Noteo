@@ -617,7 +617,6 @@ class StatistiquesController extends AbstractController
             $evaluations = $repoEval->findAllByEtudiant($etudiant->getId());
             $groupesEtStatuts = array();
             $groupes = array();
-            $statuts = array();
             foreach ($etudiant->getGroupes() as $groupe) {
                 if ($groupe->getEstEvaluable() == true) {
                     array_push($groupesEtStatuts, $groupe);
@@ -626,14 +625,17 @@ class StatistiquesController extends AbstractController
             }
             foreach ($etudiant->getStatuts() as $statut) {
                 array_push($groupesEtStatuts, $statut);
-                array_push($statuts, $statut);
             }
-
+            $url = $request->getScheme() . '://' . $request->getHttpHost() . $request->getBasePath() . $this->generateUrl('api_get_stats'); //Base de l'url
+            $url = $url . '?token=' . $this->getUser()->getToken(); //Token de sécurité de l'user
+            $url = $url . '&type=' . 'fiche-etudiant';
+            $url = $url . '&etudiant=' . $etudiant->getId();
             return $this->render('statistiques/_statistiques_fiche_etudiant.html.twig', [
                 'etudiant' => $etudiant,
                 'evaluations' => $evaluations,
+                'urlAPI' => $url,
                 'groupesEtStatuts' => $groupesEtStatuts,
-                'stats' => $statsManager->calculerStatsFicheEtudiant($etudiant, $evaluations, $groupes, $statuts),
+                'stats' => $statsManager->calculerStatsFicheEtudiant($etudiant, $evaluations, $groupes, $etudiant->getStatuts()),
                 'titrePage' => $this->translator->trans('page_fiche_etudiant_titre', ['nom'=> $etudiant->getNom(), 'prenom'=>$etudiant->getPrenom()])
             ]);
         }
@@ -1243,7 +1245,7 @@ class StatistiquesController extends AbstractController
                 'info',
                 'L\'envoi des mails a été effectué avec succès.'
             );
-            return $this->render('statistiques/affichage_statistiques.html.twig', [
+            return $this->render('statistiques/_statistiques_evalutations_simples_et_parties.html.twig', [
                 'titrePage' => $this->translator->trans('page_eval_simple_parties_titre', ['nom'=> $evaluation->getNom()]),
                 'typeStatistique' => 'simple_parties',
                 'parties' => $stats,

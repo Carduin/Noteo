@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Manager\StatisticsManager;
+use App\Repository\EtudiantRepository;
 use App\Repository\EvaluationRepository;
 use App\Repository\GroupeEtudiantRepository;
 use App\Repository\PartieRepository;
@@ -35,17 +36,19 @@ class ApiController extends AbstractController
     private $statisticsManager;
     private $serializer;
     private $groupeEtudiantRepository;
+    private $etudiantRepository;
     private $evaluationRepository;
     private $statutRepository;
     private $partiesRepository;
     private $squeletteTableauRetour;
     private $tableauRetourCourant;
 
-    public function __construct(SerializerInterface $serializer, StatisticsManager $statisticsManager, GroupeEtudiantRepository $groupeEtudiantRepository, EvaluationRepository $evaluationRepository, StatutRepository $statutRepository, PartieRepository $partieRepository) {
+    public function __construct(SerializerInterface $serializer, StatisticsManager $statisticsManager, GroupeEtudiantRepository $groupeEtudiantRepository, EvaluationRepository $evaluationRepository, StatutRepository $statutRepository, PartieRepository $partieRepository, EtudiantRepository $etudiantRepository) {
         $this->serializer = $serializer;
         $this->groupeEtudiantRepository = $groupeEtudiantRepository;
         $this->evaluationRepository = $evaluationRepository;
         $this->statutRepository = $statutRepository;
+        $this->etudiantRepository = $etudiantRepository;
         $this->partiesRepository = $partieRepository;
         $this->statisticsManager = $statisticsManager;
         $this->squeletteTableauRetour = [
@@ -128,6 +131,25 @@ class ApiController extends AbstractController
                         $this->tableauRetourCourant['statisticsData'] = $this->statisticsManager->calculerStatsComparaison($objetEvaluationReference, $objetsGroupes, $objetsStatuts, $objetsAutresEvaluations);
                     }
                     break;
+                case 'fiche-etudiant':
+                    $objetEtudiant = $this->fetchUnEtudiant($request->get('etudiant'));
+                    if(!$objetEtudiant) {
+                        $this->tableauRetourCourant['code'] = 3;
+                        $this->tableauRetourCourant['errors'][] = [
+                            'type' => 'Missing or bad critical parameter' ,
+                            'target' => 'Etudiant'
+                        ];
+                    }
+                    if ($this->tableauRetourCourant['code'] != 3 ) {
+                        $groupes = array();
+                        foreach ($objetEtudiant->getGroupes() as $groupe) {
+                            if ($groupe->getEstEvaluable() == true) {
+                                array_push($groupes, $groupe);
+                            }
+                        }
+                        $this->tableauRetourCourant['statisticsData'] = $this->statisticsManager->calculerStatsFicheEtudiant($objetEtudiant, $this->evaluationRepository->findAllByEtudiant($objetEtudiant->getId()), $groupes, $objetEtudiant->getStatuts());
+                    }
+                    break;
                 default:
                     break;
             }
@@ -156,7 +178,7 @@ class ApiController extends AbstractController
                         'target' => 'Statut'
                     ];
                     if ($this->tableauRetourCourant['code'] != 3) { // Ne pas override le code 3
-                        $this->tableauRetourCourant['code'] = 2; // Erreur survenue
+                        $this->tableauRetourCourant['code'] = 2;
                     }
                 }
 
@@ -179,7 +201,7 @@ class ApiController extends AbstractController
                         'target' => 'Groupe'
                     ];
                     if ($this->tableauRetourCourant['code'] != 3) { // Ne pas override le code 3
-                        $this->tableauRetourCourant['code'] = 2; // Erreur survenue
+                        $this->tableauRetourCourant['code'] = 2;
                     }
                 }
             }
@@ -195,10 +217,24 @@ class ApiController extends AbstractController
                 'target' => 'Evaluation'
             ];
             if ($this->tableauRetourCourant['code'] != 3) { // Ne pas override le code 3
-                $this->tableauRetourCourant['code'] = 2; // Erreur survenue
+                $this->tableauRetourCourant['code'] = 2;
             }
         }
         return $objetEvaluation;
+    }
+
+    public function fetchUnEtudiant($etudiantGETParameter) {
+        $objetEtudiant = $this->etudiantRepository->findOneById($etudiantGETParameter);
+        if(!$objetEtudiant) {
+            $this->tableauRetourCourant['errors'][] = [
+                'type' => 'Bad Parameter' ,
+                'target' => 'Etudiant'
+            ];
+            if ($this->tableauRetourCourant['code'] != 3) { // Ne pas override le code 3
+                $this->tableauRetourCourant['code'] = 2;
+            }
+        }
+        return $objetEtudiant;
     }
 
 
@@ -216,7 +252,7 @@ class ApiController extends AbstractController
                         'target' => 'Evaluation'
                     ];
                     if ($this->tableauRetourCourant['code'] != 3) { // Ne pas override le code 3
-                        $this->tableauRetourCourant['code'] = 2; // Erreur survenue
+                        $this->tableauRetourCourant['code'] = 2;
                     }
                 }
             }
@@ -239,7 +275,7 @@ class ApiController extends AbstractController
                             'target' => 'Partie'
                         ];
                         if ($this->tableauRetourCourant['code'] != 3) { // Ne pas override le code 3
-                            $this->tableauRetourCourant['code'] = 2; // Erreur survenue
+                            $this->tableauRetourCourant['code'] = 2;
                         }
                     }
                 }
