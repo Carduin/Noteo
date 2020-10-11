@@ -2,12 +2,14 @@
 
 namespace App\Controller;
 
+use App\Entity\Enseignant;
 use App\Manager\StatisticsManager;
 use App\Repository\EtudiantRepository;
 use App\Repository\EvaluationRepository;
 use App\Repository\GroupeEtudiantRepository;
 use App\Repository\PartieRepository;
 use App\Repository\StatutRepository;
+use App\Entity\ApiLog;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -185,6 +187,7 @@ class ApiController extends AbstractController
                         'type' => 'Bad critical parameter' ,
                         'target' => 'Statistics type'
                     ];
+                    $typeStatistiques = 'Non recognized';
                     break;
             }
         }
@@ -194,7 +197,15 @@ class ApiController extends AbstractController
                 'type' => 'Missing critical parameter' ,
                 'target' => 'Statistics type'
             ];
+            $typeStatistiques = 'Missing';
         }
+        $em = $this->getDoctrine()->getManager();
+        $log = new ApiLog();
+        $log->setEnseignant($em->getRepository(Enseignant::class)->findOneByToken($request->get('token')));
+        $log->setType($typeStatistiques);
+        $log->setCalledAt(new \DateTime());
+        $em->persist($log);
+        $em->flush();
         return new Response($this->serializer->serialize($this->tableauRetourCourant, 'json'));
     }
 

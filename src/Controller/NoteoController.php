@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Repository\ApiLogRepository;
 use App\Repository\EtudiantRepository;
 use App\Repository\GroupeEtudiantRepository;
 use App\Repository\StatutRepository;
@@ -24,6 +25,17 @@ class NoteoController extends AbstractController
     public function tutoriels()
     {
         return $this->render('tutoriels/page_tutoriels.html.twig');
+    }
+
+    /**
+     * @Route("/{_locale}/historique-api", name="historique_api")
+     */
+    public function historiqueApi(ApiLogRepository $repoAPI)
+    {
+        $this->denyAccessUnlessGranted("API_HISTORY", $this->getUser());
+        return $this->render('API/historique_api.html.twig', [
+            'logs' => $repoAPI->getAllLogsWithEnseignants()
+        ]);
     }
 
     /**

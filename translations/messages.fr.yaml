@@ -27,6 +27,7 @@ statistiques: Statistiques
 statistiques_graphiques: Statistiques graphiques
 tutoriels: Tutoriels
 reset_app: Réinitialiser l'application
+api: API Noteo
 # menu déroulant profil
 consulter_profil: Consulter mon profil
 modifier_mdp : Modifier mon mot de passe
@@ -49,6 +50,7 @@ groupe: Groupe
 effectif_statut: Effectif Statut
 intitule: Intitulé
 bareme: Barème
+type_stats_consulte: Type de statistiques consulté
 #statistiques
 moyenne: Moyenne
 ecart_type: Écart-type
@@ -417,6 +419,8 @@ page_evolution_statut: Groupe d'étudiants ayant un statut particulier observé
 page_evolution_evals: Évaluations concernées
 page_evolution_titre_carte_groupe: Étudiant(s) du groupe nomGroupe
 page_evolution_titre_carte_statut:  Étudiant(s) du groupe nomGroupe ayant le statut "nomStatut"
+####### HISTORIQUE API
+historique_api_titre_page: Historique d'accès à l'API de Noteo
 ####### REINITIALISATION APPLICATION
 app_reset_texte: 'Réinitialiser l''application aura pour effet de supprimer de l''application: <ul><li>Tous les groupes</li><li>Tous les groupes d''étudiants ayant un statut particulier</li><li>Toutes les évaluations</li><li>Tous les étudiants</li></ul>Les profils des enseignants ne seront pas supprimés et les statistiques ne seront plus consultables.'
 ####### TUTORIELS

@@ -10,7 +10,7 @@ class NoteoVoter extends Voter
 {
     protected function supports($attribute, $subject)
     {
-        return in_array($attribute, ['RESET_APPLICATION'])
+        return in_array($attribute, ['RESET_APPLICATION', 'API_HISTORY'])
             && $subject instanceof \App\Entity\Enseignant;
     }
 
@@ -22,6 +22,7 @@ class NoteoVoter extends Voter
         }
         $accesAutorise = false;
         switch ($attribute) {
+            case 'API_HISTORY' :
             case 'RESET_APPLICATION' :
                 //Il faut être admin pour pouvoir réinitialiser l'application
                 $accesAutorise = in_array("ROLE_ADMIN", $user->getRoles());

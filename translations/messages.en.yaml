@@ -27,6 +27,7 @@ statistiques: Statistics
 statistiques_graphiques: Graphical statistics
 tutoriels: Tutorials
 reset_app: Reset the application
+api: Noteo API
 # menu déroulant profil
 consulter_profil: See my profile
 modifier_mdp: Edit my password
@@ -49,6 +50,7 @@ groupe: Group
 effectif_statut: Status headcount
 intitule: Title
 bareme: Scale
+type_stats_consulte: Statistics type seen
 #statistiques
 moyenne: Mean
 ecart_type: Standard deviation
@@ -417,6 +419,8 @@ page_evolution_statut: Group of students having a particular status chosen
 page_evolution_evals: Evaluations related to the groups
 page_evolution_titre_carte_groupe: Student(s) of nomGroupe
 page_evolution_titre_carte_statut:  Student(s) of nomGroupe having the "nomStatut" status
+####### HISTORIQUE API
+historique_api_titre_page: Noteo API Access History
 ####### REINITIALISATION APPLICATION
 app_reset_texte: 'Resetting the app will remove: <ul><li>all groups</li><li>all student status</li><li>all evaluations</li><li>all students</li></ul>Teacher profiles will not be deleted, but you will not be able to generate statistics anymore.'
 ####### TUTORIELS
