@@ -8,6 +8,7 @@ use App\Repository\EtudiantRepository;
 use App\Repository\EvaluationRepository;
 use App\Repository\GroupeEtudiantRepository;
 use App\Repository\PartieRepository;
+use App\Repository\ShortenedURLRepository;
 use App\Repository\StatutRepository;
 use App\Entity\ApiLog;
 use Symfony\Component\HttpFoundation\Request;
@@ -15,7 +16,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Serializer\SerializerInterface;
-
+use Symfony\Component\HttpClient\HttpClient;
 /*
  * Format erreurs :
  * [
@@ -64,9 +65,18 @@ class ApiController extends AbstractController
     }
 
     /**
-     * @Route("/statistiques", name="api_get_stats", methods={"GET", "POST"})
+     * @Route("/statistiques/{URLToken}", name="api_send_json_user", methods={"GET", "POST"})
      */
-    public function getStatistiques(Request $request) {
+    public function sendJSONToUser($URLToken, ShortenedURLRepository $shortenedURLRepository, HttpClient $client) {
+        $URLToCall = $shortenedURLRepository->findOneByUrlToken($URLToken)->getLongURL();
+        //$truc = $client->request('GET', $URLToCall);
+        return new Response("");
+    }
+
+    /**
+     * @Route("/get-json", name="api_get_stats", methods={"GET", "POST"})
+     */
+    public function getJSon(Request $request) {
         $this->tableauRetourCourant = $this->squeletteTableauRetour;
         $typeStatistiques = $request->get('type');
         if($typeStatistiques) {

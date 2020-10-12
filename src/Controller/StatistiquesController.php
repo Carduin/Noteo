@@ -6,6 +6,7 @@ use App\Entity\Evaluation;
 use App\Entity\GroupeEtudiant;
 use App\Entity\Etudiant;
 use App\Entity\Partie;
+use App\Entity\ShortenedURL;
 use App\Entity\Statut;
 use App\Manager\StatisticsManager;
 use App\Repository\EvaluationRepository;
@@ -174,20 +175,22 @@ class StatistiquesController extends AbstractController
             //Pour ne pas continuer si les conditions ne sont pas remplies (au moins un groupe ou statut)
             if (count($groupesChoisis) > 0 || count($statutsChoisis) > 0) {
                 //Génération du lien pour l'API
-                $url = $request->getScheme() . '://' . $request->getHttpHost() . $request->getBasePath() . $this->generateUrl('api_get_stats'); //Base de l'url
-                $url = $url . '?token=' . $this->getUser()->getToken(); //Token de sécurité de l'user
-                $url = $url . '&type=' . 'classique';
-                $url = $url . '&evaluation=' . $evaluation->getId(); //Evaluation choisie
+                $longURL = $request->getScheme() . '://' . $request->getHttpHost() . $request->getBasePath() . $this->generateUrl('api_get_stats'); //Base de l'url
+                $longURL = $longURL . '?token=' . $this->getUser()->getToken(); //Token de sécurité de l'user
+                $longURL = $longURL . '&type=' . 'classique';
+                $longURL = $longURL . '&evaluation=' . $evaluation->getId(); //Evaluation choisie
                 foreach ($groupesChoisis as $key => $groupe) { // Groupes
-                    $url = $url . '&groupes[' . $key . ']=' . $groupe->getId();
+                    $longURL = $longURL . '&groupes[' . $key . ']=' . $groupe->getId();
                 }
                 foreach($statutsChoisis as $key => $statut) { // Statuts
-                    $url = $url . '&statuts[' . $key . ']=' . $statut->getId();
+                    $longURL = $longURL . '&statuts[' . $key . ']=' . $statut->getId();
                 }
+                $shortURlToken = $this->getShortenedURLToken($longURL);
+                $shortURl = $request->getScheme() . '://' . $request->getHttpHost() . $request->getBasePath() . $this->generateUrl('api_send_json_user', ['URLToken' => $shortURlToken]) . '?token=' . $this->getUser()->getToken();;
                 return $this->render('statistiques/_statistiques_evalutations_simples_et_parties.html.twig', [
                     'titrePage' => $this->translator->trans('page_eval_simple_parties_titre', ['nom'=> $evaluation->getNom()]),
                     'evaluation' => $evaluation,
-                    'urlAPI' => $url,
+                    'urlAPI' => $shortURl,
                     'parties' => $statistiquesCalculees
                 ]);
             }
@@ -1315,4 +1318,14 @@ class StatistiquesController extends AbstractController
     ///////////////////////
     /////FIN ENVOI MAIL////
     ///////////////////////
+
+    public function getShortenedURLToken($longURL) {
+        $em = $this->getDoctrine()->getManager();
+        $shortenedURL = new ShortenedURL();
+        $shortenedURL->setLongURL($longURL);
+        $shortenedURL->generateUrlToken();
+        $em->persist($shortenedURL);
+        $em->flush();
+        return $shortenedURL->getUrlToken();
+    }
 }

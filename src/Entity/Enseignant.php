@@ -309,9 +309,9 @@ class Enseignant implements UserInterface
         return $this->token;
     }
 
-    public function setToken(string $token): self
+    public function generateToken(): self
     {
-        $this->token = $token;
+        $this->token = rtrim(strtr(base64_encode(random_bytes(5)), '+/', '-_'), '=');
 
         return $this;
     }
