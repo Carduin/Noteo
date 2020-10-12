@@ -41,13 +41,15 @@ class NoteoController extends AbstractController
     /**
      * @Route("/{_locale}/historique-api/supprimer", name="empty_historique_api")
      */
-    public function viderHistoriqueApi()
+    public function viderHistoriqueApi(ApiLogRepository $repoAPI)
     {
         $this->denyAccessUnlessGranted("API_HISTORY", $this->getUser());
-        $connection = $this->getDoctrine()->getManager()->getConnection();
-        $platform = $connection->getDatabasePlatform();
-        $connection->executeQuery('SET FOREIGN_KEY_CHECKS = 0;'); // Pour éviter les erreurs de clé étrangeres lors du TRUNCATE
-        $connection->executeUpdate($platform->getTruncateTableSQL('api_log'));
+        $em = $this->getDoctrine()->getManager();
+        $logs = $repoAPI->findAll();
+        foreach ($logs as $log) {
+            $em->remove($log);
+        }
+        $em->flush();
         return $this->redirectToRoute('historique_api');
     }
 
