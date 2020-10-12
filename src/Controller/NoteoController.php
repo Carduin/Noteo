@@ -46,7 +46,7 @@ class NoteoController extends AbstractController
         $connection = $this->getDoctrine()->getManager()->getConnection();
         $platform = $connection->getDatabasePlatform();
         $connection->executeQuery('SET FOREIGN_KEY_CHECKS = 0;'); // Pour éviter les erreurs de clé étrangeres lors du TRUNCATE
-        $connection->executeUpdate($platform->getTruncateTableSQL('API_LOG'));
+        $connection->executeUpdate($platform->getTruncateTableSQL('api_log'));
         return $this->redirectToRoute('historique_api');
     }
 
