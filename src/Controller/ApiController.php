@@ -207,7 +207,7 @@ class ApiController extends AbstractController
         $log->setCalledAt(new \DateTime());
         $em->persist($log);
         $em->flush();
-        return new Response($this->serializer->serialize($this->tableauRetourCourant, 'json'));
+        return new Response($this->serializer->serialize($this->tableauRetourCourant, 'json'), Response::HTTP_OK, ['content-type' => 'application/json']);
     }
 
     public function fetchStatuts($statutsGETParameter) {
