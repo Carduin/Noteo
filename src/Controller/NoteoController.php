@@ -43,6 +43,7 @@ class NoteoController extends AbstractController
      */
     public function viderHistoriqueApi()
     {
+        $this->denyAccessUnlessGranted("API_HISTORY", $this->getUser());
         $connection = $this->getDoctrine()->getManager()->getConnection();
         $platform = $connection->getDatabasePlatform();
         $connection->executeQuery('SET FOREIGN_KEY_CHECKS = 0;'); // Pour éviter les erreurs de clé étrangeres lors du TRUNCATE
