@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Repository\ApiLogRepository;
 use App\Repository\EtudiantRepository;
 use App\Repository\GroupeEtudiantRepository;
 use App\Repository\StatutRepository;
@@ -19,11 +20,34 @@ class NoteoController extends AbstractController
     }
 
     /**
-     * @Route("{_locale}/tutoriels", name="tutoriels")
+     * @Route("/{_locale}/tutoriels", name="tutoriels")
      */
     public function tutoriels()
     {
         return $this->render('tutoriels/page_tutoriels.html.twig');
+    }
+
+    /**
+     * @Route("/{_locale}/historique-api", name="historique_api")
+     */
+    public function historiqueApi(ApiLogRepository $repoAPI)
+    {
+        $this->denyAccessUnlessGranted("API_HISTORY", $this->getUser());
+        return $this->render('API/historique_api.html.twig', [
+            'logs' => $repoAPI->getAllLogsWithEnseignants()
+        ]);
+    }
+
+    /**
+     * @Route("/{_locale}/historique-api/supprimer", name="empty_historique_api")
+     */
+    public function viderHistoriqueApi()
+    {
+        $connection = $this->getDoctrine()->getManager()->getConnection();
+        $platform = $connection->getDatabasePlatform();
+        $connection->executeQuery('SET FOREIGN_KEY_CHECKS = 0;'); // Pour éviter les erreurs de clé étrangeres lors du TRUNCATE
+        $connection->executeUpdate($platform->getTruncateTableSQL('API_LOG'));
+        return $this->redirectToRoute('historique_api');
     }
 
     /**

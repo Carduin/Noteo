@@ -1,0 +1,66 @@
+{% extends 'base.html.twig' %}
+
+{% block titrePage %}{{ titrePage }}{% endblock %}
+
+{% block statistiques %}active{% endblock %}
+
+{% block stylesheets %}
+    <style>
+        .card:hover {
+            -webkit-box-shadow: -1px 9px 40px -12px rgba(0, 0, 0, 0.75);
+            -moz-box-shadow: -1px 9px 40px -12px rgba(0, 0, 0, 0.75);
+            box-shadow: -1px 9px 40px -12px rgba(0, 0, 0, 0.75);
+        }
+    </style>
+{% endblock %}
+
+{% block contenu %}
+    <!-- Modale URL API -->
+    <div class="modal fade" id="modaleAPI" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">{% trans %}modale_api_titre{% endtrans %}</h5>
+                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">x</span>
+                    </button>
+                </div>
+                <div align=justify class="modal-body">
+                    {% trans %}modale_api_contenu{% endtrans %}
+                    <br/>
+                    <br/>
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                            <button class="btn btn-secondary" onclick="copyUrl()" data-container="body" data-toggle="popover" data-placement="top" data-content="{% trans %}modale_api_lien_copie{% endtrans %}">{% trans %}modale_api_copier_lien{% endtrans %}</button>
+                        </div>
+                        <input type="text" disabled="disabled" class="form-control" id="urlGeneree" aria-describedby="basic-addon3" value="{{ urlAPI | default('') }}">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="d-sm-inline-block btn btn-sm btn-primary shadow-sm" type="button"
+                            data-dismiss="modal">Ok
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    <script>
+        $('[data-toggle="popover"]').popover(); // Initialisation de la popover (message 'lien copié !')
+
+        function copyUrl() {
+            const inputURL = $("#urlGeneree");
+            navigator.clipboard.writeText(inputURL.val()).then(function() {
+                document.getSelection().empty();
+                inputURL.blur();
+            });
+        }
+
+        function modaleAPI() {
+            $("#modaleAPI").modal();
+        }
+    </script>
+{% endblock %}

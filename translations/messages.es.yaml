@@ -24,8 +24,10 @@ evaluations: Exámenes
 mes_evaluations: Mis exámenes
 autres_evaluations: Otros exámenes
 statistiques: Estadistícas
+statistiques_graphiques: Estadísticas gráficas
 tutoriels: Tutoriales
 reset_app: Reiniciar la aplicación
+api: API Noteo
 # menu déroulant profil
 consulter_profil: Consultar mi perfil
 modifier_mdp : Modificar mi contraseña
@@ -48,6 +50,7 @@ groupe: Grupo
 effectif_statut: Efectivo del estado
 intitule: Intitulado
 bareme: Escala
+type_stats_consulte: Tipo de estadísticas consultadas
 #statistiques
 moyenne: Media
 ecart_type: Desviación estándar
@@ -376,6 +379,11 @@ tooltip_stats_pdf_portrait: Exportar estadísticas en formato PDF (retrato)
 tooltip_stats_pdf_paysage: Exportar estadísticas en formato PDF (paisaje)
 tooltip_stats_mail: Enviar estadísticas a los estudiantes
 afficher_autres_evals: Mostrar las otras nombre evaluaciones
+tooltip_api: Obtengar las estadísticas en formato JSON
+modale_api_contenu: Esta funcionalidad le permite obtener las estadísticas previamente producidas en formato JSON utilizando una solicitud GET en el siguiente enlace. Si no está seguro de lo que está haciendo, le recomendamos que no lo utilice.
+modale_api_titre: Obtengar las estadísticas en formato JSON
+modale_api_copier_lien: Copiar enlace
+modale_api_lien_copie: ¡Enlace copiado!
 # page stats eval simple et par parties
 page_eval_simple_parties_titre: Estadísticas para nom
 # page stats plusieurs évals
@@ -411,10 +419,13 @@ page_evolution_statut: Grupo de estudiantes con un estado particular observado
 page_evolution_evals: Evaluaciones afectadas
 page_evolution_titre_carte_groupe: Estudiantes del grupo nomGroupe
 page_evolution_titre_carte_statut:  Estudiantes del grupo nomGroupe que se tienen el estado "nomStatut"
+####### HISTORIQUE API
+historique_api_titre_page: Historial de acceso a la API de Noteo
+historique_api_btn_supprimer: Borrar historial
 ####### REINITIALISATION APPLICATION
 app_reset_texte: 'Reiniciar la aplicación eliminará: <ul> <li> Todos los grupos </li> <li> Todos los grupos de estudiantes con un estado particular</li> <li> Todas los exámenes</li> <li> Todos los estudiantes </li> </ul> Los perfiles de los profesores no se eliminarán y las estadísticas ya no serán visibles.'
 ####### TUTORIELS
-tuto_titre_page: Ver los tutoriales de la aplicación
+tuto_titre_page: Ver los tutoriales de la aplicación (francés)
 tuto_titre_creer_eval_parties: Crear un exámen por partes
 tuto_texte_creer_eval_parties: Descubrir cómo crear exámenes por partes, para poder obtener una mayor precisión en las estadísticas.
 tuto_titre_eval_simple: Análisis de un exámen simple

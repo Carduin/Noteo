@@ -1,0 +1,66 @@
+{% extends 'base.html.twig' %}
+
+{% block titrePage %}{% trans %}historique_api_titre_page{% endtrans %}{% endblock %}
+
+{% block api %}active{% endblock %}
+
+{% block contenu %}
+    <div align="center">
+        <a class="d-none d-sm-inline-block btn btn-sm btn-danger shadow-sm" href="{{ path('empty_historique_api') }}"><i class="icon-trash"></i> {% trans %}historique_api_btn_supprimer{% endtrans %}</a>
+    </div>
+    <table class="table" id="table">
+        <thead>
+            <th>{% trans %}date{% endtrans %}</th>
+            <th>{% trans %}nom_famille{% endtrans %}</th>
+            <th>{% trans %}prenom{% endtrans %}</th>
+            <th>{% trans %}type_stats_consulte{% endtrans %}</th>
+        </thead>
+        <tbody>
+        {% for log in logs %}
+            <tr>
+                <td>{{ log.calledAt | date("d/m/Y H:i", "Europe/Paris") }}</td>
+                <td>{{ log.enseignant.nom }}</td>
+                <td>{{ log.enseignant.prenom }}</td>
+                <td>{{ log.type }}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}
+
+{% block datatables %}
+    <script type="text/javascript">
+        var table = $('#table').dataTable({
+            language: {
+                // Suppression du label Rechercher et ajout du placeholder
+                search: "_INPUT_",
+                searchPlaceholder: "{% trans %}rechercher{% endtrans %}",
+                oPaginate: {
+                    sFirst:      "{% trans %}premier{% endtrans %}",
+                    sPrevious:   "{% trans %}precedent{% endtrans %}",
+                    sNext:       "{% trans %}suivant{% endtrans %}",
+                    sLast:       "{% trans %}dernier{% endtrans %}"
+                },
+                sProcessing:     "{% trans %}traitement{% endtrans %}",
+                sLoadingRecords: "{% trans %}chargement{% endtrans %}",
+                sZeroRecords:    "{% trans %}aucune_correspondance{% endtrans %}",
+                sEmptyTable:     "{% trans %}table_vide{% endtrans %}",
+                sLengthMenu:     "{% trans %}afficher_x_elements{% endtrans %}"
+            },
+            columns: [null, {"orderable": false}, {"orderable": false}, null],
+            lengthMenu: [
+                [15, 30, 45, -1],
+                [15, 30, 45, "{% trans %}tout_elements{% endtrans %}"]
+            ],
+            order: [
+                [0, "desc"]
+            ],
+            pageLength: {{ app.user.preferenceNbElementsTableaux }}, <!-- Pour que le nombre d'éléments affichés par défaut soit celui de la préference de l'utilisateur -->
+            info: false,
+            columnDefs: [{
+                "sType": "date-eu",
+                targets: 0
+            }]
+        });
+    </script>
+{% endblock %}

@@ -24,8 +24,10 @@ evaluations: Évaluations
 mes_evaluations: Mes évaluations
 autres_evaluations: Autres évaluations
 statistiques: Statistiques
+statistiques_graphiques: Statistiques graphiques
 tutoriels: Tutoriels
 reset_app: Réinitialiser l'application
+api: API Noteo
 # menu déroulant profil
 consulter_profil: Consulter mon profil
 modifier_mdp : Modifier mon mot de passe
@@ -48,6 +50,7 @@ groupe: Groupe
 effectif_statut: Effectif Statut
 intitule: Intitulé
 bareme: Barème
+type_stats_consulte: Type de statistiques consulté
 #statistiques
 moyenne: Moyenne
 ecart_type: Écart-type
@@ -376,6 +379,11 @@ tooltip_stats_pdf_portrait: Exporter les statistiques au format PDF (portrait)
 tooltip_stats_pdf_paysage: Exporter les statistiques au format PDF (paysage)
 tooltip_stats_mail: Envoyer les statistiques aux étudiants
 afficher_autres_evals: Afficher les nombre autres évaluations
+tooltip_api: Obtenir les statistiques au format JSON
+modale_api_contenu: Cette fonctionnalité permet d'obtenir les statistiques précédemment produites au format JSON à l'aide d'une requête GET sur le lien ci-dessous. Nous vous conseillons de vous servir de cette fonctionnalité uniquement si vous savez ce que vous faites.
+modale_api_titre: Obtenir les statistiques au format JSON
+modale_api_copier_lien: Copier le lien
+modale_api_lien_copie: Lien copié !
 # page stats eval simple et par parties
 page_eval_simple_parties_titre: Statistiques pour nom
 # page stats plusieurs évals
@@ -411,6 +419,9 @@ page_evolution_statut: Groupe d'étudiants ayant un statut particulier observé
 page_evolution_evals: Évaluations concernées
 page_evolution_titre_carte_groupe: Étudiant(s) du groupe nomGroupe
 page_evolution_titre_carte_statut:  Étudiant(s) du groupe nomGroupe ayant le statut "nomStatut"
+####### HISTORIQUE API
+historique_api_titre_page: Historique d'accès à l'API de Noteo
+historique_api_btn_supprimer: Vider l'historique
 ####### REINITIALISATION APPLICATION
 app_reset_texte: 'Réinitialiser l''application aura pour effet de supprimer de l''application: <ul><li>Tous les groupes</li><li>Tous les groupes d''étudiants ayant un statut particulier</li><li>Toutes les évaluations</li><li>Tous les étudiants</li></ul>Les profils des enseignants ne seront pas supprimés et les statistiques ne seront plus consultables.'
 ####### TUTORIELS
