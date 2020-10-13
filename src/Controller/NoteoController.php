@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Repository\ApiLogRepository;
 use App\Repository\EtudiantRepository;
 use App\Repository\GroupeEtudiantRepository;
+use App\Repository\ShortenedURLRepository;
 use App\Repository\StatutRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
@@ -56,7 +57,7 @@ class NoteoController extends AbstractController
     /**
      * @Route("/reinitialiser", name="app_reset")
      */
-    public function reinitialiserApplication(GroupeEtudiantRepository $repoGroupe, StatutRepository $repoStatut, EtudiantRepository $repoEtudiant)
+    public function reinitialiserApplication(GroupeEtudiantRepository $repoGroupe, StatutRepository $repoStatut, EtudiantRepository $repoEtudiant, ApiLogRepository $logRepository, ShortenedURLRepository $shortenedURLRepository)
     {
         $this->denyAccessUnlessGranted("RESET_APPLICATION", $this->getUser());
         $entityManager = $this->getDoctrine()->getManager();
@@ -77,6 +78,12 @@ class NoteoController extends AbstractController
         }
         foreach ($repoEtudiant->findAll() as $etudiant) {
             $entityManager->remove($etudiant);
+        }
+        foreach ($logRepository->findAll() as $log) {
+            $entityManager->remove($log);
+        }
+        foreach ($shortenedURLRepository->findAll() as $shortURL) {
+            $entityManager->remove($shortURL);
         }
         $entityManager->flush();
         return $this->redirectToRoute("groupe_etudiant_index");

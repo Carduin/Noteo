@@ -174,23 +174,10 @@ class StatistiquesController extends AbstractController
             $request->getSession()->set('stats', $statistiquesCalculees);
             //Pour ne pas continuer si les conditions ne sont pas remplies (au moins un groupe ou statut)
             if (count($groupesChoisis) > 0 || count($statutsChoisis) > 0) {
-                //Génération des paramètres du lien pour l'API
-                $parametres = array();
-                $parametres["token"] = $this->getUser()->getToken(); //Token de sécurité de l'user
-                $parametres["type"] = 'classique';
-                $parametres["evaluation"] = $evaluation->getId();
-                foreach ($groupesChoisis as $groupe) { // Groupes
-                    $parametres["groupes"][] = $groupe->getId();
-                }
-                foreach($statutsChoisis as $statut) { // Statuts
-                    $parametres["statuts"][] = $statut->getId();
-                }
-                $shortURlToken = $this->getShortenedURLToken($parametres);
-                $shortURl = $request->getScheme() . '://' . $request->getHttpHost() . $request->getBasePath() . $this->generateUrl('api_send_json_user', ['URLToken' => $shortURlToken]);
                 return $this->render('statistiques/_statistiques_evalutations_simples_et_parties.html.twig', [
                     'titrePage' => $this->translator->trans('page_eval_simple_parties_titre', ['nom'=> $evaluation->getNom()]),
                     'evaluation' => $evaluation,
-                    'urlAPI' => $shortURl,
+                    'urlAPI' => $this->generateAPIUrl('classique', $request, $evaluation, $groupesChoisis, $statutsChoisis),
                     'parties' => $statistiquesCalculees
                 ]);
             }
@@ -303,26 +290,10 @@ class StatistiquesController extends AbstractController
             $request->getSession()->set('stats', $statistiquesCalculees);
             //Pour ne pas continuer si les conditions ne sont pas remplies (au moins un groupe ou statut)
             if ((count($groupesChoisis) > 0 || count($statutsChoisis) > 0) && count($partiesChoisies) > 0) {
-                //Génération du lien pour l'API
-                $parametres = array();
-                $parametres["token"] = $this->getUser()->getToken(); //Token de sécurité de l'user
-                $parametres["type"] = 'classique';
-                $parametres["evaluation"] = $evaluation->getId();
-                foreach ($partiesChoisies as $partie) {
-                    $parametres["parties"][] = $partie->getId();
-                }
-                foreach ($groupesChoisis as $groupe) { // Groupes
-                    $parametres["groupes"][] = $groupe->getId();
-                }
-                foreach($statutsChoisis as $statut) { // Statuts
-                    $parametres["statuts"][] = $statut->getId();
-                }
-                $shortURlToken = $this->getShortenedURLToken($parametres);
-                $shortURl = $request->getScheme() . '://' . $request->getHttpHost() . $request->getBasePath() . $this->generateUrl('api_send_json_user', ['URLToken' => $shortURlToken]);
                 return $this->render('statistiques/_statistiques_evalutations_simples_et_parties.html.twig', [
                     'titrePage' => $this->translator->trans('page_eval_simple_parties_titre', ['nom'=> $evaluation->getNom()]),
                     'evaluation' => $evaluation,
-                    'urlAPI' => $shortURl,
+                    'urlAPI' => $this->generateAPIUrl('classique', $request, $evaluation, $groupesChoisis, $statutsChoisis, $partiesChoisies),
                     'parties' => $statistiquesCalculees
                 ]);
             }
@@ -463,22 +434,10 @@ class StatistiquesController extends AbstractController
             foreach ($request->getSession()->get('sousGroupes') as $sousGroupe) {
                 array_push($lesGroupes, $sousGroupe);
             }
-            //Génération du lien pour l'API
-            $parametres = array();
-            $parametres["token"] = $this->getUser()->getToken(); //Token de sécurité de l'user
-            $parametres["type"] = 'plusieurs-evaluations-groupes';
-            foreach ($lesGroupes as $groupe) { // Groupes
-                $parametres["groupes"][] = $groupe->getId();
-            }
-            foreach($evaluations as $evaluation) { // Statuts
-                $parametres["evaluations"][] = $evaluation->getId();
-            }
-            $shortURlToken = $this->getShortenedURLToken($parametres);
-            $shortURl = $request->getScheme() . '://' . $request->getHttpHost() . $request->getBasePath() . $this->generateUrl('api_send_json_user', ['URLToken' => $shortURlToken]);
             return $this->render('statistiques/_statistiques_plusieurs_evals.html.twig', [
                 'parties' => $statsManager->calculerStatsPlusieursEvals('groupes', $lesGroupes, $evaluations),
                 'evaluations' => $evaluations,
-                'urlAPI' => $shortURl,
+                'urlAPI' => $this->generateAPIUrl('plusieurs-evaluations-groupes', $request, null, $lesGroupes, null, null, $evaluations),
                 'groupes' => $lesGroupes,
                 'titrePage' => $this->translator->trans('page_plusieurs_evals', ['nombre'=>count($evaluations) ]),
                 ]);
@@ -562,27 +521,16 @@ class StatistiquesController extends AbstractController
             ->getForm();
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            $evaluations = array();
             if (count($form->get('evaluations')->getData()) > 0) {
                 $evaluations = $form->get('evaluations')->getData();
+                return $this->render('statistiques/_statistiques_plusieurs_evals.html.twig', [
+                    'parties' => $statsManager->calculerStatsPlusieursEvals('statuts', [$statut], $evaluations),
+                    'evaluations' => $evaluations,
+                    'urlAPI' => $this->generateAPIUrl('plusieurs-evaluations-statut', $request, null, null, [$statut], null, $evaluations),
+                    'groupes' => $statut,
+                    'titrePage' => $this->translator->trans('page_plusieurs_evals', ['nombre'=>count($evaluations) ]),
+                ]);
             }
-            //Génération du lien pour l'API
-            $parametres = array();
-            $parametres["token"] = $this->getUser()->getToken(); //Token de sécurité de l'user
-            $parametres["type"] = 'plusieurs-evaluations-statut';
-            $parametres["statuts"][] = $statut->getId();
-            foreach($evaluations as $evaluation) {
-                $parametres["evaluations"][] = $evaluation->getId();
-            }
-            $shortURlToken = $this->getShortenedURLToken($parametres);
-            $shortURl = $request->getScheme() . '://' . $request->getHttpHost() . $request->getBasePath() . $this->generateUrl('api_send_json_user', ['URLToken' => $shortURlToken]);
-            return $this->render('statistiques/_statistiques_plusieurs_evals.html.twig', [
-                'parties' => $statsManager->calculerStatsPlusieursEvals('statuts', [$statut], $evaluations),
-                'evaluations' => $evaluations,
-                'urlAPI' => $shortURl,
-                'groupes' => $statut,
-                'titrePage' => $this->translator->trans('page_plusieurs_evals', ['nombre'=>count($evaluations) ]),
-            ]);
         }
         return $this->render('statistiques/formulaire_parametrage_statistiques.html.twig', [
             'form' => $form->createView(),
@@ -645,7 +593,7 @@ class StatistiquesController extends AbstractController
             return $this->render('statistiques/_statistiques_fiche_etudiant.html.twig', [
                 'etudiant' => $etudiant,
                 'evaluations' => $evaluations,
-                'urlAPI' => $shortURl,
+                'urlAPI' => $this->generateAPIUrl('fiche-etudiant', $request, null, null, null, null, null,  $etudiant),
                 'groupesEtStatuts' => $groupesEtStatuts,
                 'stats' => $statsManager->calculerStatsFicheEtudiant($etudiant, $evaluations, $groupes, $etudiant->getStatuts()),
                 'titrePage' => $this->translator->trans('page_fiche_etudiant_titre', ['nom'=> $etudiant->getNom(), 'prenom'=>$etudiant->getPrenom()])
@@ -790,22 +738,10 @@ class StatistiquesController extends AbstractController
                 }
                 return ($a->getdate() < $b->getdate()) ? -1 : 1;
             });
-            //Génération du lien pour l'API
-            $parametres = array();
-            $parametres["token"] = $this->getUser()->getToken(); //Token de sécurité de l'user
-            $parametres["type"] = 'evolution-groupe';
-            foreach($lesGroupes as $groupe) {
-                $parametres["groupes"][] = $groupe->getId();
-            }
-            foreach($evaluations as $evaluation) {
-                $parametres["evaluations"][] = $evaluation->getId();
-            }
-            $shortURlToken = $this->getShortenedURLToken($parametres);
-            $shortURl = $request->getScheme() . '://' . $request->getHttpHost() . $request->getBasePath() . $this->generateUrl('api_send_json_user', ['URLToken' => $shortURlToken]);
             return $this->render('statistiques/_statistiques_evolution.html.twig', [
                 'evaluations' => $tabEvaluations,
                 'groupes' => $lesGroupes,
-                'urlAPI' => $shortURl,
+                'urlAPI' => $this->generateAPIUrl('evolution-groupe', $request, null, $lesGroupes, null, null, $evaluations),
                 'titrePage' => $this->translator->trans('page_evolution_titre'),
                 'stats' => $statsManager->calculerStatsEvolution('groupe', $lesGroupes, $tabEvaluations)
             ]);
@@ -1004,24 +940,11 @@ class StatistiquesController extends AbstractController
                 }
                 return ($a->getdate() < $b->getdate()) ? -1 : 1;
             });
-            //Génération du lien pour l'API
-            $parametres = array();
-            $parametres["token"] = $this->getUser()->getToken(); //Token de sécurité de l'user
-            $parametres["type"] = 'evolution-statut';
-            $parametres["statuts"][] = $statut->getId();
-            foreach($lesGroupes as $groupe) {
-                $parametres["groupes"][] = $groupe->getId();
-            }
-            foreach($evaluations as $evaluation) {
-                $parametres["evaluations"][] = $evaluation->getId();
-            }
-            $shortURlToken = $this->getShortenedURLToken($parametres);
-            $shortURl = $request->getScheme() . '://' . $request->getHttpHost() . $request->getBasePath() . $this->generateUrl('api_send_json_user', ['URLToken' => $shortURlToken]);
             return $this->render('statistiques/_statistiques_evolution.html.twig', [
                 'evaluations' => $tabEvaluations,
                 'groupes' => $lesGroupes,
                 'statut' => $statut,
-                'urlAPI' => $shortURl,
+                'urlAPI' => $this->generateAPIUrl('evolution-statut', $request, null, $lesGroupes, [$statut], null, $evaluations),
                 'titrePage' => $this->translator->trans('page_evolution_titre'),
                 'stats' => $statsManager->calculerStatsEvolution('statut', $lesGroupes, $tabEvaluations, $statut)
             ]);
@@ -1163,28 +1086,11 @@ class StatistiquesController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $groupes = $form->get('groupes')->getData();
             $statuts = $form->get('statuts')->getData();
-            //Génération du lien pour l'API
-            $parametres = array();
-            $parametres["token"] = $this->getUser()->getToken(); //Token de sécurité de l'user
-            $parametres["type"] = 'comparaison';
-            $parametres["evaluationReference"][] = $evaluation->getId();
-            foreach($groupes as $groupe) {
-                $parametres["groupes"][] = $groupe->getId();
-            }
-            foreach($statuts as $key => $statut) { // Statuts
-                $parametres["statuts"][] = $statut->getId();
-            }
-            foreach($evaluationsChoisies as $evaluationsChoisie) {
-                $parametres["autresEvaluations"][] = $evaluationsChoisie->getId();
-            }
-            $shortURlToken = $this->getShortenedURLToken($parametres);
-            $shortURl = $request->getScheme() . '://' . $request->getHttpHost() . $request->getBasePath() . $this->generateUrl('api_send_json_user', ['URLToken' => $shortURlToken]);
-
             return $this->render('statistiques/_statistiques_comparaison.html.twig', [
                 'evaluations' => $evaluationsChoisies,
                 'evaluationConcernee' => $evaluation,
                 'groupes' => $groupes,
-                'urlAPI' => $shortURl,
+                'urlAPI' => $this->generateAPIUrl('comparaison', $request, $evaluation, $groupes, $statuts, null, $evaluationsChoisies, null, true),
                 'parties' => $statsManager->calculerStatsComparaison($evaluation, $groupes, $statuts, $evaluationsChoisies),
                 'titrePage' => $this->translator->trans('page_comparaison_titre', ['nom' => $evaluation->getNom(), 'nombre'=> count($evaluationsChoisies)]),
             ]);
@@ -1337,6 +1243,45 @@ class StatistiquesController extends AbstractController
     /////FIN ENVOI MAIL////
     ///////////////////////
 
+    ////////////////////////////////
+    ////ACTIONS API STATISTIQUES////
+    ////////////////////////////////
+
+    public function generateAPIUrl($type, $request, $evaluation = null, $groupes = null, $statuts = null, $parties = null, $evaluations = null, $etudiant = null, $estComparaison = false) {
+        $parametres = array();
+        $parametres["token"] = $this->getUser()->getToken(); //Token de sécurité de l'user
+        $parametres["type"] = $type;
+
+        if($evaluation) {
+            $estComparaison ? $parametres["evaluationReference"] = $evaluation->getId() : $parametres["evaluation"] = $evaluation->getId();
+        }
+        if($groupes) {
+            foreach ($groupes as $groupe) {
+                $parametres["groupes"][] = $groupe->getId();
+            }
+        }
+        if($statuts) {
+            foreach($statuts as $statut) {
+                $parametres["statuts"][] = $statut->getId();
+            }
+        }
+        if($parties) {
+            foreach($parties as $partie) {
+                $parametres["parties"][] = $partie->getId();
+            }
+        }
+        if($evaluations) {
+            foreach($evaluations as $evaluation) {
+                $estComparaison ? $parametres["autresEvaluations"][] = $evaluation->getId() : $parametres["evaluations"][] = $evaluation->getId();
+            }
+        }
+        if($etudiant) {
+            $parametres["etudiant"][] = $etudiant->getId();
+        }
+        $shortURlToken = $this->getShortenedURLToken($parametres);
+        return $request->getScheme() . '://' . $request->getHttpHost() . $request->getBasePath() . $this->generateUrl('api_send_json_user', ['URLToken' => $shortURlToken]);
+    }
+
     public function getShortenedURLToken($parametres) {
         $em = $this->getDoctrine()->getManager();
         $shortenedURL = new ShortenedURL();
@@ -1346,4 +1291,7 @@ class StatistiquesController extends AbstractController
         $em->flush();
         return $shortenedURL->getUrlToken();
     }
+    /////////////////////////////////////////
+    ////FIN ACTIONS AVEC API STATISTIQUES////
+    /////////////////////////////////////////
 }

@@ -28,6 +28,7 @@ class AppFixtures extends Fixture
         $admin->setRoles(['ROLE_USER', 'ROLE_ADMIN']);
         $admin->setPassword('$2y$10$iq3Tby/8xdfCtQiPk/IQKO5j9xypK/uej1cghWXEZmQl1D9OHJaNC'); // patrick_admin
         $admin->setPreferenceNbElementsTableaux(-1);
+        $admin->generateToken();
         $manager->persist($admin);
         //Compte enseignant jury
         $yann = new Enseignant();
@@ -37,6 +38,7 @@ class AppFixtures extends Fixture
         $yann->setRoles(['ROLE_USER']);
         $yann->setPassword('$2y$14$eecC8BxE2hUdovPKkStY6epSxnsHUS.V7TQhoARgHGwofz16VbGvu'); // yann_prof
         $yann->setPreferenceNbElementsTableaux(30);
+        $yann->generateToken();
         $manager->persist($yann);
         //Compte enseignant jury
         $marie = new Enseignant();
@@ -46,6 +48,7 @@ class AppFixtures extends Fixture
         $marie->setRoles(['ROLE_USER']);
         $marie->setPassword('$2y$14$UDM9JS7jEzoGiPV.upVXI.8uNbr2J7xbCsalNX7m3n6PI0Ul4VnoC'); // marie_prof
         $marie->setPreferenceNbElementsTableaux(15);
+        $marie->generateToken();
         $manager->persist($marie);
         ////////////GROUPES//////////////
         ////////////ESPACE//////////////

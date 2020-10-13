@@ -11,6 +11,8 @@ use App\Repository\PartieRepository;
 use App\Repository\ShortenedURLRepository;
 use App\Repository\StatutRepository;
 use App\Entity\ApiLog;
+use Symfony\Component\Finder\Exception\AccessDeniedException;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -67,12 +69,17 @@ class ApiController extends AbstractController
      * @Route("/statistiques/{URLToken}", name="api_send_json_user", methods={"GET", "POST"})
      */
     public function sendJSONToUser($URLToken, ShortenedURLRepository $shortenedURLRepository) {
-        $ApiUrlParameters = $shortenedURLRepository->findOneByUrlToken($URLToken)->getUrlParameters();
-        $request = new Request();
-        foreach ($ApiUrlParameters as $key => $parameter) {
-            $request->attributes->set($key, $parameter);
+        $shortUrl = $shortenedURLRepository->findOneByUrlToken($URLToken);
+        if ($shortUrl) {
+            $request = new Request();
+            foreach ($shortUrl->getUrlParameters() as $key => $parameter) {
+                $request->attributes->set($key, $parameter);
+            }
+            return $this->getStatisticsJSon($request);
         }
-        return $this->getStatisticsJSon($request);
+        else {
+            return new JsonResponse(["Error" => "API url does not match any existing one"], Response::HTTP_NOT_FOUND, ['content-type' => 'application/json']);
+        }
     }
 
     /**
