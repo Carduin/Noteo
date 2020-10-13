@@ -86,19 +86,13 @@ class ApiController extends AbstractController
             switch ($typeStatistiques) {
                 case 'classique' :
                     $objetEvaluation = $this->fetchUneEvaluation($request->get('evaluation'));
-                    if(!$objetEvaluation) {
-                        $this->tableauRetourCourant['code'] = 3; // Si pas d'éval : impossible de continuer
-                    }
                     $objetsParties = $this->fetchParties($request->get('parties'), $objetEvaluation);
-                    if(empty($objetsParties)) {
-                        $this->tableauRetourCourant['code'] = 3; // Si pas de parties : impossible de continuer
-                    }
                     $objetsGroupes = $this->fetchGroupes($request->get('groupes'));
                     $objetsStatuts = $this->fetchStatuts($request->get('statuts'));
-                    if(empty($objetsGroupes) && empty($objetsStatuts)) {
-                        $this->tableauRetourCourant['code'] = 3; // Impossible de continuer sans groupes ni statut
+                    if(!$objetEvaluation || empty($objetsParties) || (empty($objetsGroupes) && empty($objetsStatuts))) {
+                        $this->tableauRetourCourant['code'] = 3;
                     }
-                    if ($this->tableauRetourCourant['code'] != 3 ) {
+                   if ($this->tableauRetourCourant['code'] != 3 ) {
                         $this->tableauRetourCourant['statisticsData'] = $this->statisticsManager->calculerStatsClassiques($objetEvaluation, $objetsGroupes, $objetsStatuts, $objetsParties);
                     }
                     break;
@@ -117,9 +111,9 @@ class ApiController extends AbstractController
                     }
                     break;
                 case 'plusieurs-evaluations-statut':
-                    $objetsStatut = $this->fetchStatuts($request->get('statuts'));
+                    $objetsStatuts = $this->fetchStatuts($request->get('statuts'));
                     $objetsEvaluations = $this->fetchPlusieursEvaluations($request->get('evaluations'));
-                    if (empty($objetsGroupes) || empty($objetsEvaluations)) {
+                    if (empty($objetsStatuts) || empty($objetsEvaluations)) {
                         $this->tableauRetourCourant['code'] = 3; // Impossible de continuer sans evaluation ou statuts
                         $this->tableauRetourCourant['errors'][] = [
                             'type' => 'Missing critical parameter' ,
@@ -127,13 +121,13 @@ class ApiController extends AbstractController
                         ];
                     }
                     if ($this->tableauRetourCourant['code'] != 3 ) {
-                        $this->tableauRetourCourant['statisticsData'] = $this->statisticsManager->calculerStatsPlusieursEvals('statuts', $objetsStatut, $objetsEvaluations);
+                        $this->tableauRetourCourant['statisticsData'] = $this->statisticsManager->calculerStatsPlusieursEvals('statuts', $objetsStatuts, $objetsEvaluations);
                     }
                     break;
                 case 'evolution-groupe' :
                     $objetsGroupes = $this->fetchGroupes($request->get('groupes'));
                     $objetsEvaluations = $this->fetchPlusieursEvaluations($request->get('evaluations'));
-                    if(!$objetsEvaluations || !$objetsGroupes) {
+                    if(empty($objetsGroupes) || empty($objetsEvaluations)) {
                         $this->tableauRetourCourant['code'] = 3; // Impossible de continuer sans groupes ou evaluations
                         $this->tableauRetourCourant['errors'][] = [
                             'type' => 'Missing critical parameter' ,
@@ -148,7 +142,7 @@ class ApiController extends AbstractController
                     $objetsStatuts = $this->fetchStatuts($request->get('statuts'));
                     $objetsGroupes = $this->fetchGroupes($request->get('groupes'));
                     $objetsEvaluations = $this->fetchPlusieursEvaluations($request->get('evaluations'));
-                    if(!$objetsEvaluations || !$objetsGroupes || !$objetsStatuts) {
+                    if(empty($objetsGroupes) || empty($objetsEvaluations) || empty($objetsStatuts)) {
                         $this->tableauRetourCourant['code'] = 3; // Impossible de continuer sans groupes ou evaluations
                         $this->tableauRetourCourant['errors'][] = [
                             'type' => 'Missing critical parameter' ,
@@ -164,7 +158,7 @@ class ApiController extends AbstractController
                     $objetsAutresEvaluations = $this->fetchPlusieursEvaluations($request->get('autresEvaluations'));
                     $objetsGroupes = $this->fetchGroupes($request->get('groupes'));
                     $objetsStatuts = $this->fetchStatuts($request->get('statuts'));
-                    if (!$objetEvaluationReference || !$objetsAutresEvaluations || (!$objetsGroupes && !$objetsStatuts)) { //Si pas d'évaluation de référence, pas d'autres évaluations à comparer ou pas de groupes et de statut choisi
+                    if (!$objetEvaluationReference || empty($objetsAutresEvaluations) || (empty($objetsGroupes) && empty($objetsStatuts))) { //Si pas d'évaluation de référence, pas d'autres évaluations à comparer ou pas de groupes et de statut choisi
                         $this->tableauRetourCourant['code'] = 3;
                         $this->tableauRetourCourant['errors'][] = [
                             'type' => 'Missing critical parameters' ,
