@@ -5,8 +5,6 @@ security:
             cost: 14
 
     providers:
-        api_key_user_provider:
-            id: App\Security\ApiKeyUserProvider
         app_user_provider:
             entity:
                 class: App\Entity\Enseignant
@@ -15,12 +13,6 @@ security:
         dev:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
             security: false
-        api:
-            pattern: ^/api
-            stateless: true
-            simple_preauth:
-                authenticator: App\Security\ApiAuthenticator
-            provider: api_key_user_provider
         main:
             pattern: ^(?!/api) # every route but /api
             provider: app_user_provider
@@ -39,4 +31,3 @@ security:
          - { path: ^/(en|fr|es)/partie, roles: ROLE_USER }
          - { path: ^/(en|fr|es)/statistiques, roles: ROLE_USER }
          - { path: ^/(en|fr|es)/tutoriels, roles: ROLE_USER }
-         - { path: ^/api, roles: ROLE_USER }

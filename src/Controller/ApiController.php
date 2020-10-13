@@ -16,7 +16,6 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Serializer\SerializerInterface;
-use Symfony\Component\HttpClient\HttpClient;
 /*
  * Format erreurs :
  * [
@@ -67,16 +66,16 @@ class ApiController extends AbstractController
     /**
      * @Route("/statistiques/{URLToken}", name="api_send_json_user", methods={"GET", "POST"})
      */
-    public function sendJSONToUser($URLToken, ShortenedURLRepository $shortenedURLRepository, HttpClient $client) {
+    public function sendJSONToUser($URLToken, ShortenedURLRepository $shortenedURLRepository) {
         $URLToCall = $shortenedURLRepository->findOneByUrlToken($URLToken)->getLongURL();
         //$truc = $client->request('GET', $URLToCall);
-        return new Response("");
+        return new Response($URLToCall, Response::HTTP_OK, ['content-type' => 'application/json']);
     }
 
     /**
      * @Route("/get-json", name="api_get_stats", methods={"GET", "POST"})
      */
-    public function getJSon(Request $request) {
+    public function getStatisticsJSon(Request $request) {
         $this->tableauRetourCourant = $this->squeletteTableauRetour;
         $typeStatistiques = $request->get('type');
         if($typeStatistiques) {

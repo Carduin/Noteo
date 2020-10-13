@@ -186,7 +186,7 @@ class StatistiquesController extends AbstractController
                     $longURL = $longURL . '&statuts[' . $key . ']=' . $statut->getId();
                 }
                 $shortURlToken = $this->getShortenedURLToken($longURL);
-                $shortURl = $request->getScheme() . '://' . $request->getHttpHost() . $request->getBasePath() . $this->generateUrl('api_send_json_user', ['URLToken' => $shortURlToken]) . '?token=' . $this->getUser()->getToken();;
+                $shortURl = $request->getScheme() . '://' . $request->getHttpHost() . $request->getBasePath() . $this->generateUrl('api_send_json_user', ['URLToken' => $shortURlToken]);
                 return $this->render('statistiques/_statistiques_evalutations_simples_et_parties.html.twig', [
                     'titrePage' => $this->translator->trans('page_eval_simple_parties_titre', ['nom'=> $evaluation->getNom()]),
                     'evaluation' => $evaluation,
