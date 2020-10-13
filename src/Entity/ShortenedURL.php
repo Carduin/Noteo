@@ -22,9 +22,9 @@ class ShortenedURL
     private $urlToken;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="json")
      */
-    private $longURL;
+    private $UrlParameters;
 
     public function getId(): ?int
     {
@@ -43,14 +43,14 @@ class ShortenedURL
         return $this;
     }
 
-    public function getLongURL(): ?string
+    public function getUrlParameters(): ?array
     {
-        return $this->longURL;
+        return $this->UrlParameters;
     }
 
-    public function setLongURL(string $longURL): self
+    public function setUrlParameters(array $UrlParameters): self
     {
-        $this->longURL = $longURL;
+        $this->UrlParameters = $UrlParameters;
 
         return $this;
     }

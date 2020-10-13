@@ -67,9 +67,12 @@ class ApiController extends AbstractController
      * @Route("/statistiques/{URLToken}", name="api_send_json_user", methods={"GET", "POST"})
      */
     public function sendJSONToUser($URLToken, ShortenedURLRepository $shortenedURLRepository) {
-        $URLToCall = $shortenedURLRepository->findOneByUrlToken($URLToken)->getLongURL();
-        //$truc = $client->request('GET', $URLToCall);
-        return new Response($URLToCall, Response::HTTP_OK, ['content-type' => 'application/json']);
+        $ApiUrlParameters = $shortenedURLRepository->findOneByUrlToken($URLToken)->getUrlParameters();
+        $request = new Request();
+        foreach ($ApiUrlParameters as $key => $parameter) {
+            $request->attributes->set($key, $parameter);
+        }
+        return $this->getStatisticsJSon($request);
     }
 
     /**

@@ -174,18 +174,18 @@ class StatistiquesController extends AbstractController
             $request->getSession()->set('stats', $statistiquesCalculees);
             //Pour ne pas continuer si les conditions ne sont pas remplies (au moins un groupe ou statut)
             if (count($groupesChoisis) > 0 || count($statutsChoisis) > 0) {
-                //Génération du lien pour l'API
-                $longURL = $request->getScheme() . '://' . $request->getHttpHost() . $request->getBasePath() . $this->generateUrl('api_get_stats'); //Base de l'url
-                $longURL = $longURL . '?token=' . $this->getUser()->getToken(); //Token de sécurité de l'user
-                $longURL = $longURL . '&type=' . 'classique';
-                $longURL = $longURL . '&evaluation=' . $evaluation->getId(); //Evaluation choisie
+                //Génération des paramètres du lien pour l'API
+                $parametres = array();
+                $parametres["token"] = $this->getUser()->getToken(); //Token de sécurité de l'user
+                $parametres["type"] = 'classique';
+                $parametres["evaluation"] = $evaluation->getId();
                 foreach ($groupesChoisis as $key => $groupe) { // Groupes
-                    $longURL = $longURL . '&groupes[' . $key . ']=' . $groupe->getId();
+                    $parametres["groupes"][] = $groupe->getId();
                 }
                 foreach($statutsChoisis as $key => $statut) { // Statuts
-                    $longURL = $longURL . '&statuts[' . $key . ']=' . $statut->getId();
+                    $parametres["statuts"][] = $statut->getId();
                 }
-                $shortURlToken = $this->getShortenedURLToken($longURL);
+                $shortURlToken = $this->getShortenedURLToken($parametres);
                 $shortURl = $request->getScheme() . '://' . $request->getHttpHost() . $request->getBasePath() . $this->generateUrl('api_send_json_user', ['URLToken' => $shortURlToken]);
                 return $this->render('statistiques/_statistiques_evalutations_simples_et_parties.html.twig', [
                     'titrePage' => $this->translator->trans('page_eval_simple_parties_titre', ['nom'=> $evaluation->getNom()]),
@@ -1319,10 +1319,10 @@ class StatistiquesController extends AbstractController
     /////FIN ENVOI MAIL////
     ///////////////////////
 
-    public function getShortenedURLToken($longURL) {
+    public function getShortenedURLToken($parametres) {
         $em = $this->getDoctrine()->getManager();
         $shortenedURL = new ShortenedURL();
-        $shortenedURL->setLongURL($longURL);
+        $shortenedURL->setUrlParameters($parametres);
         $shortenedURL->generateUrlToken();
         $em->persist($shortenedURL);
         $em->flush();
