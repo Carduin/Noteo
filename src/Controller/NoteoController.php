@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Repository\ApiLogRepository;
 use App\Repository\EtudiantRepository;
 use App\Repository\GroupeEtudiantRepository;
+use App\Repository\ShortenedURLRepository;
 use App\Repository\StatutRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
@@ -41,20 +42,22 @@ class NoteoController extends AbstractController
     /**
      * @Route("/{_locale}/historique-api/supprimer", name="empty_historique_api")
      */
-    public function viderHistoriqueApi()
+    public function viderHistoriqueApi(ApiLogRepository $repoAPI)
     {
         $this->denyAccessUnlessGranted("API_HISTORY", $this->getUser());
-        $connection = $this->getDoctrine()->getManager()->getConnection();
-        $platform = $connection->getDatabasePlatform();
-        $connection->executeQuery('SET FOREIGN_KEY_CHECKS = 0;'); // Pour éviter les erreurs de clé étrangeres lors du TRUNCATE
-        $connection->executeUpdate($platform->getTruncateTableSQL('api_log'));
+        $em = $this->getDoctrine()->getManager();
+        $logs = $repoAPI->findAll();
+        foreach ($logs as $log) {
+            $em->remove($log);
+        }
+        $em->flush();
         return $this->redirectToRoute('historique_api');
     }
 
     /**
      * @Route("/reinitialiser", name="app_reset")
      */
-    public function reinitialiserApplication(GroupeEtudiantRepository $repoGroupe, StatutRepository $repoStatut, EtudiantRepository $repoEtudiant)
+    public function reinitialiserApplication(GroupeEtudiantRepository $repoGroupe, StatutRepository $repoStatut, EtudiantRepository $repoEtudiant, ApiLogRepository $logRepository, ShortenedURLRepository $shortenedURLRepository)
     {
         $this->denyAccessUnlessGranted("RESET_APPLICATION", $this->getUser());
         $entityManager = $this->getDoctrine()->getManager();
@@ -75,6 +78,12 @@ class NoteoController extends AbstractController
         }
         foreach ($repoEtudiant->findAll() as $etudiant) {
             $entityManager->remove($etudiant);
+        }
+        foreach ($logRepository->findAll() as $log) {
+            $entityManager->remove($log);
+        }
+        foreach ($shortenedURLRepository->findAll() as $shortURL) {
+            $entityManager->remove($shortURL);
         }
         $entityManager->flush();
         return $this->redirectToRoute("groupe_etudiant_index");
