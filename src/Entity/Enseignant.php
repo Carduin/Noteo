@@ -79,11 +79,6 @@ class Enseignant implements UserInterface
      */
     private $statuts;
 
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
-    private $token;
-
     public function __construct()
     {
         $this->groupes = new ArrayCollection();
@@ -300,18 +295,6 @@ class Enseignant implements UserInterface
     public function setPreferenceNbElementsTableaux(int $preferenceNbElementsTableaux): self
     {
         $this->preferenceNbElementsTableaux = $preferenceNbElementsTableaux;
-
-        return $this;
-    }
-
-    public function getToken(): ?string
-    {
-        return $this->token;
-    }
-
-    public function generateToken(): self
-    {
-        $this->token = rtrim(strtr(base64_encode(random_bytes(5)), '+/', '-_'), '=');
 
         return $this;
     }

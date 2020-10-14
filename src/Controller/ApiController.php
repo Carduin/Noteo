@@ -71,10 +71,18 @@ class ApiController extends AbstractController
     public function sendJSONToUser($URLToken, ShortenedURLRepository $shortenedURLRepository) {
         $shortUrl = $shortenedURLRepository->findOneByUrlToken($URLToken);
         if ($shortUrl) {
+            $parameters = $shortUrl->getUrlParameters();
             $request = new Request();
-            foreach ($shortUrl->getUrlParameters() as $key => $parameter) {
+            foreach ($parameters as $key => $parameter) {
                 $request->attributes->set($key, $parameter);
             }
+            $em = $this->getDoctrine()->getManager();
+            $log = new ApiLog();
+            $log->setEnseignant($em->getRepository(Enseignant::class)->findOneById($request->get('enseignant')));
+            $log->setType($parameters["type"]);
+            $log->setCalledAt(new \DateTime());
+            $em->persist($log);
+            $em->flush();
             return $this->getStatisticsJSon($request);
         }
         else {
@@ -213,13 +221,6 @@ class ApiController extends AbstractController
             ];
             $typeStatistiques = 'Missing';
         }
-        $em = $this->getDoctrine()->getManager();
-        $log = new ApiLog();
-        $log->setEnseignant($em->getRepository(Enseignant::class)->findOneByToken($request->get('token')));
-        $log->setType($typeStatistiques);
-        $log->setCalledAt(new \DateTime());
-        $em->persist($log);
-        $em->flush();
         return new Response($this->serializer->serialize($this->tableauRetourCourant, 'json'), Response::HTTP_OK, ['content-type' => 'application/json']);
     }
 

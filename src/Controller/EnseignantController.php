@@ -50,7 +50,6 @@ class EnseignantController extends AbstractController
             }
             $mdpEncode = $encoder->encodePassword($enseignant, $enseignant->getPassword());
             $enseignant->setPassword($mdpEncode);
-            $enseignant->generateToken();
             $manager->persist($enseignant);
             $manager->flush();
             return $this->redirectToRoute('enseignant_index');

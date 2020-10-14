@@ -1249,7 +1249,7 @@ class StatistiquesController extends AbstractController
 
     public function generateAPIUrl($type, $request, $evaluation = null, $groupes = null, $statuts = null, $parties = null, $evaluations = null, $etudiant = null, $estComparaison = false) {
         $parametres = array();
-        $parametres["token"] = $this->getUser()->getToken(); //Token de sécurité de l'user
+        $parametres["enseignant"] = $this->getUser()->getId(); //Token de sécurité de l'user
         $parametres["type"] = $type;
 
         if($evaluation) {
