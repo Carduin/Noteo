@@ -1,4 +1,4 @@
-![Noteo](https://github.com/dmendiboure/Noteo/blob/master/public/img/banniere_noteo.jpg)
+![Noteo](https://github.com/carduin/Noteo/blob/master/public/img/banniere_noteo.jpg)
 ![GitHub release (latest by date)](https://img.shields.io/github/v/release/carduin/noteo?color=%236766cc)
 ![GitHub contributors](https://img.shields.io/github/contributors/carduin/noteo?color=%236766cc)
 ![GitHub commits since tagged version](https://img.shields.io/github/commits-since/carduin/noteo/v1.0?color=%236766cc)
@@ -19,7 +19,7 @@ Noteo a été conçue et dévelopée dans le cadre d'un projet au sein de l'IUT 
 L'application est aujourd'hui maintenue afin de continuer à y apporter des améliorations, fonctionnalités et optimisation.
 ***
 ## Manuels
- - [Manuel d'installation](https://github.com/dmendiboure/Noteo/blob/master/manuels/manuel_installation_noteo.pdf)
- - [Manuel de maintenance](https://github.com/dmendiboure/Noteo/blob/master/manuels/manuel_maintenance_noteo.pdf)
- - [Manuel d'utilisation](https://github.com/dmendiboure/Noteo/blob/master/manuels/manuel_utilisation_noteo.pdf)
+ - [Manuel d'installation](https://github.com/carduin/Noteo/blob/master/manuels/manuel_installation_noteo.pdf)
+ - [Manuel de maintenance](https://github.com/carduin/Noteo/blob/master/manuels/manuel_maintenance_noteo.pdf)
+ - [Manuel d'utilisation](https://github.com/carduin/Noteo/blob/master/manuels/manuel_utilisation_noteo.pdf)
 ***
