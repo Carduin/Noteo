@@ -3,7 +3,7 @@
 namespace App\DataFixtures;
 
 use Doctrine\Bundle\FixturesBundle\Fixture;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Persistence\ObjectManager;
 
 use App\Entity\Enseignant;
 use App\Entity\Etudiant;
@@ -11,7 +11,6 @@ use App\Entity\Evaluation;
 use App\Entity\GroupeEtudiant;
 use App\Entity\Partie;
 use App\Entity\Points;
-use App\Entity\Statut;
 
 
 class AppFixtures extends Fixture

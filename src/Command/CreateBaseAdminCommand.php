@@ -16,7 +16,6 @@ class CreateBaseAdminCommand extends Command
     public function __construct(EntityManagerInterface $em)
     {
         $this->entityManager = $em;
-
         parent::__construct();
     }
 
@@ -26,7 +25,6 @@ class CreateBaseAdminCommand extends Command
             ->setName("app:create-base-admin")
             ->setDescription("This command allows you to create the first admin account when installing the app")
         ;
-
     }
 
     protected function execute(InputInterface $input, OutputInterface $output )
