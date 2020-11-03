@@ -67,7 +67,6 @@ class StatutRepository extends ServiceEntityRepository
 
     public function findAllWith1EvalOrMore()
     {
-
         return $this->getEntityManager()->createQuery('
             SELECT s
             FROM App\Entity\Statut s

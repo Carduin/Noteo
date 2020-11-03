@@ -24,7 +24,6 @@ class NoteoVoter extends Voter
         switch ($attribute) {
             case 'API_HISTORY' :
             case 'RESET_APPLICATION' :
-                //Il faut être admin pour pouvoir réinitialiser l'application
                 $accesAutorise = in_array("ROLE_ADMIN", $user->getRoles());
                 break;
         }

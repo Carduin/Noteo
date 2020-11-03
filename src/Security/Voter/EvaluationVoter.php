@@ -27,7 +27,7 @@ class EvaluationVoter extends Voter
             case 'EVALUATION_ENVOI_MAIL':
             case 'EVALUATION_EDIT':
             case 'EVALUATION_DELETE':
-                //Pour les 5 cas, on vérifie on a accès a la fonctionnalité si on est admin ou propriétaire de l'évaluation
+                //Accès autorisé si on est admin ou propriétaire de l'évaluation
                 $accesAutorise = in_array("ROLE_ADMIN", $user->getRoles()) || $subject->getEnseignant()->getId() == $user->getId();
                 break;
         }

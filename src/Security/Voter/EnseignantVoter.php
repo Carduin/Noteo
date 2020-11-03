@@ -24,7 +24,6 @@ class EnseignantVoter extends Voter
         switch ($attribute) {
             case 'ENSEIGNANT_INDEX':
             case 'ENSEIGNANT_NEW':
-                //Il faut être admin pour accèder à ces fonctionnalités
                 $accesAutorise = in_array("ROLE_ADMIN", $user->getRoles());
                 break;
             case 'ENSEIGNANT_EDIT':

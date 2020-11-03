@@ -63,14 +63,10 @@ class EnseignantAuthenticator extends AbstractFormLoginAuthenticator
         if (!$this->csrfTokenManager->isTokenValid($token)) {
             throw new InvalidCsrfTokenException();
         }
-
         $user = $this->entityManager->getRepository(Enseignant::class)->findOneBy(['email' => $credentials['email']]);
-
         if (!$user) {
-            // fail authentication with a custom error
             throw new CustomUserMessageAuthenticationException('Adresse mail introuvable.');
         }
-
         return $user;
     }
 
@@ -84,8 +80,6 @@ class EnseignantAuthenticator extends AbstractFormLoginAuthenticator
         if ($targetPath = $this->getTargetPath($request->getSession(), $providerKey)) {
             return new RedirectResponse($targetPath);
         }
-
-        // For example : return new RedirectResponse($this->urlGenerator->generate('some_route'));
         return new RedirectResponse($this->urlGenerator->generate('evaluation_enseignant'));
     }
 

@@ -31,7 +31,6 @@ class GroupeVoter extends Voter
                 break;
             case 'GROUPE_SHOW':
             case 'GROUPE_INDEX':
-                //Si l'utilisateur est connecté ca suffit pour voir un groupe ou les lister
                 $accesAutorise = true;
                 break;
         }
