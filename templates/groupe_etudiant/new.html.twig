@@ -9,6 +9,7 @@
 {% endblock %}
 
 {% block javascripts %}
+    {{ parent() }}
     <script>
         /* Cette fonction est utilisée pour faire apparaitre le nom du fichier importé
         dans le input type file du formulaire. Elle est nécéssaire à cause du CSS de Boostrap.

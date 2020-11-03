@@ -242,6 +242,7 @@
 {% endblock %}
 
 {% block javascripts %}
+    {{ parent() }}
     <script>
         window.onload = function () {
             checkCasesCocheesPage()
@@ -324,6 +325,7 @@
 {% endblock %}
 
 {% block stylesheets %}
+    {{ parent() }}
     <style>
         span.green {
             color: green;

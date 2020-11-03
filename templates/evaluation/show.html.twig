@@ -134,6 +134,7 @@
 {% endblock %}
 
 {% block javascripts %}
+    {{ parent() }}
     <script>
         /*Les deux fonctions ci dessous permettent l'export de la page en csv. Elle inclue les notes mais aussi des infos
         * sur l'évaluation (nom, créateur, groupe, date).*/

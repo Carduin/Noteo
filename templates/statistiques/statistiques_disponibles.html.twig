@@ -5,6 +5,7 @@
 {% block statistiques %}active{% endblock %}
 
 {% block stylesheets %}
+    {{ parent() }}
     <style>
         .card:hover {
             -webkit-box-shadow: -1px 9px 40px -12px rgba(0, 0, 0, 0.75);
@@ -645,6 +646,7 @@
 {% endblock %}
 
 {% block javascripts %}
+    {{ parent() }}
     <script>
         //Event listener pour agrandir l'image lorsqu'on clique dessus
         //La fonction va afficher dans la fenêtre l'image, non réduite à la taille de la carte

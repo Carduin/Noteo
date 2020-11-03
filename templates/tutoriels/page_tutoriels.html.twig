@@ -5,6 +5,7 @@
 {% block titrePage %}{% trans %}tuto_titre_page{% endtrans %}{% endblock %}
 
 {% block stylesheets %}
+    {{ parent() }}
     <style>
         .card:hover {
             -webkit-box-shadow: -1px 9px 40px -12px rgba(0, 0, 0, 0.75);

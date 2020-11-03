@@ -65,6 +65,7 @@
 {% endblock %}
 
 {% block javascripts %}
+    {{ parent() }}
     {% if parties|length != 1 %}
         <script>
             window.onload = function () {

@@ -30,6 +30,7 @@
 {% endblock %}
 
 {% block javascripts %}
+    {{ parent() }}
     <script>
         //Pour mettre à jour le nom du fichier déposé dans le champ de formulaire
         $(".custom-file-input").on("change", function () {

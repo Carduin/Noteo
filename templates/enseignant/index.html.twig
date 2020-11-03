@@ -110,6 +110,7 @@
 {% endblock %}
 
 {% block javascripts %}
+    {{ parent() }}
     <script type="text/javascript">
         function supprimerEnseignant(url) {
             $("#delEns").modal();

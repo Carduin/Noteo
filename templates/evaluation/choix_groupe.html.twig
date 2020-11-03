@@ -91,6 +91,7 @@
 {% endblock %}
 
 {% block javascripts %}
+    {{ parent() }}
     <script>
         $("[name='form[groupes]']").on('click', function () {
             checkCasesCocheesPage()

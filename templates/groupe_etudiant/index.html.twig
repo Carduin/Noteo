@@ -114,6 +114,7 @@
 {% endblock %}
 
 {% block javascripts %}
+    {{ parent() }}
     <script type="text/javascript">
         /* Cette fonction est utilisée pour adapter le href du bouton de confirmation de la suppression
       d'un groupe dans la fenetre modale, afin de s'adapter au groupe que l'on veut supprimer */

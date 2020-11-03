@@ -118,6 +118,7 @@
 {% endblock %}
 
 {% block javascripts %}
+    {{ parent() }}
     <script type="text/javascript">
         /* Cette fonction est utilisée pour adapter le href du bouton de confirmation de la suppression
       d'une évaluation dans la fenetre modale, afin de s'adapter a l'évaluation que l'on veut supprimer */

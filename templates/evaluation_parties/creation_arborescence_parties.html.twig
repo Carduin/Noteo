@@ -9,6 +9,7 @@
 {% block mesEvaluations %}active{% endblock %}
 
 {% block stylesheets %}
+    {{ parent() }}
     <style>
         .badge {
             float: right;
@@ -152,6 +153,7 @@
 {% endblock %}
 
 {% block javascripts %}
+    {{ parent() }}
     <!-- Boostrap Treeview et js contenant les fonctionnalités de manipulation -->
     <script src="{{ asset('vendor/BoostrapTreeView/js/bootstrap-treeview.js') }}"></script>
     <script src="{{ asset('vendor/BoostrapTreeView/js/manipulationTreeView.js') }}"></script>
