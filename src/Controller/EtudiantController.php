@@ -46,13 +46,13 @@ class EtudiantController extends AbstractController
         $form->handleRequest($request);
         $formStatut = $this->createFormBuilder()
             ->add('statuts', EntityType::class, [
-                'class' => Statut::Class, //On veut choisir des groupes
-                'choice_label' => false, // On n'affichera pas d'attribut de l'entité à côté du bouton pour aider au choix car on liste les entités en utilisant les variables du champ
-                'label' => false, // On n'affiche pas le label du champ
-                'mapped' => false, // Pour que l'attribut ne soit pas immédiatement mis en BD mais soit récupérable après soumission du formulaire
-                'expanded' => true, // Pour avoir des cases
-                'multiple' => true, // à cocher
-                'choices' => $statuts // On choisira parmis le groupe concerné et ses enfants
+                'class' => Statut::Class,
+                'choice_label' => false,
+                'label' => false,
+                'mapped' => false,
+                'expanded' => true,
+                'multiple' => true,
+                'choices' => $statuts
             ])
             ->getForm();
         $formStatut->handleRequest($request);
@@ -100,7 +100,6 @@ class EtudiantController extends AbstractController
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $this->getDoctrine()->getManager()->flush();
-
             return $this->redirectToRoute('etudiant_show', [
                 'id' => $etudiant->getId()
             ]);
@@ -118,15 +117,12 @@ class EtudiantController extends AbstractController
     public function delete(Etudiant $etudiant): Response
     {
         $manager = $this->getDoctrine()->getManager();
-        //On supprime toutes les notes associées à l'étudiant
         foreach ($etudiant->getPoints() as $point) {
             $manager->remove($point);
         }
-        //On retire l'étudiant des status auxquels il était associé
         foreach ($etudiant->getStatuts() as $statut) {
             $statut->removeEtudiant($etudiant);
         }
-        //Puis on supprime l'étudiant
         $manager->remove($etudiant);
         $manager->flush();
         return $this->redirectToRoute('etudiant_index');

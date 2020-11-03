@@ -38,11 +38,10 @@ class EnseignantController extends AbstractController
     {
         $this->denyAccessUnlessGranted('ENSEIGNANT_NEW', new Enseignant());
         $enseignant = new Enseignant();
-        $enseignant->setPreferenceNbElementsTableaux(15); // Préférence de tri par défaut
+        $enseignant->setPreferenceNbElementsTableaux(15);
         $form = $this->createForm(EnseignantType::class, $enseignant);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            // Si Oui au bouton radio
             if ($form['estAdmin']->getData()) {
                 $enseignant->setRoles(['ROLE_USER', 'ROLE_ADMIN']);
             } else {
@@ -54,7 +53,6 @@ class EnseignantController extends AbstractController
             $manager->flush();
             return $this->redirectToRoute('enseignant_index');
         }
-
         return $this->render('enseignant/new.html.twig', [
             'enseignant' => $enseignant,
             'form' => $form->createView(),
@@ -79,14 +77,10 @@ class EnseignantController extends AbstractController
     public function edit(Request $request, Enseignant $enseignant, UserPasswordEncoderInterface $encoder): Response
     {
         $this->denyAccessUnlessGranted('ENSEIGNANT_EDIT', $enseignant);
-        // On verifie le rôle de l'utilisateur pour désactiver ou non les boutons radios permettant de définir le rôle
-        $champDesactive = !$this->getUser()->isAdmin();
-        // Utiliser pour définir le choix du bouton radio lors de l'édition
-        $estAdmin = $enseignant->isAdmin();
-        $form = $this->createForm(EnseignantEditType::class, $enseignant, ['champDesactive' => $champDesactive, 'estAdmin' => $estAdmin]);
+        $champRoleDesactive = !$this->getUser()->isAdmin();
+        $form = $this->createForm(EnseignantEditType::class, $enseignant, ['champDesactive' => $champRoleDesactive, 'estAdmin' => $enseignant->isAdmin()]);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            // Si Oui au bouton radio
             if ($form['estAdmin']->getData()) {
                 $enseignant->setRoles(['ROLE_USER', 'ROLE_ADMIN']);
             } else {
@@ -120,7 +114,6 @@ class EnseignantController extends AbstractController
                 'id' => $enseignant->getId()
             ]);
         }
-
         return $this->render('enseignant/edit_password.html.twig', [
             'enseignant' => $enseignant,
             'form' => $form->createView()
@@ -133,11 +126,8 @@ class EnseignantController extends AbstractController
     public function delete(Request $request, Enseignant $enseignant): Response
     {
         $this->denyAccessUnlessGranted('ENSEIGNANT_DELETE', $enseignant);
-        //Pour qu'un administrateur ne supprime pas son propre profil
         if ($this->getUser()->getId() != $enseignant->getId()) {
             foreach ($enseignant->getStatuts() as $statut) {
-                //La méthode forward permet d'éxécuter l'action métier d'un controlleur donné mais ne redirige pas l'utilisateur,
-                // ce qui permet de ne pas dupliquer le code de la suppression dans ce cas
                 $this->forward('App\Controller\StatutController::delete', [
                     'id' => $statut->getId(),
                 ]);

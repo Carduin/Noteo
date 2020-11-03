@@ -75,7 +75,6 @@ class EvaluationController extends AbstractController
             $etudiant->addPoint($note);
             $partie->addNote($note);
         }
-        //Création du formulaire pour saisir les informations de l'évaluation (le formulaire n'est pas lié à une entité)
         $form = $this->createFormBuilder(['notes' => $partie->getNotes()])
             ->add('nom', TextType::class, [
                 'constraints' => [
@@ -300,17 +299,14 @@ class EvaluationController extends AbstractController
                     $sommePtsSousPartie = 0;
                     $sousParties = $partie->getChildren();
                     $etudiantAbsent = true; //On suppose que l'étudiant est absent à cette partie sauf si on trouve une note supérieure à -1 dans les sous parties (il peut avoir manqué seulement une partie de l'évaluation ainsi)
-                    //On fait la somme des notes obtenues aux sous parties
                     foreach ($sousParties as $sousPartie) {
                         $point = $repoPoints->findByPartieAndByStudent($sousPartie->getId(), $etudiant->getId());
-                        //On ne prend pas en compte -1 dans le calcul total
                         if ($point->getValeur() >= 0) {
                             $sommePtsSousPartie += $point->getValeur();
                             $etudiantAbsent = false;
                         }
                     }
                     $point = $repoPoints->findByPartieAndByStudent($partie->getId(), $etudiant->getId());
-                    //Si la note est inférieure à 0 c'est que l'étudiant était absent
                     if ($etudiantAbsent) {
                         $point->setValeur(-1);
                     } else {
@@ -374,7 +370,6 @@ class EvaluationController extends AbstractController
             ->getForm();
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            //En fonction du type d'évaluation correct on renvoie sur la bonne route avec le groupe choisi
             switch ($typeEval) {
                 case 'simple' :
                     return $this->redirectToRoute('evaluation_new', ['slug' => $form->get("groupes")->getData()->getSlug()]);
