@@ -110,16 +110,6 @@
             <!-- Divider -->
             <hr class="sidebar-divider my-0">
             <!-- Nav Item - Enseignants -->
-            <li class="nav-item {% block api %}{% endblock %}">
-                <a class="nav-link" href="{{ path('historique_api') }}">
-                    <i class="fas fa-link"></i>
-                    <span>{% trans %}api{% endtrans %}</span></a>
-            </li>
-        {% endif %}
-        {% if is_granted("ROLE_ADMIN") %}
-            <!-- Divider -->
-            <hr class="sidebar-divider my-0">
-            <!-- Nav Item - Enseignants -->
             <li class="nav-item {% block optionsAppli %}{% endblock %}">
                 <a class="nav-link" data-toggle='modal' data-target='#validationVidageBD' href="#validationVidageBD">
                     <i class="fas fa-database"></i>

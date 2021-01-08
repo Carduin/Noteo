@@ -27,7 +27,6 @@ statistiques: Statistics
 statistiques_graphiques: Graphical statistics
 tutoriels: Tutorials
 reset_app: Reset the application
-api: Noteo API
 # menu déroulant profil
 consulter_profil: See my profile
 modifier_mdp: Edit my password
@@ -379,11 +378,6 @@ tooltip_stats_pdf_portrait: Export statistics in PDF format (portrait view)
 tooltip_stats_pdf_paysage: Export statistics in PDF format (landscape view)
 tooltip_stats_mail: Send statistics to the students
 afficher_autres_evals: Display the nombre other evaluations
-tooltip_api: Get the statistics in JSON format
-modale_api_contenu: This functionality allows you to get the previously produced statistics in JSON format using a GET request on the link below. If you are not sure about what you are doing, we recommend you do not use it.
-modale_api_titre: Get the statistics in JSON format
-modale_api_copier_lien: Copy link
-modale_api_lien_copie: Link copied!
 # page stats eval simple et par parties
 page_eval_simple_parties_titre: Statistics for nom
 # page stats plusieurs évals
@@ -419,9 +413,6 @@ page_evolution_statut: Group of students having a particular status chosen
 page_evolution_evals: Evaluations related to the groups
 page_evolution_titre_carte_groupe: Student(s) of nomGroupe
 page_evolution_titre_carte_statut:  Student(s) of nomGroupe having the "nomStatut" status
-####### HISTORIQUE API
-historique_api_titre_page: Noteo API Access History
-historique_api_btn_supprimer: Empty history
 ####### REINITIALISATION APPLICATION
 app_reset_texte: 'Resetting the app will remove: <ul><li>all groups</li><li>all student status</li><li>all evaluations</li><li>all students</li></ul>Teacher profiles will not be deleted, but you will not be able to generate statistics anymore.'
 ####### TUTORIELS
