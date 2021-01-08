@@ -96,6 +96,7 @@
                             }
                         }
                     }
+                    totalPts = Math.round((totalPts) * 100) / 100; //Arrondissement à 0.01 près
                     //Mise à jour du total
                     if (totalPts > 20) {
                         $(elementsAEtudier[elementsAEtudier.length - 1]).html(totalPts)
