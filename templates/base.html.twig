@@ -161,13 +161,13 @@
                             </a>
                             <div class="dropdown-divider"></div>
                             <a class="dropdown-item" href="{{ path(route, params|merge({ _locale: locales[0] })) }}">
-                                🇫🇷&emsp;Français
+                                <img src="{{ asset('ico/france.png') }}"></img>&emsp;Français
                             </a>
                             <a class="dropdown-item" href="{{ path(route, params|merge({ _locale: locales[1] })) }}">
-                                🇬🇧&emsp;English
+                                <img src="{{ asset('ico/united-kingdom.png') }}"></img>&emsp;English
                             </a>
                             <a class="dropdown-item" href="{{ path(route, params|merge({ _locale: locales[2] })) }}">
-                                🇪🇸&emsp;Español
+                                <img src="{{ asset('ico/spain.png') }}"></img>&emsp;Español
                             </a>
                             <div class="dropdown-divider"></div>
                             <a class="dropdown-item" href="{{ path('app_logout') }}">
