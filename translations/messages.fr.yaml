@@ -159,7 +159,7 @@ form_enseignant_nom: Nom
 form_enseignant_prenom: Prénom
 form_enseignant_mail: Mail
 form_enseignant_administrateur: Administrateur
-form_enseignant_preference_tableau: Préférence du nombre d'éléments affichés dans les tableaux
+form_enseignant_preference_tableau: Préférence du nombre d'éléments affichés par défaut dans les tableaux
 form_enseignant_mdp: Mot de passe
 form_enseignant_message_info_droits: Si vous vous retirez vos droits d'administrateur, assurez-vous qu'une autre personne dispose de ces derniers.
 form_enseignant_mdp_invalide: Les mots de passe saisis ne correspondent pas

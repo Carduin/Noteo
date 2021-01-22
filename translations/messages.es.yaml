@@ -159,7 +159,7 @@ form_enseignant_nom: Apellido
 form_enseignant_prenom: Nombre
 form_enseignant_mail: Correo electrónico
 form_enseignant_administrateur: Administrador
-form_enseignant_preference_tableau: Preferencia del nombre de los elementos mostrados en tablas
+form_enseignant_preference_tableau: Preferencia del nombre de los elementos mostrados en tablas por defecto
 form_enseignant_mdp: Contraseña
 form_enseignant_message_info_droits: Si va a eliminar sus derechos de administrador, asegúrese de que alguien más los tenga.
 form_enseignant_mdp_invalide: Las contraseñas ingresadas no coinciden

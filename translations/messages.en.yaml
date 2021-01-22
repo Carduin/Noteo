@@ -159,7 +159,7 @@ form_enseignant_nom: Last name
 form_enseignant_prenom: First name
 form_enseignant_mail: E-mail
 form_enseignant_administrateur: Administrator
-form_enseignant_preference_tableau: Preference of number of elements displayed in tables
+form_enseignant_preference_tableau: Default number of elements displayed in tables
 form_enseignant_mdp: Password
 form_enseignant_message_info_droits: If you remove your own administration rights, make sure you have given them to someone else before.
 form_enseignant_mdp_invalide: The passwords do not match
